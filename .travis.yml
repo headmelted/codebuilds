@@ -135,8 +135,7 @@ script:
       fi;
       ./scripts/test-integration.sh;
     fi
-  - gulp "vscode-linux-${VSCODE_ELECTRON_PLATFORM}-build-deb" --max_old_space_size=4096;
-  #- gulp "vscode-linux-${VSCODE_ELECTRON_PLATFORM}-build-rpm" --max_old_space_size=4096;
+  - if [[ "${VSCODE_ELECTRON_PLATFORM}" == "arm" ]]; then gulp "vscode-linux-${VSCODE_ELECTRON_PLATFORM}-build-deb" --max_old_space_size=4096; fi;
 
 after_success:
   - if [[ "${LABEL}" == "amd64_linux" ]]; then
