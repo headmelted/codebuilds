@@ -16,6 +16,7 @@ include: &toolchain_amd64
         - libgtk2.0-0
         - libx11-dev
         - libxkbfile-dev
+        - rpm
         
 # OSX amd64 toolchain
 include: &toolchain_osx_amd64
@@ -25,6 +26,7 @@ include: &toolchain_osx_amd64
     - ARCH=amd64
     - GPP_COMPILER=g++
     - GCC_COMPILER=gcc
+    - VSCODE_ELECTRON_PLATFORM=x64
         
 # linux amd64 toolchain
 include: &toolchain_linux_amd64
@@ -34,6 +36,7 @@ include: &toolchain_linux_amd64
     - ARCH=amd64
     - GPP_COMPILER=g++-4.9
     - GCC_COMPILER=gcc-4.9
+    - VSCODE_ELECTRON_PLATFORM=x64
         
 # cross toolchain (used as a base for multiarch cross-compilation configurations below) 
 include: &toolchain_linux_cross
@@ -133,7 +136,7 @@ script:
       ./scripts/test-integration.sh;
     fi
   - gulp "vscode-linux-${VSCODE_ELECTRON_PLATFORM}-build-deb" --max_old_space_size=4096;
-  - gulp "vscode-linux-${VSCODE_ELECTRON_PLATFORM}-build-rpm" --max_old_space_size=4096;
+  #- gulp "vscode-linux-${VSCODE_ELECTRON_PLATFORM}-build-rpm" --max_old_space_size=4096;
 
 after_success:
   - if [[ "${LABEL}" == "amd64_linux" ]]; then
