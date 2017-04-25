@@ -90,17 +90,6 @@ notifications:
 before_install:
   - if [[ "${TRAVIS_EVENT_TYPE}" == "cron" ]]; then
       if [[ "${LABEL}" != "amd64_linux" ]]; then true;
-      git config user.name "${MERGEBOT_USERNAME}";
-      git config user.email "${MERGEBOT_EMAIL}";
-      trap 'test -n "$SSH_AGENT_PID" && eval `/usr/bin/ssh-agent -k`' 0;
-      mkdir -p ~/.ssh;
-      touch ~/.ssh/mergebot.key;
-      chmod 400 ~/.ssh/mergebot.key;
-      echo "${MERGEBOT_SEC_KEY}" > ~/.ssh/mergebot.key;
-      eval "$(ssh-agent)";
-      ssh-add -k ~/.ssh/mergebot.key;
-      rm ~/.ssh/mergebot.key;
-      ssh-keyscan gitlab.com | tee -a ~/.ssh/known_hosts;
       git remote set-url origin git@github.com:headmelted/vscode-multiarch.git;
       git remote add upstream https://github.com/Microsoft/vscode.git;
       git fetch upstream master;
@@ -113,8 +102,6 @@ before_install:
       git branch -d temp;
       git tag -a "merged_${TRAVIS_COMMIT}" -m "Triggered merge for ${TRAVIS_COMMIT}";
       git push origin ${TRAVIS_BRANCH} --follow-tags;
-      ssh-keygen -R gitlab.com;
-      trap 'test -n "$SSH_AGENT_PID" && eval `/usr/bin/ssh-agent -k`' 0;
       true;
     fi;
   - export CXX="${GPP_COMPILER}" CC="${GCC_COMPILER}";
