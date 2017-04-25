@@ -88,7 +88,7 @@ notifications:
 
 # Before doing anything else, check for a cron job
 before_install:
-  - if [[ "${TRAVIS_EVENT_TYPE}" == "cron" ]]; then
+  - if [[ "${TRAVIS_TAG}" == merged_* ]]; then
       if [[ "${LABEL}" != "amd64_linux" ]]; then true; fi;
       git remote set-url origin git@github.com:headmelted/vscode-multiarch.git;
       git remote add upstream https://github.com/Microsoft/vscode.git;
