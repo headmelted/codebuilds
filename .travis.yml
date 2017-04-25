@@ -88,24 +88,6 @@ notifications:
 
 # Before doing anything else, check for a cron job
 before_install:
-  - if [[ "${TRAVIS_TAG}" != merged_* ]]; then
-      if [[ "${LABEL}" != "amd64_linux" ]]; then true; fi;
-      git config --global user.email "headmelted@gmail.com"
-      git config --global user.name "headmelted"
-      git remote set-url origin git@github.com:headmelted/vscode-multiarch.git;
-      git remote add upstream https://github.com/Microsoft/vscode.git;
-      git fetch upstream master;
-      mergeoutput=$(git merge upstream/master -s recursive -X theirs);
-      echo $mergeoutput;
-      git pull upstream master;
-      git checkout -b temp;
-      git branch -f ${TRAVIS_BRANCH} temp;
-      git checkout ${TRAVIS_BRANCH};
-      git branch -d temp;
-      git tag -a "merged_${TRAVIS_COMMIT}" -m "Triggered merge for ${TRAVIS_COMMIT}";
-      git push origin ${TRAVIS_BRANCH} --follow-tags;
-      true;
-    fi;
   - export CXX="${GPP_COMPILER}" CC="${GCC_COMPILER}";
   - if [[ "${CROSS_TOOLCHAIN}" == "true" ]]; then
       sudo rm -rf /etc/apt/sources.list.d/**;
