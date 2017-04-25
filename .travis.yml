@@ -88,6 +88,7 @@ notifications:
       
 before_install:
   - if [[ "${TRAVIS_EVENT_TYPE}" == "cron" ]]; then
+      if [[ "${LABEL}" != "amd64_linux" ]]; then true;
       git config user.name "${MERGEBOT_USERNAME}";
       git config user.email "${MERGEBOT_EMAIL}";
       trap 'test -n "$SSH_AGENT_PID" && eval `/usr/bin/ssh-agent -k`' 0;
