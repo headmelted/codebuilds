@@ -97,7 +97,7 @@ before_install:
       echo "deb-src http://archive.ubuntu.com/ubuntu xenial main universe multiverse restricted" | sudo tee -a /etc/apt/sources.list;
       sudo dpkg --add-architecture ${ARCH};
       sudo apt-get update -yq;
-      sudo apt-get install -y libwww-perl libexpat1 libxml-libxml-perl libxml-sax-expat-perl gcc-${GNU_TRIPLET} g++-${GNU_TRIPLET} pkg-config-${GNU_TRIPLET} crossbuild-essential-${ARCH} g++-multilib-${GNU_MULTILIB_TRIPLET} gcc-multilib-${GNU_MULTILIB_TRIPLET} dpkg-dev perl libconfig-inifiles-perl libxml-simple-perl liblocale-gettext-perl libgcc1 libgcc1:${ARCH} libdpkg-perl libconfig-auto-perl libdebian-dpkgcross-perl ucf debconf dpkg-cross libdbus-1-3:${ARCH} libffi6:${ARCH} libpcre3:${ARCH} libselinux1:${ARCH} libp11-kit0:${ARCH} libcomerr2:${ARCH} libk5crypto3:${ARCH} libkrb5-3:${ARCH} libpango-1.0-0:${ARCH} libpangocairo-1.0-0:${ARCH} libpangoft2-1.0-0:${ARCH} libxcursor1:${ARCH} libxfixes3:${ARCH} libglib2.0-0:${ARCH} libfreetype6:${ARCH} libpng12-0:${ARCH} libavahi-client3:${ARCH} libgssapi-krb5-2:${ARCH} fontconfig-config:${ARCH} libexpat1:${ARCH} libjasper1:${ARCH} libjpeg8:${ARCH} libpng12-0:${ARCH} libtiff5:${ARCH} libgdk-pixbuf2.0-common:${ARCH} libgdk-pixbuf2.0-0:${ARCH} libfontconfig1:${ARCH} libcups2:${ARCH} libcairo2:${ARCH} libc6 libc6:${ARCH} libc6-dev:${ARCH} libatk1.0-0:${ARCH} libgtk2.0-0:${ARCH} libx11-dev:${ARCH} libxkbfile-dev:${ARCH} rpm;
+      sudo apt-get install -y libwww-perl libexpat1 libxml-libxml-perl libxml-sax-expat-perl gcc-${GNU_TRIPLET} g++-${GNU_TRIPLET} pkg-config-${GNU_TRIPLET} crossbuild-essential-${ARCH} g++-multilib-${GNU_MULTILIB_TRIPLET} gcc-multilib-${GNU_MULTILIB_TRIPLET} dpkg-dev perl libconfig-inifiles-perl libxml-simple-perl liblocale-gettext-perl libgcc1 libgcc1:${ARCH} libdpkg-perl libconfig-auto-perl libdebian-dpkgcross-perl ucf debconf dpkg-cross libdbus-1-3:${ARCH} libffi6:${ARCH} libpcre3:${ARCH} libselinux1:${ARCH} libp11-kit0:${ARCH} libcomerr2:${ARCH} libk5crypto3:${ARCH} libkrb5-3:${ARCH} libpango-1.0-0:${ARCH} libpangocairo-1.0-0:${ARCH} libpangoft2-1.0-0:${ARCH} libxcursor1:${ARCH} libxfixes3:${ARCH} libglib2.0-0:${ARCH} libfreetype6:${ARCH} libpng12-0:${ARCH} libavahi-client3:${ARCH} libgssapi-krb5-2:${ARCH} fontconfig-config:${ARCH} libexpat1:${ARCH} libjasper1:${ARCH} libjpeg8:${ARCH} libpng12-0:${ARCH} libtiff5:${ARCH} libgdk-pixbuf2.0-common:${ARCH} libgdk-pixbuf2.0-0:${ARCH} libfontconfig1:${ARCH} libcups2:${ARCH} libcairo2:${ARCH} libc6 libc6:${ARCH} libc6-dev:${ARCH} libatk1.0-0:${ARCH} libgtk2.0-0:${ARCH} libx11-dev:${ARCH} libxkbfile-dev:${ARCH} rpm qemu binfmt-support qemu-user-static;
     fi
   - git submodule update --init --recursive
   - git clone --depth 1 https://github.com/creationix/nvm.git ./.nvm
@@ -106,11 +106,9 @@ before_install:
   - nvm use 6.6.0 
   - npm config set python `which python`
   - npm install -g gulp
-  - if [[ "${LABEL}" == "amd64_linux" ]]; then
-      export DISPLAY=:99.0;
-      sh -e /etc/init.d/xvfb start;
-      sleep 3;
-    fi
+  - export DISPLAY=:99.0;
+  - sh -e /etc/init.d/xvfb start;
+  - sleep 3;
 
 install:
   - if [[ "${ARCH}" == "amd64" ]]; then
@@ -128,20 +126,9 @@ script:
     fi
   - gulp compile --silent --max_old_space_size=4096;
   - gulp optimize-vscode --silent --max_old_space_size=4096;
-  - if [[ "${ARCH}" == "amd64" ]]; then 
-      if [[ "${LABEL}" == "amd64_linux" ]]; then
-        ./scripts/test.sh --reporter dot --coverage;
-      else
-        ./scripts/test.sh --reporter dot;
-      fi;
-      ./scripts/test-integration.sh;
-    fi
-  - if [[ "${VSCODE_ELECTRON_PLATFORM}" == "arm" ]]; then gulp "vscode-linux-${VSCODE_ELECTRON_PLATFORM}-build-deb" --max_old_space_size=4096; fi;
-
-after_success:
-  - if [[ "${LABEL}" == "amd64_linux" ]]; then
-      node_modules/.bin/coveralls < .build/coverage/lcov.info;
-    fi
+  - ./scripts/test.sh --reporter dot;
+  - ./scripts/test-integration.sh;
+  #- gulp "vscode-linux-${VSCODE_ELECTRON_PLATFORM}-build-deb" --max_old_space_size=4096; fi;
 
 deploy:
   provider: releases
