@@ -16,9 +16,9 @@ import { CommonEditorRegistry, commonEditorContribution, EditorCommand } from 'v
 import { IDisposable, dispose } from 'vs/base/common/lifecycle';
 import { ISnippetVariableResolver, ICodeSnippet, CodeSnippet } from './snippet';
 import { SnippetVariablesResolver } from './snippetVariables';
-
-import EditorContextKeys = editorCommon.EditorContextKeys;
-
+import { EditorContextKeys } from 'vs/editor/common/editorContextKeys';
+import { Position } from "vs/editor/common/core/position";
+import { ICursorPositionChangedEvent } from "vs/editor/common/controller/cursorEvents";
 
 export class InsertSnippetController {
 
@@ -60,7 +60,7 @@ export class InsertSnippetController {
 	private initialize(adaptedSnippet: ICodeSnippet, startLineNumber: number): void {
 
 		// sorted list of all placeholder occurences for subsequent lockups
-		const sortedOccurrences: editorCommon.IRange[] = [];
+		const sortedOccurrences: Range[] = [];
 		for (const { occurences } of adaptedSnippet.placeHolders) {
 			for (const range of occurences) {
 				sortedOccurrences.push(range);
@@ -141,56 +141,52 @@ export class InsertSnippetController {
 		// };
 		// print();
 
+		let _highlightRange = this.model.getDecorationRange(this.highlightDecorationId);
+
 		this.listenersToRemove = [];
-		this.listenersToRemove.push(this.editor.onDidChangeModelRawContent((e: editorCommon.IModelRawContentChangedEvent) => {
+		this.listenersToRemove.push(this.editor.onDidChangeModelContent((e) => {
 			// console.log('-------MODEL CHANGED');
 			// print();
 			if (this.isFinished) {
 				return;
 			}
 
-			if (e.changeType === editorCommon.EventType.ModelRawContentChangedFlush) {
+			if (e.isFlush) {
 				// a model.setValue() was called
 				this.stopAll();
-			} else if (e.changeType === editorCommon.EventType.ModelRawContentChangedLineChanged) {
-				var changedLine = (<editorCommon.IModelRawContentChangedLineChangedEvent>e).lineNumber;
-				var highlightRange = this.model.getDecorationRange(this.highlightDecorationId);
-
-				if (changedLine < highlightRange.startLineNumber || changedLine > highlightRange.endLineNumber) {
-					this.stopAll();
-				}
-			} else if (e.changeType === editorCommon.EventType.ModelRawContentChangedLinesInserted) {
-				var insertLine = (<editorCommon.IModelRawContentChangedLinesInsertedEvent>e).fromLineNumber;
-				var highlightRange = this.model.getDecorationRange(this.highlightDecorationId);
-
-				if (insertLine < highlightRange.startLineNumber || insertLine > highlightRange.endLineNumber) {
-					this.stopAll();
-				}
-			} else if (e.changeType === editorCommon.EventType.ModelRawContentChangedLinesDeleted) {
-				var deleteLine1 = (<editorCommon.IModelRawContentChangedLinesDeletedEvent>e).fromLineNumber;
-				var deleteLine2 = (<editorCommon.IModelRawContentChangedLinesDeletedEvent>e).toLineNumber;
-				var highlightRange = this.model.getDecorationRange(this.highlightDecorationId);
-
-				var deletedLinesAbove = (deleteLine2 < highlightRange.startLineNumber);
-				var deletedLinesBelow = (deleteLine1 > highlightRange.endLineNumber);
-
-				if (deletedLinesAbove || deletedLinesBelow) {
-					this.stopAll();
-				}
+				return;
 			}
 
-			var newAlternateVersionId = this.editor.getModel().getAlternativeVersionId();
+			const newAlternateVersionId = this.editor.getModel().getAlternativeVersionId();
 			if (this._initialAlternativeVersionId === newAlternateVersionId) {
 				// We executed undo until we reached the same version we started with
 				this.stopAll();
+				return;
 			}
+
+			for (let i = 0, len = e.changes.length; i < len; i++) {
+				const change = e.changes[i];
+				const intersection = _highlightRange.intersectRanges(change.range);
+				if (intersection === null) {
+					// Did an edit outside of the snippet
+					this.stopAll();
+					return;
+				}
+			}
+
+			// Keep the highlightRange for the next round of model change events
+			_highlightRange = this.model.getDecorationRange(this.highlightDecorationId);
 		}));
 
-		this.listenersToRemove.push(this.editor.onDidChangeCursorPosition((e: editorCommon.ICursorPositionChangedEvent) => {
+		this.listenersToRemove.push(this.editor.onDidChangeCursorPosition((e: ICursorPositionChangedEvent) => {
 			if (this.isFinished) {
 				return;
 			}
 			var highlightRange = this.model.getDecorationRange(this.highlightDecorationId);
+			if (!highlightRange) {
+				this.stopAll();
+				return;
+			}
 			var lineNumber = e.position.lineNumber;
 			if (lineNumber < highlightRange.startLineNumber || lineNumber > highlightRange.endLineNumber) {
 				this.stopAll();
@@ -339,15 +335,15 @@ export class InsertSnippetController {
 	}
 
 	private doLinkEditing(): void {
-		const selections: editorCommon.ISelection[] = [];
+		const selections: Selection[] = [];
 		for (let i = 0, len = this.trackedPlaceHolders[this.currentPlaceHolderIndex].ranges.length; i < len; i++) {
 			const range = this.model.getDecorationRange(this.trackedPlaceHolders[this.currentPlaceHolderIndex].ranges[i]);
-			selections.push({
-				selectionStartLineNumber: range.startLineNumber,
-				selectionStartColumn: range.startColumn,
-				positionLineNumber: range.endLineNumber,
-				positionColumn: range.endColumn
-			});
+			selections.push(new Selection(
+				range.startLineNumber,
+				range.startColumn,
+				range.endLineNumber,
+				range.endColumn
+			));
 		}
 		this.editor.setSelections(selections);
 		this.editor.revealRangeInCenterIfOutsideViewport(this.editor.getSelection());
@@ -672,7 +668,7 @@ export class SnippetController {
 		return snippet.bind(model.getLineContent(typeRange.startLineNumber), typeRange.startLineNumber - 1, typeRange.startColumn - 1, model);
 	}
 
-	private static _getSnippetCursorOnly(snippet: ICodeSnippet): editorCommon.IPosition {
+	private static _getSnippetCursorOnly(snippet: ICodeSnippet): Position {
 
 		if (snippet.placeHolders.length !== 1) {
 			return null;
@@ -688,10 +684,10 @@ export class SnippetController {
 			return null;
 		}
 
-		return {
-			lineNumber: placeHolderRange.startLineNumber,
-			column: placeHolderRange.startColumn
-		};
+		return new Position(
+			placeHolderRange.startLineNumber,
+			placeHolderRange.startColumn
+		);
 	}
 
 	public jumpToNextPlaceholder(): void {
@@ -729,7 +725,7 @@ CommonEditorRegistry.registerEditorCommand(new SnippetCommand({
 	handler: x => x.jumpToNextPlaceholder(),
 	kbOpts: {
 		weight: CommonEditorRegistry.commandWeight(30),
-		kbExpr: EditorContextKeys.TextFocus,
+		kbExpr: EditorContextKeys.textFocus,
 		primary: KeyCode.Tab
 	}
 }));
@@ -739,7 +735,7 @@ CommonEditorRegistry.registerEditorCommand(new SnippetCommand({
 	handler: x => x.jumpToPrevPlaceholder(),
 	kbOpts: {
 		weight: CommonEditorRegistry.commandWeight(30),
-		kbExpr: EditorContextKeys.TextFocus,
+		kbExpr: EditorContextKeys.textFocus,
 		primary: KeyMod.Shift | KeyCode.Tab
 	}
 }));
@@ -749,7 +745,7 @@ CommonEditorRegistry.registerEditorCommand(new SnippetCommand({
 	handler: x => x.acceptSnippet(),
 	kbOpts: {
 		weight: CommonEditorRegistry.commandWeight(30),
-		kbExpr: EditorContextKeys.TextFocus,
+		kbExpr: EditorContextKeys.textFocus,
 		primary: KeyCode.Enter
 	}
 }));
@@ -759,7 +755,7 @@ CommonEditorRegistry.registerEditorCommand(new SnippetCommand({
 	handler: x => x.leaveSnippet(),
 	kbOpts: {
 		weight: CommonEditorRegistry.commandWeight(30),
-		kbExpr: EditorContextKeys.TextFocus,
+		kbExpr: EditorContextKeys.textFocus,
 		primary: KeyCode.Escape,
 		secondary: [KeyMod.Shift | KeyCode.Escape]
 	}

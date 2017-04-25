@@ -1,6 +1,7 @@
 {
 	"$schema": "vscode://schemas/color-theme",
 	"name": "Light (Visual Studio)",
+	"type": "light",
 	"include": "./light_defaults.json",
 	"tokenColors": [
 		{
@@ -303,7 +304,8 @@
 				"keyword.operator.new",
 				"keyword.operator.expression",
 				"keyword.operator.cast",
-				"keyword.operator.sizeof"
+				"keyword.operator.sizeof",
+				"keyword.operator.logical.python"
 			],
 			"settings": {
 				"foreground": "#0000ff"

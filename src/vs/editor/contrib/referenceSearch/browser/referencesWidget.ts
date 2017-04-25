@@ -6,6 +6,7 @@
 
 import 'vs/css!./referencesWidget';
 import * as nls from 'vs/nls';
+import { alert } from 'vs/base/browser/ui/aria/aria';
 import { onUnexpectedError } from 'vs/base/common/errors';
 import { getPathLabel } from 'vs/base/common/labels';
 import Event, { Emitter } from 'vs/base/common/event';
@@ -30,7 +31,7 @@ import { IInstantiationService } from 'vs/platform/instantiation/common/instanti
 import { ServiceCollection } from 'vs/platform/instantiation/common/serviceCollection';
 import { IWorkspaceContextService } from 'vs/platform/workspace/common/workspace';
 import { DefaultConfig } from 'vs/editor/common/config/defaultConfig';
-import { Range } from 'vs/editor/common/core/range';
+import { Range, IRange } from 'vs/editor/common/core/range';
 import * as editorCommon from 'vs/editor/common/editorCommon';
 import { Model } from 'vs/editor/common/model/model';
 import { ICodeEditor } from 'vs/editor/browser/editorBrowser';
@@ -41,7 +42,8 @@ import { ITextModelResolverService, ITextEditorModel } from 'vs/editor/common/se
 import { registerColor, highContrastOutline } from 'vs/platform/theme/common/colorRegistry';
 import { registerThemingParticipant, ITheme, IThemeService } from 'vs/platform/theme/common/themeService';
 import { attachListStyler } from "vs/platform/theme/common/styler";
-import { alert } from 'vs/base/browser/ui/aria/aria';
+import { IModelDecorationsChangedEvent } from 'vs/editor/common/model/textModelEvents';
+import { IEditorOptions } from "vs/editor/common/config/editorOptions";
 
 class DecorationsManager implements IDisposable {
 
@@ -106,7 +108,7 @@ class DecorationsManager implements IDisposable {
 		});
 	}
 
-	private _onDecorationChanged(event: editorCommon.IModelDecorationsChangedEvent): void {
+	private _onDecorationChanged(event: IModelDecorationsChangedEvent): void {
 		const changedDecorations = event.changedDecorations,
 			toRemove: string[] = [];
 
@@ -409,15 +411,9 @@ class AriaProvider implements tree.IAccessibilityProvider {
 
 	getAriaLabel(tree: tree.ITree, element: FileReferences | OneReference): string {
 		if (element instanceof FileReferences) {
-			const len = element.children.length;
-			if (len === 1) {
-				return nls.localize('aria.fileReferences.1', "1 reference in {0}", element.uri.fsPath);
-			} else {
-				return nls.localize('aria.fileReferences.N', "{0} references in {1}", len, element.uri.fsPath);
-			}
+			return element.getAriaMessage();
 		} else if (element instanceof OneReference) {
-			return nls.localize('aria.oneReference', "reference in {0} on line {1} at column {2}", element.uri.fsPath, element.range.startLineNumber, element.range.startColumn);
-
+			return element.getAriaMessage();
 		} else {
 			return undefined;
 		}
@@ -561,7 +557,7 @@ export class ReferenceWidget extends PeekViewWidget {
 		return this._onDidSelectReference.event;
 	}
 
-	show(where: editorCommon.IRange) {
+	show(where: IRange) {
 		this.editor.revealRangeInCenterIfOutsideViewport(where);
 		super.show(where, this.layoutData.heightInLines || 18);
 	}
@@ -593,7 +589,7 @@ export class ReferenceWidget extends PeekViewWidget {
 		// editor
 		container.div({ 'class': 'preview inline' }, (div: Builder) => {
 
-			var options: editorCommon.IEditorOptions = {
+			var options: IEditorOptions = {
 				scrollBeyondLastLine: false,
 				scrollbar: DefaultConfig.editor.scrollbar,
 				overviewRulerLanes: 2,
@@ -625,7 +621,8 @@ export class ReferenceWidget extends PeekViewWidget {
 				dataSource: this._instantiationService.createInstance(DataSource),
 				renderer: this._instantiationService.createInstance(Renderer),
 				controller: new Controller(),
-				accessibilityProvider: new AriaProvider()
+				// TODO@{Joh,Ben} make this work with the embedded tree
+				// accessibilityProvider: new AriaProvider()
 			};
 
 			var options = {
@@ -703,6 +700,10 @@ export class ReferenceWidget extends PeekViewWidget {
 				this._revealReference(element);
 				this._onDidSelectReference.fire({ element, kind: 'show', source: 'tree' });
 			}
+			if (element instanceof OneReference || element instanceof FileReferences) {
+				const msg = element.getAriaMessage();
+				alert(msg);
+			}
 		}));
 		this._disposeOnNewModel.push(this._tree.addListener(Controller.Events.SELECTED, (element: any) => {
 			if (element instanceof OneReference) {
@@ -733,9 +734,6 @@ export class ReferenceWidget extends PeekViewWidget {
 		this._preview.layout();
 		this._tree.layout();
 		this.focus();
-
-		// announce results found
-		alert(nls.localize('aria.result', "Found {0} references", this._model.references.length));
 
 		// pick input and a reference to begin with
 		const input = this._model.groups.length === 1 ? this._model.groups[0] : this._model;

@@ -104,7 +104,7 @@ import 'vs/platform/opener/browser/opener.contribution';
 import { IWorkbenchThemeService } from 'vs/workbench/services/themes/common/workbenchThemeService';
 import { WorkbenchThemeService } from 'vs/workbench/services/themes/electron-browser/workbenchThemeService';
 import { registerThemingParticipant, ITheme, ICssStyleCollector } from 'vs/platform/theme/common/themeService';
-import { foreground, focus } from 'vs/platform/theme/common/colorRegistry';
+import { foreground, focus, scrollbarShadow, scrollbarSliderActiveBackground, scrollbarSliderBackground, scrollbarSliderHoverBackground } from 'vs/platform/theme/common/colorRegistry';
 
 /**
  * Services that we require for the Shell
@@ -511,14 +511,14 @@ export class WorkbenchShell {
 }
 
 registerThemingParticipant((theme: ITheme, collector: ICssStyleCollector) => {
+
+	// Foreground
 	const windowForeground = theme.getColor(foreground);
 	if (windowForeground) {
 		collector.addRule(`.monaco-shell { color: ${windowForeground}; }`);
 	}
 
-	// TODO@Ben the workbench background color is not really surfacing anywhere but on Windows
-	// not setting it will cause many part of the worbench to not use subpixel-antialiasing causing
-	// these parts to look fuzzy on higher resolution displays.
+	// We need to set the workbench background color so that on Windows we get subpixel-antialiasing.
 	let workbenchBackground: string;
 	switch (theme.type) {
 		case 'dark':
@@ -530,9 +530,54 @@ registerThemingParticipant((theme: ITheme, collector: ICssStyleCollector) => {
 		default:
 			workbenchBackground = '#000000';
 	}
-
 	collector.addRule(`.monaco-workbench { background-color: ${workbenchBackground}; }`);
 
+	// Scrollbars
+	const scrollbarShadowColor = theme.getColor(scrollbarShadow);
+	if (scrollbarShadowColor) {
+		collector.addRule(`
+			.monaco-shell .monaco-scrollable-element > .shadow.top {
+				box-shadow: ${scrollbarShadowColor} 0 6px 6px -6px inset;
+			}
+
+			.monaco-shell .monaco-scrollable-element > .shadow.left {
+				box-shadow: ${scrollbarShadowColor} 6px 0 6px -6px inset;
+			}
+
+			.monaco-shell .monaco-scrollable-element > .shadow.top.left {
+				box-shadow: ${scrollbarShadowColor} 6px 6px 6px -6px inset;
+			}
+		`);
+	}
+
+	const scrollbarSliderBackgroundColor = theme.getColor(scrollbarSliderBackground);
+	if (scrollbarSliderBackgroundColor) {
+		collector.addRule(`
+			.monaco-shell .monaco-scrollable-element > .scrollbar > .slider {
+				background: ${scrollbarSliderBackgroundColor};
+			}
+		`);
+	}
+
+	const scrollbarSliderHoverBackgroundColor = theme.getColor(scrollbarSliderHoverBackground);
+	if (scrollbarSliderHoverBackgroundColor) {
+		collector.addRule(`
+			.monaco-shell .monaco-scrollable-element > .scrollbar > .slider:hover {
+				background: ${scrollbarSliderHoverBackgroundColor};
+			}
+		`);
+	}
+
+	const scrollbarSliderActiveBackgroundColor = theme.getColor(scrollbarSliderActiveBackground);
+	if (scrollbarSliderActiveBackgroundColor) {
+		collector.addRule(`
+			.monaco-shell .monaco-scrollable-element > .scrollbar > .slider.active {
+				background: ${scrollbarSliderActiveBackgroundColor};
+			}
+		`);
+	}
+
+	// Focus outline
 	const focusOutline = theme.getColor(focus);
 	if (focusOutline) {
 		collector.addRule(`

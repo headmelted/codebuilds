@@ -140,9 +140,9 @@ export const inputForeground = registerColor('inputBoxForeground', { dark: foreg
 export const inputBorder = registerColor('inputBoxBorder', { dark: null, light: null, hc: highContrastBorder }, nls.localize('inputBoxBorder', "Input box border."));
 export const inputActiveOptionBorder = registerColor('inputBoxActiveOptionBorder', { dark: '#007ACC', light: '#007ACC', hc: highContrastOutline }, nls.localize('inputBoxActiveOptionBorder', "Border color of activated options in input fields."));
 
-export const selectBackground = registerColor('dropdownBackground', { dark: '#3C3C3C', light: Color.white, hc: '#3C3C3C' }, nls.localize('dropdownBackground', "Dropdown background."));
+export const selectBackground = registerColor('dropdownBackground', { dark: '#3C3C3C', light: Color.white, hc: Color.black }, nls.localize('dropdownBackground', "Dropdown background."));
 export const selectForeground = registerColor('dropdownForeground', { dark: '#F0F0F0', light: null, hc: Color.white }, nls.localize('dropdownForeground', "Dropdown foreground."));
-export const selectBorder = registerColor('dropdownBorder', { dark: selectBackground, light: '#CECECE', hc: selectBackground }, nls.localize('dropdownBorder', "Dropdown border."));
+export const selectBorder = registerColor('dropdownBorder', { dark: selectBackground, light: '#CECECE', hc: highContrastBorder }, nls.localize('dropdownBorder', "Dropdown border."));
 
 export const listFocusBackground = registerColor('listFocusBackground', { dark: '#073655', light: '#DCEBFC', hc: null }, nls.localize('listFocusBackground', "List/Tree focus background when active."));
 export const listInactiveFocusBackground = registerColor('listInactiveFocusBackground', { dark: null, light: null, hc: null }, nls.localize('listInactiveFocusBackground', "List/Tree focus background when inactive."));
@@ -158,6 +158,17 @@ export const listFocusOutline = registerColor('listFocusOutline', { dark: null, 
 export const listInactiveFocusOutline = registerColor('listInactiveFocusOutline', { dark: null, light: null, hc: null }, nls.localize('listInactiveFocusOutline', "List/Tree focus outline color when inactive."));
 export const listSelectionOutline = registerColor('listSelectionOutline', { dark: null, light: null, hc: highContrastOutline }, nls.localize('listSelectionOutline', "List/Tree selection outline color."));
 export const listHoverOutline = registerColor('listHoverOutline', { dark: null, light: null, hc: highContrastOutline }, nls.localize('listHoverOutline', "List/Tree hover outline color."));
+
+export const pickerGroupForeground = registerColor('pickerGroupForeground', { dark: Color.fromHex('#0097FB').transparent(0.6), light: Color.fromHex('#007ACC').transparent(0.6), hc: Color.white }, nls.localize('pickerGroupForeground', "Quick picker color for grouping labels."));
+export const pickerGroupBorder = registerColor('pickerGroupBorder', { dark: '#3F3F46', light: '#CCCEDB', hc: Color.white }, nls.localize('pickerGroupBorder', "Quick picker color for grouping borders."));
+
+export const buttonBackground = registerColor('buttonBackground', { dark: '#0E639C', light: '#007ACC', hc: null }, nls.localize('buttonBackground', "Button background color."));
+export const buttonHoverBackground = registerColor('buttonHoverBackground', { dark: '#007ACC', light: '#006BB3', hc: null }, nls.localize('buttonHoverBackground', "Button background color when hovering."));
+
+export const scrollbarShadow = registerColor('scrollbarShadow', { dark: '#000000', light: '#DDDDDD', hc: null }, nls.localize('scrollbarShadow', "Scrollbar shadow to indicate that the view is scrolled."));
+export const scrollbarSliderBackground = registerColor('scrollbarSliderBackground', { dark: Color.fromHex('#797979').transparent(0.4), light: Color.fromHex('#646464').transparent(0.4), hc: Color.fromHex('#6FC3DF').transparent(0.6) }, nls.localize('scrollbarSliderBackground', "Slider background color."));
+export const scrollbarSliderHoverBackground = registerColor('scrollbarSliderHoverBackground', { dark: Color.fromHex('#646464').transparent(0.7), light: Color.fromHex('#646464').transparent(0.7), hc: Color.fromHex('#6FC3DF').transparent(0.8) }, nls.localize('scrollbarSliderHoverBackground', "Slider background color when hovering."));
+export const scrollbarSliderActiveBackground = registerColor('scrollbarSliderActiveBackground', { dark: Color.fromHex('#BFBFBF').transparent(0.4), light: Color.fromHex('#000000').transparent(0.6), hc: Color.fromHex('#6FC3DF') }, nls.localize('scrollbarSliderActiveBackground', "Slider background color when active."));
 
 /**
  * Editor background color.

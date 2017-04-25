@@ -1466,6 +1466,14 @@ declare module 'vscode' {
 		value?: string;
 
 		/**
+		 * Selection of the prefilled [`value`](#InputBoxOptions.value). Defined as tuple of two number where the
+		 * first is the inclusive start index and the second the exclusive end index. When `undefined` the whole
+		 * word will be selected, when empty (start equals end) only the cursor will be set,
+		 * otherwise the defined range will be selected.
+		 */
+		valueSelection?: [number, number];
+
+		/**
 		 * The text to display underneath the input box.
 		 */
 		prompt?: string;
@@ -1502,7 +1510,7 @@ declare module 'vscode' {
 	 * its resource, or a glob-pattern that is applied to the [path](#TextDocument.fileName).
 	 *
 	 * @sample A language filter that applies to typescript files on disk: `{ language: 'typescript', scheme: 'file' }`
-	 * @sample A language filter that applies to all package.json paths: `{ language: 'json', pattern: '**∕project.json' }`
+	 * @sample A language filter that applies to all package.json paths: `{ language: 'json', pattern: '**∕package.json' }`
 	 */
 	export interface DocumentFilter {
 
@@ -1863,8 +1871,6 @@ declare module 'vscode' {
 		Field = 7,
 		Constructor = 8,
 		Enum = 9,
-		EnumMember = 21,
-		Struct = 22,
 		Interface = 10,
 		Function = 11,
 		Variable = 12,
@@ -1875,7 +1881,12 @@ declare module 'vscode' {
 		Array = 17,
 		Object = 18,
 		Key = 19,
-		Null = 20
+		Null = 20,
+		EnumMember = 21,
+		Struct = 22,
+		Event = 23,
+		Operator = 24,
+		TypeParameter = 25
 	}
 
 	/**
@@ -2425,20 +2436,23 @@ declare module 'vscode' {
 		Variable = 5,
 		Class = 6,
 		Interface = 7,
-		Struct = 21,
 		Module = 8,
 		Property = 9,
 		Unit = 10,
 		Value = 11,
-		Constant = 20,
 		Enum = 12,
-		EnumMember = 19,
 		Keyword = 13,
 		Snippet = 14,
 		Color = 15,
 		Reference = 17,
 		File = 16,
-		Folder = 18
+		Folder = 18,
+		EnumMember = 19,
+		Constant = 20,
+		Struct = 21,
+		Event = 22,
+		Operator = 23,
+		TypeParameter = 24
 	}
 
 	/**
@@ -3862,15 +3876,27 @@ declare module 'vscode' {
 		export function setStatusBarMessage(text: string): Disposable;
 
 		/**
-		 * Show progress in the Source Control viewlet while running the given callback and while
-		 * its returned promise isn't resolve or rejected.
+		 * @deprecated This function **deprecated**. Use `withProgress` instead.
+		 *
+		 * ~~Show progress in the Source Control viewlet while running the given callback and while
+		 * its returned promise isn't resolve or rejected.~~
 		 *
 		 * @param task A callback returning a promise. Progress increments can be reported with
 		 * the provided [progress](#Progress)-object.
-		 * @return The thenable the task did return.
+		 * @return The thenable the task did rseturn.
 		 */
 		export function withScmProgress<R>(task: (progress: Progress<number>) => Thenable<R>): Thenable<R>;
 
+		/**
+		 * Show progress in the editor. Progress is shown while running the given callback
+		 * and while the promise it returned isn't resolved nor rejected. The location at which
+		 * progress should show (and other details) is defined via the passed [`ProgressOptions`](#ProgressOptions).
+		 *
+		 * @param task A callback returning a promise. Progress state can be reported with
+		 * the provided [progress](#Progress)-object.
+		 * @return The thenable the task-callback returned.
+		 */
+		export function withProgress<R>(options: ProgressOptions, task: (progress: Progress<{ message?: string; percentage?: number }>) => Thenable<R>): Thenable<R>;
 
 		/**
 		 * Creates a status bar [item](#StatusBarItem).
@@ -3903,7 +3929,7 @@ declare module 'vscode' {
 	}
 
 	/**
-	 * Value-object describing what options formatting should use.
+	 * Value-object describing what options a terminal should use.
 	 */
 	export interface TerminalOptions {
 		/**
@@ -3920,6 +3946,41 @@ declare module 'vscode' {
 		 * Args for the custom shell executable, this does not work on Windows (see #8429)
 		 */
 		shellArgs?: string[];
+	}
+
+	/**
+	 * A location in the editor at which progress information can be shown. It depends on the
+	 * location how progress is visually represented.
+	 */
+	export enum ProgressLocation {
+
+		/**
+		 * Show progress for the source control viewlet, as overlay for the icon and as progress bar
+		 * inside the viewlet (when visible).
+		 */
+		SourceControl = 1,
+
+		/**
+		 * Show progress in the status bar of the editor.
+		 */
+		Window = 10
+	}
+
+	/**
+	 * Value-object describing where and how progress should show.
+	 */
+	export interface ProgressOptions {
+
+		/**
+		 * The location at which progress should show.
+		 */
+		location: ProgressLocation;
+
+		/**
+		 * A human-readable string which will be used to describe the
+		 * operation.
+		 */
+		title?: string;
 	}
 
 	/**

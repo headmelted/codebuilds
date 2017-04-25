@@ -1,6 +1,7 @@
 {
 	"$schema": "vscode://schemas/color-theme",
 	"name": "Dark High Contrast",
+	"type": "hc",
 	"include": "./hc_black_defaults.json",
 	"settings": [
 		{
@@ -269,7 +270,8 @@
 				"keyword.operator.new",
 				"keyword.operator.expression",
 				"keyword.operator.cast",
-				"keyword.operator.sizeof"
+				"keyword.operator.sizeof",
+				"keyword.operator.logical.python"
 			],
 			"settings": {
 				"foreground": "#569cd6"

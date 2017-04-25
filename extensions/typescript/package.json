@@ -12,7 +12,7 @@
   },
   "dependencies": {
     "semver": "4.3.6",
-    "vscode-extension-telemetry": "^0.0.6",
+    "vscode-extension-telemetry": "^0.0.7",
     "vscode-nls": "^2.0.1"
   },
   "devDependencies": {
@@ -39,7 +39,6 @@
     "workspaceContains:tsconfig.json"
   ],
   "main": "./out/typescriptMain",
-  "enableProposedApi": true,
   "contributes": {
     "languages": [
       {
@@ -104,6 +103,11 @@
           "type": "boolean",
           "default": true,
           "description": "%typescript.check.tscVersion%"
+        },
+        "typescript.check.npmIsInstalled": {
+          "type": "boolean",
+          "default": true,
+          "description": "%typescript.check.npmIsInstalled%"
         },
         "typescript.referencesCodeLens.enabled": {
           "type": "boolean",
@@ -295,6 +299,11 @@
           "type": "boolean",
           "default": true,
           "description": "%jsDocCompletion.enabled%"
+        },
+        "javascript.implicitProjectConfig.checkJs": {
+          "type": "boolean",
+          "default": false,
+          "description": "%javascript.implicitProjectConfig.checkJs%"
         }
       }
     },
@@ -393,7 +402,7 @@
         "fileMatch": "tsconfig.json",
         "url": "./schemas/tsconfig.schema.json"
       },
-       {
+      {
         "fileMatch": "tsconfig.*.json",
         "url": "http://json.schemastore.org/tsconfig"
       },
@@ -422,14 +431,20 @@
         "name": "tsc",
         "owner": "typescript",
         "applyTo": "closedDocuments",
-        "fileLocation": ["relative", "${cwd}"],
-	      "pattern": "$tsc"
+        "fileLocation": [
+          "relative",
+          "${cwd}"
+        ],
+        "pattern": "$tsc"
       },
       {
         "name": "tsc-watch",
         "owner": "typescript",
         "applyTo": "closedDocuments",
-        "fileLocation": ["relative", "${cwd}"],
+        "fileLocation": [
+          "relative",
+          "${cwd}"
+        ],
         "pattern": "$tsc",
         "watching": {
           "activeOnStart": true,

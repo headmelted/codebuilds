@@ -26,10 +26,13 @@ export interface BulkListenerCallback {
 	(value: EmitterEvent[]): void;
 }
 
-export interface IEventEmitter extends IDisposable {
+export interface IBaseEventEmitter {
+	addBulkListener(listener: BulkListenerCallback): IDisposable;
+}
+
+export interface IEventEmitter extends IBaseEventEmitter, IDisposable {
 	addListener(eventType: string, listener: ListenerCallback): IDisposable;
 	addOneTimeListener(eventType: string, listener: ListenerCallback): IDisposable;
-	addBulkListener(listener: BulkListenerCallback): IDisposable;
 	addEmitter(eventEmitter: IEventEmitter): IDisposable;
 }
 
@@ -120,7 +123,7 @@ export class EventEmitter implements IEventEmitter {
 		};
 	}
 
-	public addEmitter(eventEmitter: IEventEmitter): IDisposable {
+	public addEmitter(eventEmitter: IBaseEventEmitter): IDisposable {
 		return eventEmitter.addBulkListener((events: EmitterEvent[]): void => {
 			if (this._deferredCnt === 0) {
 				this._emitEvents(events);
@@ -197,11 +200,11 @@ export class EventEmitter implements IEventEmitter {
 		}
 	}
 
-	protected _beginDeferredEmit(): void {
+	public beginDeferredEmit(): void {
 		this._deferredCnt = this._deferredCnt + 1;
 	}
 
-	protected _endDeferredEmit(): void {
+	public endDeferredEmit(): void {
 		this._deferredCnt = this._deferredCnt - 1;
 
 		if (this._deferredCnt === 0) {
@@ -210,11 +213,11 @@ export class EventEmitter implements IEventEmitter {
 	}
 
 	public deferredEmit<T>(callback: () => T): T {
-		this._beginDeferredEmit();
+		this.beginDeferredEmit();
 
 		let result: T = safeInvokeNoArg<T>(callback);
 
-		this._endDeferredEmit();
+		this.endDeferredEmit();
 
 		return result;
 	}
@@ -247,8 +250,8 @@ export class OrderGuaranteeEventEmitter extends EventEmitter {
 
 	private _emitQueue: EmitQueueElement[];
 
-	constructor(allowedEventTypes: string[] = null) {
-		super(allowedEventTypes);
+	constructor() {
+		super(null);
 		this._emitQueue = [];
 	}
 
