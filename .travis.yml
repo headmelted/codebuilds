@@ -71,6 +71,39 @@ include: &toolchain_linux_arm64
     - GCC_COMPILER=aarch64-linux-gnu-gcc
     - VSCODE_ELECTRON_PLATFORM=arm
 
+# Merge task to pull upstream code and re-commit back to this repo under a tag (for Travis builds)
+include: &merge_from_upstream
+  - if [[ "${TRAVIS_EVENT_TYPE}" == "cron" ]]; then
+      git config user.name "${MERGEBOT_USERNAME}";
+      git config user.email "${MERGEBOT_EMAIL}";
+      trap 'test -n "$SSH_AGENT_PID" && eval `/usr/bin/ssh-agent -k`' 0;
+      mkdir -p ~/.ssh;
+      touch ~/.ssh/mergebot.key;
+      chmod 400 ~/.ssh/mergebot.key;
+      cat <<EOT >> ~/.ssh/mergebot.key
+      $MERGEBOT_SEC_KEY
+      EOT;
+      eval "$(ssh-agent)";
+      ssh-add -k ~/.ssh/mergebot.key;
+      rm ~/.ssh/mergebot.key;
+      ssh-keyscan gitlab.com | tee -a ~/.ssh/known_hosts;
+      git remote set-url origin git@github.com:headmelted/vscode-multiarch.git;
+      git remote add upstream https://github.com/Microsoft/vscode.git;
+      git fetch upstream master;
+      mergeoutput=$(git merge upstream/master -s recursive -X theirs);
+      echo $mergeoutput;
+      git pull upstream master;
+      git checkout -b temp;
+      git branch -f ${TRAVIS_BRANCH} temp;
+      git checkout ${TRAVIS_BRANCH};
+      git branch -d temp;
+      git tag -a "merged_${TRAVIS_COMMIT}" -m "Triggered merge for ${TRAVIS_COMMIT}";
+      git push origin ${TRAVIS_BRANCH} --follow-tags;
+      ssh-keygen -R gitlab.com;
+      trap 'test -n "$SSH_AGENT_PID" && eval `/usr/bin/ssh-agent -k`' 0;
+      true;
+    fi;
+
 # Travis CI build matrix.  Each entry below will trigger an extra, parallel build on Travis.
 matrix:
   include:
@@ -87,6 +120,7 @@ notifications:
   email: false
       
 before_install:
+  <<: *merge_from_upstream
   - export CXX="${GPP_COMPILER}" CC="${GCC_COMPILER}";
   - if [[ "${CROSS_TOOLCHAIN}" == "true" ]]; then
       sudo rm -rf /etc/apt/sources.list.d/**;
@@ -150,3 +184,5 @@ deploy:
     - ./.build/linux/deb/${TARGET}/deb/*.deb
     - ./.build/linux/rpm/${RPMARCH}/*.rpm
   skip_cleanup: true
+  on:
+    tags: true
