@@ -97,7 +97,7 @@ before_install:
       chmod 400 ~/.ssh/mergebot.key;
       cat <<EOT >> ~/.ssh/mergebot.key
       $MERGEBOT_SEC_KEY
-      EOT;
+      EOT
       eval "$(ssh-agent)";
       ssh-add -k ~/.ssh/mergebot.key;
       rm ~/.ssh/mergebot.key;
