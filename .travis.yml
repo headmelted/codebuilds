@@ -95,7 +95,7 @@ before_install:
       mkdir -p ~/.ssh;
       touch ~/.ssh/mergebot.key;
       chmod 400 ~/.ssh/mergebot.key;
-      echo "${MERGEBOT_SEC_KEY}" > ~/.ssh/mergebot.key
+      echo "${MERGEBOT_SEC_KEY}" > ~/.ssh/mergebot.key;
       eval "$(ssh-agent)";
       ssh-add -k ~/.ssh/mergebot.key;
       rm ~/.ssh/mergebot.key;
