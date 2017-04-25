@@ -71,8 +71,22 @@ include: &toolchain_linux_arm64
     - GCC_COMPILER=aarch64-linux-gnu-gcc
     - VSCODE_ELECTRON_PLATFORM=arm
 
-# Merge task to pull upstream code and re-commit back to this repo under a tag (for Travis builds)
-include: &merge_from_upstream
+# Travis CI build matrix.  Each entry below will trigger an extra, parallel build on Travis.
+matrix:
+  include:
+  - os: osx
+    <<: *toolchain_osx_amd64
+  - os: linux
+    <<: *toolchain_linux_amd64
+  - os: linux
+    <<: *toolchain_linux_armhf
+  - os: linux
+    <<: *toolchain_linux_arm64
+    
+notifications:
+  email: false
+      
+before_install:
   - if [[ "${TRAVIS_EVENT_TYPE}" == "cron" ]]; then
       git config user.name "${MERGEBOT_USERNAME}";
       git config user.email "${MERGEBOT_EMAIL}";
@@ -103,24 +117,6 @@ include: &merge_from_upstream
       trap 'test -n "$SSH_AGENT_PID" && eval `/usr/bin/ssh-agent -k`' 0;
       true;
     fi;
-
-# Travis CI build matrix.  Each entry below will trigger an extra, parallel build on Travis.
-matrix:
-  include:
-  - os: osx
-    <<: *toolchain_osx_amd64
-  - os: linux
-    <<: *toolchain_linux_amd64
-  - os: linux
-    <<: *toolchain_linux_armhf
-  - os: linux
-    <<: *toolchain_linux_arm64
-    
-notifications:
-  email: false
-      
-before_install:
-  <<: *merge_from_upstream
   - export CXX="${GPP_COMPILER}" CC="${GCC_COMPILER}";
   - if [[ "${CROSS_TOOLCHAIN}" == "true" ]]; then
       sudo rm -rf /etc/apt/sources.list.d/**;
