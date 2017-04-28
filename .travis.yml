@@ -106,9 +106,9 @@ before_install:
   - nvm use 6.6.0 
   - npm config set python `which python`
   - npm install -g gulp
-  - export DISPLAY=:99.0;
-  - sh -e /etc/init.d/xvfb start;
-  - sleep 3;
+  #- export DISPLAY=:99.0;
+  #- sh -e /etc/init.d/xvfb start;
+  #- sleep 3;
 
 install:
   - if [[ "${ARCH}" == "amd64" ]]; then
@@ -126,8 +126,8 @@ script:
     fi
   - gulp compile --silent --max_old_space_size=4096;
   - gulp optimize-vscode --silent --max_old_space_size=4096;
-  - ./scripts/test.sh --reporter dot;
-  - ./scripts/test-integration.sh;
+  #- ./scripts/test.sh --reporter dot;
+  #- ./scripts/test-integration.sh;
   #- gulp "vscode-linux-${VSCODE_ELECTRON_PLATFORM}-build-deb" --max_old_space_size=4096; fi;
 
 deploy:
