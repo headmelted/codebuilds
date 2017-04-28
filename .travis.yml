@@ -76,8 +76,8 @@ matrix:
   include:
   #- os: osx
   #  <<: *toolchain_osx_amd64
-  #- os: linux
-  #  <<: *toolchain_linux_amd64
+  - os: linux
+    <<: *toolchain_linux_amd64
   - os: linux
     <<: *toolchain_linux_armhf
   - os: linux
