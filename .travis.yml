@@ -139,4 +139,5 @@ deploy:
     - ./.build/linux/rpm/${RPMARCH}/*.rpm
   skip_cleanup: true
   on:
-    tags: true
+    tags: false
+    all_branches: true
