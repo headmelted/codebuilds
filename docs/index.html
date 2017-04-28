@@ -116,9 +116,9 @@ for updates, you can get the latest version of the package for your system below
 <i>(including Debian, Raspbian, Ubuntu and Linux Mint)</i>
 
 <ul>
-    {% for package in site.collections[0].files %}
-      {% if package.extname == ".deb" %}
-         <li><a href="https://bintray.com/headmelted/deb-code-oss/download_file?file_path={{ package.name }}">{{ package.name }}</a></li>
+    {% for release in site.github.releases %}
+      {% if release.extname == ".deb" %}
+         <li><a href="https://bintray.com/headmelted/deb-code-oss/download_file?file_path={{ release.name }}">{{ release.name }}</a></li>
       {% endif %}
     {% endfor %}
 </ul>
@@ -127,9 +127,9 @@ for updates, you can get the latest version of the package for your system below
 <i>(including Fedora, Pidora, Red Hat and SUSE)</i>
 
 <ul>
-    {% for package in site.collections[0].files %}
-      {% if package.extname == ".rpm" %}
-         <li><a href="https://bintray.com/headmelted/rpm-code-oss/download_file?file_path={{ package.name }}">{{ package.name }}</a></li>
+    {% for release in site.github.releases %}
+      {% if release.extname == ".rpm" %}
+         <li><a href="https://bintray.com/headmelted/rpm-code-oss/download_file?file_path={{ release.name }}">{{ release.name }}</a></li>
       {% endif %}
     {% endfor %}
 </ul>
