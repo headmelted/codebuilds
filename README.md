@@ -1,6 +1,7 @@
 # Visual Studio Code for Chromebooks and Raspberry Pi
 
 [![Build Status](https://travis-ci.org/headmelted/vscode-multiarch.svg?branch=master)](https://travis-ci.org/headmelted/vscode-multiarch)
+[![Download](https://api.bintray.com/packages/headmelted/deb-code-oss/code-oss/images/download.svg) ](https://bintray.com/headmelted/deb-code-oss/code-oss/_latestVersion)
 
 This repository hosts a fork of [VS Code](https://code.visualstudio.com) that has been modified 
 to produce cross-compiled packages for ARM architectures.  These can be found under the [Releases]() section.
