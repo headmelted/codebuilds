@@ -6,6 +6,9 @@
 **APRIL 2017 UPDATE**: The necessary changes for ARM builds have been contributed upstream.  I'm hoping
 these will be included in the official packages but for now the intention is to keep the builds running here.
 
+THESE SCRIPTS SHOULD BE CONSIDERED UNSTABLE FOR NOW.  I'VE BEEN CHANGING AROUND QUITE A FEW THINGS TO MAKE THESE BUILDS
+RUN ON TRAVIS CI, PLEASE LET ME KNOW IF YOU EXPERIENCE ANY ISSUES.
+
 Now that Microsoft has official, signed APT repos, I have altered the scripts to detect if the user is on 
 an amd64 system and, if so, use the official Microsoft insiders builds instead.  If you experience any
 difficulty with this change, please raise an issue and provide the full error log.
