@@ -3,5 +3,3 @@ _site
 .sass-cache
 Gemfile.lock
 .DS_Store
-code.png
-favicon.ico
