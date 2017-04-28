@@ -141,6 +141,7 @@ deploy:
     all_branches: true
     
 after_deploy:
-  - bash ./vscode-multiarch-specific/pushToBintray.sh ./.build/linux/deb/*/deb/*.deb;
+  - cd vscode-multiarch-specific;
+  - bash ./pushToBintray.sh ./.build/linux/deb/*/deb/*.deb;
   #- bash ./vscode-multiarch-specific/pushToBintray.sh ./.build/linux/rpm/*/*.rpm;
 
