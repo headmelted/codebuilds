@@ -1,0 +1,8 @@
+{
+    "name": "code-oss",
+    "desc": "Visual Studio Code for Chromebooks and Raspberry Pi",
+    "desc_url": "",
+    "labels": ["code-oss"],
+    "licenses": ["MIT"],
+    "vcs_url": "https://github.com/headmelted/vscode-multiarch.git"
+}
