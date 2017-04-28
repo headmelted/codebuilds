@@ -126,7 +126,7 @@ script:
     fi
   - gulp compile --silent --max_old_space_size=4096;
   - gulp optimize-vscode --silent --max_old_space_size=4096;
-  - gulp "vscode-linux-${VSCODE_ELECTRON_PLATFORM}-build-deb" --max_old_space_size=4096; fi;
+  - gulp "vscode-linux-${VSCODE_ELECTRON_PLATFORM}-build-deb" --max_old_space_size=4096;
 
 deploy:
   provider: releases
