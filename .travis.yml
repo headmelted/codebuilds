@@ -76,8 +76,8 @@ matrix:
   include:
   #- os: osx
   #  <<: *toolchain_osx_amd64
-  - os: linux
-    <<: *toolchain_linux_amd64
+  #- os: linux
+  #  <<: *toolchain_linux_amd64
   - os: linux
     <<: *toolchain_linux_armhf
   - os: linux
@@ -139,5 +139,5 @@ deploy:
     - ./.build/linux/rpm/${RPMARCH}/*.rpm
   skip_cleanup: true
   on:
-    tags: false
+    tags: true
     all_branches: true
