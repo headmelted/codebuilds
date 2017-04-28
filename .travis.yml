@@ -112,7 +112,7 @@ before_install:
 
 install:
   - if [[ "${ARCH}" == "amd64" ]]; then
-      ./scripts/npm.sh install;
+      ./scripts/npm.sh install; 
     else
       ./scripts/npm.sh install --arch=${NPM_ARCH};
     fi
