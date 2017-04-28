@@ -75,8 +75,25 @@ echo "Removing any existing 'code' alias from ~/.bashrc...";
 if [ -e ~/.bashrc ]; then sudo sed -i.bak '/alias code=/d' ~/.bashrc; fi;
 echo "Done!"
 
+echo "Detecting architecture...";
+MACHINE_MTYPE="$(uname -m)";
+ARCH="${MACHINE_MTYPE}";
+REPOSITORY_NAME="Microsoft";
+
+if [ "$ARCH" = "armv7l" ]; then ARCH="armhf"; fi;
+if [ "$ARCH" = "armhf" ]; then REPOSITORY_NAME="headmelted"; fi;
+
+echo "Architecture detected as ${ARCH}...";
+
+CODE_EXECUTABLE_NAME="";
+if [ "${REPOSITORY_NAME}" = "headmelted" ]; then
+  CODE_EXECUTABLE_NAME="code-oss";
+else
+  CODE_EXECUTABLE_NAME="code-insiders";
+fi;
+
 echo "Aliasing 'code'..."
-sudo echo 'alias code="sudo startxiwi -n code-oss-chroot code-oss"' >> ~/.bashrc;
+sudo echo 'alias code="sudo startxiwi -n code-oss-chroot $CODE_EXECUTABLE_NAME"' >> ~/.bashrc;
 echo "Done!"
 
 echo "
