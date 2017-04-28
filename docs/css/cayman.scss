@@ -7,8 +7,8 @@ $medium-breakpoint: 42em;
 
 // Headers
 $header-heading-color: #fff;
-$header-bg-color: #895BBA;
-$header-bg-color-secondary: #386AAB;
+$header-bg-color: #8854Bc;
+$header-bg-color-secondary: #28045c;
 
 // Text
 $section-headings-color: #5555DD;
@@ -109,11 +109,16 @@ a {
   }
 }
 
-.page-header {
-  color: $header-heading-color;
-  text-align: center;
+.page-header-overlay {
   background-color: $header-bg-color;
   background-image: linear-gradient(120deg, $header-bg-color-secondary, $header-bg-color);
+}
+
+.page-header {
+   background-image: url('/images/codebg.png');
+  color: $header-heading-color;
+  a { color: $header-heading-color; font-weight: bold; font-style: underline; }
+  text-align: center;
 
   @include large {
     padding: 5rem 6rem;
@@ -143,6 +148,7 @@ a {
   @include small {
     font-size: 1.75rem;
   }
+  
 }
 
 .project-tagline {
@@ -162,6 +168,7 @@ a {
     font-size: 1rem;
   }
 }
+
 
 .main-content {
   word-wrap: break-word;
