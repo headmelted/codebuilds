@@ -134,8 +134,13 @@ deploy:
   file_glob: true
   file:
     - ./.build/linux/deb/${TARGET}/deb/*.deb
-    - ./.build/linux/rpm/${RPMARCH}/*.rpm
+    #- ./.build/linux/rpm/${RPMARCH}/*.rpm
   skip_cleanup: true
   on:
     tags: true
     all_branches: true
+    
+after_deploy:
+  - bash ./vscode-multiarch-specific/pushToBintray.sh ./.build/linux/deb/*/deb/*.deb;
+  #- bash ./vscode-multiarch-specific/pushToBintray.sh ./.build/linux/rpm/*/*.rpm;
+
