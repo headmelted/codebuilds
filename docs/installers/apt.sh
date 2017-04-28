@@ -26,7 +26,7 @@ else
   curl https://packages.microsoft.com/keys/microsoft.asc | gpg --dearmor > microsoft.gpg;
   
   echo "Installing Microsoft GPG key...";
-  sudo mv microsoft.gpg /etc/apt/trusted.gpg.d/microsoft.gpg;
+  mv microsoft.gpg /etc/apt/trusted.gpg.d/microsoft.gpg;
   
 fi;
 
