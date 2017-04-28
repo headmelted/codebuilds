@@ -1,0 +1,7 @@
+_site
+.bundle
+.sass-cache
+Gemfile.lock
+.DS_Store
+code.png
+favicon.ico

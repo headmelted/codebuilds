@@ -1,0 +1,20 @@
+# Setup
+title:        Visual Studio Code for Chromebooks and Raspberry Pi
+tagline:      Builds of Visual Studio Code for Chromebooks and Raspberry Pi
+baseurl:      ""
+#paginate:     1
+
+# About/contact
+author:
+  name:       Jay Rodgers (@headmelted)
+  url:        https://twitter.com/headmelted
+
+# Gems
+#gems:
+#  - jekyll-paginate
+
+#Others
+markdown: kramdown
+
+collections:
+  - packages

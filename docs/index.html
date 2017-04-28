@@ -1,0 +1,140 @@
+--- 
+layout: page 
+site_url: https://code.headmelted.com 
+image_url: /code.png 
+---
+
+<h1>About these builds</h1>
+<i>Please read this carefully (here be dragons!).</i>
+
+<p>These are automated builds of the open-source edition of Microsoft's Visual Studio Code.</p>
+
+<p>The latest code is pulled on a nightly basis from Microsoft's <a href="https://github.com/Microsoft/vscode">official repository</a>. If there are updates, the code is built, tested, packaged and deployed. The key feature here is support not only
+  for Intel, but ARM processors, and so these builds can run on a wider variety of systems.</p>
+
+<p>As this project is at a very early stage, and the builds are made nightly, the software should be considered unstable for now. The disclaimer at the bottom of this page covers your use of the scripts and instructions below, and any and all of the packages they reference.</p>
+
+<p>These scripts <i>probably</i> require super-user access to the system in order to, among other things, add the package source to your system and install software, depending on your current user access rights. It is bad practice to run a script from the
+  internet directly with super-user access, so the scripts below do <strong>not</strong> include an escalation request for these rights (as that is something you should be doing consciously). <strong>You will therefore need to manually enter a 
+        super-user session.  Instructions to do this are included in the steps below.</strong></p>
+
+<p>It is advised that you download the scripts first, <strong>before</strong> executing them using the instructions below if you are at all concerned about what is contained within them (the scripts have not been minified, so should be easily readable).</p>
+
+<h1>
+  <a id="chromebook-header" class="anchor" aria-hidden="true"><span class="octicon octicon-link"></span></a>Installation on Chromebook</h1>
+  
+  <p>If you have <strong>not</strong> yet set up a chroot on your Chromebook, and/or are not sure how to do so, then you may wish to follow the <a href="#guided-chromebook-installation">installation wizard</a> below.  If you already have a chroot that you wish to install Visual Studio Code into, please follow the <a href="manual-chromebook-installation">manual installation</a> instructions below.</p>
+
+<h3 id="guided-chromebook-installation">NEW: Installation Wizard</h3>
+
+<p>A guided installation wizard is now available for Chromebooks in the form of a shell script that will perform the following tasks automatically:</p>
+
+<ol>
+  <li>Download crouton.</li>
+  <li>Create a chroot on the local device based on Ubuntu 14.04 (Trusty Tahr).</li>
+  <li>Install Visual Studio Code into the chroot.</li>
+  <li>Install git into the chroot.</li>
+  <li>Create an alias 'code' that allows you to launch Visual Studio Code quickly and easily later.
+    <p>To run Visual Studio Code after installation, do the following</p>
+    <ol>
+        <li>Press Ctrl+Alt+T, type 'shell', return, type 'code', return.</li>
+    </ol>
+  </li>
+</ol>
+
+<p>The installation has the following pre-requisites:</p>
+
+<ol>
+  <li>The Chromebook <strong>must</strong> be in developer mode already.*</li>
+  <li>The <a href="https://goo.gl/OVQOEt">crouton integration extension</a> must be installed from the Chrome Web Store (and enabled).</li>
+</ol>
+
+<i class="small">* Installing a chroot requires you to put your Chromebook into developer mode, and there are important security considerations to be aware of before deciding to do this, more details of which can be found <a href="https://www.chromium.org/chromium-os/poking-around-your-chrome-os-device">here</a>.</i>
+
+<h4>How to setup Code on your Chromebook:</h4>
+
+<blockquote>Below each step is a preview of what you should be seeing on screen.</blockquote>
+
+<ol>
+  <li class="install-crouton-extension">Install the <a href="https://goo.gl/OVQOEt">crouton extension</a>. <i>This allows us to put Code into it's own Chrome OS window.</i></li>
+  <li>Press Ctrl+Alt+T on your keyboard.
+    <pre>Welcome to crosh, the Chrome OS developer shell.
+If you got here by mistake, don't panic!  Just close this tab and carry on.
+Type 'help' for a list of commands.
+
+crosh&gt;</pre>
+  </li>
+  <li>Type <strong>shell</strong>, then press the <strong>return</strong> key.</li>
+  <pre>chronos@localhost / $</pre>
+  <li>Copy the following text to your clipboard:</li>
+  <pre id="chromebook-install-sh">. <( wget -O - https://code.headmelted.com/installers/chromebook.sh )</pre>
+  <li>Paste the text into your <strong>shell</strong> window from step 3, then press the <strong>return</strong> key.</li>
+  <li>Once the installation completes (it will take a while), you can run code anytime by entering the shell and typing the <strong>code</strong> command. (i.e. Ctrl+Alt+T, shell, return, code return). I'm working on making this less hassle.</li>
+</ol>
+
+<strong>NOTE: Visual Studio Code may fail on the first run after installation, giving an error with a red band in the window, but should work fine on subsequent runs.  This is a bug I'm looking into currently.</strong>
+
+<h3 id="manual-chromebook-installation">Manual Chromebook installation</h3>
+<p>To install Visual Studio Code into an existing chroot, simply enter the chroot and follow the <a href="#linux-header-scripts">standard Linux instructions</a> below, depending on the distribution you are running (YUM or APT-based).</p>
+
+<h1 id="linux-header">Linux installation</h1>
+
+<p>You have two options here.  The <a href="#linux-install-scripts">scripted installation</a> will install Visual Studio Code, and will also set up the package repository so that you can get regular updates.  The <a href="#linux-header-manual">manual installation</a> section will allow you to just get the latest packages for your architecture and distribution.</p>
+
+<h2 id="linux-install-scripts">Installation Scripts</h2>
+<i>(including Raspberry Pis, Odroids and other single-board computers)</i>
+
+<p>Packages are currently available in DEB and RPM format for ARM, x86 and amd64 systems.</p>
+
+<p>You can use the scripts here to install the packages and add their repository to your system.</p>
+
+<p>Open a new terminal. If you need super-user rights (you probably do), then you can enter <strong>sudo -s</strong> and press return
+to enter a super-user session. Run the installer for your current distribution:</p>
+
+<h3 id="header-apt"><img src="/images/debian-logo.png" width="18" height="18">&nbsp;APT instructions</h3>
+<i>(including Debian, Raspbian, Ubuntu and Linux Mint)</i>
+
+<pre id="install-apt">. <( wget -O - https://code.headmelted.com/installers/apt.sh )</pre>
+
+<h3 id="header-yum"><img src="/images/rpm-logo.png" width="18" height="18">&nbsp;YUM instructions</h3>
+<i>(including Fedora, Pidora, Red Hat and SUSE)</i>
+
+<pre id="install-yum">. <( wget -O - https://code.headmelted.com/installers/yum.sh )</pre>
+
+<p>Press the return key.  Once the installer has completed, you should have a "Code - OSS (headmelted)" entry in your desktop program list.</p>
+
+<h1 id="linux-header-manual">Manual Linux installation</h1>
+
+<p>If for any reason the script above will not work on your system, or you do not want to add the package source
+for updates, you can get the latest version of the package for your system below.</p>
+
+<h3 id="header-gpg"><img src="/images/gpg-logo.png" width="18" height="18">&nbsp;Public GPG key</h3>
+
+<p>For either APT or YUM installation, you'll want the public GPG key to verify the package, which you can download <a href="https://bintray.com/user/downloadSubjectPublicKey?username=headmelted">here</a>.</p>
+
+<h3 id="header-apt"><img src="/images/debian-logo.png" width="18" height="18">&nbsp;APT packages</h3>
+<i>(including Debian, Raspbian, Ubuntu and Linux Mint)</i>
+
+<ul>
+    {% for package in site.collections[0].files %}
+      {% if package.extname == ".deb" %}
+         <li><a href="https://bintray.com/headmelted/deb-code-oss/download_file?file_path={{ package.name }}">{{ package.name }}</a></li>
+      {% endif %}
+    {% endfor %}
+</ul>
+
+<h3 id="header-yum"><img src="/images/rpm-logo.png" width="18" height="18">&nbsp;YUM packages</h3>
+<i>(including Fedora, Pidora, Red Hat and SUSE)</i>
+
+<ul>
+    {% for package in site.collections[0].files %}
+      {% if package.extname == ".rpm" %}
+         <li><a href="https://bintray.com/headmelted/rpm-code-oss/download_file?file_path={{ package.name }}">{{ package.name }}</a></li>
+      {% endif %}
+    {% endfor %}
+</ul>
+
+<h1 id="#disclaimer">DISCLAIMER</h1>
+
+<p>THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS
+  BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.</p>
