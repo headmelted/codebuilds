@@ -106,6 +106,8 @@ function prepareDebPackage(arch) {
 
 function buildDebPackage(arch) {
 	const debArch = getDebPackageArch(arch);
+	console.log("arch: " + arch);
+	console.log("debArch: " + debArch);
 	var shellTasks = [
 		'chmod 755 ' + product.applicationName + '-' + debArch + '/DEBIAN/postinst ' + product.applicationName + '-' + debArch + '/DEBIAN/prerm ' + product.applicationName + '-' + debArch + '/DEBIAN/postrm',
 		'mkdir -p deb',
