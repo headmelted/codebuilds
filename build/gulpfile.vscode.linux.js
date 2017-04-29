@@ -106,7 +106,7 @@ function prepareDebPackage(arch) {
 
 function buildDebPackage(arch) {
 	const debArch = getDebPackageArch(arch);
-	console.log("arch: " + arch);tr
+	console.log("arch: " + arch);
 	console.log("debArch: " + debArch);
 	var shellTasks = [
 		'tree',
