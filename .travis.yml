@@ -124,17 +124,18 @@ script:
     else
       gulp electron --arch=${NPM_ARCH};
     fi
-  - gulp compile --silent --max_old_space_size=4096;
-  - gulp optimize-vscode --silent --max_old_space_size=4096;
-  - gulp "vscode-linux-${ARCH}-build-deb" --max_old_space_size=4096;
+  - gulp compile --max_old_space_size=4096;
+  - gulp optimize-vscode --max_old_space_size=4096;
+  - gulp "vscode-linux-${ARCH}-build-deb";
 
 deploy:
   provider: releases
   api_key: "$GITHUB_TOKEN"
   file_glob: true
   file:
-    - .build/linux/deb/**/*.deb
-    #- ./.build/linux/rpm/${RPMARCH}/*.rpm
+    - .build/linux/**/*.deb
+    - .build/linux/**/*.rpm
+    - .build/linux/**/*.flatpak
   skip_cleanup: true
   on:
     repo: headmelted/vscode-multiarch
