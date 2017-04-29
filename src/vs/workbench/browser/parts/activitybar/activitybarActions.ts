@@ -23,9 +23,9 @@ import { ViewletDescriptor } from 'vs/workbench/browser/viewlet';
 import { dispose } from 'vs/base/common/lifecycle';
 import { IViewletService, } from 'vs/workbench/services/viewlet/browser/viewlet';
 import { IPartService, Parts } from 'vs/workbench/services/part/common/partService';
-import { IThemeService, ITheme, registerThemingParticipant, ICssStyleCollector } from "vs/platform/theme/common/themeService";
-import { ACTIVITY_BADGE_FOREGROUND, ACTIVITY_BADGE_BACKGROUND, ACTIVITY_BAR_DRAG_AND_DROP_BACKGROUND, ACTIVITY_BAR_FOREGROUND } from "vs/workbench/common/theme";
-import { highContrastBorder, highContrastOutline, focus } from "vs/platform/theme/common/colorRegistry";
+import { IThemeService, ITheme, registerThemingParticipant, ICssStyleCollector } from 'vs/platform/theme/common/themeService';
+import { ACTIVITY_BAR_BADGE_FOREGROUND, ACTIVITY_BAR_BADGE_BACKGROUND, ACTIVITY_BAR_DRAG_AND_DROP_BACKGROUND, ACTIVITY_BAR_FOREGROUND } from 'vs/workbench/common/theme';
+import { contrastBorder, activeContrastBorder, focusBorder } from 'vs/platform/theme/common/colorRegistry';
 
 export class ActivityAction extends Action {
 	private badge: IBadge;
@@ -174,9 +174,9 @@ export class ActivityActionItem extends ThemableActivityActionItem {
 
 		// Badge
 		if (this.$badgeContent) {
-			const badgeForeground = theme.getColor(ACTIVITY_BADGE_FOREGROUND);
-			const badgeBackground = theme.getColor(ACTIVITY_BADGE_BACKGROUND);
-			const hcBorder = theme.getColor(highContrastBorder);
+			const badgeForeground = theme.getColor(ACTIVITY_BAR_BADGE_FOREGROUND);
+			const badgeBackground = theme.getColor(ACTIVITY_BAR_BADGE_BACKGROUND);
+			const hcBorder = theme.getColor(contrastBorder);
 
 			this.$badgeContent.style('color', badgeForeground ? badgeForeground.toString() : null);
 			this.$badgeContent.style('background-color', badgeBackground ? badgeBackground.toString() : null);
@@ -629,7 +629,7 @@ export class ToggleViewletPinnedAction extends Action {
 registerThemingParticipant((theme: ITheme, collector: ICssStyleCollector) => {
 
 	// Styling with Outline color (e.g. high contrast theme)
-	const outline = theme.getColor(highContrastOutline);
+	const outline = theme.getColor(activeContrastBorder);
 	if (outline) {
 		collector.addRule(`
 			.monaco-workbench > .activitybar > .content .monaco-action-bar .action-item:before {
@@ -670,7 +670,7 @@ registerThemingParticipant((theme: ITheme, collector: ICssStyleCollector) => {
 
 	// Styling without outline color
 	else {
-		const focusBorder = theme.getColor(focus);
+		const focusBorderColor = theme.getColor(focusBorder);
 
 		collector.addRule(`
 			.monaco-workbench > .activitybar > .content .monaco-action-bar .action-item.active .action-label,
@@ -684,7 +684,7 @@ registerThemingParticipant((theme: ITheme, collector: ICssStyleCollector) => {
 			}
 
 			.monaco-workbench > .activitybar > .content .monaco-action-bar .action-item:focus:before {
-				border-left-color: ${focusBorder};
+				border-left-color: ${focusBorderColor};
 			}
 		`);
 	}

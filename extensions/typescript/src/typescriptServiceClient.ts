@@ -226,7 +226,7 @@ export default class TypeScriptServiceClient implements ITypescriptServiceClient
 			if (this.servicePromise === null && (oldglobalTsdk !== this.globalTsdk || oldLocalTsdk !== this.localTsdk)) {
 				this.startService();
 			} else if (this.servicePromise !== null && (this.tsServerLogLevel !== oldLoggingLevel || (oldglobalTsdk !== this.globalTsdk || oldLocalTsdk !== this.localTsdk))) {
-				this.promptUserToRestartTsServer();
+				this.restartTsServer();
 			}
 		}));
 		if (this.packageInfo && this.packageInfo.aiKey) {
@@ -255,21 +255,6 @@ export default class TypeScriptServiceClient implements ITypescriptServiceClient
 		}
 	}
 
-	private promptUserToRestartTsServer(): void {
-		const restartItem = { title: localize('restartTsServerTitle', 'Restart') };
-		window.showInformationMessage<MessageItem>(
-			localize('restartTypeScriptServerBlurb', 'Restart TypeScript Server to apply change'),
-			restartItem,
-			{
-				title: localize('later', 'Later'),
-				isCloseAffordance: true
-			})
-			.then(selected => {
-				if (selected === restartItem) {
-					this.restartTsServer();
-				}
-			});
-	}
 
 	private extractGlobalTsdk(configuration: WorkspaceConfiguration): string | null {
 		let inspect = configuration.inspect('typescript.tsdk');
@@ -503,7 +488,7 @@ export default class TypeScriptServiceClient implements ITypescriptServiceClient
 			return this.servicePromise = new Promise<cp.ChildProcess>((resolve, reject) => {
 				const tsConfig = workspace.getConfiguration('typescript');
 
-				this.info(`Using tsserver from location: ${modulePath}`);
+				this.info(`Using tsserver from: ${modulePath}`);
 				if (!fs.existsSync(modulePath)) {
 					window.showWarningMessage(localize('noServerFound', 'The path {0} doesn\'t point to a valid tsserver install. Falling back to bundled TypeScript version.', modulePath ? path.dirname(modulePath) : ''));
 					if (!this.bundledTypeScriptPath) {
@@ -572,6 +557,7 @@ export default class TypeScriptServiceClient implements ITypescriptServiceClient
 							try {
 								const logDir = fs.mkdtempSync(path.join(os.tmpdir(), `vscode-tsserver-log-`));
 								this.tsServerLogFile = path.join(logDir, `tsserver.log`);
+								this.info(`TSServer log file: ${this.tsServerLogFile}`);
 							} catch (e) {
 								this.error('Could not create TSServer log directory');
 							}
@@ -587,7 +573,9 @@ export default class TypeScriptServiceClient implements ITypescriptServiceClient
 						const plugins = this.getContributedTypeScriptServerPlugins();
 						if (plugins.length) {
 							args.push('--globalPlugins', plugins.map(x => x.name).join(','));
-							args.push('--pluginProbeLocations', plugins.map(x => x.path).join(','));
+							if (modulePath === this.globalTypescriptPath) {
+								args.push('--pluginProbeLocations', plugins.map(x => x.path).join(','));
+							}
 						}
 					}
 
@@ -603,10 +591,21 @@ export default class TypeScriptServiceClient implements ITypescriptServiceClient
 						childProcess.on('error', (err: Error) => {
 							this.lastError = err;
 							this.error('TSServer errored with error.', err);
+							if (this.tsServerLogFile) {
+								this.error(`TSServer log file: ${this.tsServerLogFile}`);
+							}
 							this.serviceExited(false);
 						});
 						childProcess.on('exit', (code: any) => {
-							this.error(`TSServer exited with code: ${code ? code : 'unknown'}`);
+							if (code === null || typeof code === 'undefined') {
+								this.info(`TSServer exited`);
+							} else {
+								this.error(`TSServer exited with code: ${code}`);
+							}
+
+							if (this.tsServerLogFile) {
+								this.info(`TSServer log file: ${this.tsServerLogFile}`);
+							}
 							this.serviceExited(true);
 						});
 						this.reader = new Reader<Proto.Response>(childProcess.stdout, (msg) => {
@@ -666,7 +665,7 @@ export default class TypeScriptServiceClient implements ITypescriptServiceClient
 			if (firstRun || newModulePath === this.modulePath) {
 				return;
 			}
-			this.promptUserToRestartTsServer();
+			this.restartTsServer();
 		};
 
 		return window.showQuickPick<MyQuickPickItem>(pickOptions, {
@@ -847,6 +846,7 @@ export default class TypeScriptServiceClient implements ITypescriptServiceClient
 
 	private serviceExited(restart: boolean): void {
 		this.servicePromise = null;
+		this.tsServerLogFile = null;
 		Object.keys(this.callbacks).forEach((key) => {
 			this.callbacks[parseInt(key)].e(new Error('Service died.'));
 		});

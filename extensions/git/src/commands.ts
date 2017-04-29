@@ -6,7 +6,7 @@
 'use strict';
 
 import { Uri, commands, scm, Disposable, window, workspace, QuickPickItem, OutputChannel, Range, WorkspaceEdit, Position, LineChange, SourceControlResourceState } from 'vscode';
-import { Ref, RefType, Git } from './git';
+import { Ref, RefType, Git, GitErrorCodes } from './git';
 import { Model, Resource, Status, CommitOptions, WorkingTreeGroup, IndexGroup, MergeGroup } from './model';
 import { toGitUri, fromGitUri } from './uri';
 import { applyLineChanges, intersectDiffWithRange, toLineRanges, invertLineChange } from './staging';
@@ -314,7 +314,7 @@ export class CommandCenter {
 
 	@command('git.stage')
 	async stage(...resourceStates: SourceControlResourceState[]): Promise<void> {
-		if (resourceStates.length === 0) {
+		if (resourceStates.length === 0 || !(resourceStates[0].resourceUri instanceof Uri)) {
 			const resource = this.getSCMResource();
 
 			if (!resource) {
@@ -417,7 +417,7 @@ export class CommandCenter {
 
 	@command('git.unstage')
 	async unstage(...resourceStates: SourceControlResourceState[]): Promise<void> {
-		if (resourceStates.length === 0) {
+		if (resourceStates.length === 0 || !(resourceStates[0].resourceUri instanceof Uri)) {
 			const resource = this.getSCMResource();
 
 			if (!resource) {
@@ -482,7 +482,7 @@ export class CommandCenter {
 
 	@command('git.clean')
 	async clean(...resourceStates: SourceControlResourceState[]): Promise<void> {
-		if (resourceStates.length === 0) {
+		if (resourceStates.length === 0 || !(resourceStates[0].resourceUri instanceof Uri)) {
 			const resource = this.getSCMResource();
 
 			if (!resource) {
@@ -515,8 +515,8 @@ export class CommandCenter {
 
 	@command('git.cleanAll')
 	async cleanAll(): Promise<void> {
-		const message = localize('confirm discard all', "Are you sure you want to discard ALL changes? This is irreversible!");
-		const yes = localize('discard', "Discard Changes");
+		const message = localize('confirm discard all', "Are you sure you want to discard ALL changes? This is IRREVERSIBLE!");
+		const yes = localize('discardAll', "Discard ALL Changes");
 		const pick = await window.showWarningMessage(message, { modal: true }, yes);
 
 		if (pick !== yes) {
@@ -801,8 +801,11 @@ export class CommandCenter {
 				let message: string;
 
 				switch (err.gitErrorCode) {
-					case 'DirtyWorkTree':
+					case GitErrorCodes.DirtyWorkTree:
 						message = localize('clean repo', "Please clean your repository working tree before checkout.");
+						break;
+					case GitErrorCodes.PushRejected:
+						message = localize('cant push', "Can't push refs to remote. Run 'Pull' first to integrate your changes.");
 						break;
 					default:
 						const hint = (err.stderr || err.message || String(err))

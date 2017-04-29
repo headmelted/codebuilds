@@ -40,12 +40,13 @@ import { IApplyEditsOptions, IUndoStopOptions, TextEditorRevealType, ITextEditor
 import { InternalTreeNodeContent } from 'vs/workbench/parts/explorers/common/treeExplorerViewModel';
 import { TaskSet } from 'vs/workbench/parts/tasks/common/tasks';
 import { IModelChangedEvent } from 'vs/editor/common/model/mirrorModel';
-import { IPosition } from "vs/editor/common/core/position";
-import { IRange } from "vs/editor/common/core/range";
-import { ISelection } from "vs/editor/common/core/selection";
+import { IPosition } from 'vs/editor/common/core/position';
+import { IRange } from 'vs/editor/common/core/range';
+import { ISelection } from 'vs/editor/common/core/selection';
 
 export interface IEnvironment {
-	enableProposedApi: boolean;
+	enableProposedApiForAll: boolean;
+	enableProposedApiFor: string | string[];
 	appSettingsHome: string;
 	disableExtensions: boolean;
 	userExtensionsHome: string;
@@ -133,8 +134,14 @@ export abstract class MainThreadDocumentsShape {
 	$trySaveDocument(uri: URI): TPromise<boolean> { throw ni(); }
 }
 
+export interface ITextDocumentShowOptions {
+	position?: EditorPosition;
+	preserveFocus?: boolean;
+	pinned?: boolean;
+}
+
 export abstract class MainThreadEditorsShape {
-	$tryShowTextDocument(resource: URI, position: EditorPosition, preserveFocus: boolean): TPromise<string> { throw ni(); }
+	$tryShowTextDocument(resource: URI, options: ITextDocumentShowOptions): TPromise<string> { throw ni(); }
 	$registerTextEditorDecorationType(key: string, options: editorCommon.IDecorationRenderOptions): void { throw ni(); }
 	$removeTextEditorDecorationType(key: string): void { throw ni(); }
 	$tryShowEditor(id: string, position: EditorPosition): TPromise<void> { throw ni(); }
@@ -277,7 +284,8 @@ export type SCMRawResource = [
 	string /*resourceUri*/,
 	modes.Command /*command*/,
 	string[] /*icons: light, dark*/,
-	boolean /*strike through*/
+	boolean /*strike through*/,
+	boolean /*faded*/
 ];
 
 export abstract class MainThreadSCMShape {

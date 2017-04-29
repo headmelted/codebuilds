@@ -9,9 +9,9 @@ import { IConfiguration as IEditorConfiguration, DefaultConfig } from 'vs/editor
 import { IConfigurationService } from 'vs/platform/configuration/common/configuration';
 import { IWorkspaceConfigurationService } from 'vs/workbench/services/configuration/common/configuration';
 import { IChoiceService } from 'vs/platform/message/common/message';
-import { IStorageService, StorageScope } from "vs/platform/storage/common/storage";
+import { IStorageService, StorageScope } from 'vs/platform/storage/common/storage';
 import { ITerminalConfiguration, ITerminalConfigHelper, ITerminalFont, IShellLaunchConfig, IS_WORKSPACE_SHELL_ALLOWED_STORAGE_KEY } from 'vs/workbench/parts/terminal/common/terminal';
-import { Severity } from "vs/editor/common/standalone/standaloneBase";
+import { Severity } from 'vs/editor/common/standalone/standaloneBase';
 import { TPromise } from 'vs/base/common/winjs.base';
 
 interface IFullTerminalConfiguration {
@@ -132,7 +132,7 @@ export class TerminalConfigHelper implements ITerminalConfigHelper {
 			}
 			const message = nls.localize('terminal.integrated.allowWorkspaceShell', "Do you allow {0} (defined as a workspace setting) to be launched in the terminal?", changeString);
 			const options = [nls.localize('allow', "Allow"), nls.localize('disallow', "Disallow")];
-			this._choiceService.choose(Severity.Info, message, options).then(choice => {
+			this._choiceService.choose(Severity.Info, message, options, 1).then(choice => {
 				switch (choice) {
 					case 0:
 						this._storageService.store(IS_WORKSPACE_SHELL_ALLOWED_STORAGE_KEY, true, StorageScope.WORKSPACE);

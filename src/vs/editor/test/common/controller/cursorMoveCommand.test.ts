@@ -7,18 +7,17 @@
 import * as assert from 'assert';
 import { Cursor } from 'vs/editor/common/controller/cursor';
 import { Position } from 'vs/editor/common/core/position';
-import { Handler, ITextModelCreationOptions } from 'vs/editor/common/editorCommon';
+import { ITextModelCreationOptions } from 'vs/editor/common/editorCommon';
 import { Model } from 'vs/editor/common/model/model';
 import { IMode } from 'vs/editor/common/modes';
 import { TestConfiguration } from 'vs/editor/test/common/mocks/testConfiguration';
 import { viewModelHelper as aViewModelHelper } from 'vs/editor/test/common/editorTestUtils';
-import { CursorMove } from "vs/editor/common/controller/cursorMoveCommands";
+import { CursorMove } from 'vs/editor/common/controller/cursorMoveCommands';
 import { Range } from 'vs/editor/common/core/range';
 import { Selection } from 'vs/editor/common/core/selection';
-import { IEditorOptions } from "vs/editor/common/config/editorOptions";
-import { IViewModelHelper } from "vs/editor/common/controller/cursorCommon";
-
-let H = Handler;
+import { IEditorOptions } from 'vs/editor/common/config/editorOptions';
+import { IViewModelHelper } from 'vs/editor/common/controller/cursorCommon';
+import { CoreCommands } from 'vs/editor/common/controller/coreCommands';
 
 suite('Cursor move command test', () => {
 
@@ -467,18 +466,10 @@ interface ICursorOpts {
 	editorOpts?: IEditorOptions;
 }
 
-// --------- utils
-
-function cursorCommand(cursor: Cursor, command: string, extraData?: any, overwriteSource?: string) {
-	cursor.trigger(overwriteSource || 'tests', command, extraData);
-}
-
-
-
 // Move command
 
 function move(cursor: Cursor, args: any) {
-	cursorCommand(cursor, H.CursorMove, args);
+	CoreCommands.CursorMove.runCoreEditorCommand(cursor, args);
 }
 
 function moveToLineStart(cursor: Cursor) {
@@ -561,9 +552,21 @@ function selectionEqual(selection: Selection, posLineNumber: number, posColumn: 
 }
 
 function moveTo(cursor: Cursor, lineNumber: number, column: number, inSelectionMode: boolean = false) {
-	cursorCommand(cursor, inSelectionMode ? H.MoveToSelect : H.MoveTo, { position: new Position(lineNumber, column) });
+	if (inSelectionMode) {
+		CoreCommands.MoveToSelect.runCoreEditorCommand(cursor, {
+			position: new Position(lineNumber, column)
+		});
+	} else {
+		CoreCommands.MoveTo.runCoreEditorCommand(cursor, {
+			position: new Position(lineNumber, column)
+		});
+	}
 }
 
 function moveToEndOfLine(cursor: Cursor, inSelectionMode: boolean = false) {
-	cursorCommand(cursor, inSelectionMode ? H.CursorEndSelect : H.CursorEnd);
+	if (inSelectionMode) {
+		CoreCommands.CursorEndSelect.runCoreEditorCommand(cursor, {});
+	} else {
+		CoreCommands.CursorEnd.runCoreEditorCommand(cursor, {});
+	}
 }

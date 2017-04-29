@@ -21,7 +21,7 @@ export class TreeExplorerService implements ITreeExplorerService {
 	private _onDidChangeProvider = new Emitter<string>();
 	get onDidChangeProvider(): Event<string> { return this._onDidChangeProvider.event; }
 
-	private _onTreeExplorerNodeProviderRegistered = new Emitter<String>();
+	private _onTreeExplorerNodeProviderRegistered = new Emitter<string>();
 	public get onTreeExplorerNodeProviderRegistered(): Event<string> { return this._onTreeExplorerNodeProviderRegistered.event; };
 
 	private _treeExplorerNodeProviders: { [providerId: string]: InternalTreeNodeProvider };
@@ -31,7 +31,7 @@ export class TreeExplorerService implements ITreeExplorerService {
 		@IMessageService private messageService: IMessageService
 	) {
 		this._treeExplorerNodeProviders = Object.create(null);
-		this.activeProviderContextKey = this.contextKeyService.createKey<string | undefined>('treeExplorerProvider', void 0);
+		this.activeProviderContextKey = this.contextKeyService.createKey<string | undefined>('view', void 0);
 	}
 
 	get activeProvider(): string {
@@ -41,10 +41,6 @@ export class TreeExplorerService implements ITreeExplorerService {
 	set activeProvider(provider: string) {
 		if (!provider) {
 			throw new Error('invalid provider');
-		}
-
-		if (provider && !!this._treeExplorerNodeProviders[provider]) {
-			throw new Error('Provider not registered');
 		}
 
 		this._activeProvider = provider;

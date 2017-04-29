@@ -699,6 +699,29 @@ declare module 'vscode' {
 	}
 
 	/**
+	 * Represents options to configure the behavior of showing a [document](#TextDocument) in an [editor](#TextEditor).
+	 */
+	export interface TextDocumentShowOptions {
+		/**
+		 * An optional view column in which the [editor](#TextEditor) should be shown.
+		 * The default is the [one](#ViewColumn.One), other values are adjusted to
+		 * be __Min(column, columnCount + 1)__.
+		 */
+		viewColumn?: ViewColumn;
+
+		/**
+		 * An optional flag that when `true` will stop the [editor](#TextEditor) from taking focus.
+		 */
+		preserveFocus?: boolean;
+
+		/**
+		 * An optional flag that controls if an [editor](#TextEditor)-tab will be replaced
+		 * with the next editor or if it will be kept.
+		 */
+		preview?: boolean;
+	}
+
+	/**
 	 * Represents theme specific rendering styles for a [text editor decoration](#TextEditorDecorationType).
 	 */
 	export interface ThemableDecorationRenderOptions {
@@ -922,7 +945,7 @@ declare module 'vscode' {
 		/**
 		 * Overwrite options for dark themes.
 		 */
-		dark?: ThemableDecorationInstanceRenderOptions
+		dark?: ThemableDecorationInstanceRenderOptions;
 	}
 
 	/**
@@ -1570,7 +1593,7 @@ declare module 'vscode' {
 	 * }
 	 * ```
 	 */
-	export type ProviderResult<T> = T | undefined | null | Thenable<T | undefined | null>
+	export type ProviderResult<T> = T | undefined | null | Thenable<T | undefined | null>;
 
 	/**
 	 * Contains additional diagnostic information about the context in which
@@ -3294,7 +3317,7 @@ declare module 'vscode' {
 		 * Report a progress update.
 		 * @param value A progress item, like a message or an updated percentage value
 		 */
-		report(value: T): void
+		report(value: T): void;
 	}
 
 	/**
@@ -3660,6 +3683,16 @@ declare module 'vscode' {
 		export function showTextDocument(document: TextDocument, column?: ViewColumn, preserveFocus?: boolean): Thenable<TextEditor>;
 
 		/**
+		 * Show the given document in a text editor. A [column](#ViewColumn) can be provided
+		 * to control where the editor is being shown. Might change the [active editor](#window.activeTextEditor).
+		 *
+		 * @param document A text document to be shown.
+		 * @param options [Editor options](#ShowTextDocumentOptions) to configure the behavior of showing the [editor](#TextEditor).
+		 * @return A promise that resolves to an [editor](#TextEditor).
+		 */
+		export function showTextDocument(document: TextDocument, options?: TextDocumentShowOptions): Thenable<TextEditor>;
+
+		/**
 		 * Create a TextEditorDecorationType that can be used to add decorations to text editors.
 		 *
 		 * @param options Rendering options for the decoration type.
@@ -3896,7 +3929,7 @@ declare module 'vscode' {
 		 * the provided [progress](#Progress)-object.
 		 * @return The thenable the task-callback returned.
 		 */
-		export function withProgress<R>(options: ProgressOptions, task: (progress: Progress<{ message?: string; percentage?: number }>) => Thenable<R>): Thenable<R>;
+		export function withProgress<R>(options: ProgressOptions, task: (progress: Progress<{ message?: string; }>) => Thenable<R>): Thenable<R>;
 
 		/**
 		 * Creates a status bar [item](#StatusBarItem).
@@ -4646,6 +4679,12 @@ declare module 'vscode' {
 		 * be striked-through in the UI.
 		 */
 		readonly strikeThrough?: boolean;
+
+		/**
+		 * Whether the [source control resource state](#SourceControlResourceState) should
+		 * be faded in the UI.
+		 */
+		readonly faded?: boolean;
 
 		/**
 		 * The light theme decorations.

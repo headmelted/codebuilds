@@ -22,7 +22,7 @@ class InternalTreeNodeImpl implements InternalTreeNode {
 	hasChildren: boolean;
 	clickCommand: string = null;
 
-	constructor(node: any, provider: TreeDataProvider<any>) {
+	constructor(readonly providerId: string, node: any, provider: TreeDataProvider<any>) {
 		this.id = defaultGenerator.nextId();
 		this.label = provider.getLabel ? provider.getLabel(node) : node.toString();
 		this.hasChildren = provider.getHasChildren ? provider.getHasChildren(node) : true;
@@ -56,6 +56,16 @@ export class ExtHostTreeView extends ExtHostTreeViewShape {
 		this._extNodeMaps = Object.create(null);
 		this._mainNodesMap = new Map<string, Map<any, InternalTreeNode>>();
 		this._childrenNodesMap = new Map<string, Map<any, any[]>>();
+
+		commands.registerArgumentProcessor({
+			processArgument: arg => {
+				if (arg && arg.providerId && arg.id) {
+					const extNodeMap = this._extNodeMaps[arg.providerId];
+					return extNodeMap[arg.id];
+				}
+				return arg;
+			}
+		});
 	}
 
 	createTreeView<T>(providerId: string, provider: TreeDataProvider<T>): TreeView<T> {
@@ -85,12 +95,12 @@ export class ExtHostTreeView extends ExtHostTreeViewShape {
 		const provider = this._extNodeProviders[providerId];
 		if (!provider) {
 			const errMessage = localize('treeExplorer.notRegistered', 'No TreeExplorerNodeProvider with id \'{0}\' registered.', providerId);
-			return TPromise.wrapError(errMessage);
+			return TPromise.wrapError<InternalTreeNode>(errMessage);
 		}
 
 		return asWinJsPromise(() => provider.provideRootNode()).then(extRootNode => {
 			const extNodeMap: { [id: string]: InternalTreeNode } = Object.create(null);
-			const internalRootNode = new InternalTreeNodeImpl(extRootNode, provider);
+			const internalRootNode = new InternalTreeNodeImpl(providerId, extRootNode, provider);
 
 			extNodeMap[internalRootNode.id] = extRootNode;
 			this._extNodeMaps[providerId] = extNodeMap;
@@ -100,7 +110,7 @@ export class ExtHostTreeView extends ExtHostTreeViewShape {
 			return internalRootNode;
 		}, err => {
 			const errMessage = localize('treeExplorer.failedToProvideRootNode', 'TreeExplorerNodeProvider \'{0}\' failed to provide root node.', providerId);
-			return TPromise.wrapError(errMessage);
+			return TPromise.wrapError<InternalTreeNode>(errMessage);
 		});
 	}
 
@@ -108,7 +118,7 @@ export class ExtHostTreeView extends ExtHostTreeViewShape {
 		const provider = this._extNodeProviders[providerId];
 		if (!provider) {
 			const errMessage = localize('treeExplorer.notRegistered', 'No TreeExplorerNodeProvider with id \'{0}\' registered.', providerId);
-			return TPromise.wrapError(errMessage);
+			return TPromise.wrapError<InternalTreeNode[]>(errMessage);
 		}
 
 		const extNodeMap = this._extNodeMaps[providerId];
@@ -123,7 +133,7 @@ export class ExtHostTreeView extends ExtHostTreeViewShape {
 
 		return asWinJsPromise(() => provider.resolveChildren(extNode)).then(children => {
 			return children.map(extChild => {
-				const internalChild = new InternalTreeNodeImpl(extChild, provider);
+				const internalChild = new InternalTreeNodeImpl(providerId, extChild, provider);
 				extNodeMap[internalChild.id] = extChild;
 				this._mainNodesMap.get(providerId).set(extChild, internalChild);
 				return internalChild;

@@ -49,9 +49,9 @@ import { IContextKeyService, RawContextKey, IContextKey } from 'vs/platform/cont
 import { IHistoryService } from 'vs/workbench/services/history/common/history';
 import { IListService } from 'vs/platform/list/browser/listService';
 import { IThemeService } from 'vs/platform/theme/common/themeService';
-import { SIDE_BAR_BACKGROUND } from "vs/workbench/common/theme";
-import { attachQuickOpenStyler } from "vs/platform/theme/common/styler";
-import { IEnvironmentService } from "vs/platform/environment/common/environment";
+import { SIDE_BAR_BACKGROUND } from 'vs/workbench/common/theme';
+import { attachQuickOpenStyler } from 'vs/platform/theme/common/styler';
+import { IEnvironmentService } from 'vs/platform/environment/common/environment';
 
 const HELP_PREFIX = '?';
 
@@ -200,7 +200,7 @@ export class QuickOpenController extends Component implements IQuickOpenService 
 								const newPick = message || defaultMessage;
 								if (newPick !== currentPick) {
 									currentPick = newPick;
-									resolve(new TPromise(init));
+									resolve(new TPromise<any>(init));
 								}
 
 								return !message;
@@ -324,7 +324,7 @@ export class QuickOpenController extends Component implements IQuickOpenService 
 			this.pickOpenWidget.layout(this.layoutDimensions);
 		}
 
-		return new TPromise<IPickOpenEntry | string>((complete, error, progress) => {
+		return new TPromise<IPickOpenEntry>((complete, error, progress) => {
 
 			// Detect cancellation while pick promise is loading
 			this.pickOpenWidget.setCallbacks({
@@ -959,7 +959,7 @@ export class QuickOpenController extends Component implements IQuickOpenService 
 			});
 		}
 
-		return result.then(null, (error) => {
+		return result.then<QuickOpenHandler>(null, (error) => {
 			delete this.mapResolvedHandlersToPrefix[id];
 
 			return TPromise.wrapError('Unable to instantiate quick open handler ' + handler.moduleName + ' - ' + handler.ctorName + ': ' + JSON.stringify(error));
@@ -975,7 +975,7 @@ export class QuickOpenController extends Component implements IQuickOpenService 
 		}
 
 		// Otherwise load and create
-		return this.mapResolvedHandlersToPrefix[id] = this.instantiationService.createInstance(handler);
+		return this.mapResolvedHandlersToPrefix[id] = this.instantiationService.createInstance<QuickOpenHandler>(handler);
 	}
 
 	public layout(dimension: Dimension): void {

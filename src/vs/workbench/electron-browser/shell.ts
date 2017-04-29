@@ -104,7 +104,7 @@ import 'vs/platform/opener/browser/opener.contribution';
 import { IWorkbenchThemeService } from 'vs/workbench/services/themes/common/workbenchThemeService';
 import { WorkbenchThemeService } from 'vs/workbench/services/themes/electron-browser/workbenchThemeService';
 import { registerThemingParticipant, ITheme, ICssStyleCollector } from 'vs/platform/theme/common/themeService';
-import { foreground, focus, scrollbarShadow, scrollbarSliderActiveBackground, scrollbarSliderBackground, scrollbarSliderHoverBackground } from 'vs/platform/theme/common/colorRegistry';
+import { foreground, focusBorder, scrollbarShadow, scrollbarSliderActiveBackground, scrollbarSliderBackground, scrollbarSliderHoverBackground, listHighlightForeground } from 'vs/platform/theme/common/colorRegistry';
 
 /**
  * Services that we require for the Shell
@@ -260,12 +260,12 @@ export class WorkbenchShell {
 						secondaryButton: nls.localize('prof.restart', "Restart")
 					});
 
-					let createIssue = TPromise.as(undefined);
+					let createIssue = TPromise.as<void>(void 0);
 					if (primaryButton) {
 						const action = this.workbench.getInstantiationService().createInstance(ReportPerformanceIssueAction, ReportPerformanceIssueAction.ID, ReportPerformanceIssueAction.LABEL);
 
 						createIssue = action.run(`:warning: Make sure to **attach** these files: :warning:\n${files.map(file => `-\`${join(profileStartup.dir, file)}\``).join('\n')}`).then(() => {
-							return this.windowsService.showItemInFolder(profileFiles[0]);
+							return this.windowsService.showItemInFolder(join(profileStartup.dir, files[0]));
 						});
 					}
 					createIssue.then(() => this.windowsService.relaunch({ removeArgs: ['--prof-startup'] }));
@@ -518,6 +518,17 @@ registerThemingParticipant((theme: ITheme, collector: ICssStyleCollector) => {
 		collector.addRule(`.monaco-shell { color: ${windowForeground}; }`);
 	}
 
+	// List highlight
+	const listHighlightForegroundColor = theme.getColor(listHighlightForeground);
+	if (listHighlightForegroundColor) {
+		collector.addRule(`
+			.monaco-shell .monaco-tree .monaco-tree-row .monaco-highlighted-label .highlight,
+			.monaco-shell .monaco-list .monaco-list-row .monaco-highlighted-label .highlight {
+				color: ${listHighlightForegroundColor};
+			}
+		`);
+	}
+
 	// We need to set the workbench background color so that on Windows we get subpixel-antialiasing.
 	let workbenchBackground: string;
 	switch (theme.type) {
@@ -578,7 +589,7 @@ registerThemingParticipant((theme: ITheme, collector: ICssStyleCollector) => {
 	}
 
 	// Focus outline
-	const focusOutline = theme.getColor(focus);
+	const focusOutline = theme.getColor(focusBorder);
 	if (focusOutline) {
 		collector.addRule(`
 			.monaco-shell [tabindex="0"]:focus,
@@ -587,6 +598,7 @@ registerThemingParticipant((theme: ITheme, collector: ICssStyleCollector) => {
 			.monaco-shell .monaco-tree.focused.no-focused-item:focus:before,
 			.monaco-shell input[type="button"]:focus,
 			.monaco-shell input[type="text"]:focus,
+			.monaco-shell button:focus,
 			.monaco-shell textarea:focus,
 			.monaco-shell input[type="search"]:focus,
 			.monaco-shell input[type="checkbox"]:focus {

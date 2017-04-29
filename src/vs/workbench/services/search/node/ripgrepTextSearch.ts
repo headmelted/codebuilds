@@ -152,7 +152,15 @@ export class RipgrepEngine {
 			return this.config.searchPaths && this.config.searchPaths.indexOf(errorPath) >= 0 ? firstLine : undefined;
 		}
 
-		return strings.startsWith(firstLine, 'Error parsing regex') ? firstLine : undefined;
+		if (strings.startsWith(firstLine, 'Error parsing regex')) {
+			return firstLine;
+		}
+
+		if (strings.startsWith(firstLine, 'error parsing glob')) {
+			return firstLine;
+		}
+
+		return undefined;
 	}
 }
 
@@ -423,7 +431,8 @@ function getRgArgs(config: IRawSearch): { args: string[], siblingClauses: glob.I
 	let searchPatternAfterDoubleDashes: string;
 	if (config.contentPattern.isWordMatch) {
 		const regexp = strings.createRegExp(config.contentPattern.pattern, config.contentPattern.isRegExp, { wholeWord: config.contentPattern.isWordMatch });
-		args.push('--regexp', regexp.source);
+		const regexpStr = regexp.source.replace(/\\\//g, '/'); // RegExp.source arbitrarily returns escaped slashes. Search and destroy.
+		args.push('--regexp', regexpStr);
 	} else if (config.contentPattern.isRegExp) {
 		args.push('--regexp', config.contentPattern.pattern);
 	} else {
@@ -449,7 +458,7 @@ function getRgArgs(config: IRawSearch): { args: string[], siblingClauses: glob.I
 }
 
 function getSiblings(file: string): TPromise<string[]> {
-	return new TPromise((resolve, reject) => {
+	return new TPromise<string[]>((resolve, reject) => {
 		extfs.readdir(path.dirname(file), (error: Error, files: string[]) => {
 			if (error) {
 				reject(error);

@@ -23,8 +23,8 @@ import { Tree } from 'vs/base/parts/tree/browser/treeImpl';
 import { TreeExplorerViewletState, TreeDataSource, TreeRenderer, TreeController } from 'vs/workbench/parts/explorers/browser/views/treeExplorerViewer';
 import { TreeExplorerMenus } from 'vs/workbench/parts/explorers/browser/treeExplorerMenus';
 import { RefreshViewExplorerAction } from 'vs/workbench/parts/explorers/browser/treeExplorerActions';
-import { attachListStyler } from "vs/platform/theme/common/styler";
-import { IThemeService } from "vs/platform/theme/common/themeService";
+import { attachListStyler } from 'vs/platform/theme/common/styler';
+import { IThemeService } from 'vs/platform/theme/common/themeService';
 import { createActionItem } from 'vs/platform/actions/browser/menuItemActionItem';
 
 export class TreeExplorerView extends CollapsibleViewletView {
@@ -62,7 +62,7 @@ export class TreeExplorerView extends CollapsibleViewletView {
 	public createViewer(container: Builder): ITree {
 		const dataSource = this.instantiationService.createInstance(TreeDataSource, this.treeNodeProviderId);
 		const renderer = this.instantiationService.createInstance(TreeRenderer, this.viewletState, this.actionRunner, container.getHTMLElement());
-		const controller = this.instantiationService.createInstance(TreeController, this.treeNodeProviderId);
+		const controller = this.instantiationService.createInstance(TreeController, this.treeNodeProviderId, this.menus);
 
 		const tree = new Tree(container.getHTMLElement(), {
 			dataSource,

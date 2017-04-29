@@ -40,8 +40,8 @@ import { LinkedMap } from 'vs/base/common/map';
 import { DelegatingWorkbenchEditorService } from 'vs/workbench/services/editor/browser/editorService';
 import { ServiceCollection } from 'vs/platform/instantiation/common/serviceCollection';
 import { IThemeService, registerThemingParticipant, ITheme, ICssStyleCollector } from 'vs/platform/theme/common/themeService';
-import { INACTIVE_TAB_BACKGROUND, ACTIVE_TAB_BACKGROUND, ACTIVE_TAB_ACTIVE_GROUP_FOREGROUND, ACTIVE_TAB_INACTIVE_GROUP_FOREGROUND, INACTIVE_TAB_ACTIVE_GROUP_FOREGROUND, INACTIVE_TAB_INACTIVE_GROUP_FOREGROUND, TAB_BORDER, EDITOR_DRAG_AND_DROP_BACKGROUND } from 'vs/workbench/common/theme';
-import { highContrastOutline } from 'vs/platform/theme/common/colorRegistry';
+import { TAB_INACTIVE_BACKGROUND, TAB_ACTIVE_BACKGROUND, TAB_ACTIVE_FOREGROUND, TAB_INACTIVE_FOREGROUND, TAB_BORDER, EDITOR_DRAG_AND_DROP_BACKGROUND } from 'vs/workbench/common/theme';
+import { activeContrastBorder, contrastBorder } from 'vs/platform/theme/common/colorRegistry';
 
 interface IEditorInputLabel {
 	editor: IEditorInput;
@@ -215,11 +215,11 @@ export class TabsTitleControl extends TitleControl {
 		const isActiveTab = isTab && this.context.isActive(this.context.getEditor(index));
 
 		// Background
-		const noDNDBackgroundColor = isTab ? this.getColor(isActiveTab ? ACTIVE_TAB_BACKGROUND : INACTIVE_TAB_BACKGROUND) : null;
+		const noDNDBackgroundColor = isTab ? this.getColor(isActiveTab ? TAB_ACTIVE_BACKGROUND : TAB_INACTIVE_BACKGROUND) : null;
 		element.style.backgroundColor = isDND ? this.getColor(EDITOR_DRAG_AND_DROP_BACKGROUND) : noDNDBackgroundColor;
 
 		// Outline
-		const hcOutline = this.getColor(highContrastOutline);
+		const hcOutline = this.getColor(activeContrastBorder);
 		if (hcOutline && isDND) {
 			element.style.outlineWidth = '2px';
 			element.style.outlineStyle = 'dashed';
@@ -272,9 +272,9 @@ export class TabsTitleControl extends TitleControl {
 				// Container
 				tabContainer.setAttribute('aria-label', `${name}, tab`);
 				tabContainer.title = title;
-				tabContainer.style.borderLeftColor = (index !== 0) ? this.getColor(TAB_BORDER) : null;
-				tabContainer.style.borderRightColor = (index === editorsOfGroup.length - 1) ? this.getColor(TAB_BORDER) : null;
-				tabContainer.style.outlineColor = this.getColor(highContrastOutline);
+				tabContainer.style.borderLeftColor = (index !== 0) ? (this.getColor(contrastBorder) || this.getColor(TAB_BORDER)) : null;
+				tabContainer.style.borderRightColor = (index === editorsOfGroup.length - 1) ? (this.getColor(contrastBorder) || this.getColor(TAB_BORDER)) : null;
+				tabContainer.style.outlineColor = this.getColor(activeContrastBorder);
 
 				const tabOptions = this.editorGroupService.getTabOptions();
 				['off', 'left'].forEach(option => {
@@ -290,15 +290,39 @@ export class TabsTitleControl extends TitleControl {
 				if (isTabActive) {
 					DOM.addClass(tabContainer, 'active');
 					tabContainer.setAttribute('aria-selected', 'true');
-					tabContainer.style.backgroundColor = this.getColor(ACTIVE_TAB_BACKGROUND);
-					tabLabel.element.style.color = this.getColor(isGroupActive ? ACTIVE_TAB_ACTIVE_GROUP_FOREGROUND : ACTIVE_TAB_INACTIVE_GROUP_FOREGROUND);
+					tabContainer.style.backgroundColor = this.getColor(TAB_ACTIVE_BACKGROUND);
+					tabLabel.element.style.color = this.getColor(TAB_ACTIVE_FOREGROUND, (color, theme) => {
+						if (!isGroupActive) {
+							if (theme.type === 'dark') {
+								return color.transparent(0.5);
+							}
+
+							if (theme.type === 'light') {
+								return color.transparent(0.7);
+							}
+						}
+
+						return color;
+					});
 
 					this.activeTab = tabContainer;
 				} else {
 					DOM.removeClass(tabContainer, 'active');
 					tabContainer.setAttribute('aria-selected', 'false');
-					tabContainer.style.backgroundColor = this.getColor(INACTIVE_TAB_BACKGROUND);
-					tabLabel.element.style.color = this.getColor(isGroupActive ? INACTIVE_TAB_ACTIVE_GROUP_FOREGROUND : INACTIVE_TAB_INACTIVE_GROUP_FOREGROUND);
+					tabContainer.style.backgroundColor = this.getColor(TAB_INACTIVE_BACKGROUND);
+					tabLabel.element.style.color = this.getColor(TAB_INACTIVE_FOREGROUND, (color, theme) => {
+						if (!isGroupActive) {
+							if (theme.type === 'dark') {
+								return color.transparent(0.5).transparent(0.5);
+							}
+
+							if (theme.type === 'light') {
+								return color.transparent(0.7).transparent(0.5);
+							}
+						}
+
+						return color;
+					});
 				}
 
 				// Dirty State
@@ -735,7 +759,7 @@ class TabActionRunner extends ActionRunner {
 registerThemingParticipant((theme: ITheme, collector: ICssStyleCollector) => {
 
 	// Styling with Outline color (e.g. high contrast theme)
-	const outline = theme.getColor(highContrastOutline);
+	const outline = theme.getColor(activeContrastBorder);
 	if (outline) {
 		collector.addRule(`
 			.monaco-workbench > .part.editor > .content > .one-editor-silo > .container > .title .tabs-container > .tab.active,
