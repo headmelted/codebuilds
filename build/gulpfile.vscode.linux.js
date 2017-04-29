@@ -106,12 +106,14 @@ function prepareDebPackage(arch) {
 
 function buildDebPackage(arch) {
 	const debArch = getDebPackageArch(arch);
-	return shell.task([
+	var shellTasks = [
 		'chmod 755 ' + product.applicationName + '-' + debArch + '/DEBIAN/postinst ' + product.applicationName + '-' + debArch + '/DEBIAN/prerm ' + product.applicationName + '-' + debArch + '/DEBIAN/postrm',
 		'mkdir -p deb',
 		'fakeroot dpkg-deb -b ' + product.applicationName + '-' + debArch + ' deb',
 		'dpkg-scanpackages deb /dev/null > Packages'
-	], { cwd: '.build/linux/deb/' + debArch });
+	];
+	console.log(shellTasks.toString());
+	return shell.task(shellTasks, { cwd: '.build/linux/deb/' + debArch });
 }
 
 function getRpmBuildPath(rpmArch) {
