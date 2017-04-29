@@ -263,12 +263,12 @@ var archs = ['ia32','x64','armhf','arm64'];
 // we gotta make sure those targets run before these run, in our TFS builds
 
 archs.forEach(function(arch) { gulp.task('clean-vscode-linux-' + arch + '-deb', util.rimraf('.build/linux/deb/' + getDebPackageArch(arch))); });
-archs.forEach(function(arch) { gulp.task('vscode-linux-' + arch + '-prepare-deb', ['clean-vscode-linux-' + arch + '-deb'], prepareDebPackage(getDebPackageArch(arch))); });
-archs.forEach(function(arch) { gulp.task('vscode-linux-' + arch + '-build-deb', ['vscode-linux-' + arch + '-prepare-deb'], buildDebPackage(getDebPackageArch(arch))); });
+archs.forEach(function(arch) { gulp.task('vscode-linux-' + arch + '-prepare-deb', ['clean-vscode-linux-' + arch + '-deb'], prepareDebPackage(arch)); });
+archs.forEach(function(arch) { gulp.task('vscode-linux-' + arch + '-build-deb', ['vscode-linux-' + arch + '-prepare-deb'], buildDebPackage(arch)); });
 
 archs.forEach(function(arch) { gulp.task('clean-vscode-linux-' + arch + '-rpm', util.rimraf('.build/linux/rpm/' + getRpmPackageArch(arch))); });
-archs.forEach(function(arch) { gulp.task('vscode-linux-' + arch + '-prepare-rpm', ['clean-vscode-linux-' + arch + '-rpm'], prepareRpmPackage(getRpmPackageArch(arch))); });
-archs.forEach(function(arch) { gulp.task('vscode-linux-' + arch + '-build-rpm', ['vscode-linux-' + arch + '-prepare-rpm'], buildRpmPackage(getRpmPackageArch(arch))); });
+archs.forEach(function(arch) { gulp.task('vscode-linux-' + arch + '-prepare-rpm', ['clean-vscode-linux-' + arch + '-rpm'], prepareRpmPackage(arch)); });
+archs.forEach(function(arch) { gulp.task('vscode-linux-' + arch + '-build-rpm', ['vscode-linux-' + arch + '-prepare-rpm'], buildRpmPackage(arch)); });
 
 archs.forEach(function(arch) { gulp.task('clean-vscode-linux-' + arch + '-flatpak', util.rimraf('.build/linux/flatpak/' + getRpmPackageArch(arch))); });
 archs.forEach(function(arch) { gulp.task('vscode-linux-' + arch + '-prepare-flatpak', ['clean-vscode-linux-' + arch + '-flatpak'/*, 'vscode-linux-ia32-min'*/], prepareFlatpak(arch)); });
