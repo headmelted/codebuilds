@@ -137,8 +137,8 @@ deploy:
     #- ./.build/linux/rpm/${RPMARCH}/*.rpm
   skip_cleanup: true
   on:
+    repo: headmelted/vscode-multiarch
     tags: true
-    all_branches: true
     
 after_deploy:
   - cd vscode-multiarch-specific;
