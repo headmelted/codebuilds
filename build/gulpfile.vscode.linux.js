@@ -106,9 +106,10 @@ function prepareDebPackage(arch) {
 
 function buildDebPackage(arch) {
 	const debArch = getDebPackageArch(arch);
-	console.log("arch: " + arch);
+	console.log("arch: " + arch);tr
 	console.log("debArch: " + debArch);
 	var shellTasks = [
+		'tree',
 		'chmod 755 ' + product.applicationName + '-' + debArch + '/DEBIAN/postinst ' + product.applicationName + '-' + debArch + '/DEBIAN/prerm ' + product.applicationName + '-' + debArch + '/DEBIAN/postrm',
 		'mkdir -p deb',
 		'fakeroot dpkg-deb -b ' + product.applicationName + '-' + debArch + ' deb',
@@ -256,7 +257,7 @@ function buildFlatpak(arch) {
 	};
 }
 
-var archs = ['ia32','x64','armhf','arm64'];
+var archs = [/* 'ia32','x64', */'armhf','arm64'];
 
 // TODO@joao TODO@daniel
 // commented out the dependencies to the actual building of VS Code
