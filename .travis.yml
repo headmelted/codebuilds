@@ -130,7 +130,7 @@ script:
 
 deploy:
   provider: releases
-  api_key: "$GITHUB_TOKEN
+  api_key: "$GITHUB_TOKEN"
   file_glob: true
   file:
     - .build/linux/**/*.deb
