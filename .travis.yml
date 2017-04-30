@@ -139,7 +139,7 @@ deploy:
     - .build/linux/**/*.flatpak
   skip_cleanup: true
   on:
-    repo: headmelted/vscode-multiarch1`
+    repo: headmelted/vscode-multiarch
     tags: true
     
 after_deploy:
