@@ -129,7 +129,7 @@ script:
   - gulp "vscode-linux-${ARCH}-build-deb";
 
 deploy:
-1  provider: releases
+  provider: releases
   api_key: "$GITHUB_TOKEN
   file_glob: true
   file:
