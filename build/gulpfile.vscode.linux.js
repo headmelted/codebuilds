@@ -109,7 +109,6 @@ function buildDebPackage(arch) {
 	console.log("arch: " + arch);
 	console.log("debArch: " + debArch);
 	var shellTasks = [
-		'tree',
 		'chmod 755 ' + product.applicationName + '-' + debArch + '/DEBIAN/postinst ' + product.applicationName + '-' + debArch + '/DEBIAN/prerm ' + product.applicationName + '-' + debArch + '/DEBIAN/postrm',
 		'mkdir -p deb',
 		'fakeroot dpkg-deb -b ' + product.applicationName + '-' + debArch + ' deb',
