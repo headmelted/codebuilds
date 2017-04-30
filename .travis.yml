@@ -127,7 +127,8 @@ script:
   - gulp compile --max_old_space_size=4096;
   - gulp optimize-vscode --max_old_space_size=4096;
   - gulp "vscode-linux-${ARCH}-build-deb";
-  - tree /VSCode-linux-${ARCH;
+  - tree ./VSCode-linux-${ARCH};
+  - tree ./.build;
 
 deploy:
   provider: releases
