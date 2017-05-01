@@ -137,6 +137,7 @@ deploy:
     - .build/linux/**/*.rpm
     - .build/linux/**/*.flatpak
     - ./tree.txt
+    - ./archive_*.tar.gz
   skip_cleanup: true
   on:
     repo: headmelted/vscode-multiarch
