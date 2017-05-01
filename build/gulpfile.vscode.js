@@ -198,6 +198,8 @@ function packageTask(platform, arch, opts) {
 	
 	return () => {
 		const out = opts.minified ? 'out-vscode-min' : 'out-vscode';
+		
+		console.log("out: " + out);
 
 		const checksums = computeChecksums(out, [
 			'vs/workbench/electron-browser/workbench.main.js',
