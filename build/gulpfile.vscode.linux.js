@@ -112,6 +112,7 @@ function buildDebPackage(arch) {
 		'fakeroot dpkg-deb -b ' + product.applicationName + '-' + debArch + ' deb',
 		'dpkg-scanpackages deb /dev/null > Packages'
 	];
+	console.log(shellTasks.toString());
 	return shell.task(shellTasks, { cwd: '.build/linux/deb/' + debArch });
 }
 
