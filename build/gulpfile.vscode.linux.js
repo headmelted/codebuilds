@@ -253,7 +253,7 @@ function buildFlatpak(arch) {
 	};
 }
 
-var archs = [/* 'ia32','x64', */'armhf','arm64'];
+var archs = ['ia32','x64', 'armhf','arm64'];
 
 // TODO@joao TODO@daniel
 // commented out the dependencies to the actual building of VS Code
