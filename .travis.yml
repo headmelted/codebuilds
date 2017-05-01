@@ -115,6 +115,7 @@ before_install:
   #- sleep 3;
   
 script:
+  - ls;
   - if [[ "${ARCH}" == "amd64" ]]; then
       ./scripts/npm.sh install --unsafe-perm;
       gulp electron;
