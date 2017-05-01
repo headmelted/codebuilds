@@ -48,7 +48,9 @@ function getDebPackageArch(arch) {
 function prepareDebPackage(arch) {
 	const binaryDir = '../VSCode-linux-' + arch;
 	const debArch = getDebPackageArch(arch);
+	console.log("prepareDebPackage arch|debArch: " + arch + "|" + debArch);
 	const destination = '.build/linux/deb/' + debArch + '/' + product.applicationName + '-' + debArch;
+	console.log("Build destination: " + destination);
 
 	return function () {
 		const desktop = gulp.src('resources/linux/code.desktop', { base: '.' })
@@ -68,6 +70,8 @@ function prepareDebPackage(arch) {
 
 		const code = gulp.src(binaryDir + '/**/*', { base: binaryDir })
 			.pipe(rename(function (p) { p.dirname = 'usr/share/' + product.applicationName + '/' + p.dirname; }));
+
+		
 
 		let size = 0;
 		const control = code.pipe(es.through(
