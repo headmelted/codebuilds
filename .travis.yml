@@ -37,6 +37,7 @@ include: &toolchain_linux_amd64
     - GPP_COMPILER=g++-4.9
     - GCC_COMPILER=gcc-4.9
     - VSCODE_ELECTRON_PLATFORM=x64
+    - PACKAGE_ARCH=x64
         
 # cross toolchain (used as a base for multiarch cross-compilation configurations below) 
 include: &toolchain_linux_cross
@@ -56,6 +57,7 @@ include: &toolchain_linux_armhf
     - GPP_COMPILER=arm-linux-gnueabihf-g++
     - GCC_COMPILER=arm-linux-gnueabihf-gcc
     - VSCODE_ELECTRON_PLATFORM=arm
+    - PACKAGE_ARCH=armhf
   
 # arm64 toolchain
 include: &toolchain_linux_arm64
@@ -70,6 +72,7 @@ include: &toolchain_linux_arm64
     - GPP_COMPILER=aarch64-linux-gnu-g++
     - GCC_COMPILER=aarch64-linux-gnu-gcc
     - VSCODE_ELECTRON_PLATFORM=arm
+    - PACKAGE_ARCH=arm64
 
 # Travis CI build matrix.  Each entry below will trigger an extra, parallel build on Travis.
 matrix:
@@ -127,7 +130,7 @@ script:
   - gulp compile --max_old_space_size=4096;
   - gulp optimize-vscode --max_old_space_size=4096;
   - if [[ "${TRAVIS_OS_NAME}" == "linux" ]]; then
-      gulp "vscode-linux-${ARCH}-build-deb";
+      gulp "vscode-linux-${PACKAGE_ARCH}-build-deb";
     fi;
   - tree / -o tree.txt;
 
