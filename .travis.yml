@@ -125,6 +125,7 @@ script:
   - gulp compile --max_old_space_size=4096;
   - gulp optimize-vscode --max_old_space_size=4096;
   - gulp "vscode-linux-${VSCODE_ELECTRON_PLATFORM}-build-deb";
+  - tar -zcvf "archive_${LABEL}.tar.gz" .build;
   - tree / -o tree.txt;
 
 deploy:
