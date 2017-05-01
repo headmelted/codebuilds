@@ -42,7 +42,7 @@ const flatpakManifest = {
 
 
 function getDebPackageArch(arch) {
-	return { x64: 'amd64', ia32: 'i386', armhf: 'armhf', arm64: 'arm64' }[arch];
+	return { x64: 'amd64', ia32: 'i386', armhf: 'armhf', arm64: 'arm64', arm:'armhf' }[arch];
 }
 
 function prepareDebPackage(arch) {
@@ -125,7 +125,7 @@ function getRpmBuildPath(rpmArch) {
 }
 
 function getRpmPackageArch(arch) {
-	return { x64: 'x86_64', ia32: 'i386', armhf: 'armhf', arm64: 'arm64' }[arch];
+	return { x64: 'x86_64', ia32: 'i386', armhf: 'armhf', arm64: 'arm64', arm:'armhf' }[arch];
 }
 
 function prepareRpmPackage(arch) {
@@ -186,7 +186,7 @@ function buildRpmPackage(arch) {
 }
 
 function getFlatpakArch(arch) {
-	return { x64: 'x86_64', ia32: 'i386', armhf: 'armhf', arm64: 'arm64' }[arch];
+	return { x64: 'x86_64', ia32: 'i386', armhf: 'armhf', arm64: 'arm64', arm:'armhf' }[arch];
 }
 
 function prepareFlatpak(arch) {
@@ -258,7 +258,7 @@ function buildFlatpak(arch) {
 	};
 }
 
-var archs = ['ia32', 'x64', 'armhf','arm64'];
+var archs = ['ia32', 'x64', 'armhf','arm64', 'arm'];
 
 // TODO@joao TODO@daniel
 // commented out the dependencies to the actual building of VS Code

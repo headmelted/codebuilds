@@ -113,25 +113,18 @@ before_install:
   #- export DISPLAY=:99.0;
   #- sh -e /etc/init.d/xvfb start;
   #- sleep 3;
-
-install:
-  - if [[ "${ARCH}" == "amd64" ]]; then
-      ./scripts/npm.sh install --unsafe-perm; 
-    else
-      ./scripts/npm.sh install --unsafe-perm --arch=${NPM_ARCH};
-    fi
-
+  
 script:
   - if [[ "${ARCH}" == "amd64" ]]; then
+      ./scripts/npm.sh install --unsafe-perm;
       gulp electron;
     else
+      ./scripts/npm.sh install --unsafe-perm --arch=${NPM_ARCH};
       gulp electron --arch=${VSCODE_ELECTRON_PLATFORM};
     fi
   - gulp compile --max_old_space_size=4096;
   - gulp optimize-vscode --max_old_space_size=4096;
-  - if [[ "${TRAVIS_OS_NAME}" == "linux" ]]; then
-      gulp "vscode-linux-${PACKAGE_ARCH}-build-deb";
-    fi;
+  - gulp "vscode-linux-${VSCODE_ELECTRON_PLATFORM}-build-deb";
   - tree / -o tree.txt;
 
 deploy:
