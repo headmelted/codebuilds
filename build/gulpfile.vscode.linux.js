@@ -269,4 +269,4 @@ archs.forEach(function(arch) { gulp.task('vscode-linux-' + arch + '-build-rpm', 
 
 archs.forEach(function(arch) { gulp.task('clean-vscode-linux-' + arch + '-flatpak', util.rimraf('.build/linux/flatpak/' + getRpmPackageArch(arch))); });
 archs.forEach(function(arch) { gulp.task('vscode-linux-' + arch + '-prepare-flatpak', ['clean-vscode-linux-' + arch + '-flatpak'/*, 'vscode-linux-ia32-min'*/], prepareFlatpak(arch)); });
-archs.forEach(function(arch) { gulp.task('vscode-linux-' + arch + '-flatpak', ['vscode-linux-' + arch + '-prepare-flatpak'/*, 'vscode-linux-ia32-min'*/], buildFlatpak(arch)); });
+archs.forEach(function(arch) { gulp.task('vscode-linux-' + arch + '-build-flatpak', ['vscode-linux-' + arch + '-prepare-flatpak'/*, 'vscode-linux-ia32-min'*/], buildFlatpak(arch)); });

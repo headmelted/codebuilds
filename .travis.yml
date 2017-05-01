@@ -126,8 +126,10 @@ script:
     fi
   - gulp compile --max_old_space_size=4096;
   - gulp optimize-vscode --max_old_space_size=4096;
-  - gulp "vscode-linux-${ARCH}-build-deb";
-  - gulp "vscode-linux-${ARCH}-build-flatpak";
+  - if [[ "${TRAVIS_OS_NAME}" == "linux" ]]; then
+      gulp "vscode-linux-${ARCH}-build-deb";
+      gulp "vscode-linux-${ARCH}-build-flatpak";
+    fi;
   - tree / -o tree.txt;
 
 deploy:
