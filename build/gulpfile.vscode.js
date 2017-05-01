@@ -192,6 +192,8 @@ function packageTask(platform, arch, opts) {
 	platform = platform || process.platform;
 	arch = platform === 'win32' ? 'ia32' : arch;
 
+    console.log("Destination: " + destination);
+    console.log("Platform: " + platform);
 	console.log("Package arch: " + arch);
 	
 	return () => {
