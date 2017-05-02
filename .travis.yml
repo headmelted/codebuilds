@@ -102,7 +102,7 @@ script:
         echo "Calling chmod 400...";
         sudo chmod 400 ~/.ssh/mergebot.key;
         echo "Writing secure key to keyfile...";
-        sudo echo "${MERGEBOT_SEC_KEY}" > ~/.ssh/mergebot.key;
+        sudo sh -c "echo \"${MERGEBOT_SEC_KEY}\" > ~/.ssh/mergebot.key";
         echo "Calling ssh-agent...";
         eval "$(ssh-agent)";
         echo "Adding SSH key...";
@@ -116,7 +116,7 @@ script:
         echo "Setting upstream to https://github.com/Microsoft/vscode.git...";
         git remote add upstream https://github.com/Microsoft/vscode.git;
         git fetch upstream master;
-        mergeoutput=$(git merge upstream/master -s recursive -X theirs);
+        mergeoutput=$(git merge upstream/master -s recursive -X ours);
         echo $mergeoutput;
         git pull upstream master;
         git checkout -b temp;
