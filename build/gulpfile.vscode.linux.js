@@ -46,7 +46,7 @@ function getDebPackageArch(arch) {
 }
 
 function prepareDebPackage(arch) {
-	const binaryDir = './VSCode-linux-' + arch;
+	const binaryDir = '../VSCode-linux-' + arch;
 	const debArch = getDebPackageArch(arch);
 	console.log("prepareDebPackage arch|debArch: " + arch + "|" + debArch);
 	const destination = '.build/linux/deb/' + debArch + '/' + product.applicationName + '-' + debArch;
