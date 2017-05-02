@@ -1,7 +1,7 @@
 language: cpp
 
-# amd64 toolchain (used as a base for non-sudo compilation, which is faster) 
-include: &toolchain_amd64
+# x86 toolchain (used as a base for non-sudo compilation, which is faster) 
+include: &toolchain_x86
   sudo: true
   addons:
     apt:
@@ -12,6 +12,7 @@ include: &toolchain_amd64
         - g++-4.9
         - gcc-4.9-multilib
         - g++-4.9-multilib
+        - libc6-dev-i386
         - zip
         - libgtk2.0-0
         - libx11-dev
@@ -20,7 +21,7 @@ include: &toolchain_amd64
         
 # OSX amd64 toolchain
 include: &toolchain_osx_amd64
-  <<: *toolchain_amd64
+  <<: *toolchain_x86
   env:
     - LABEL=amd64_osx
     - ARCH=amd64
@@ -30,7 +31,7 @@ include: &toolchain_osx_amd64
         
 # linux amd64 toolchain
 include: &toolchain_linux_amd64
-  <<: *toolchain_amd64
+  <<: *toolchain_x86
   env:
     - LABEL=amd64_linux
     - ARCH=amd64
@@ -38,6 +39,17 @@ include: &toolchain_linux_amd64
     - GCC_COMPILER=gcc-4.9
     - VSCODE_ELECTRON_PLATFORM=x64
     - PACKAGE_ARCH=x64
+        
+# linux i686 toolchain
+include: &toolchain_linux_i686
+  <<: *toolchain_x86
+  env:
+    - LABEL=i686_linux
+    - ARCH=i686
+    - GPP_COMPILER=g++-4.9
+    - GCC_COMPILER=gcc-4.9
+    - VSCODE_ELECTRON_PLATFORM=ia32
+    - PACKAGE_ARCH=ia32
         
 # cross toolchain (used as a base for multiarch cross-compilation configurations below) 
 include: &toolchain_linux_cross
@@ -82,6 +94,8 @@ matrix:
   - os: linux
     <<: *toolchain_linux_amd64
   - os: linux
+    <<: *toolchain_linux_i686
+  - os: linux
     <<: *toolchain_linux_armhf
   - os: linux
     <<: *toolchain_linux_arm64
@@ -102,7 +116,6 @@ before_install:
       sudo apt-get update -yq;
       sudo apt-get install -y libwww-perl libexpat1 libxml-libxml-perl libxml-sax-expat-perl gcc-${GNU_TRIPLET} g++-${GNU_TRIPLET} pkg-config-${GNU_TRIPLET} crossbuild-essential-${ARCH} g++-multilib-${GNU_MULTILIB_TRIPLET} gcc-multilib-${GNU_MULTILIB_TRIPLET} dpkg-dev perl libconfig-inifiles-perl libxml-simple-perl liblocale-gettext-perl libgcc1 libgcc1:${ARCH} libdpkg-perl libconfig-auto-perl libdebian-dpkgcross-perl ucf debconf dpkg-cross libdbus-1-3:${ARCH} libffi6:${ARCH} libpcre3:${ARCH} libselinux1:${ARCH} libp11-kit0:${ARCH} libcomerr2:${ARCH} libk5crypto3:${ARCH} libkrb5-3:${ARCH} libpango-1.0-0:${ARCH} libpangocairo-1.0-0:${ARCH} libpangoft2-1.0-0:${ARCH} libxcursor1:${ARCH} libxfixes3:${ARCH} libglib2.0-0:${ARCH} libfreetype6:${ARCH} libpng12-0:${ARCH} libavahi-client3:${ARCH} libgssapi-krb5-2:${ARCH} fontconfig-config:${ARCH} libexpat1:${ARCH} libjasper1:${ARCH} libjpeg8:${ARCH} libpng12-0:${ARCH} libtiff5:${ARCH} libgdk-pixbuf2.0-common:${ARCH} libgdk-pixbuf2.0-0:${ARCH} libfontconfig1:${ARCH} libcups2:${ARCH} libcairo2:${ARCH} libc6 libc6:${ARCH} libc6-dev:${ARCH} libatk1.0-0:${ARCH} libgtk2.0-0:${ARCH} libx11-dev:${ARCH} libxkbfile-dev:${ARCH} rpm qemu binfmt-support qemu-user-static;
     fi
-  - sudo apt-get install -y tree;
   - git submodule update --init --recursive
   - git clone --depth 1 https://github.com/creationix/nvm.git ./.nvm
   - source ./.nvm/nvm.sh
@@ -125,7 +138,7 @@ script:
     fi
   - gulp compile --max_old_space_size=4096 | tee -a buildlog_${LABEL}.txt;
   - gulp optimize-vscode --max_old_space_size=4096 | tee -a buildlog_${LABEL}.txt;
-  - gulp "vscode-linux-${VSCODE_ELECTRON_PLATFORM}" | tee -a buildlog_${LABEL}.txt;
+  - gulp "vscode-linux-${PLATFORM_ARCH}" | tee -a buildlog_${LABEL}.txt;
   - gulp "vscode-linux-${PACKAGE_ARCH}-build-deb" | tee -a buildlog_${LABEL}.txt;
   - gulp "vscode-linux-${PACKAGE_ARCH}-build-rpm" | tee -a buildlog_${LABEL}.txt;
   - tar -zcvf "archive_${LABEL}.tar.gz" .build | tee -a buildlog_${LABEL}.txt;

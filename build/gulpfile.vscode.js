@@ -337,19 +337,22 @@ gulp.task('clean-vscode-win32', util.rimraf(path.join(buildRoot, 'VSCode-win32')
 gulp.task('clean-vscode-darwin', util.rimraf(path.join(buildRoot, 'VSCode-darwin')));
 gulp.task('clean-vscode-linux-ia32', util.rimraf(path.join(buildRoot, 'VSCode-linux-ia32')));
 gulp.task('clean-vscode-linux-x64', util.rimraf(path.join(buildRoot, 'VSCode-linux-x64')));
-gulp.task('clean-vscode-linux-arm', util.rimraf(path.join(buildRoot, 'VSCode-linux-arm')));
+gulp.task('clean-vscode-linux-armhf', util.rimraf(path.join(buildRoot, 'VSCode-linux-armhf')));
+gulp.task('clean-vscode-linux-arm64', util.rimraf(path.join(buildRoot, 'VSCode-linux-arm64')));
 
 gulp.task('vscode-win32', ['optimize-vscode', 'clean-vscode-win32'], packageTask('win32'));
 gulp.task('vscode-darwin', ['optimize-vscode', 'clean-vscode-darwin'], packageTask('darwin'));
 gulp.task('vscode-linux-ia32', ['optimize-vscode', 'clean-vscode-linux-ia32'], packageTask('linux', 'ia32'));
 gulp.task('vscode-linux-x64', ['optimize-vscode', 'clean-vscode-linux-x64'], packageTask('linux', 'x64'));
-gulp.task('vscode-linux-arm', ['optimize-vscode', 'clean-vscode-linux-arm'], packageTask('linux', 'arm'));
+gulp.task('vscode-linux-armhf', ['optimize-vscode', 'clean-vscode-linux-armhf'], packageTask('linux', 'armhf'));
+gulp.task('vscode-linux-arm64', ['optimize-vscode', 'clean-vscode-linux-arm64'], packageTask('linux', 'arm64'));
 
 gulp.task('vscode-win32-min', ['minify-vscode', 'clean-vscode-win32'], packageTask('win32', null, { minified: true }));
 gulp.task('vscode-darwin-min', ['minify-vscode', 'clean-vscode-darwin'], packageTask('darwin', null, { minified: true }));
 gulp.task('vscode-linux-ia32-min', ['minify-vscode', 'clean-vscode-linux-ia32'], packageTask('linux', 'ia32', { minified: true }));
 gulp.task('vscode-linux-x64-min', ['minify-vscode', 'clean-vscode-linux-x64'], packageTask('linux', 'x64', { minified: true }));
-gulp.task('vscode-linux-arm-min', ['minify-vscode', 'clean-vscode-linux-arm'], packageTask('linux', 'arm', { minified: true }));
+gulp.task('vscode-linux-armhf-min', ['minify-vscode', 'clean-vscode-linux-armhf'], packageTask('linux', 'armhf', { minified: true }));
+gulp.task('vscode-linux-arm64-min', ['minify-vscode', 'clean-vscode-linux-arm64'], packageTask('linux', 'arm64', { minified: true }));
 
 // Transifex Localizations
 const vscodeLanguages = [

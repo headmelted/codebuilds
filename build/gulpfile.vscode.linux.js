@@ -46,7 +46,7 @@ function getDebPackageArch(arch) {
 }
 
 function prepareDebPackage(arch) {
-	const binaryDir = '../VSCode-linux-' + (arch === 'armhf' || arch === 'arm64' ? 'arm' : arch);
+	const binaryDir = '../VSCode-linux-' + arch;
 	const debArch = getDebPackageArch(arch);
 	console.log("prepareDebPackage arch|debArch|binaryDir: " + arch + "|" + debArch + "|" + binaryDir);
 	const destination = '.build/linux/deb/' + debArch + '/' + product.applicationName + '-' + debArch;
@@ -125,11 +125,11 @@ function getRpmBuildPath(rpmArch) {
 }
 
 function getRpmPackageArch(arch) {
-	return { x64: 'x86_64', ia32: 'i386', armhf: 'armhf', arm64: 'arm64', arm:'armhf' }[arch];
+	return { x64: 'x86_64', ia32: 'i386', armhf: 'armhf', arm64: 'arm64' }[arch];
 }
 
 function prepareRpmPackage(arch) {
-	const binaryDir = '../VSCode-linux-' + (arch === 'armhf' || arch === 'arm64' ? 'arm' : arch);
+	const binaryDir = '../VSCode-linux-' + arch;
 	const rpmArch = getRpmPackageArch(arch);
 
 	return function () {
@@ -186,11 +186,11 @@ function buildRpmPackage(arch) {
 }
 
 function getFlatpakArch(arch) {
-	return { x64: 'x86_64', ia32: 'i386', armhf: 'armhf', arm64: 'arm64', arm:'armhf' }[arch];
+	return { x64: 'x86_64', ia32: 'i386', armhf: 'armhf', arm64: 'arm64' }[arch];
 }
 
 function prepareFlatpak(arch) {
-	const binaryDir = '../VSCode-linux-' + (arch === 'armhf' || arch === 'arm64' ? 'arm' : arch);
+	const binaryDir = '../VSCode-linux-' + arch;
 	const flatpakArch = getFlatpakArch(arch);
 	const destination = '.build/linux/flatpak/' + flatpakArch;
 
