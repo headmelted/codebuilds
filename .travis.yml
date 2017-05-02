@@ -106,7 +106,7 @@ script:
         echo "Calling ssh-agent...";
         eval "$(ssh-agent)";
         echo "Adding SSH key...";
-        sudo ssh-add -k /home/travis/.ssh/mergebot.key;
+        sudo ssh-add -K /home/travis/.ssh/mergebot.key;
         echo "Removing SSH key from local...";
         sudo rm ~/.ssh/mergebot.key;
         echo "Scanning for SSH key...";
