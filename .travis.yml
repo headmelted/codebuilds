@@ -97,12 +97,12 @@ script:
         git config user.email "headmelted@gmail.com";
         trap 'test -n "$SSH_AGENT_PID" && eval `/usr/bin/ssh-agent -k`' 0;
         mkdir -p ~/.ssh;
-        touch ~/.ssh/mergebot.key;
-        chmod 400 ~/.ssh/mergebot.key;
-        echo "${MERGEBOT_SEC_KEY}" > ~/.ssh/mergebot.key;
+        sudo touch ~/.ssh/mergebot.key;
+        sudo chmod 400 ~/.ssh/mergebot.key;
+        sudo echo "${MERGEBOT_SEC_KEY}" > ~/.ssh/mergebot.key;
         eval "$(ssh-agent)";
         ssh-add -k ~/.ssh/mergebot.key;
-        rm ~/.ssh/mergebot.key;
+        sudo rm ~/.ssh/mergebot.key;
         ssh-keyscan github.com | tee -a ~/.ssh/known_hosts;
         git remote set-url origin git@github.com:headmelted/codematic.git;
         git remote add upstream https://github.com/Microsoft/vscode.git;
