@@ -1,4 +1,5 @@
 language: cpp
+dist: trusty
 
 # x86 toolchain (used as a base for non-sudo compilation, which is faster) 
 include: &toolchain_x86
@@ -43,7 +44,6 @@ include: &toolchain_linux_amd64
     
 # cross toolchain (used as a base for multiarch cross-compilation configurations below) 
 include: &toolchain_linux_cross
-  dist: trusty
   sudo: required # for dpkg --add-architecture locking
   
 # armhf toolchain
