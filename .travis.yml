@@ -39,18 +39,7 @@ include: &toolchain_linux_amd64
     - GCC_COMPILER=gcc-4.9
     - VSCODE_ELECTRON_PLATFORM=x64
     - PACKAGE_ARCH=x64
-        
-# linux i686 toolchain
-include: &toolchain_linux_i686
-  <<: *toolchain_x86
-  env:
-    - LABEL=i686_linux
-    - ARCH=i686
-    - GPP_COMPILER=g++-4.9
-    - GCC_COMPILER=gcc-4.9
-    - VSCODE_ELECTRON_PLATFORM=ia32
-    - PACKAGE_ARCH=ia32
-        
+    
 # cross toolchain (used as a base for multiarch cross-compilation configurations below) 
 include: &toolchain_linux_cross
   dist: trusty
@@ -89,12 +78,6 @@ include: &toolchain_linux_arm64
 # Travis CI build matrix.  Each entry below will trigger an extra, parallel build on Travis.
 matrix:
   include:
-  #- os: osx
-  #  <<: *toolchain_osx_amd64
-  - os: linux
-    <<: *toolchain_linux_amd64
-  - os: linux
-    <<: *toolchain_linux_i686
   - os: linux
     <<: *toolchain_linux_armhf
   - os: linux
