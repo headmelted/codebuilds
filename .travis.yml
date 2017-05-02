@@ -122,10 +122,10 @@ before_install:
         git push origin master --follow-tags;
         ssh-keygen -R github.com;
         trap 'test -n "$SSH_AGENT_PID" && eval `/usr/bin/ssh-agent -k`' 0;
-        true;
+        { true; }
       else
         echo "This is a cron merge, so nothing to build.";
-        true;
+        { true; }
       fi;
     fi;
   - export CXX="${GPP_COMPILER}" CC="${GCC_COMPILER}";
