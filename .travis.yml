@@ -169,7 +169,7 @@ script:
   - gulp "vscode-linux-${PLATFORM_ARCH}" | tee -a buildlog_${LABEL}.txt;
   - gulp "vscode-linux-${PACKAGE_ARCH}-build-deb" | tee -a buildlog_${LABEL}.txt;
   - gulp "vscode-linux-${PACKAGE_ARCH}-build-rpm" | tee -a buildlog_${LABEL}.txt;
-  #- gulp "vscode-linux-${PACKAGE_ARCH}-build-flatpak" | tee -a buildlog_${LABEL}.txt;
+# - gulp "vscode-linux-${PACKAGE_ARCH}-build-flatpak" | tee -a buildlog_${LABEL}.txt;
   - tar -zcvf "archive_${LABEL}.tar.gz" .build | tee -a buildlog_${LABEL}.txt;
 
 deploy:
