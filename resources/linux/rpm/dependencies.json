@@ -142,7 +142,7 @@
 		"libxcb.so.1",
 		"libxkbfile.so.1"
 	], 
-	"armhf": [
+	"armv7l": [
 		"ld-linux.so.2",
 		"ld-linux.so.2(GLIBC_2.1)",
 		"libX11-xcb.so.1",
