@@ -1,36 +1,3 @@
-# Automatic merges from Travis CI cron
-check_for_merge: &check_for_merge
-  if [[ "${TRAVIS_EVENT_TYPE}" != "cron" ]]; then
-    git config user.name "headmelted";
-    git config user.email "headmelted@gmail.com";
-    trap 'test -n "$SSH_AGENT_PID" && eval `/usr/bin/ssh-agent -k`' 0;
-    mkdir -p ~/.ssh;
-    touch ~/.ssh/mergebot.key;
-    chmod 400 ~/.ssh/mergebot.key;
-    cat <<EOT >> ~/.ssh/mergebot.key
-  $MERGEBOT_SEC_KEY
-  EOT
-    eval "$(ssh-agent)";
-    ssh-add -k ~/.ssh/mergebot.key;
-    rm ~/.ssh/mergebot.key;
-    ssh-keyscan github.com | tee -a ~/.ssh/known_hosts;
-    git remote set-url origin git@github.com:headmelted/codematic.git;
-    git remote add upstream https://github.com/Microsoft/vscode.git;
-    git fetch upstream master;
-    mergeoutput=$(git merge upstream/master -s recursive -X theirs);
-    echo $mergeoutput;
-    git pull upstream master;
-    git checkout -b temp;
-    git branch -f master temp;
-    git checkout master;
-    git branch -d temp;
-    hash=$(git log -n 1 --pretty=format:"%H");
-    git tag -a "merged_${hash}" -m "Nightly merge up to ${hash}";
-    git push origin master --follow-tags;
-    ssh-keygen -R github.com;
-    trap 'test -n "$SSH_AGENT_PID" && eval `/usr/bin/ssh-agent -k`' 0;
-  fi;
-
 language: cpp
 
 # x86 toolchain (used as a base for non-sudo compilation, which is faster) 
@@ -122,7 +89,37 @@ notifications:
 
 # Before doing anything else, check for a cron job
 before_install:
-  <<: *check_for_merge
+  - if [[ "${TRAVIS_EVENT_TYPE}" != "cron" ]]; then
+      git config user.name "headmelted";
+      git config user.email "headmelted@gmail.com";
+      trap 'test -n "$SSH_AGENT_PID" && eval `/usr/bin/ssh-agent -k`' 0;
+      mkdir -p ~/.ssh;
+      touch ~/.ssh/mergebot.key;
+      chmod 400 ~/.ssh/mergebot.key;
+      cat <<EOT >> ~/.ssh/mergebot.key
+      $MERGEBOT_SEC_KEY
+      EOT
+      eval "$(ssh-agent)";
+      ssh-add -k ~/.ssh/mergebot.key;
+      rm ~/.ssh/mergebot.key;
+      ssh-keyscan github.com | tee -a ~/.ssh/known_hosts;
+      git remote set-url origin git@github.com:headmelted/codematic.git;
+      git remote add upstream https://github.com/Microsoft/vscode.git;
+      git fetch upstream master;
+      mergeoutput=$(git merge upstream/master -s recursive -X theirs);
+      echo $mergeoutput;
+      git pull upstream master;
+      git checkout -b temp;
+      git branch -f master temp;
+      git checkout master;
+      git branch -d temp;
+      hash=$(git log -n 1 --pretty=format:"%H");
+      git tag -a "merged_${hash}" -m "Nightly merge up to ${hash}";
+      git push origin master --follow-tags;
+      ssh-keygen -R github.com;
+      trap 'test -n "$SSH_AGENT_PID" && eval `/usr/bin/ssh-agent -k`' 0;
+      true;
+    fi;
   - export CXX="${GPP_COMPILER}" CC="${GCC_COMPILER}";
   - if [[ "${CROSS_TOOLCHAIN}" == "true" ]]; then
       sudo rm -rf /etc/apt/sources.list.d/**;
