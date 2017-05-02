@@ -184,6 +184,9 @@ deploy:
   on:
     repo: headmelted/codematic
     tags: true
+  branches:
+    only:
+      - /^merged_.*$/
     
 after_deploy:
   - cd vscode-multiarch-specific;
