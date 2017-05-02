@@ -101,7 +101,7 @@ script:
         sudo chmod 400 ~/.ssh/mergebot.key;
         sudo echo "${MERGEBOT_SEC_KEY}" > ~/.ssh/mergebot.key;
         eval "$(ssh-agent)";
-        ssh-add -k ~/.ssh/mergebot.key;
+        sudo ssh-add ~/.ssh/mergebot.key;
         sudo rm ~/.ssh/mergebot.key;
         ssh-keyscan github.com | tee -a ~/.ssh/known_hosts;
         git remote set-url origin git@github.com:headmelted/codematic.git;
