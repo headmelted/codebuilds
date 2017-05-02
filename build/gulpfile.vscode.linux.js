@@ -129,7 +129,7 @@ function getRpmPackageArch(arch) {
 }
 
 function prepareRpmPackage(arch) {
-	const binaryDir = '../VSCode-linux-' + arch;
+	const binaryDir = '../VSCode-linux-' + (arch === 'armhf' || arch === 'arm64' ? 'arm' : arch);
 	const rpmArch = getRpmPackageArch(arch);
 
 	return function () {
@@ -190,7 +190,7 @@ function getFlatpakArch(arch) {
 }
 
 function prepareFlatpak(arch) {
-	const binaryDir = '../VSCode-linux-' + arch;
+	const binaryDir = '../VSCode-linux-' + (arch === 'armhf' || arch === 'arm64' ? 'arm' : arch);
 	const flatpakArch = getFlatpakArch(arch);
 	const destination = '.build/linux/flatpak/' + flatpakArch;
 

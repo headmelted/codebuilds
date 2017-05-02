@@ -115,20 +115,20 @@ before_install:
   #- sleep 3;
   
 script:
-  - ls;
+  - gulp hygiene | tee -a buildlog_${LABEL}.txt;
   - if [[ "${ARCH}" == "amd64" ]]; then
-      ./scripts/npm.sh install --unsafe-perm;
-      gulp electron;
+      ./scripts/npm.sh install --unsafe-perm | tee -a buildlog_${LABEL}.txt;
+      gulp electron | tee -a buildlog_${LABEL}.txt;
     else
-      ./scripts/npm.sh install --unsafe-perm --arch=${NPM_ARCH};
-      gulp electron --arch=${VSCODE_ELECTRON_PLATFORM};
+      ./scripts/npm.sh install --unsafe-perm --arch=${NPM_ARCH} | tee -a buildlog_${LABEL}.txt;
+      gulp electron --arch=${VSCODE_ELECTRON_PLATFORM} | tee -a buildlog_${LABEL}.txt;
     fi
-  - gulp compile --max_old_space_size=4096;
-  - gulp optimize-vscode --max_old_space_size=4096;
-  - gulp "vscode-linux-${VSCODE_ELECTRON_PLATFORM}";
-  - gulp "vscode-linux-${PACKAGE_ARCH}-build-deb";
-  - tar -zcvf "archive_${LABEL}.tar.gz" .build;
-  - tree /home/travis -o tree.txt;
+  - gulp compile --max_old_space_size=4096 | tee -a buildlog_${LABEL}.txt;
+  - gulp optimize-vscode --max_old_space_size=4096 | tee -a buildlog_${LABEL}.txt;
+  - gulp "vscode-linux-${VSCODE_ELECTRON_PLATFORM}" | tee -a buildlog_${LABEL}.txt;
+  - gulp "vscode-linux-${PACKAGE_ARCH}-build-deb" | tee -a buildlog_${LABEL}.txt;
+  - gulp "vscode-linux-${PACKAGE_ARCH}-build-rpm" | tee -a buildlog_${LABEL}.txt;
+  - tar -zcvf "archive_${LABEL}.tar.gz" .build | tee -a buildlog_${LABEL}.txt;
 
 deploy:
   provider: releases
@@ -138,7 +138,7 @@ deploy:
     - .build/linux/**/*.deb
     - .build/linux/**/*.rpm
     - .build/linux/**/*.flatpak
-    - ./tree.txt
+    - ./buildlog_*.txt
     - ./archive_*.tar.gz
   skip_cleanup: true
   on:
@@ -148,5 +148,5 @@ deploy:
 after_deploy:
   - cd vscode-multiarch-specific;
   - bash ./pushToBintray.sh ../.build/linux/deb/*/deb/*.deb;
-  #- bash ./vscode-multiarch-specific/pushToBintray.sh ./.build/linux/rpm/*/*.rpm;
+  - bash ./pushToBintray.sh ../.build/linux/rpm/*/*.rpm;
 
