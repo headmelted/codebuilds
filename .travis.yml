@@ -121,6 +121,8 @@ script:
         git push origin master --follow-tags;
         ssh-keygen -R github.com;
         trap 'test -n "$SSH_AGENT_PID" && eval `/usr/bin/ssh-agent -k`' 0;
+      else
+        echo "This is a merge triggered by cron, so nothing to build.";
       fi;
     else
       export CXX="${GPP_COMPILER}" CC="${GCC_COMPILER}";
