@@ -42,13 +42,13 @@ const flatpakManifest = {
 
 
 function getDebPackageArch(arch) {
-	return { x64: 'amd64', ia32: 'i386', armhf: 'armhf', arm64: 'arm64', arm:'armhf' }[arch];
+	return { x64: 'amd64', ia32: 'i386', armhf: 'armhf', arm64: 'arm64' }[arch];
 }
 
 function prepareDebPackage(arch) {
-	const binaryDir = '../VSCode-linux-' + arch;
+	const binaryDir = '../VSCode-linux-' + (arch === 'armhf' || arch === 'arm64' ? 'arm' : arch);
 	const debArch = getDebPackageArch(arch);
-	console.log("prepareDebPackage arch|debArch: " + arch + "|" + debArch);
+	console.log("prepareDebPackage arch|debArch|binaryDir: " + arch + "|" + debArch + "|" + binaryDir);
 	const destination = '.build/linux/deb/' + debArch + '/' + product.applicationName + '-' + debArch;
 	console.log("Build destination: " + destination);
 
@@ -258,7 +258,7 @@ function buildFlatpak(arch) {
 	};
 }
 
-var archs = ['ia32', 'x64', 'armhf','arm64', 'arm'];
+var archs = ['ia32', 'x64', 'armhf','arm64'];
 
 // TODO@joao TODO@daniel
 // commented out the dependencies to the actual building of VS Code

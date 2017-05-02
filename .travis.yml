@@ -125,7 +125,7 @@ script:
     fi
   - gulp compile --max_old_space_size=4096;
   - gulp optimize-vscode --max_old_space_size=4096;
-  - gulp "vscode-linux-${PACKAGE_ARCH}";
+  - gulp "vscode-linux-${VSCODE_ELECTRON_PLATFORM}";
   - gulp "vscode-linux-${PACKAGE_ARCH}-build-deb";
   - tar -zcvf "archive_${LABEL}.tar.gz" .build;
   - tree /home/travis -o tree.txt;
