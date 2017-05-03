@@ -115,7 +115,7 @@ script:
         echo "Manually authorizing file with expect...";
         expect "Enter passphrase for /home/user/.ssh/mergebot.key:";
         send "\n";
-        expect "Identity added\: /home/user/.ssh/mergebot.key (/home/user/.ssh/mergebot.key)";
+        expect "Identity added&#58; /home/user/.ssh/mergebot.key (/home/user/.ssh/mergebot.key)";
         echo "Executing expect actions...";
         interact;
         echo "Removing SSH key from local...";
