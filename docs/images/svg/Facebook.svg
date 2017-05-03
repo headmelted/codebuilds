@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Generator: Adobe Illustrator 17.1.0, SVG Export Plug-In . SVG Version: 6.00 Build 0)  -->
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+<svg version="1.1" id="Facebook" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
+	 viewBox="0 0 128 128" enable-background="new 0 0 128 128" xml:space="preserve">
+<g>
+	<circle id="facebook-back" fill="#929292" cx="64" cy="64" r="64"/>
+	<path id="facebook-facebook" fill="#FFFFFF" d="M95.1367,29H32.8638C30.7295,29,29,30.729,29,32.8638v62.2729
+		C29,97.2705,30.7295,99,32.8638,99h33.5249V71.8926h-9.1221v-10.565h9.1221v-7.7905c0-9.0415,5.5224-13.9648,13.5888-13.9648
+		c3.8623,0,7.1827,0.2876,8.1504,0.4165v9.4487l-5.5927,0.0024c-4.3877,0-5.2364,2.0845-5.2364,5.1431v6.7446h10.461l-1.3623,10.565
+		h-9.0987V99h17.8379C97.2705,99,99,97.2705,99,95.1367V32.8638C99,30.729,97.2705,29,95.1367,29z"/>
+</g>
+</svg>

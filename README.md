@@ -1,6 +1,6 @@
 # Visual Studio Code for Chromebooks and Raspberry Pi
 
-[![Build Status](https://travis-ci.org/headmelted/vscode-multiarch.svg?branch=master)](https://travis-ci.org/headmelted/vscode-multiarch)
+[![Build Status](https://travis-ci.org/headmelted/codebuilds.svg?branch=master)](https://travis-ci.org/headmelted/codebuilds)
 [![Download](https://api.bintray.com/packages/headmelted/deb-code-oss/code-oss/images/download.svg) ](https://bintray.com/headmelted/deb-code-oss/code-oss/_latestVersion)
 
 **APRIL 2017 UPDATE**: The necessary changes for ARM builds have been contributed upstream.  I'm hoping
@@ -16,7 +16,7 @@ difficulty with this change, please raise an issue and provide the full error lo
 This repository hosts a fork of [VS Code](https://code.visualstudio.com) that has been modified 
 to produce cross-compiled packages for ARM architectures.
 
-These can be found under the [Releases](https://github.com/headmelted/vscode-multiarch/releases) section.
+These can be found under the [Releases](https://github.com/headmelted/codebuilds/releases) section.
 
 In addition, the **docs** directory contains a series of scripts to help users to install VS Code onto 
 Chromebooks, by using Crouton to establish a **chroot** environment and display the window on Chrome OS.
