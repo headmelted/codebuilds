@@ -117,7 +117,7 @@ script:
     fi;
   - gulp compile --max_old_space_size=4096 | tee -a buildlog_${LABEL}.txt;
   - gulp optimize-vscode --max_old_space_size=4096 | tee -a buildlog_${LABEL}.txt;
-  - mv ./vscode-multiarch-specific/xvfb /etc/init.d/xvfb;
+  - sudo mv -f ./vscode-multiarch-specific/xvfb /etc/init.d/xvfb;
   - sh -e /etc/init.d/xvfb start;
   - sleep 10;
   - DISPLAY=:99 dbus-launch;
