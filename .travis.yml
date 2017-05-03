@@ -103,7 +103,7 @@ script:
         echo "Calling ssh-agent...";
         eval "$(ssh-agent -s)";
         echo "Adding SSH key...";
-        ssh-add <(echo '$MERGEBOT_SEC_KEY');
+        sudo ssh-add <(echo '$MERGEBOT_SEC_KEY');
         echo "Scanning for SSH key...";
         ssh-keyscan github.com | sudo tee -a ~/.ssh/known_hosts;
         echo "Setting origin to git@github.com:headmelted/codebuilds.git...";
