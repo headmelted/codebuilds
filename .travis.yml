@@ -121,6 +121,9 @@ script:
   - sh -e /etc/init.d/xvfb start;
   - sleep 10;
   - DISPLAY=:99 dbus-launch;
+  - echo "Testing for QEMU...";
+  - apt-file search ld-linux.so.3;
+  - ls /usr/arm-linux-gnueabihf/lib/;
   - if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then
       ./scripts/test.sh --coverage;
     else
