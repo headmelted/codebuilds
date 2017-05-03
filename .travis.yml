@@ -103,9 +103,9 @@ script:
         echo "Calling ssh-agent...";
         eval "$(ssh-agent -s)";
         echo "Adding SSH key...";
-        sudo ssh-add <(echo '$MERGEBOT_SEC_KEY');
+        ssh-add <(echo '$MERGEBOT_SEC_KEY');
         echo "Scanning for SSH key...";
-        sudo ssh-keyscan github.com | sudo tee -a ~/.ssh/known_hosts;
+        ssh-keyscan github.com | sudo tee -a ~/.ssh/known_hosts;
         echo "Setting origin to git@github.com:headmelted/codebuilds.git...";
         git remote set-url origin git@github.com:headmelted/codebuilds.git;
         echo "Setting upstream to https://github.com/Microsoft/vscode.git...";
