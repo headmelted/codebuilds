@@ -111,7 +111,13 @@ script:
         echo "Calling ssh-agent...";
         eval "$(ssh-agent -s)";
         echo "Adding SSH key...";
-        sudo /usr/bin/ssh-add -k ~/.ssh/mergebot.key;
+        sudo spawn /usr/bin/ssh-add -k ~/.ssh/mergebot.key;
+        echo "Manually authorizing file with expect...";
+        expect "Enter passphrase for /home/user/.ssh/mergebot.key:";
+        send "\n";
+        expect "Identity added\: /home/user/.ssh/mergebot.key (/home/user/.ssh/mergebot.key)";
+        echo "Executing expect actions...";
+        interact;
         echo "Removing SSH key from local...";
         sudo rm ~/.ssh/mergebot.key;
         echo "Scanning for SSH key...";
