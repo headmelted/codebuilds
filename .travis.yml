@@ -88,7 +88,7 @@ notifications:
   email: false
   
 script:
-  - export CXX="${GPP_COMPILER}" CC="${GCC_COMPILER}";
+  - export CXX="${GPP_COMPILER}" CC="${GCC_COMPILER}" CONFIG_FLAGS="--without-snapshot";
   - if [[ "${CROSS_TOOLCHAIN}" == "true" ]]; then
       sudo rm -rf /etc/apt/sources.list.d/**;
       sudo rm /etc/apt/sources.list; 
