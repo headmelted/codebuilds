@@ -96,14 +96,24 @@ script:
         echo "Setting Github username...";
         git config user.name "headmelted";
         echo "Setting Github email...";
-        git config user.email "git@github.com";
+        git config user.email "headmelted@gmail.com";
         echo "Creating SSH directory...";
-        sudo mkdir -p ~/.ssh;
+        mkdir -p ~/.ssh;
         trap 'test -n "$SSH_AGENT_PID" && eval `/usr/bin/ssh-agent -k`' 0;
+        echo "Deleting existing keys...";
+        sudo ssh-add -D;
+        echo "Creating keyfile...";
+        sudo touch ~/.ssh/mergebot.key;
+        echo "Calling chmod 400...";
+        sudo chmod 400 ~/.ssh/mergebot.key;
+        echo "Writing secure key to keyfile...";
+        sudo sh -c "echo \"${MERGEBOT_SEC_KEY}\" > ~/.ssh/mergebot.key";
         echo "Calling ssh-agent...";
         eval "$(ssh-agent -s)";
         echo "Adding SSH key...";
-        sudo ssh-add <(echo '$MERGEBOT_SEC_KEY');
+        sudo /usr/bin/ssh-add -k ~/.ssh/mergebot.key;
+        echo "Removing SSH key from local...";
+        sudo rm ~/.ssh/mergebot.key;
         echo "Scanning for SSH key...";
         ssh-keyscan github.com | sudo tee -a ~/.ssh/known_hosts;
         echo "Setting origin to git@github.com:headmelted/codebuilds.git...";
@@ -204,9 +214,7 @@ deploy:
       - /^merged_.*$/
     
 after_deploy:
-  - if [ "${LABEL}" != "merge" ]; then
-      cd vscode-multiarch-specific;
-      bash ./pushToBintray.sh ../.build/linux/deb/*/deb/*.deb;
-      bash ./pushToBintray.sh ../.build/linux/rpm/*/*.rpm;
-    fi;
+  - cd vscode-multiarch-specific;
+  - bash ./pushToBintray.sh ../.build/linux/deb/*/deb/*.deb;
+  - bash ./pushToBintray.sh ../.build/linux/rpm/*/*.rpm;
 
