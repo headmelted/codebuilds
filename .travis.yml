@@ -112,6 +112,8 @@ script:
         eval "$(ssh-agent -s)";
         echo "Adding SSH key...";
         sudo spawn /usr/bin/ssh-add -k ~/.ssh/mergebot.key;
+        echo "Installing expect...";
+        sudo apt-get install expect -y;
         echo "Manually authorizing file with expect...";
         expect "Enter passphrase for /home/user/.ssh/mergebot.key:";
         send "\n";
