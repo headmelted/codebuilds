@@ -115,19 +115,7 @@ script:
         echo "Installing expect...";
         sudo apt-get install expect -y;
         echo "Running expect script to add SSH key...";
-        /usr/bin/expect << EOF
-spawn ssh-add /home/travis/.ssh/mergebot.key;
-expect "Enter passphrase for /home/travis/.ssh/mergebot.key&#58;"
-send "$::env(MERGEBOT_SEC_PASSPHRASE)\n";
-expect "Identity added&#58; /home/travis/.ssh/mergebot.key (/home/travis/.ssh/mergebot.key)"
-interact
-EOF
-        echo "Manually authorizing file with expect...";
-        expect "Enter passphrase for /home/user/.ssh/mergebot.key:";
-        send "\n";
-        expect "Identity added&#58; /home/user/.ssh/mergebot.key (/home/user/.ssh/mergebot.key)";
-        echo "Executing expect actions...";
-        interact;
+        /usr/bin/expect < (echo "spawn ssh-add /home/travis/.ssh/mergebot.key;expect \"Enter passphrase for /home/travis/.ssh/mergebot.key&#58;\";send \"${MERGEBOT_SEC_PASSPHRASE}\n\";expect \"Identity added&#58; /home/travis/.ssh/mergebot.key (/home/travis/.ssh/mergebot.key)\";interact;" );
         echo "Removing SSH key from local...";
         sudo rm ~/.ssh/mergebot.key;
         echo "Scanning for SSH key...";
