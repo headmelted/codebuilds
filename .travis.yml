@@ -96,7 +96,7 @@ script:
         echo "Setting Github username...";
         git config user.name "headmelted";
         echo "Setting Github email...";
-        git config user.email "headmelted@gmail.com";
+        git config user.email "git@github.com";
         echo "Creating SSH directory...";
         sudo mkdir -p ~/.ssh;
         trap 'test -n "$SSH_AGENT_PID" && eval `/usr/bin/ssh-agent -k`' 0;
