@@ -204,7 +204,9 @@ deploy:
       - /^merged_.*$/
     
 after_deploy:
-  - cd vscode-multiarch-specific;
-  - bash ./pushToBintray.sh ../.build/linux/deb/*/deb/*.deb;
-  - bash ./pushToBintray.sh ../.build/linux/rpm/*/*.rpm;
+  - if [ "${LABEL}" != "merge" ]; then
+      cd vscode-multiarch-specific;
+      bash ./pushToBintray.sh ../.build/linux/deb/*/deb/*.deb;
+      bash ./pushToBintray.sh ../.build/linux/rpm/*/*.rpm;
+    fi;
 
