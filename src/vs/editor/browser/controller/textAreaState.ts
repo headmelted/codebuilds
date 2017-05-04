@@ -4,65 +4,24 @@
  *--------------------------------------------------------------------------------------------*/
 'use strict';
 
-import Event from 'vs/base/common/event';
 import { commonPrefixLength, commonSuffixLength } from 'vs/base/common/strings';
 import { Range } from 'vs/editor/common/core/range';
 import { EndOfLinePreference } from 'vs/editor/common/editorCommon';
-import { Position } from 'vs/editor/common/core/position';
 import { Constants } from 'vs/editor/common/core/uint';
 
-export interface IClipboardEvent {
-	canUseTextData(): boolean;
-	setTextData(text: string, richText: string): void;
-	getTextData(): string;
-}
-
-export interface ICompositionEvent {
-	data: string;
-	locale: string;
-}
-
-export interface IKeyboardEventWrapper {
-	_actual: any;
-	equals(keybinding: number): boolean;
-	preventDefault(): void;
-	stopPropagation(): void;
-	isDefaultPrevented(): boolean;
-}
-
 export interface ITextAreaWrapper {
-	onKeyDown: Event<IKeyboardEventWrapper>;
-	onKeyUp: Event<IKeyboardEventWrapper>;
-	onKeyPress: Event<IKeyboardEventWrapper>;
-	onCompositionStart: Event<ICompositionEvent>;
-	onCompositionUpdate: Event<ICompositionEvent>;
-	onCompositionEnd: Event<ICompositionEvent>;
-	onInput: Event<void>;
-	onCut: Event<IClipboardEvent>;
-	onCopy: Event<IClipboardEvent>;
-	onPaste: Event<IClipboardEvent>;
-
 	getValue(): string;
 	setValue(reason: string, value: string): void;
+
 	getSelectionStart(): number;
 	getSelectionEnd(): number;
-
-	setSelectionRange(selectionStart: number, selectionEnd: number): void;
-	isInOverwriteMode(): boolean;
+	setSelectionRange(reason: string, selectionStart: number, selectionEnd: number): void;
 }
 
 export interface ISimpleModel {
-	getLineMaxColumn(lineNumber: number): number;
-	getEOL(): string;
-	getValueInRange(range: Range, eol: EndOfLinePreference): string;
-	getModelLineContent(lineNumber: number): string;
 	getLineCount(): number;
-	getPlainTextToCopy(ranges: Range[], enableEmptySelectionClipboard: boolean): string;
-	getHTMLToCopy(ranges: Range[], enableEmptySelectionClipboard: boolean): string;
-
-	coordinatesConverter: {
-		convertViewPositionToModelPosition(viewPosition: Position): Position;
-	};
+	getLineMaxColumn(lineNumber: number): number;
+	getValueInRange(range: Range, eol: EndOfLinePreference): string;
 }
 
 export interface ITypeData {
@@ -70,92 +29,60 @@ export interface ITypeData {
 	replaceCharCnt: number;
 }
 
-export enum TextAreaStrategy {
-	IENarrator,
-	NVDA
-}
+export class TextAreaState {
 
-const USE_NVDA_FULL_TEXT = false;
+	public static EMPTY = new TextAreaState('', 0, 0, 0);
 
-export function createTextAreaState(strategy: TextAreaStrategy): TextAreaState {
-	if (strategy === TextAreaStrategy.IENarrator) {
-		return IENarratorTextAreaState.EMPTY;
-	}
-	if (USE_NVDA_FULL_TEXT) {
-		return NVDAFullTextAreaState.EMPTY;
-	}
-	return NVDAPagedTextAreaState.EMPTY;
-}
+	public readonly value: string;
+	public readonly selectionStart: number;
+	public readonly selectionEnd: number;
+	public readonly selectionToken: number;
 
-export abstract class TextAreaState {
-
-	protected previousState: TextAreaState;
-	protected value: string;
-	protected selectionStart: number;
-	protected selectionEnd: number;
-	protected isInOverwriteMode: boolean;
-
-	constructor(previousState: TextAreaState, value: string, selectionStart: number, selectionEnd: number, isInOverwriteMode: boolean) {
-		this.previousState = previousState ? previousState.shallowClone() : null;
+	constructor(value: string, selectionStart: number, selectionEnd: number, selectionToken: number) {
 		this.value = value;
 		this.selectionStart = selectionStart;
 		this.selectionEnd = selectionEnd;
-		this.isInOverwriteMode = isInOverwriteMode;
+		this.selectionToken = selectionToken;
 	}
 
-	protected abstract shallowClone(): TextAreaState;
-
-	public abstract toEmpty(): TextAreaState;
-
-	public abstract toString(): string;
-
-	public abstract toStrategy(strategy: TextAreaStrategy): TextAreaState;
-
-	public abstract equals(other: TextAreaState): boolean;
-
-	public abstract fromTextArea(textArea: ITextAreaWrapper): TextAreaState;
-
-	public abstract fromEditorSelection(model: ISimpleModel, selection: Range);
-
-	public abstract fromText(text: string): TextAreaState;
-
-	public updateComposition(): ITypeData {
-		if (!this.previousState) {
-			// This is the EMPTY state
-			return {
-				text: '',
-				replaceCharCnt: 0
-			};
+	public equals(other: TextAreaState): boolean {
+		if (other instanceof TextAreaState) {
+			return (
+				this.value === other.value
+				&& this.selectionStart === other.selectionStart
+				&& this.selectionEnd === other.selectionEnd
+				&& this.selectionToken === other.selectionToken
+			);
 		}
-
-		return {
-			text: this.value,
-			replaceCharCnt: this.previousState.selectionEnd - this.previousState.selectionStart
-		};
+		return false;
 	}
 
-	public abstract resetSelection(): TextAreaState;
-
-	public getSelectionStart(): number {
-		return this.selectionStart;
+	public toString(): string {
+		return '[ <' + this.value + '>, selectionStart: ' + this.selectionStart + ', selectionEnd: ' + this.selectionEnd + ', selectionToken: ' + this.selectionToken + ']';
 	}
 
-	public getValue(): string {
-		return this.value;
+	public readFromTextArea(textArea: ITextAreaWrapper): TextAreaState {
+		return new TextAreaState(textArea.getValue(), textArea.getSelectionStart(), textArea.getSelectionEnd(), this.selectionToken);
 	}
 
-	public applyToTextArea(reason: string, textArea: ITextAreaWrapper, select: boolean): void {
+	public collapseSelection(): TextAreaState {
+		return new TextAreaState(this.value, this.value.length, this.value.length, this.selectionToken);
+	}
+
+	public writeToTextArea(reason: string, textArea: ITextAreaWrapper, select: boolean): void {
 		// console.log(Date.now() + ': applyToTextArea ' + reason + ': ' + this.toString());
-		if (textArea.getValue() !== this.value) {
-			textArea.setValue(reason, this.value);
-		}
+		textArea.setValue(reason, this.value);
 		if (select) {
-			textArea.setSelectionRange(this.selectionStart, this.selectionEnd);
+			textArea.setSelectionRange(reason, this.selectionStart, this.selectionEnd);
 		}
 	}
 
-	public deduceInput(): ITypeData {
-		if (!this.previousState) {
+	public static selectedText(text: string): TextAreaState {
+		return new TextAreaState(text, 0, text.length, 0);
+	}
+
+	public static deduceInput(previousState: TextAreaState, currentState: TextAreaState, isDoingComposition: boolean): ITypeData {
+		if (!previousState) {
 			// This is the EMPTY state
 			return {
 				text: '',
@@ -164,26 +91,26 @@ export abstract class TextAreaState {
 		}
 
 		// console.log('------------------------deduceInput');
-		// console.log('CURRENT STATE: ' + this.toString());
-		// console.log('PREVIOUS STATE: ' + this.previousState.toString());
+		// console.log('CURRENT STATE: ' + currentState.toString());
+		// console.log('PREVIOUS STATE: ' + previousState.toString());
 
-		let previousValue = this.previousState.value;
-		let previousSelectionStart = this.previousState.selectionStart;
-		let previousSelectionEnd = this.previousState.selectionEnd;
-		let currentValue = this.value;
-		let currentSelectionStart = this.selectionStart;
-		let currentSelectionEnd = this.selectionEnd;
+		let previousValue = previousState.value;
+		let previousSelectionStart = previousState.selectionStart;
+		let previousSelectionEnd = previousState.selectionEnd;
+		let currentValue = currentState.value;
+		let currentSelectionStart = currentState.selectionStart;
+		let currentSelectionEnd = currentState.selectionEnd;
 
 		// Strip the previous suffix from the value (without interfering with the current selection)
-		let previousSuffix = previousValue.substring(previousSelectionEnd);
-		let currentSuffix = currentValue.substring(currentSelectionEnd);
-		let suffixLength = commonSuffixLength(previousSuffix, currentSuffix);
+		const previousSuffix = previousValue.substring(previousSelectionEnd);
+		const currentSuffix = currentValue.substring(currentSelectionEnd);
+		const suffixLength = commonSuffixLength(previousSuffix, currentSuffix);
 		currentValue = currentValue.substring(0, currentValue.length - suffixLength);
 		previousValue = previousValue.substring(0, previousValue.length - suffixLength);
 
-		let previousPrefix = previousValue.substring(0, previousSelectionStart);
-		let currentPrefix = currentValue.substring(0, currentSelectionStart);
-		let prefixLength = commonPrefixLength(previousPrefix, currentPrefix);
+		const previousPrefix = previousValue.substring(0, previousSelectionStart);
+		const currentPrefix = currentValue.substring(0, currentSelectionStart);
+		const prefixLength = commonPrefixLength(previousPrefix, currentPrefix);
 		currentValue = currentValue.substring(prefixLength);
 		previousValue = previousValue.substring(prefixLength);
 		currentSelectionStart -= prefixLength;
@@ -198,7 +125,8 @@ export abstract class TextAreaState {
 			// composition accept case
 			// [blahblah] => blahblah|
 			if (
-				previousValue === currentValue
+				isDoingComposition
+				&& previousValue === currentValue
 				&& previousSelectionStart === 0
 				&& previousSelectionEnd === previousValue.length
 				&& currentSelectionStart === currentValue.length
@@ -211,7 +139,7 @@ export abstract class TextAreaState {
 			}
 
 			// no current selection
-			let replacePreviousCharacters = (previousPrefix.length - prefixLength);
+			const replacePreviousCharacters = (previousPrefix.length - prefixLength);
 			// console.log('REMOVE PREVIOUS: ' + (previousPrefix.length - prefixLength) + ' chars');
 
 			return {
@@ -221,7 +149,7 @@ export abstract class TextAreaState {
 		}
 
 		// there is a current selection => composition case
-		let replacePreviousCharacters = previousSelectionEnd - previousSelectionStart;
+		const replacePreviousCharacters = previousSelectionEnd - previousSelectionStart;
 		return {
 			text: currentValue,
 			replaceCharCnt: replacePreviousCharacters
@@ -229,56 +157,9 @@ export abstract class TextAreaState {
 	}
 }
 
-export class IENarratorTextAreaState extends TextAreaState {
-	public static EMPTY = new IENarratorTextAreaState(null, '', 0, 0, false, 0);
+export class IENarratorStrategy {
 
-	private selectionToken: number;
-
-	constructor(previousState: TextAreaState, value: string, selectionStart: number, selectionEnd: number, isInOverwriteMode: boolean, selectionToken: number) {
-		super(previousState, value, selectionStart, selectionEnd, isInOverwriteMode);
-		this.selectionToken = selectionToken;
-	}
-
-	protected shallowClone(): TextAreaState {
-		return new IENarratorTextAreaState(null, this.value, this.selectionStart, this.selectionEnd, this.isInOverwriteMode, this.selectionToken);
-	}
-
-	public toEmpty(): TextAreaState {
-		return IENarratorTextAreaState.EMPTY;
-	}
-
-	public toString(): string {
-		return '[ <' + this.value + '>, selectionStart: ' + this.selectionStart + ', selectionEnd: ' + this.selectionEnd + ', isInOverwriteMode: ' + this.isInOverwriteMode + ', selectionToken: ' + this.selectionToken + ']';
-	}
-
-	public toStrategy(strategy: TextAreaStrategy): TextAreaState {
-		if (strategy === TextAreaStrategy.IENarrator) {
-			return this;
-		}
-		if (USE_NVDA_FULL_TEXT) {
-			return new NVDAFullTextAreaState(this.previousState, this.value, this.selectionStart, this.selectionEnd, this.isInOverwriteMode);
-		}
-		return new NVDAPagedTextAreaState(this.previousState, this.value, this.selectionStart, this.selectionEnd, this.isInOverwriteMode);
-	}
-
-	public equals(other: TextAreaState): boolean {
-		if (other instanceof IENarratorTextAreaState) {
-			return (
-				this.value === other.value
-				&& this.selectionStart === other.selectionStart
-				&& this.selectionEnd === other.selectionEnd
-				&& this.isInOverwriteMode === other.isInOverwriteMode
-				&& this.selectionToken === other.selectionToken
-			);
-		}
-		return false;
-	}
-
-	public fromTextArea(textArea: ITextAreaWrapper): TextAreaState {
-		return new IENarratorTextAreaState(this, textArea.getValue(), textArea.getSelectionStart(), textArea.getSelectionEnd(), textArea.isInOverwriteMode(), this.selectionToken);
-	}
-
-	public fromEditorSelection(model: ISimpleModel, selection: Range): TextAreaState {
+	public static fromEditorSelection(previousState: TextAreaState, model: ISimpleModel, selection: Range): TextAreaState {
 		let LIMIT_CHARS = 100;
 		let PADDING_LINES_COUNT = 0;
 
@@ -289,7 +170,7 @@ export class IENarratorTextAreaState extends TextAreaState {
 			selectionEndLineNumberMaxColumn = model.getLineMaxColumn(selectionEndLineNumber);
 
 		// If the selection is empty and we have switched line numbers, expand selection to full line (helps Narrator trigger a full line read)
-		if (selection.isEmpty() && this.selectionToken !== selectionStartLineNumber) {
+		if (selection.isEmpty() && previousState && previousState.selectionToken !== selectionStartLineNumber) {
 			selectionStartColumn = 1;
 			selectionEndColumn = selectionEndLineNumberMaxColumn;
 		}
@@ -324,79 +205,31 @@ export class IENarratorTextAreaState extends TextAreaState {
 			text = text.substring(0, LIMIT_CHARS) + String.fromCharCode(8230) + text.substring(text.length - LIMIT_CHARS, text.length);
 		}
 
-		return new IENarratorTextAreaState(this, pretext + text + posttext, pretext.length, pretext.length + text.length, false, selectionStartLineNumber);
-	}
-
-	public fromText(text: string): TextAreaState {
-		return new IENarratorTextAreaState(this, text, 0, text.length, false, 0);
-	}
-
-	public resetSelection(): TextAreaState {
-		return new IENarratorTextAreaState(this.previousState, this.value, this.value.length, this.value.length, this.isInOverwriteMode, this.selectionToken);
+		return new TextAreaState(pretext + text + posttext, pretext.length, pretext.length + text.length, selectionStartLineNumber);
 	}
 }
 
-export class NVDAPagedTextAreaState extends TextAreaState {
-	public static EMPTY = new NVDAPagedTextAreaState(null, '', 0, 0, false);
+export class NVDAPagedStrategy {
 	private static _LINES_PER_PAGE = 10;
 
-	constructor(previousState: TextAreaState, value: string, selectionStart: number, selectionEnd: number, isInOverwriteMode: boolean) {
-		super(previousState, value, selectionStart, selectionEnd, isInOverwriteMode);
-	}
-
-	protected shallowClone(): TextAreaState {
-		return new NVDAPagedTextAreaState(null, this.value, this.selectionStart, this.selectionEnd, this.isInOverwriteMode);
-	}
-
-	public toEmpty(): TextAreaState {
-		return NVDAPagedTextAreaState.EMPTY;
-	}
-
-	public toString(): string {
-		return '[ <' + this.value + '>, selectionStart: ' + this.selectionStart + ', selectionEnd: ' + this.selectionEnd + ', isInOverwriteMode: ' + this.isInOverwriteMode + ']';
-	}
-
-	public toStrategy(strategy: TextAreaStrategy): TextAreaState {
-		if (strategy === TextAreaStrategy.NVDA) {
-			return this;
-		}
-		return new IENarratorTextAreaState(this.previousState, this.value, this.selectionStart, this.selectionEnd, this.isInOverwriteMode, 0);
-	}
-
-	public equals(other: TextAreaState): boolean {
-		if (other instanceof NVDAPagedTextAreaState) {
-			return (
-				this.value === other.value
-				&& this.selectionStart === other.selectionStart
-				&& this.selectionEnd === other.selectionEnd
-				&& this.isInOverwriteMode === other.isInOverwriteMode
-			);
-		}
-		return false;
-	}
-
-	public fromTextArea(textArea: ITextAreaWrapper): TextAreaState {
-		return new NVDAPagedTextAreaState(this, textArea.getValue(), textArea.getSelectionStart(), textArea.getSelectionEnd(), textArea.isInOverwriteMode());
-	}
-
 	private static _getPageOfLine(lineNumber: number): number {
-		return Math.floor((lineNumber - 1) / NVDAPagedTextAreaState._LINES_PER_PAGE);
+		return Math.floor((lineNumber - 1) / NVDAPagedStrategy._LINES_PER_PAGE);
 	}
 
 	private static _getRangeForPage(page: number): Range {
-		let offset = page * NVDAPagedTextAreaState._LINES_PER_PAGE;
+		let offset = page * NVDAPagedStrategy._LINES_PER_PAGE;
 		let startLineNumber = offset + 1;
-		let endLineNumber = offset + NVDAPagedTextAreaState._LINES_PER_PAGE;
+		let endLineNumber = offset + NVDAPagedStrategy._LINES_PER_PAGE;
 		return new Range(startLineNumber, 1, endLineNumber, Constants.MAX_SAFE_SMALL_INTEGER);
 	}
 
-	public fromEditorSelection(model: ISimpleModel, selection: Range): TextAreaState {
+	public static fromEditorSelection(previousState: TextAreaState, model: ISimpleModel, selection: Range): TextAreaState {
 
-		let selectionStartPage = NVDAPagedTextAreaState._getPageOfLine(selection.startLineNumber);
-		let selectionStartPageRange = NVDAPagedTextAreaState._getRangeForPage(selectionStartPage);
+		let selectionStartPage = NVDAPagedStrategy._getPageOfLine(selection.startLineNumber);
+		let selectionStartPageRange = NVDAPagedStrategy._getRangeForPage(selectionStartPage);
 
-		let selectionEndPage = NVDAPagedTextAreaState._getPageOfLine(selection.endLineNumber);
-		let selectionEndPageRange = NVDAPagedTextAreaState._getRangeForPage(selectionEndPage);
+		let selectionEndPage = NVDAPagedStrategy._getPageOfLine(selection.endLineNumber);
+		let selectionEndPageRange = NVDAPagedStrategy._getRangeForPage(selectionEndPage);
 
 		let pretextRange = selectionStartPageRange.intersectRanges(new Range(1, 1, selection.startLineNumber, selection.startColumn));
 		let pretext = model.getValueInRange(pretextRange, EndOfLinePreference.LF);
@@ -433,76 +266,6 @@ export class NVDAPagedTextAreaState extends TextAreaState {
 			text = text.substring(0, LIMIT_CHARS) + String.fromCharCode(8230) + text.substring(text.length - LIMIT_CHARS, text.length);
 		}
 
-		return new NVDAPagedTextAreaState(this, pretext + text + posttext, pretext.length, pretext.length + text.length, false);
-	}
-
-	public fromText(text: string): TextAreaState {
-		return new NVDAPagedTextAreaState(this, text, 0, text.length, false);
-	}
-
-	public resetSelection(): TextAreaState {
-		return new NVDAPagedTextAreaState(this.previousState, this.value, this.value.length, this.value.length, this.isInOverwriteMode);
-	}
-}
-
-
-export class NVDAFullTextAreaState extends TextAreaState {
-	public static EMPTY = new NVDAFullTextAreaState(null, '', 0, 0, false);
-
-	constructor(previousState: TextAreaState, value: string, selectionStart: number, selectionEnd: number, isInOverwriteMode: boolean) {
-		super(previousState, value, selectionStart, selectionEnd, isInOverwriteMode);
-	}
-
-	protected shallowClone(): TextAreaState {
-		return new NVDAFullTextAreaState(null, this.value, this.selectionStart, this.selectionEnd, this.isInOverwriteMode);
-	}
-
-	public toEmpty(): TextAreaState {
-		return NVDAFullTextAreaState.EMPTY;
-	}
-
-	public toString(): string {
-		return '[ <ENTIRE TEXT' + /*this.value +*/ '>, selectionStart: ' + this.selectionStart + ', selectionEnd: ' + this.selectionEnd + ', isInOverwriteMode: ' + this.isInOverwriteMode + ']';
-	}
-
-	public toStrategy(strategy: TextAreaStrategy): TextAreaState {
-		if (strategy === TextAreaStrategy.NVDA) {
-			return this;
-		}
-		return new IENarratorTextAreaState(this.previousState, this.value, this.selectionStart, this.selectionEnd, this.isInOverwriteMode, 0);
-	}
-
-	public equals(other: TextAreaState): boolean {
-		if (other instanceof NVDAFullTextAreaState) {
-			return (
-				this.value === other.value
-				&& this.selectionStart === other.selectionStart
-				&& this.selectionEnd === other.selectionEnd
-				&& this.isInOverwriteMode === other.isInOverwriteMode
-			);
-		}
-		return false;
-	}
-
-	public fromTextArea(textArea: ITextAreaWrapper): TextAreaState {
-		return new NVDAFullTextAreaState(this, textArea.getValue(), textArea.getSelectionStart(), textArea.getSelectionEnd(), textArea.isInOverwriteMode());
-	}
-
-	public fromEditorSelection(model: ISimpleModel, selection: Range): TextAreaState {
-		let pretext = model.getValueInRange(new Range(1, 1, selection.startLineNumber, selection.startColumn), EndOfLinePreference.LF);
-		let text = model.getValueInRange(selection, EndOfLinePreference.LF);
-		let lastLine = model.getLineCount();
-		let lastLineMaxColumn = model.getLineMaxColumn(lastLine);
-		let posttext = model.getValueInRange(new Range(selection.endLineNumber, selection.endColumn, lastLine, lastLineMaxColumn), EndOfLinePreference.LF);
-
-		return new NVDAFullTextAreaState(this, pretext + text + posttext, pretext.length, pretext.length + text.length, false);
-	}
-
-	public fromText(text: string): TextAreaState {
-		return new NVDAFullTextAreaState(this, text, 0, text.length, false);
-	}
-
-	public resetSelection(): TextAreaState {
-		return new NVDAFullTextAreaState(this.previousState, this.value, this.value.length, this.value.length, this.isInOverwriteMode);
+		return new TextAreaState(pretext + text + posttext, pretext.length, pretext.length + text.length, selection.startLineNumber);
 	}
 }

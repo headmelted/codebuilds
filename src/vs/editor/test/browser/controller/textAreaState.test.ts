@@ -5,56 +5,22 @@
 'use strict';
 
 import * as assert from 'assert';
-import { IENarratorTextAreaState, ISimpleModel, TextAreaState, IClipboardEvent, ICompositionEvent, IKeyboardEventWrapper, ITextAreaWrapper } from 'vs/editor/browser/controller/textAreaState';
-import { Position } from 'vs/editor/common/core/position';
+import { ISimpleModel, TextAreaState, ITextAreaWrapper, IENarratorStrategy } from 'vs/editor/browser/controller/textAreaState';
 import { Range } from 'vs/editor/common/core/range';
 import { EndOfLinePreference } from 'vs/editor/common/editorCommon';
-import Event, { Emitter } from 'vs/base/common/event';
 import { Disposable } from 'vs/base/common/lifecycle';
 
 export class MockTextAreaWrapper extends Disposable implements ITextAreaWrapper {
 
-	private _onKeyDown = this._register(new Emitter<IKeyboardEventWrapper>());
-	public onKeyDown: Event<IKeyboardEventWrapper> = this._onKeyDown.event;
-
-	private _onKeyUp = this._register(new Emitter<IKeyboardEventWrapper>());
-	public onKeyUp: Event<IKeyboardEventWrapper> = this._onKeyUp.event;
-
-	private _onKeyPress = this._register(new Emitter<IKeyboardEventWrapper>());
-	public onKeyPress: Event<IKeyboardEventWrapper> = this._onKeyPress.event;
-
-	private _onCompositionStart = this._register(new Emitter<ICompositionEvent>());
-	public onCompositionStart: Event<ICompositionEvent> = this._onCompositionStart.event;
-
-	private _onCompositionUpdate = this._register(new Emitter<ICompositionEvent>());
-	public onCompositionUpdate: Event<ICompositionEvent> = this._onCompositionUpdate.event;
-
-	private _onCompositionEnd = this._register(new Emitter<ICompositionEvent>());
-	public onCompositionEnd: Event<ICompositionEvent> = this._onCompositionEnd.event;
-
-	private _onInput = this._register(new Emitter<void>());
-	public onInput: Event<void> = this._onInput.event;
-
-	private _onCut = this._register(new Emitter<IClipboardEvent>());
-	public onCut: Event<IClipboardEvent> = this._onCut.event;
-
-	private _onCopy = this._register(new Emitter<IClipboardEvent>());
-	public onCopy: Event<IClipboardEvent> = this._onCopy.event;
-
-	private _onPaste = this._register(new Emitter<IClipboardEvent>());
-	public onPaste: Event<IClipboardEvent> = this._onPaste.event;
-
 	public _value: string;
 	public _selectionStart: number;
 	public _selectionEnd: number;
-	public _isInOverwriteMode: boolean;
 
 	constructor() {
 		super();
 		this._value = '';
 		this._selectionStart = 0;
 		this._selectionEnd = 0;
-		this._isInOverwriteMode = false;
 	}
 
 	public getValue(): string {
@@ -75,7 +41,7 @@ export class MockTextAreaWrapper extends Disposable implements ITextAreaWrapper 
 		return this._selectionEnd;
 	}
 
-	public setSelectionRange(selectionStart: number, selectionEnd: number): void {
+	public setSelectionRange(reason: string, selectionStart: number, selectionEnd: number): void {
 		if (selectionStart < 0) {
 			selectionStart = 0;
 		}
@@ -91,16 +57,12 @@ export class MockTextAreaWrapper extends Disposable implements ITextAreaWrapper 
 		this._selectionStart = selectionStart;
 		this._selectionEnd = selectionEnd;
 	}
-
-	public isInOverwriteMode(): boolean {
-		return this._isInOverwriteMode;
-	}
 }
 
 suite('TextAreaState', () => {
 
-	function assertTextAreaState(actual: TextAreaState, value: string, selectionStart: number, selectionEnd: number, isInOverwriteMode: boolean, selectionToken: number): void {
-		let desired = new IENarratorTextAreaState(null, value, selectionStart, selectionEnd, isInOverwriteMode, selectionToken);
+	function assertTextAreaState(actual: TextAreaState, value: string, selectionStart: number, selectionEnd: number, selectionToken: number): void {
+		let desired = new TextAreaState(value, selectionStart, selectionEnd, selectionToken);
 		assert.ok(desired.equals(actual), desired.toString() + ' == ' + actual.toString());
 	}
 
@@ -109,15 +71,14 @@ suite('TextAreaState', () => {
 		textArea._value = 'Hello world!';
 		textArea._selectionStart = 1;
 		textArea._selectionEnd = 12;
-		textArea._isInOverwriteMode = false;
-		let actual = IENarratorTextAreaState.EMPTY.fromTextArea(textArea);
+		let actual = TextAreaState.EMPTY.readFromTextArea(textArea);
 
-		assertTextAreaState(actual, 'Hello world!', 1, 12, false, 0);
-		assert.equal(actual.getValue(), 'Hello world!');
-		assert.equal(actual.getSelectionStart(), 1);
+		assertTextAreaState(actual, 'Hello world!', 1, 12, 0);
+		assert.equal(actual.value, 'Hello world!');
+		assert.equal(actual.selectionStart, 1);
 
-		actual = actual.resetSelection();
-		assertTextAreaState(actual, 'Hello world!', 12, 12, false, 0);
+		actual = actual.collapseSelection();
+		assertTextAreaState(actual, 'Hello world!', 12, 12, 0);
 
 		textArea.dispose();
 	});
@@ -127,24 +88,23 @@ suite('TextAreaState', () => {
 		textArea._value = 'Hello world!';
 		textArea._selectionStart = 1;
 		textArea._selectionEnd = 12;
-		textArea._isInOverwriteMode = false;
 
-		let state = new IENarratorTextAreaState(null, 'Hi world!', 2, 2, false, 0);
-		state.applyToTextArea('test', textArea, false);
-
-		assert.equal(textArea._value, 'Hi world!');
-		assert.equal(textArea._selectionStart, 9);
-		assert.equal(textArea._selectionEnd, 9);
-
-		state = new IENarratorTextAreaState(null, 'Hi world!', 3, 3, false, 0);
-		state.applyToTextArea('test', textArea, false);
+		let state = new TextAreaState('Hi world!', 2, 2, 0);
+		state.writeToTextArea('test', textArea, false);
 
 		assert.equal(textArea._value, 'Hi world!');
 		assert.equal(textArea._selectionStart, 9);
 		assert.equal(textArea._selectionEnd, 9);
 
-		state = new IENarratorTextAreaState(null, 'Hi world!', 0, 2, false, 0);
-		state.applyToTextArea('test', textArea, true);
+		state = new TextAreaState('Hi world!', 3, 3, 0);
+		state.writeToTextArea('test', textArea, false);
+
+		assert.equal(textArea._value, 'Hi world!');
+		assert.equal(textArea._selectionStart, 9);
+		assert.equal(textArea._selectionEnd, 9);
+
+		state = new TextAreaState('Hi world!', 0, 2, 0);
+		state.writeToTextArea('test', textArea, true);
 
 		assert.equal(textArea._value, 'Hi world!');
 		assert.equal(textArea._selectionStart, 0);
@@ -153,16 +113,16 @@ suite('TextAreaState', () => {
 		textArea.dispose();
 	});
 
-	function testDeduceInput(prevState: TextAreaState, value: string, selectionStart: number, selectionEnd: number, isInOverwriteMode: boolean, expected: string, expectedCharReplaceCnt: number): void {
+	function testDeduceInput(prevState: TextAreaState, value: string, selectionStart: number, selectionEnd: number, isDoingComposition: boolean, expected: string, expectedCharReplaceCnt: number): void {
+		prevState = prevState || TextAreaState.EMPTY;
+
 		let textArea = new MockTextAreaWrapper();
 		textArea._value = value;
 		textArea._selectionStart = selectionStart;
 		textArea._selectionEnd = selectionEnd;
-		textArea._isInOverwriteMode = isInOverwriteMode;
 
-		let newState = (prevState || IENarratorTextAreaState.EMPTY).fromTextArea(textArea);
-
-		let actual = newState.deduceInput();
+		let newState = prevState.readFromTextArea(textArea);
+		let actual = TextAreaState.deduceInput(prevState, newState, isDoingComposition);
 
 		assert.equal(actual.text, expected);
 		assert.equal(actual.replaceCharCnt, expectedCharReplaceCnt);
@@ -178,92 +138,92 @@ suite('TextAreaState', () => {
 		// - expected: せんせい
 
 		// s
-		// PREVIOUS STATE: [ <>, selectionStart: 0, selectionEnd: 0, isInOverwriteMode: false, selectionToken: 0]
-		// CURRENT STATE: [ <ｓ>, selectionStart: 0, selectionEnd: 1, isInOverwriteMode: false, selectionToken: 0]
+		// PREVIOUS STATE: [ <>, selectionStart: 0, selectionEnd: 0, selectionToken: 0]
+		// CURRENT STATE: [ <ｓ>, selectionStart: 0, selectionEnd: 1, selectionToken: 0]
 		testDeduceInput(
-			new IENarratorTextAreaState(null, '', 0, 0, false, 0),
+			TextAreaState.EMPTY,
 			'ｓ',
-			0, 1, false,
+			0, 1, true,
 			'ｓ', 0
 		);
 
 		// e
-		// PREVIOUS STATE: [ <ｓ>, selectionStart: 0, selectionEnd: 1, isInOverwriteMode: false, selectionToken: 0]
-		// CURRENT STATE: [ <せ>, selectionStart: 0, selectionEnd: 1, isInOverwriteMode: false, selectionToken: 0]
+		// PREVIOUS STATE: [ <ｓ>, selectionStart: 0, selectionEnd: 1, selectionToken: 0]
+		// CURRENT STATE: [ <せ>, selectionStart: 0, selectionEnd: 1, selectionToken: 0]
 		testDeduceInput(
-			new IENarratorTextAreaState(null, 'ｓ', 0, 1, false, 0),
+			new TextAreaState('ｓ', 0, 1, 0),
 			'せ',
-			0, 1, false,
+			0, 1, true,
 			'せ', 1
 		);
 
 		// n
-		// PREVIOUS STATE: [ <せ>, selectionStart: 0, selectionEnd: 1, isInOverwriteMode: false, selectionToken: 0]
-		// CURRENT STATE: [ <せｎ>, selectionStart: 0, selectionEnd: 2, isInOverwriteMode: false, selectionToken: 0]
+		// PREVIOUS STATE: [ <せ>, selectionStart: 0, selectionEnd: 1, selectionToken: 0]
+		// CURRENT STATE: [ <せｎ>, selectionStart: 0, selectionEnd: 2, selectionToken: 0]
 		testDeduceInput(
-			new IENarratorTextAreaState(null, 'せ', 0, 1, false, 0),
+			new TextAreaState('せ', 0, 1, 0),
 			'せｎ',
-			0, 2, false,
+			0, 2, true,
 			'せｎ', 1
 		);
 
 		// n
-		// PREVIOUS STATE: [ <せｎ>, selectionStart: 0, selectionEnd: 2, isInOverwriteMode: false, selectionToken: 0]
-		// CURRENT STATE: [ <せん>, selectionStart: 0, selectionEnd: 2, isInOverwriteMode: false, selectionToken: 0]
+		// PREVIOUS STATE: [ <せｎ>, selectionStart: 0, selectionEnd: 2, selectionToken: 0]
+		// CURRENT STATE: [ <せん>, selectionStart: 0, selectionEnd: 2, selectionToken: 0]
 		testDeduceInput(
-			new IENarratorTextAreaState(null, 'せｎ', 0, 2, false, 0),
+			new TextAreaState('せｎ', 0, 2, 0),
 			'せん',
-			0, 2, false,
+			0, 2, true,
 			'せん', 2
 		);
 
 		// s
-		// PREVIOUS STATE: [ <せん>, selectionStart: 0, selectionEnd: 2, isInOverwriteMode: false, selectionToken: 0]
-		// CURRENT STATE: [ <せんｓ>, selectionStart: 0, selectionEnd: 3, isInOverwriteMode: false, selectionToken: 0]
+		// PREVIOUS STATE: [ <せん>, selectionStart: 0, selectionEnd: 2, selectionToken: 0]
+		// CURRENT STATE: [ <せんｓ>, selectionStart: 0, selectionEnd: 3, selectionToken: 0]
 		testDeduceInput(
-			new IENarratorTextAreaState(null, 'せん', 0, 2, false, 0),
+			new TextAreaState('せん', 0, 2, 0),
 			'せんｓ',
-			0, 3, false,
+			0, 3, true,
 			'せんｓ', 2
 		);
 
 		// e
-		// PREVIOUS STATE: [ <せんｓ>, selectionStart: 0, selectionEnd: 3, isInOverwriteMode: false, selectionToken: 0]
-		// CURRENT STATE: [ <せんせ>, selectionStart: 0, selectionEnd: 3, isInOverwriteMode: false, selectionToken: 0]
+		// PREVIOUS STATE: [ <せんｓ>, selectionStart: 0, selectionEnd: 3, selectionToken: 0]
+		// CURRENT STATE: [ <せんせ>, selectionStart: 0, selectionEnd: 3, selectionToken: 0]
 		testDeduceInput(
-			new IENarratorTextAreaState(null, 'せんｓ', 0, 3, false, 0),
+			new TextAreaState('せんｓ', 0, 3, 0),
 			'せんせ',
-			0, 3, false,
+			0, 3, true,
 			'せんせ', 3
 		);
 
 		// no-op? [was recorded]
-		// PREVIOUS STATE: [ <せんせ>, selectionStart: 0, selectionEnd: 3, isInOverwriteMode: false, selectionToken: 0]
-		// CURRENT STATE: [ <せんせ>, selectionStart: 0, selectionEnd: 3, isInOverwriteMode: false, selectionToken: 0]
+		// PREVIOUS STATE: [ <せんせ>, selectionStart: 0, selectionEnd: 3, selectionToken: 0]
+		// CURRENT STATE: [ <せんせ>, selectionStart: 0, selectionEnd: 3, selectionToken: 0]
 		testDeduceInput(
-			new IENarratorTextAreaState(null, 'せんせ', 0, 3, false, 0),
+			new TextAreaState('せんせ', 0, 3, 0),
 			'せんせ',
-			0, 3, false,
+			0, 3, true,
 			'せんせ', 3
 		);
 
 		// i
-		// PREVIOUS STATE: [ <せんせ>, selectionStart: 0, selectionEnd: 3, isInOverwriteMode: false, selectionToken: 0]
-		// CURRENT STATE: [ <せんせい>, selectionStart: 0, selectionEnd: 4, isInOverwriteMode: false, selectionToken: 0]
+		// PREVIOUS STATE: [ <せんせ>, selectionStart: 0, selectionEnd: 3, selectionToken: 0]
+		// CURRENT STATE: [ <せんせい>, selectionStart: 0, selectionEnd: 4, selectionToken: 0]
 		testDeduceInput(
-			new IENarratorTextAreaState(null, 'せんせ', 0, 3, false, 0),
+			new TextAreaState('せんせ', 0, 3, 0),
 			'せんせい',
-			0, 4, false,
+			0, 4, true,
 			'せんせい', 3
 		);
 
 		// ENTER (accept)
-		// PREVIOUS STATE: [ <せんせい>, selectionStart: 0, selectionEnd: 4, isInOverwriteMode: false, selectionToken: 0]
-		// CURRENT STATE: [ <せんせい>, selectionStart: 4, selectionEnd: 4, isInOverwriteMode: false, selectionToken: 0]
+		// PREVIOUS STATE: [ <せんせい>, selectionStart: 0, selectionEnd: 4, selectionToken: 0]
+		// CURRENT STATE: [ <せんせい>, selectionStart: 4, selectionEnd: 4, selectionToken: 0]
 		testDeduceInput(
-			new IENarratorTextAreaState(null, 'せんせい', 0, 4, false, 0),
+			new TextAreaState('せんせい', 0, 4, 0),
 			'せんせい',
-			4, 4, false,
+			4, 4, true,
 			'', 0
 		);
 	});
@@ -277,32 +237,32 @@ suite('TextAreaState', () => {
 		// - expected: せんせい
 
 		// sennsei
-		// PREVIOUS STATE: [ <せんせい>, selectionStart: 0, selectionEnd: 4, isInOverwriteMode: false, selectionToken: 0]
-		// CURRENT STATE: [ <せんせい>, selectionStart: 0, selectionEnd: 4, isInOverwriteMode: false, selectionToken: 0]
+		// PREVIOUS STATE: [ <せんせい>, selectionStart: 0, selectionEnd: 4, selectionToken: 0]
+		// CURRENT STATE: [ <せんせい>, selectionStart: 0, selectionEnd: 4, selectionToken: 0]
 		testDeduceInput(
-			new IENarratorTextAreaState(null, 'せんせい', 0, 4, false, 0),
+			new TextAreaState('せんせい', 0, 4, 0),
 			'せんせい',
-			0, 4, false,
+			0, 4, true,
 			'せんせい', 4
 		);
 
 		// arrow down
-		// CURRENT STATE: [ <先生>, selectionStart: 0, selectionEnd: 2, isInOverwriteMode: false, selectionToken: 0]
-		// PREVIOUS STATE: [ <せんせい>, selectionStart: 0, selectionEnd: 4, isInOverwriteMode: false, selectionToken: 0]
+		// CURRENT STATE: [ <先生>, selectionStart: 0, selectionEnd: 2, selectionToken: 0]
+		// PREVIOUS STATE: [ <せんせい>, selectionStart: 0, selectionEnd: 4, selectionToken: 0]
 		testDeduceInput(
-			new IENarratorTextAreaState(null, 'せんせい', 0, 4, false, 0),
+			new TextAreaState('せんせい', 0, 4, 0),
 			'先生',
-			0, 2, false,
+			0, 2, true,
 			'先生', 4
 		);
 
 		// ENTER (accept)
-		// PREVIOUS STATE: [ <先生>, selectionStart: 0, selectionEnd: 2, isInOverwriteMode: false, selectionToken: 0]
-		// CURRENT STATE: [ <先生>, selectionStart: 2, selectionEnd: 2, isInOverwriteMode: false, selectionToken: 0]
+		// PREVIOUS STATE: [ <先生>, selectionStart: 0, selectionEnd: 2, selectionToken: 0]
+		// CURRENT STATE: [ <先生>, selectionStart: 2, selectionEnd: 2, selectionToken: 0]
 		testDeduceInput(
-			new IENarratorTextAreaState(null, '先生', 0, 2, false, 0),
+			new TextAreaState('先生', 0, 2, 0),
 			'先生',
-			2, 2, false,
+			2, 2, true,
 			'', 0
 		);
 	});
@@ -318,7 +278,7 @@ suite('TextAreaState', () => {
 
 	test('issue #2586: Replacing selected end-of-line with newline locks up the document', () => {
 		testDeduceInput(
-			new IENarratorTextAreaState(null, ']\n', 1, 2, false, 0),
+			new TextAreaState(']\n', 1, 2, 0),
 			']\n',
 			2, 2, false,
 			'\n', 0
@@ -336,7 +296,7 @@ suite('TextAreaState', () => {
 
 	test('extractNewText - typing does not cause a selection', () => {
 		testDeduceInput(
-			new IENarratorTextAreaState(null, '', 0, 0, false, 0),
+			TextAreaState.EMPTY,
 			'a',
 			0, 1, false,
 			'a', 0
@@ -345,7 +305,7 @@ suite('TextAreaState', () => {
 
 	test('extractNewText - had the textarea empty', () => {
 		testDeduceInput(
-			new IENarratorTextAreaState(null, '', 0, 0, false, 0),
+			TextAreaState.EMPTY,
 			'a',
 			1, 1, false,
 			'a', 0
@@ -354,7 +314,7 @@ suite('TextAreaState', () => {
 
 	test('extractNewText - had the entire line selected', () => {
 		testDeduceInput(
-			new IENarratorTextAreaState(null, 'Hello world!', 0, 12, false, 0),
+			new TextAreaState('Hello world!', 0, 12, 0),
 			'H',
 			1, 1, false,
 			'H', 0
@@ -363,7 +323,7 @@ suite('TextAreaState', () => {
 
 	test('extractNewText - had previous text 1', () => {
 		testDeduceInput(
-			new IENarratorTextAreaState(null, 'Hello world!', 12, 12, false, 0),
+			new TextAreaState('Hello world!', 12, 12, 0),
 			'Hello world!a',
 			13, 13, false,
 			'a', 0
@@ -372,7 +332,7 @@ suite('TextAreaState', () => {
 
 	test('extractNewText - had previous text 2', () => {
 		testDeduceInput(
-			new IENarratorTextAreaState(null, 'Hello world!', 0, 0, false, 0),
+			new TextAreaState('Hello world!', 0, 0, 0),
 			'aHello world!',
 			1, 1, false,
 			'a', 0
@@ -381,7 +341,7 @@ suite('TextAreaState', () => {
 
 	test('extractNewText - had previous text 3', () => {
 		testDeduceInput(
-			new IENarratorTextAreaState(null, 'Hello world!', 6, 11, false, 0),
+			new TextAreaState('Hello world!', 6, 11, 0),
 			'Hello other!',
 			11, 11, false,
 			'other', 0
@@ -390,25 +350,25 @@ suite('TextAreaState', () => {
 
 	test('extractNewText - IME', () => {
 		testDeduceInput(
-			new IENarratorTextAreaState(null, '', 0, 0, false, 0),
+			TextAreaState.EMPTY,
 			'これは',
-			3, 3, false,
+			3, 3, true,
 			'これは', 0
 		);
 	});
 
 	test('extractNewText - isInOverwriteMode', () => {
 		testDeduceInput(
-			new IENarratorTextAreaState(null, 'Hello world!', 0, 0, false, 0),
+			new TextAreaState('Hello world!', 0, 0, 0),
 			'Aello world!',
-			1, 1, true,
+			1, 1, false,
 			'A', 0
 		);
 	});
 
 	test('extractMacReplacedText - does nothing if there is selection', () => {
 		testDeduceInput(
-			new IENarratorTextAreaState(null, 'Hello world!', 5, 5, false, 0),
+			new TextAreaState('Hello world!', 5, 5, 0),
 			'Hellö world!',
 			4, 5, false,
 			'ö', 0
@@ -417,7 +377,7 @@ suite('TextAreaState', () => {
 
 	test('extractMacReplacedText - does nothing if there is more than one extra char', () => {
 		testDeduceInput(
-			new IENarratorTextAreaState(null, 'Hello world!', 5, 5, false, 0),
+			new TextAreaState('Hello world!', 5, 5, 0),
 			'Hellöö world!',
 			5, 5, false,
 			'öö', 1
@@ -426,7 +386,7 @@ suite('TextAreaState', () => {
 
 	test('extractMacReplacedText - does nothing if there is more than one changed char', () => {
 		testDeduceInput(
-			new IENarratorTextAreaState(null, 'Hello world!', 5, 5, false, 0),
+			new TextAreaState('Hello world!', 5, 5, 0),
 			'Helöö world!',
 			5, 5, false,
 			'öö', 2
@@ -435,17 +395,35 @@ suite('TextAreaState', () => {
 
 	test('extractMacReplacedText', () => {
 		testDeduceInput(
-			new IENarratorTextAreaState(null, 'Hello world!', 5, 5, false, 0),
+			new TextAreaState('Hello world!', 5, 5, 0),
 			'Hellö world!',
 			5, 5, false,
 			'ö', 1
 		);
 	});
 
+	test('issue #25101 - First key press ignored', () => {
+		testDeduceInput(
+			new TextAreaState('a', 0, 1, 0),
+			'a',
+			1, 1, false,
+			'a', 0
+		);
+	});
+
+	test('issue #16520 - Cmd-d of single character followed by typing same character as has no effect', () => {
+		testDeduceInput(
+			new TextAreaState('x x', 0, 1, 0),
+			'x x',
+			1, 1, false,
+			'x', 0
+		);
+	});
+
 	function testFromEditorSelectionAndPreviousState(eol: string, lines: string[], range: Range, prevSelectionToken: number): TextAreaState {
 		let model = new SimpleModel(lines, eol);
-		let previousState = new IENarratorTextAreaState(null, '', 0, 0, false, prevSelectionToken);
-		return previousState.fromEditorSelection(model, range);
+		let previousState = new TextAreaState('', 0, 0, prevSelectionToken);
+		return IENarratorStrategy.fromEditorSelection(previousState, model, range);
 	}
 
 	test('fromEditorSelectionAndPreviousState - no selection on first line', () => {
@@ -453,7 +431,7 @@ suite('TextAreaState', () => {
 			'Just a line',
 			'And another line'
 		], new Range(1, 1, 1, 1), 0);
-		assertTextAreaState(actual, 'Just a line', 0, 11, false, 1);
+		assertTextAreaState(actual, 'Just a line', 0, 11, 1);
 	});
 
 	test('fromEditorSelectionAndPreviousState - no selection on second line', () => {
@@ -462,7 +440,7 @@ suite('TextAreaState', () => {
 			'And another line',
 			'And yet another line',
 		], new Range(2, 1, 2, 1), 0);
-		assertTextAreaState(actual, 'And another line', 0, 16, false, 2);
+		assertTextAreaState(actual, 'And another line', 0, 16, 2);
 	});
 
 	test('fromEditorSelectionAndPreviousState - on a long line with selectionToken mismatch', () => {
@@ -475,7 +453,7 @@ suite('TextAreaState', () => {
 			aLongLine,
 			'And yet another line',
 		], new Range(2, 500, 2, 500), 0);
-		assertTextAreaState(actual, 'aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa…aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa', 0, 201, false, 2);
+		assertTextAreaState(actual, 'aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa…aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa', 0, 201, 2);
 	});
 
 	test('fromEditorSelectionAndPreviousState - on a long line with same selectionToken', () => {
@@ -488,7 +466,7 @@ suite('TextAreaState', () => {
 			aLongLine,
 			'And yet another line',
 		], new Range(2, 500, 2, 500), 2);
-		assertTextAreaState(actual, 'aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa', 100, 100, false, 2);
+		assertTextAreaState(actual, 'aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa', 100, 100, 2);
 	});
 });
 
@@ -496,12 +474,6 @@ class SimpleModel implements ISimpleModel {
 
 	private _lines: string[];
 	private _eol: string;
-
-	public coordinatesConverter = {
-		convertViewPositionToModelPosition: (viewPosition: Position): Position => {
-			return viewPosition;
-		}
-	};
 
 	constructor(lines: string[], eol: string) {
 		this._lines = lines;
@@ -522,10 +494,6 @@ class SimpleModel implements ISimpleModel {
 				return this._eol;
 		}
 		throw new Error('Unknown EOL preference');
-	}
-
-	public getEOL(): string {
-		return this._eol;
 	}
 
 	public getValueInRange(range: Range, eol: EndOfLinePreference): string {
@@ -551,19 +519,7 @@ class SimpleModel implements ISimpleModel {
 		return resultLines.join(lineEnding);
 	}
 
-	public getModelLineContent(lineNumber: number): string {
-		return this._lines[lineNumber - 1];
-	}
-
 	public getLineCount(): number {
 		return this._lines.length;
-	}
-
-	public getPlainTextToCopy(ranges: Range[], enableEmptySelectionClipboard: boolean): string {
-		return '';
-	}
-
-	public getHTMLToCopy(ranges: Range[], enableEmptySelectionClipboard: boolean): string {
-		return '';
 	}
 }
