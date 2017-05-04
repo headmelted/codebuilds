@@ -129,6 +129,8 @@ script:
       ./scripts/test.sh;
     fi;
   - ./scripts/test-integration.sh;
+  - echo "Retrieving dependencies for build...";
+  - objdump -p .build/electron/code-oss;
   - gulp "vscode-linux-${PLATFORM_ARCH}" | tee -a buildlog_${LABEL}.txt;
   - gulp "vscode-linux-${PACKAGE_ARCH}-build-deb" | tee -a buildlog_${LABEL}.txt;
   - gulp "vscode-linux-${PACKAGE_ARCH}-build-rpm" | tee -a buildlog_${LABEL}.txt;
