@@ -9,17 +9,18 @@ import * as browser from 'vs/base/browser/browser';
 import { TextAreaInput, ITextAreaInputHost, IPasteData, ICompositionData } from 'vs/editor/browser/controller/textAreaInput';
 import { ISimpleModel, ITypeData, TextAreaState, IENarratorStrategy, NVDAPagedStrategy } from 'vs/editor/browser/controller/textAreaState';
 import { Range } from 'vs/editor/common/core/range';
-import { ViewEventHandler } from 'vs/editor/common/viewModel/viewEventHandler';
+import { Selection } from 'vs/editor/common/core/selection';
+import { Position } from 'vs/editor/common/core/position';
 import { Configuration } from 'vs/editor/browser/config/configuration';
 import { ViewContext } from 'vs/editor/common/view/viewContext';
-import { HorizontalRange } from 'vs/editor/common/view/renderingContext';
+import { HorizontalRange, RenderingContext, RestrictedRenderingContext } from 'vs/editor/common/view/renderingContext';
 import * as viewEvents from 'vs/editor/common/view/viewEvents';
 import { FastDomNode, createFastDomNode } from 'vs/base/browser/fastDomNode';
 import { VerticalRevealType } from 'vs/editor/common/controller/cursorEvents';
 import { ViewController } from 'vs/editor/browser/view/viewController';
 import { EndOfLinePreference } from "vs/editor/common/editorCommon";
 import { IKeyboardEvent } from "vs/base/browser/keyboardEvent";
-import { PartFingerprints, PartFingerprint } from "vs/editor/browser/view/viewPart";
+import { PartFingerprints, PartFingerprint, ViewPart } from "vs/editor/browser/view/viewPart";
 import { Margin } from "vs/editor/browser/viewParts/margin/margin";
 import { LineNumbersOverlay } from "vs/editor/browser/viewParts/lineNumbers/lineNumbers";
 import { BareFontInfo } from "vs/editor/common/config/fontInfo";
@@ -29,31 +30,45 @@ export interface ITextAreaHandlerHelper {
 	getVerticalOffsetForLineNumber(lineNumber: number): number;
 }
 
-class TextAreaVisiblePosition {
-	_textAreaVisiblePosition: void;
+class VisibleTextArea {
+	_visibleTextAreaBrand: void;
 
 	public readonly top: number;
 	public readonly left: number;
+	public readonly width: number;
 
-	constructor(top: number, left: number) {
+	constructor(top: number, left: number, width: number) {
 		this.top = top;
 		this.left = left;
+		this.width = width;
+	}
+
+	public setWidth(width: number): VisibleTextArea {
+		return new VisibleTextArea(this.top, this.left, width);
 	}
 }
 
-export class TextAreaHandler extends ViewEventHandler {
+const canUseZeroSizeTextarea = (browser.isEdgeOrIE || browser.isFirefox);
 
-	private readonly _context: ViewContext;
+export class TextAreaHandler extends ViewPart {
+
 	private readonly _viewController: ViewController;
 	private readonly _viewHelper: ITextAreaHandlerHelper;
 
 	private _contentLeft: number;
 	private _contentWidth: number;
+	private _contentHeight: number;
 	private _scrollLeft: number;
 	private _scrollTop: number;
+	private _experimentalScreenReader: boolean;
+	private _fontInfo: BareFontInfo;
+	private _lineHeight: number;
 
-	private _visiblePosition: TextAreaVisiblePosition;
-	private _selections: Range[];
+	/**
+	 * Defined only when the text area is visible (composition case).
+	 */
+	private _visibleTextArea: VisibleTextArea;
+	private _selections: Selection[];
 	private _lastCopiedValue: string;
 	private _lastCopiedValueIsFromEmptySelection: boolean;
 
@@ -62,7 +77,7 @@ export class TextAreaHandler extends ViewEventHandler {
 	private readonly _textAreaInput: TextAreaInput;
 
 	constructor(context: ViewContext, viewController: ViewController, viewHelper: ITextAreaHandlerHelper) {
-		super();
+		super(context);
 
 		this._context = context;
 		this._viewController = viewController;
@@ -70,11 +85,15 @@ export class TextAreaHandler extends ViewEventHandler {
 
 		this._contentLeft = this._context.configuration.editor.layoutInfo.contentLeft;
 		this._contentWidth = this._context.configuration.editor.layoutInfo.contentWidth;
+		this._contentHeight = this._context.configuration.editor.layoutInfo.contentHeight;
 		this._scrollLeft = 0;
 		this._scrollTop = 0;
+		this._experimentalScreenReader = this._context.configuration.editor.viewInfo.experimentalScreenReader;
+		this._fontInfo = this._context.configuration.editor.fontInfo;
+		this._lineHeight = this._context.configuration.editor.lineHeight;
 
-		this._visiblePosition = null;
-		this._selections = [new Range(1, 1, 1, 1)];
+		this._visibleTextArea = null;
+		this._selections = [new Selection(1, 1, 1, 1)];
 		this._lastCopiedValue = null;
 		this._lastCopiedValueIsFromEmptySelection = false;
 
@@ -92,28 +111,10 @@ export class TextAreaHandler extends ViewEventHandler {
 		this.textArea.setAttribute('aria-haspopup', 'false');
 		this.textArea.setAttribute('aria-autocomplete', 'both');
 
-		this.textArea.setTop(0);
-		this.textArea.setLeft(0);
-		Configuration.applyFontInfo(this.textArea, this._context.configuration.editor.fontInfo);
+		Configuration.applyFontInfo(this.textArea, this._fontInfo);
 
-		// On top of the text area, we position a dom node to cover it up
-		// (there have been reports of tiny blinking cursors)
-		// (in WebKit the textarea is 1px by 1px because it cannot handle input to a 0x0 textarea)
 		this.textAreaCover = createFastDomNode(document.createElement('div'));
-		if (this._context.configuration.editor.viewInfo.glyphMargin) {
-			this.textAreaCover.setClassName('monaco-editor-background ' + Margin.CLASS_NAME + ' ' + 'textAreaCover');
-		} else {
-			if (this._context.configuration.editor.viewInfo.renderLineNumbers) {
-				this.textAreaCover.setClassName('monaco-editor-background ' + LineNumbersOverlay.CLASS_NAME + ' ' + 'textAreaCover');
-			} else {
-				this.textAreaCover.setClassName('monaco-editor-background ' + 'textAreaCover');
-			}
-		}
 		this.textAreaCover.setPosition('absolute');
-		this.textAreaCover.setWidth(1);
-		this.textAreaCover.setHeight(1);
-		this.textAreaCover.setTop(0);
-		this.textAreaCover.setLeft(0);
 
 		const simpleModel: ISimpleModel = {
 			getLineCount: (): number => {
@@ -160,7 +161,7 @@ export class TextAreaHandler extends ViewEventHandler {
 
 				const selection = this._selections[0];
 
-				if (this._context.configuration.editor.viewInfo.experimentalScreenReader) {
+				if (this._experimentalScreenReader) {
 					return NVDAPagedStrategy.fromEditorSelection(currentState, simpleModel, selection);
 				}
 
@@ -212,16 +213,11 @@ export class TextAreaHandler extends ViewEventHandler {
 			const visibleRange = this._viewHelper.visibleRangeForPositionRelativeToEditor(lineNumber, column);
 
 			if (visibleRange) {
-				this._visiblePosition = new TextAreaVisiblePosition(
-					this._viewHelper.getVerticalOffsetForLineNumber(lineNumber),
-					visibleRange.left
-				);
-				this.textArea.setTop(this._visiblePosition.top - this._scrollTop);
-				this.textArea.setLeft(this._contentLeft + this._visiblePosition.left - this._scrollLeft);
+				this._visibleTextArea = new VisibleTextArea(this._viewHelper.getVerticalOffsetForLineNumber(lineNumber), visibleRange.left, 0);
+				this._render();
 			}
 
 			// Show the textarea
-			this.textArea.setHeight(this._context.configuration.editor.lineHeight);
 			this.textArea.setClassName('inputarea ime-input');
 
 			this._viewController.compositionStart('keyboard');
@@ -231,22 +227,20 @@ export class TextAreaHandler extends ViewEventHandler {
 			if (browser.isEdgeOrIE) {
 				// Due to isEdgeOrIE (where the textarea was not cleared initially)
 				// we cannot assume the text consists only of the composited text
-				this.textArea.setWidth(0);
+				this._visibleTextArea = this._visibleTextArea.setWidth(0);
 			} else {
 				// adjust width by its size
-				this.textArea.setWidth(measureText(e.data, this._context.configuration.editor.fontInfo));
+				this._visibleTextArea = this._visibleTextArea.setWidth(measureText(e.data, this._fontInfo));
 			}
+			this._render();
 		}));
 
 		this._register(this._textAreaInput.onCompositionEnd(() => {
-			this.textArea.unsetHeight();
-			this.textArea.unsetWidth();
-			this.textArea.setLeft(0);
-			this.textArea.setTop(0);
+
+			this._visibleTextArea = null;
+			this._render();
+
 			this.textArea.setClassName('inputarea');
-
-			this._visiblePosition = null;
-
 			this._viewController.compositionEnd('keyboard');
 		}));
 
@@ -257,12 +251,9 @@ export class TextAreaHandler extends ViewEventHandler {
 		this._register(this._textAreaInput.onBlur(() => {
 			this._context.privateViewEventBus.emit(new viewEvents.ViewFocusChangedEvent(false));
 		}));
-
-		this._context.addEventHandler(this);
 	}
 
 	public dispose(): void {
-		this._context.removeEventHandler(this);
 		super.dispose();
 	}
 
@@ -271,34 +262,53 @@ export class TextAreaHandler extends ViewEventHandler {
 	public onConfigurationChanged(e: viewEvents.ViewConfigurationChangedEvent): boolean {
 		// Give textarea same font size & line height as editor, for the IME case (when the textarea is visible)
 		if (e.fontInfo) {
-			Configuration.applyFontInfo(this.textArea, this._context.configuration.editor.fontInfo);
+			this._fontInfo = this._context.configuration.editor.fontInfo;
+			Configuration.applyFontInfo(this.textArea, this._fontInfo);
 		}
 		if (e.viewInfo.experimentalScreenReader) {
+			this._experimentalScreenReader = this._context.configuration.editor.viewInfo.experimentalScreenReader;
 			this._textAreaInput.writeScreenReaderContent('strategy changed');
 		}
 		if (e.layoutInfo) {
 			this._contentLeft = this._context.configuration.editor.layoutInfo.contentLeft;
 			this._contentWidth = this._context.configuration.editor.layoutInfo.contentWidth;
+			this._contentHeight = this._context.configuration.editor.layoutInfo.contentHeight;
 		}
 		if (e.viewInfo.ariaLabel) {
 			this.textArea.setAttribute('aria-label', this._context.configuration.editor.viewInfo.ariaLabel);
 		}
-		return false;
+		if (e.lineHeight) {
+			this._lineHeight = this._context.configuration.editor.lineHeight;
+		}
+		return true;
 	}
-
 	public onCursorSelectionChanged(e: viewEvents.ViewCursorSelectionChangedEvent): boolean {
 		this._selections = [e.selection].concat(e.secondarySelections);
-		return false;
+		return true;
 	}
-
+	public onDecorationsChanged(e: viewEvents.ViewDecorationsChangedEvent): boolean {
+		// true for inline decorations that can end up relayouting text
+		return true;
+	}
+	public onFlushed(e: viewEvents.ViewFlushedEvent): boolean {
+		return true;
+	}
+	public onLinesChanged(e: viewEvents.ViewLinesChangedEvent): boolean {
+		return true;
+	}
+	public onLinesDeleted(e: viewEvents.ViewLinesDeletedEvent): boolean {
+		return true;
+	}
+	public onLinesInserted(e: viewEvents.ViewLinesInsertedEvent): boolean {
+		return true;
+	}
 	public onScrollChanged(e: viewEvents.ViewScrollChangedEvent): boolean {
 		this._scrollLeft = e.scrollLeft;
 		this._scrollTop = e.scrollTop;
-		if (this._visiblePosition) {
-			this.textArea.setTop(this._visiblePosition.top - this._scrollTop);
-			this.textArea.setLeft(this._contentLeft + this._visiblePosition.left - this._scrollLeft);
-		}
-		return false;
+		return true;
+	}
+	public onZonesChanged(e: viewEvents.ViewZonesChangedEvent): boolean {
+		return true;
 	}
 
 	// --- end event handlers
@@ -332,6 +342,104 @@ export class TextAreaHandler extends ViewEventHandler {
 	}
 
 	// --- end view API
+
+	private _primaryCursorVisibleRange: HorizontalRange = null;
+
+	public prepareRender(ctx: RenderingContext): void {
+		const primaryCursorPosition = new Position(this._selections[0].positionLineNumber, this._selections[0].positionColumn);
+		this._primaryCursorVisibleRange = ctx.visibleRangeForPosition(primaryCursorPosition);
+	}
+
+	public render(ctx: RestrictedRenderingContext): void {
+		this._render();
+	}
+
+	private _render(): void {
+		if (this._visibleTextArea) {
+			// The text area is visible for composition reasons
+			this._renderInsideEditor(
+				this._visibleTextArea.top - this._scrollTop,
+				this._contentLeft + this._visibleTextArea.left - this._scrollLeft,
+				this._visibleTextArea.width,
+				this._lineHeight
+			);
+			return;
+		}
+
+		if (!this._primaryCursorVisibleRange) {
+			// The primary cursor is outside the viewport => place textarea to the top left
+			this._renderAtTopLeft();
+			return;
+		}
+
+		const left = this._contentLeft + this._primaryCursorVisibleRange.left - this._scrollLeft;
+		if (left < this._contentLeft || left > this._contentLeft + this._contentWidth) {
+			// cursor is outside the viewport
+			this._renderAtTopLeft();
+			return;
+		}
+
+		const top = this._viewHelper.getVerticalOffsetForLineNumber(this._selections[0].positionLineNumber) - this._scrollTop;
+		if (top < 0 || top > this._contentHeight) {
+			// cursor is outside the viewport
+			this._renderAtTopLeft();
+			return;
+		}
+
+		// The primary cursor is in the viewport (at least vertically) => place textarea on the cursor
+		this._renderInsideEditor(top, left, canUseZeroSizeTextarea ? 0 : 1, canUseZeroSizeTextarea ? 0 : 1);
+	}
+
+	private _renderInsideEditor(top: number, left: number, width: number, height: number): void {
+		const ta = this.textArea;
+		const tac = this.textAreaCover;
+
+		ta.setTop(top);
+		ta.setLeft(left);
+		ta.setWidth(width);
+		ta.setHeight(height);
+
+		tac.setTop(0);
+		tac.setLeft(0);
+		tac.setWidth(0);
+		tac.setHeight(0);
+	}
+
+	private _renderAtTopLeft(): void {
+		const ta = this.textArea;
+		const tac = this.textAreaCover;
+
+		ta.setTop(0);
+		ta.setLeft(0);
+		tac.setTop(0);
+		tac.setLeft(0);
+
+		if (canUseZeroSizeTextarea) {
+			ta.setWidth(0);
+			ta.setHeight(0);
+			tac.setWidth(0);
+			tac.setHeight(0);
+			return;
+		}
+
+		// (in WebKit the textarea is 1px by 1px because it cannot handle input to a 0x0 textarea)
+		// specifically, when doing Korean IME, setting the textare to 0x0 breaks IME badly.
+
+		ta.setWidth(1);
+		ta.setHeight(1);
+		tac.setWidth(1);
+		tac.setHeight(1);
+
+		if (this._context.configuration.editor.viewInfo.glyphMargin) {
+			tac.setClassName('monaco-editor-background textAreaCover ' + Margin.CLASS_NAME);
+		} else {
+			if (this._context.configuration.editor.viewInfo.renderLineNumbers) {
+				tac.setClassName('monaco-editor-background textAreaCover ' + LineNumbersOverlay.CLASS_NAME);
+			} else {
+				tac.setClassName('monaco-editor-background textAreaCover');
+			}
+		}
+	}
 }
 
 function measureText(text: string, fontInfo: BareFontInfo): number {
