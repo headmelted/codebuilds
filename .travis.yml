@@ -107,7 +107,7 @@ script:
       echo "Testing image format is ${TESTING_IMAGE_FORMAT}...";
       if [[ "$TESTING_IMAGE_FORMAT" = "zip" ]]; then
         echo "Extracting testing image...";
-        unzip image ./;
+        unzip image;
         echo "Retrieving image file name...";
         TESTING_IMAGE_FILE=$(find ./* -name "*.img");
         echo "Deleting compressed image...";
@@ -128,10 +128,12 @@ script:
   - mkdir boot root;
   - echo "Mounting boot sector...";
   - sudo mount /dev/mapper/loop0p1 boot;
-  - echo "Mounting root sector...";
+  - echo "Mounting root directory...";
   - sudo mount /dev/mapper/loop0p2 root;
   - echo "Display lsblk...";
   - lsblk;
+  - echo "Setting proot paths...";
+  - sudo proot -q qemu-arm -S root -b boot:/boot export PATH=$PATH:/usr/sbin:/sbin:/bin:/usr/local/sbin;
   - export CXX="${GPP_COMPILER}" CC="${GCC_COMPILER}";
   - if [[ "${CROSS_TOOLCHAIN}" == "true" ]]; then
       sudo rm -rf /etc/apt/sources.list.d/**;
