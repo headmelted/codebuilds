@@ -94,7 +94,13 @@ notifications:
   
 script:
   - echo "Installing dependencies...";
-  - sudo apt-get install -y qemu kpartx pv proot;
+  - sudo apt-get install -y qemu kpartx pv;
+  - echo "Downloading proot...";
+  - wget http://static.proot.me/proot-x86_64;
+  - echo "Making proot executable...";
+  - chmod +x proot-x86_64;
+  - echo "Moving proot to /usr/local/bin...";
+  - sudo mv proot-x86_64 /usr/local/bin/proot;
   - echo "Checking for cached testing image...";
   - if [ ! -e ./images/uncompressed ]; then
       echo "Creating test_image directory...";
@@ -124,7 +130,7 @@ script:
         echo "Moving uncompressed image file (${TESTING_IMAGE_FILE}) to image...";
         mv "${TESTING_IMAGE_FILE}" image;
       fi;
-      echo "Moving uncompressed image into ./images for caching";
+      echo "Moving uncompressed image into ./cache...";
       mv image ./cache/uncompressed;
     fi;
   - echo "Binding network loopbacks...";
