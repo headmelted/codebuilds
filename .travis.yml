@@ -94,13 +94,7 @@ notifications:
   
 script:
   - echo "Installing dependencies...";
-  - sudo apt-get install -y qemu kpartx pv;
-  - echo "Downloading proot...";
-  - wget http://static.proot.me/proot-x86_64;
-  - echo "Making proot executable...";
-  - chmod +x proot-x86_64;
-  - echo "Moving proot to /usr/local/bin...";
-  - sudo mv proot-x86_64 /usr/local/bin/proot;
+  - sudo apt-get install -y qemu kpartx pv proot;
   - echo "Checking for cached testing image...";
   - if [ ! -e ./images/uncompressed ]; then
       echo "Creating test_image directory...";
@@ -148,7 +142,7 @@ script:
   - echo "Display lsblk...";
   - lsblk;
   - echo "Setting proot paths...";
-  - sudo proot -q qemu-arm -S root -b boot:/boot -b ../:/codebuilds 'export PATH=$PATH:/usr/sbin:/sbin:/bin:/usr/local/sbin;';
+  - sudo proot -q qemu-arm -r root -b boot:/boot -b ../:/codebuilds 'export PATH=$PATH:/usr/sbin:/sbin:/bin:/usr/local/sbin;';
   - export CXX="${GPP_COMPILER}" CC="${GCC_COMPILER}";
   - if [[ "${CROSS_TOOLCHAIN}" == "true" ]]; then
       sudo rm -rf /etc/apt/sources.list.d/**;
