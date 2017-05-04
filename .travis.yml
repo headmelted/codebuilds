@@ -97,9 +97,11 @@ script:
   - sudo apt-get install -y qemu kpartx pv;
   - echo "Checking for cached testing image...";
   - if [ ! -e ./images/uncompressed ]; then
-      echo "Creating testing directory...";
+      echo "Creating test_image directory...";
+      mkdir ./test_image;
+      echo "Creating cache directory...";
       mkdir ./test_image/cache;
-      echo "Entering test directory...";
+      echo "Entering test_image directory...";
       cd ./test_image;
       echo "Downloading testing image...";
       wget "${TESTING_IMAGE}" -O image;
@@ -197,6 +199,6 @@ deploy:
     tags: true
     
 after_deploy:
-  - cd vscode-multiarch-specific;
+  - cd codebuild-tools;
   - bash ./pushToBintray.sh ../.build/linux/deb/*/deb/*.deb;
   - bash ./pushToBintray.sh ../.build/linux/rpm/*/*.rpm;
