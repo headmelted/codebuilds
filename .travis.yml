@@ -94,7 +94,7 @@ notifications:
   
 script:
   - echo "Installing dependencies...";
-  - sudo apt-get install -y qemu kpartx pv;
+  - sudo apt-get install -y qemu kpartx pv proot;
   - echo "Checking for cached testing image...";
   - if [ ! -e ./images/uncompressed ]; then
       echo "Creating test_image directory...";
@@ -195,7 +195,6 @@ deploy:
   file:
     - .build/linux/**/*.deb
     - .build/linux/**/*.rpm
-    - .build/linux/**/*.flatpak
     - ./buildlog_*.txt
     - ./archive_*.tar.gz
   skip_cleanup: true
@@ -205,5 +204,5 @@ deploy:
     
 after_deploy:
   - cd codebuild-tools;
-  - bash ./pushToBintray.sh ../.build/linux/deb/*/deb/*.deb;
-  - bash ./pushToBintray.sh ../.build/linux/rpm/*/*.rpm;
+  - bash ./pushToBintray.sh ../.build/linux/**/*.deb;
+  - bash ./pushToBintray.sh ../.build/linux/**/*.rpm;
