@@ -98,7 +98,7 @@ script:
   - cd ./test_image/;
   - echo "Downloading testing image...";
   - wget "${TESTING_IMAGE}" -O image;
-  - TESTING_IMAGE_FORMAT="${TESTING_IMAGE##/*/}";
+  - TESTING_IMAGE_FORMAT="${TESTING_IMAGE##*.}";
   - echo "Testing image format is ${TESTING_IMAGE_FORMAT}...";
   - if [[ "$TESTING_IMAGE_FORMAT" = "zip" ]]; then
       echo "Extracting testing image...";
