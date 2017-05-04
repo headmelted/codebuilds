@@ -60,7 +60,7 @@ include: &toolchain_linux_armhf
     - GCC_COMPILER=arm-linux-gnueabihf-gcc
     - VSCODE_ELECTRON_PLATFORM=arm
     - PACKAGE_ARCH=armhf
-    - TESTING_IMAGE=http://downloads.raspberrypi.org/raspbian_latest
+    - TESTING_IMAGE=http://downloads.raspberrypi.org/raspbian/images/raspbian-2017-04-10/2017-04-10-raspbian-jessie.zip
   
 # arm64 toolchain
 include: &toolchain_linux_arm64
