@@ -112,7 +112,7 @@ script:
         TESTING_IMAGE_FILE=$(find ./* -name "*.img");
         echo "Deleting compressed image...";
         rm image;
-        echo "Moving uncompressed image file (${TESTING_IMAGE_FILE}) to image..."
+        echo "Moving uncompressed image file (${TESTING_IMAGE_FILE}) to image...";
         mv "${TESTING_IMAGE_FILE}" image;
       fi;
       echo "Moving uncompressed image into ./images for caching";
