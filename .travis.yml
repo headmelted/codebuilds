@@ -122,7 +122,8 @@ script:
   - sleep 10;
   - DISPLAY=:99 dbus-launch;
   - echo "Symlinking dependencies...";
-  - sudo ln -s /lib/ld-linux-${ARCH}.so.3 /usr/${GNU_TRIPLET}/lib/ld-linux-${ARCH}.so.3;
+  - sudo ln -nsf /usr/${GNU_TRIPLET}/lib/* /lib/;
+
   - if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then
       ./scripts/test.sh --coverage;
     else
