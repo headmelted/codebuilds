@@ -63,7 +63,7 @@ include: &toolchain_linux_armhf
     - GCC_COMPILER=arm-linux-gnueabihf-gcc
     - VSCODE_ELECTRON_PLATFORM=arm
     - PACKAGE_ARCH=armhf
-    - TESTING_IMAGE=http://downloads.raspberrypi.org/raspbian/images/raspbian-2017-04-10/2017-04-10-raspbian-jessie.zip
+    - TESTING_IMAGE="http://downloads.raspberrypi.org/raspbian/images/raspbian-2017-04-10/2017-04-10-raspbian-jessie.zip"
   
 # arm64 toolchain
 include: &toolchain_linux_arm64
@@ -79,7 +79,7 @@ include: &toolchain_linux_arm64
     - GCC_COMPILER=aarch64-linux-gnu-gcc
     - VSCODE_ELECTRON_PLATFORM=arm
     - PACKAGE_ARCH=arm64
-    - TESTING_IMAGE=http://odroid.in/ubuntu_16.04lts/ubuntu64-16.04-minimal-odroid-c2-20160815.img.xz
+    - TESTING_IMAGE="http://odroid.in/ubuntu_16.04lts/ubuntu64-16.04-minimal-odroid-c2-20160815.img.xz"
 
 # Travis CI build matrix.  Each entry below will trigger an extra, parallel build on Travis.
 matrix:
@@ -111,14 +111,14 @@ script:
         if [[ "$TESTING_IMAGE_FORMAT" = "zip" ]]; then
           echo "Unzipping zip image...";
           unzip image;
+          echo "Deleting compressed image...";
+          rm image;
         else
-          echo "Untarring xz image...";
-          tar xvfJ image;
+          echo "Extracting xz image...";
+          unxz image;
         fi;
         echo "Retrieving image file name...";
         TESTING_IMAGE_FILE=$(find ./* -name "*.img");
-        echo "Deleting compressed image...";
-        rm image;
         echo "Moving uncompressed image file (${TESTING_IMAGE_FILE}) to image...";
         mv "${TESTING_IMAGE_FILE}" image;
       fi;
