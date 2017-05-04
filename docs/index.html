@@ -5,12 +5,21 @@ image_url: images/code.png
 ---
 
 <h1>Support Matrix</h1>
+<p>The primary focus of this site is to provide ARM builds in the two most popular configurations currently being used.  When feasible, new configurations will be added to the list of supported platforms below.</p>
 <dl>
   <dt>Architectures</dt>
   <dd>i386, amd64, armhf, arm64</dd>
   <dt>Distribution channels</dt>
   <dd>APT, YUM, Chromebook (uses APT), Flatpak</dd>
 </dl>
+
+<h1><i class="fa fa-check-square-o"></i>&nbsp;Tested. Top to bottom.</h1>
+<p>Each and every release package is installed into a virtual system <i class="fa fa-wrench" alt="An armhf raspbian jessie image in a bound proot"></i>, similar to how a user might do so themselves.
+This installation is then tested with the full suite of tests from the master repository, to ensure that what ends up on <strong>your</strong> system
+has been tested and verified as entirely as possible before you even launch the program.</p>
+
+<h3>ARMv7 hard float (32-bit ARM systems)</h3>
+<p>The virtual system used to test </p>
 
 <h1>About these builds</h1>
 <i>Please read this carefully (here be dragons!).</i>
