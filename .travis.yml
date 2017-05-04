@@ -1,5 +1,8 @@
 language: cpp
 dist: trusty
+cache:
+  directories:
+    - ./cache
 
 # x86 toolchain (used as a base for non-sudo compilation, which is faster) 
 include: &toolchain_x86
@@ -92,29 +95,34 @@ notifications:
 script:
   - echo "Installing dependencies...";
   - sudo apt-get install -y qemu kpartx pv;
-  - echo "Creating testing directory...";
-  - mkdir ./test_image/images;
-  - echo "Entering test directory...";
-  - cd ./test_image;
-  - echo "Downloading testing image...";
-  - wget "${TESTING_IMAGE}" -O image;
-  - TESTING_IMAGE_FORMAT="${TESTING_IMAGE##*.}";
-  - echo "Testing image format is ${TESTING_IMAGE_FORMAT}...";
-  - if [[ "$TESTING_IMAGE_FORMAT" = "zip" ]]; then
-      echo "Extracting testing image...";
-      unzip image ./;
-      echo "Retrieving image file name...";
-      TESTING_IMAGE_FILE=$(find ./* -name "*.img");
-      echo "Deleting compressed image...";
-      rm image;
-      echo "Moving uncompressed image file (${TESTING_IMAGE_FILE}) to image..."
-      mv "${TESTING_IMAGE_FILE}" image;
+  - echo "Checking for cached testing image...";
+  - if [ ! -e ./images/uncompressed ]; then
+      echo "Creating testing directory...";
+      mkdir ./test_image/cache;
+      echo "Entering test directory...";
+      cd ./test_image;
+      echo "Downloading testing image...";
+      wget "${TESTING_IMAGE}" -O image;
+      TESTING_IMAGE_FORMAT="${TESTING_IMAGE##*.}";
+      echo "Testing image format is ${TESTING_IMAGE_FORMAT}...";
+      if [[ "$TESTING_IMAGE_FORMAT" = "zip" ]]; then
+        echo "Extracting testing image...";
+        unzip image ./;
+        echo "Retrieving image file name...";
+        TESTING_IMAGE_FILE=$(find ./* -name "*.img");
+        echo "Deleting compressed image...";
+        rm image;
+        echo "Moving uncompressed image file (${TESTING_IMAGE_FILE}) to image..."
+        mv "${TESTING_IMAGE_FILE}" image;
+      fi;
+      echo "Moving uncompressed image into ./images for caching";
+      mv image ./cache/uncompressed;
     fi;
   - echo "Binding network loopbacks...";
-  - sudo kpartx -a -v image;
+  - sudo kpartx -a -v ./cache/uncompressed;
   - echo "Testing network loopbacks...";
-  - sudo kpartx -l image;
-  - echo "Reading image partitions...";
+  - sudo kpartx -l ./cache/uncompressed;
+  - echo "Reading loopbacks...";
   - sudo fdisk -l /dev/loop0;
   - echo "Making boot and root directories...";
   - mkdir boot root;
