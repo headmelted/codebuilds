@@ -96,6 +96,7 @@ script:
   - mkdir ./test_image;
   - echo "Entering test directory...";
   - cd ./test_image/;
+  - if [[]]
   - echo "Downloading testing image...";
   - wget "${TESTING_IMAGE}" -O image;
   - TESTING_IMAGE_FORMAT="${TESTING_IMAGE##*.}";
@@ -109,6 +110,7 @@ script:
       echo "Setting image file name...";
       TESTING_IMAGE_FILE=image;
     fi;
+  - echo "Testing image file is ${TESTING_IMAGE_FILE}...";
   - echo "Binding network loopbacks...";
   - sudo kpartx -a -v "${TESTING_IMAGE_FILE}";
   - echo "Testing network loopbacks...";
