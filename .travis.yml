@@ -92,14 +92,20 @@ notifications:
 script:
   - echo "Creating testing directory...";
   - mkdir ./test_image;
-  - echo "Downloading testing image...";
-  - wget "${TESTING_IMAGE}" -O ./test_image/image.zip;
-  - echo "Extracting testing image...";
-  - unzip ./test_image/image.zip -d ./test_image/;
   - echo "Entering test directory...";
   - cd ./test_image/;
-  - echo "Retrieving image file name...";
-  - TESTING_IMAGE_FILE=$(find ./* -name "*.*");
+  - echo "Downloading testing image...";
+  - wget "${TESTING_IMAGE}" -O image;
+  - TESTING_IMAGE_FORMAT="${TESTING_IMAGE##/*/}";
+  - if [[ "$TESTING_IMAGE_FORMAT" = "zip" ]]; then
+      echo "Extracting testing image...";
+      unzip ./test_image/image ./test_image/;
+      echo "Retrieving image file name...";
+      TESTING_IMAGE_FILE=$(find ./* -name "*.img");
+    else
+      echo "Setting image file name...";
+      TESTING_IMAGE_FILE=image;
+    fi;
   - echo "Binding network loopbacks...";
   - sudo kpartx -a -v "${TESTING_IMAGE_FILE}";
   - echo "Testing network loopbacks...";
@@ -123,7 +129,7 @@ script:
       echo "deb-src http://archive.ubuntu.com/ubuntu xenial main universe multiverse restricted" | sudo tee -a /etc/apt/sources.list;
       sudo dpkg --add-architecture ${ARCH};
       sudo apt-get update -yq;
-      sudo apt-get install -y xvfb libwww-perl libexpat1 libxml-libxml-perl libxml-sax-expat-perl gcc-${GNU_TRIPLET} g++-${GNU_TRIPLET} pkg-config-${GNU_TRIPLET} crossbuild-essential-${ARCH} g++-multilib-${GNU_MULTILIB_TRIPLET} gcc-multilib-${GNU_MULTILIB_TRIPLET} dpkg-dev perl libconfig-inifiles-perl libxml-simple-perl liblocale-gettext-perl libgcc1 libgcc1:${ARCH} libdpkg-perl libconfig-auto-perl libdebian-dpkgcross-perl ucf debconf dpkg-cross libdbus-1-3:${ARCH} libffi6:${ARCH} libpcre3:${ARCH} libselinux1:${ARCH} libp11-kit0:${ARCH} libcomerr2:${ARCH} libk5crypto3:${ARCH} libkrb5-3:${ARCH} libpango-1.0-0:${ARCH} libpangocairo-1.0-0:${ARCH} libpangoft2-1.0-0:${ARCH} libxcursor1:${ARCH} libxfixes3:${ARCH} libglib2.0-0:${ARCH} libfreetype6:${ARCH} libpng12-0:${ARCH} libavahi-client3:${ARCH} libgssapi-krb5-2:${ARCH} fontconfig-config:${ARCH} libexpat1:${ARCH} libjasper1:${ARCH} libjpeg8:${ARCH} libpng12-0:${ARCH} libtiff5:${ARCH} libgdk-pixbuf2.0-common:${ARCH} libgdk-pixbuf2.0-0:${ARCH} libfontconfig1:${ARCH} libcups2:${ARCH} libcairo2:${ARCH} libc6 libc6:${ARCH} libc6-dev:${ARCH} libatk1.0-0:${ARCH} libgtk2.0-0:${ARCH} libx11-dev:${ARCH} libxkbfile-dev:${ARCH} rpm libx11-xcb-dev libx11-xcb-dev:${ARCH} libxtst6 libxtst6:${ARCH} libxss-dev libxss-dev:${ARCH} libgconf-2-4:${ARCH} libnspr4:${TARGET} libnss3 libnss3:${TARGET} libasound2:${TARGET} qemu kpartx pv proot unzip;
+      sudo apt-get install -y xvfb libwww-perl libexpat1 libxml-libxml-perl libxml-sax-expat-perl gcc-${GNU_TRIPLET} g++-${GNU_TRIPLET} pkg-config-${GNU_TRIPLET} crossbuild-essential-${ARCH} g++-multilib-${GNU_MULTILIB_TRIPLET} gcc-multilib-${GNU_MULTILIB_TRIPLET} dpkg-dev perl libconfig-inifiles-perl libxml-simple-perl liblocale-gettext-perl libgcc1 libgcc1:${ARCH} libdpkg-perl libconfig-auto-perl libdebian-dpkgcross-perl ucf debconf dpkg-cross libdbus-1-3:${ARCH} libffi6:${ARCH} libpcre3:${ARCH} libselinux1:${ARCH} libp11-kit0:${ARCH} libcomerr2:${ARCH} libk5crypto3:${ARCH} libkrb5-3:${ARCH} libpango-1.0-0:${ARCH} libpangocairo-1.0-0:${ARCH} libpangoft2-1.0-0:${ARCH} libxcursor1:${ARCH} libxfixes3:${ARCH} libglib2.0-0:${ARCH} libfreetype6:${ARCH} libpng12-0:${ARCH} libavahi-client3:${ARCH} libgssapi-krb5-2:${ARCH} fontconfig-config:${ARCH} libexpat1:${ARCH} libjasper1:${ARCH} libjpeg8:${ARCH} libpng12-0:${ARCH} libtiff5:${ARCH} libgdk-pixbuf2.0-common:${ARCH} libgdk-pixbuf2.0-0:${ARCH} libfontconfig1:${ARCH} libcups2:${ARCH} libcairo2:${ARCH} libc6 libc6:${ARCH} libc6-dev:${ARCH} libatk1.0-0:${ARCH} libgtk2.0-0:${ARCH} libx11-dev:${ARCH} libxkbfile-dev:${ARCH} rpm libx11-xcb-dev libx11-xcb-dev:${ARCH} libxtst6 libxtst6:${ARCH} libxss-dev libxss-dev:${ARCH} libgconf-2-4:${ARCH} libnspr4:${TARGET} libnss3-dev libasound2:${TARGET} qemu kpartx pv proot unzip;
       echo "Emulators available:" && update-binfmts --display;
     fi;
   - git submodule update --init --recursive;
