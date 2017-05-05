@@ -16,5 +16,7 @@ echo "Exporting display :99...";
 DISPLAY=:99;
 echo "Launcing dbus...";
 dbus-launch;
+echo "Listing contents of proot \/...";
+ls /;
 echo "Running tests...";
 /scripts/test.sh;
