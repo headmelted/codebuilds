@@ -6,6 +6,7 @@
 'use strict';
 
 import { CharCode } from 'vs/base/common/charCode';
+import { getLeadingWhitespace } from 'vs/base/common/strings';
 
 export enum TokenType {
 	Dollar,
@@ -135,6 +136,9 @@ export abstract class Marker {
 	toString() {
 		return '';
 	}
+	len(): number {
+		return 0;
+	}
 }
 
 export class Text extends Marker {
@@ -143,6 +147,9 @@ export class Text extends Marker {
 	}
 	toString() {
 		return this.string;
+	}
+	len(): number {
+		return this.string.length;
 	}
 }
 
@@ -171,8 +178,92 @@ export class Variable extends Marker {
 		return this.isDefined ? this.resolvedValue : Marker.toString(this.defaultValue);
 	}
 }
+export function walk(marker: Marker[], visitor: (marker: Marker) => boolean): void {
+	const stack = [...marker];
+	while (stack.length > 0) {
+		const marker = stack.shift();
+		const recurse = visitor(marker);
+		if (!recurse) {
+			break;
+		}
+		if (marker instanceof Placeholder || marker instanceof Variable) {
+			stack.unshift(...marker.defaultValue);
+		}
+	}
+}
+
+export class TextmateSnippet {
+
+	readonly marker: Marker[];
+
+	constructor(marker: Marker[]) {
+		this.marker = marker;
+	}
+
+	offset(marker: Marker): number {
+		let pos = 0;
+		let found = false;
+		walk(this.marker, candidate => {
+			if (candidate === marker) {
+				found = true;
+				return false;
+			}
+			pos += candidate.len();
+			return true;
+		});
+
+		if (!found) {
+			return -1;
+		}
+		return pos;
+	}
+
+	placeholders(): Map<string, Placeholder[]> {
+		const map = new Map<string, Placeholder[]>();
+		walk(this.marker, candidate => {
+			if (candidate instanceof Placeholder) {
+				let array = map.get(candidate.name);
+				if (!array) {
+					map.set(candidate.name, [candidate]);
+				} else {
+					array.push(candidate);
+				}
+			}
+			return true;
+		});
+		return map;
+	}
+
+	adjustIndentation(normalizer: (whitespace: string) => string): void {
+
+		walk(this.marker, candidate => {
+			if (candidate instanceof Text) {
+				//check for newline characters and adjust indent
+				let regex = /\r\n|\r|\n/g;
+				let match: RegExpMatchArray;
+				while (match = regex.exec(candidate.string)) {
+					let pos = regex.lastIndex;
+					let whitespace = getLeadingWhitespace(candidate.string, pos);
+					let normalized = normalizer(whitespace);
+					if (whitespace !== normalized) {
+						candidate.string = candidate.string.substr(0, pos)
+							+ normalized
+							+ candidate.string.substr(pos + whitespace.length);
+					}
+				}
+			}
+			return true;
+		});
+	}
+
+}
 
 export class SnippetParser {
+
+	static parse(template: string): TextmateSnippet {
+		const marker = new SnippetParser(true, false).parse(template);
+		return new TextmateSnippet(marker);
+	}
 
 	private _enableTextMate: boolean;
 	private _enableInternal: boolean;
