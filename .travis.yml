@@ -171,6 +171,8 @@ script:
       fi;
       echo "Moving uncompressed image into ./cache...";
       mv image ../cache/uncompressed_${ARCH};
+      echo "Returning to parent directory...";
+      cd ..;
     fi;
   - echo "Binding network loopbacks...";
   - sudo kpartx -a -v ./cache/uncompressed_${ARCH};
