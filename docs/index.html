@@ -4,97 +4,76 @@ site_url: https://code.headmelted.com
 image_url: images/code.png 
 ---
 
-<h1>Support Matrix</h1>
-<p>The primary focus of this site is to provide ARM builds in the two most popular configurations currently being used.  When feasible, new configurations will be added to the list of supported platforms below.</p>
+<h1 id="platforms"><i class="fa fa-table"></i>&nbsp;Platforms</h1>
+<p>The primary focus of this site is to provide builds of the open-source edition of VS Code for less common platforms (those that might not otherwise receive them).</p>
 <dl>
-  <dt>Architectures</dt>
+  <dt><i class="fa fa-microchip"></i>&nbsp;Architectures</dt>
   <dd>i386, amd64, armhf, arm64</dd>
-  <dt>Distribution channels</dt>
-  <dd>APT, YUM, Chromebook (uses APT), Flatpak</dd>
+  <dt><i class="fa fa-archive"></i>&nbsp;Packages</dt>
+  <dd>DEB, RPM, Snappy, Flatpak, AppImage</dd>
+  <dt><i class="fa fa-cogs"></i>&nbsp;Operating Systems</dt>
+  <dd>Android*, Chrome OS*, Linux <i>(* uses embedded Linux)</i></dd>
 </dl>
 
-<h1>About these builds</h1>
-<h2>Please read this carefully</h2>
+<h1 id="testing"><i class="fa fa-check-square-o"></i>&nbsp;Testing</h1>
+<p>For each and every release, the build system prepares a clean virtual system for the given architecture. The finished package is then installed and tested with the full suite of tests from Microsoft. Once this is done, a test report is prepared that can be downloaded for each release.</p>
 
-<h3>Are these releases provided by Microsoft?</h3>
-<p>No. These releases are an independent community effort to bring Visual Studio Code to less mainstream platforms, those that it would not otherwise be possible and/or practical to support.  For clarity, this software is <strong>not</strong> directly affiliated with Microsoft.</p>
+<h1 id="faq"><i class="fa fa-question-circle"></i>&nbsp;Frequently asked questions</h1>
 
-<h1><i class="fa fa-check-square-o"></i>&nbsp;Tested. Top to bottom.</h1>
-<p>Each and every release package is installed into a virtual system, similar to how a user might do so themselves.
-This installation is then tested with the full suite of tests from the master repository, to ensure that what ends up on <strong>your</strong> system
-has been tested and verified as entirely as possible before you even launch the program.</p>
-
-<p>These are automated builds of the open-source edition of Microsoft's Visual Studio Code.</p>
-
-<p>The latest code is pulled on a nightly basis from Microsoft's <a href="https://github.com/Microsoft/vscode">official repository</a>. If there are updates, the code is built, tested, packaged and deployed. The key feature here is support not only
-  for Intel, but ARM processors, and so these builds can run on a wider variety of systems.</p>
-
-<p>As this project is at a very early stage, and the builds are made nightly, the software should be considered unstable for now. The disclaimer at the bottom of this page covers your use of the scripts and instructions below, and any and all of the packages they reference.</p>
-
-<p>These scripts <i>probably</i> require super-user access to the system in order to, among other things, add the package source to your system and install software, depending on your current user access rights. It is bad practice to run a script from the
-  internet directly with super-user access, so the scripts below do <strong>not</strong> include an escalation request for these rights (as that is something you should be doing consciously). <strong>You will therefore need to manually enter a 
-        super-user session.  Instructions to do this are included in the steps below.</strong></p>
-
-<p>It is advised that you download the scripts first, <strong>before</strong> executing them using the instructions below if you are at all concerned about what is contained within them (the scripts have not been minified, so should be easily readable).</p>
-
-<h1>
-  <a id="chromebook-header" class="anchor" aria-hidden="true"><span class="octicon octicon-link"></span></a>Installation on Chromebook</h1>
+<dl>
   
-  <p>If you have <strong>not</strong> yet set up a chroot on your Chromebook, and/or are not sure how to do so, then you may wish to follow the <a href="#guided-chromebook-installation">installation wizard</a> below.  If you already have a chroot that you wish to install Visual Studio Code into, please follow the <a href="manual-chromebook-installation">manual installation</a> instructions below.</p>
+<dt>What is this?</dt>
+<dd>These are automated builds of the open-source edition of Microsoft's Visual Studio Code.</dd>
 
-<h3 id="guided-chromebook-installation">NEW: Installation Wizard</h3>
+<dt>How does this work?</dt>
+<dd>The latest code is pulled on a nightly basis from Microsoft's <a href="https://github.com/Microsoft/vscode">official repository</a>. If there are updates, the code is built, tested, packaged and deployed.</dd>
 
-<p>A guided installation wizard is now available for Chromebooks in the form of a shell script that will perform the following tasks automatically:</p>
+<dt>Which devices are supported?</dt>
+<dd>Please refer to the <a href="#platforms">Platforms</a> section.</dd>
 
-<ol>
-  <li>Download crouton.</li>
-  <li>Create a chroot on the local device based on Ubuntu 14.04 (Trusty Tahr).</li>
-  <li>Install Visual Studio Code into the chroot.</li>
-  <li>Install git into the chroot.</li>
-  <li>Create an alias 'code' that allows you to launch Visual Studio Code quickly and easily later.
-    <p>To run Visual Studio Code after installation, do the following</p>
-    <ol>
-        <li>Press Ctrl+Alt+T, type 'shell', return, type 'code', return.</li>
-    </ol>
-  </li>
-</ol>
+<dt>Can I really run Visual Studio Code on my phone?</dt>
+<dd>You may be able to run it, but I wouldn't recommend it unless you have a physical keyboard. The Android instructions are really intended for convertible tablets and docked handsets.</dd>
 
-<p>The installation has the following pre-requisites:</p>
+<dt>Do I need to "root" my Android device?</dt>
+<dd>Absolutely not, and there are good security reasons not to.</dd>
 
-<ol>
-  <li>The Chromebook <strong>must</strong> be in developer mode already.*</li>
-  <li>The <a href="https://goo.gl/OVQOEt">crouton integration extension</a> must be installed from the Chrome Web Store (and enabled).</li>
-</ol>
+<dt>Do I need to put my Chromebook into Developer Mode?</dt>
+<dd>Absolutely not, and there are good security reasons not to.</dd>
 
-<i class="small">* Installing a chroot requires you to put your Chromebook into developer mode, and there are important security considerations to be aware of before deciding to do this, more details of which can be found <a href="https://www.chromium.org/chromium-os/poking-around-your-chrome-os-device">here</a>.</i>
+<dt>Will Visual Studio Code run on my device?</dt>
+<dd>The best way to find out if your device is compatible is to go to the <a href="#instructions">Instructions</a> section and try it for yourself.</dd>
 
-<h4>How to setup Code on your Chromebook:</h4>
+<dt>Which virtual systems are these releases tested on?</dt>
+<dd>
+  <dl>
+    <dt>32-bit ARM hard-float (armhf)</dt>
+    <dd>These packages are tested on a Raspbian Jessie image to mimic a Raspberry Pi 2.</dd>
+    <dt>64-bit ARM hard-float (arm64)</dt>
+    <dd>These packages are tested on a modified Ubuntu 16.04 image to mimic a Odroid C2.</dd>
+  </dl>
+</dd>
 
-<blockquote>Below each step is a preview of what you should be seeing on screen.</blockquote>
+<dt>Are these releases provided by Microsoft?</dt>
+<dd><strong>No</strong>. These releases are an independent community effort. For clarity, this website (and the releases here) are <strong>not</strong> affiliated with Microsoft.</dd>
 
-<ol>
-  <li class="install-crouton-extension">Install the <a href="https://goo.gl/OVQOEt">crouton extension</a>. <i>This allows us to put Code into it's own Chrome OS window.</i></li>
-  <li>Press Ctrl+Alt+T on your keyboard.
-    <pre>Welcome to crosh, the Chrome OS developer shell.
-If you got here by mistake, don't panic!  Just close this tab and carry on.
-Type 'help' for a list of commands.
+<dt>Why is the logo so much different from the one on Microsoft's website?</dt>
+<dd>The Visual Studio Code logo is owned by Microsoft, and is reserved for use on releases provided directly by them.</dd>
 
-crosh&gt;</pre>
-  </li>
-  <li>Type <strong>shell</strong>, then press the <strong>return</strong> key.</li>
-  <pre>chronos@localhost / $</pre> 
-  <li>Copy the following text to your clipboard:</li>
-  <pre id="chromebook-install-sh">. <( wget -O - https://code.headmelted.com/installers/chromebook.sh )</pre>
-  <li>Paste the text into your <strong>shell</strong> window from step 3, then press the <strong>return</strong> key.</li>
-  <li>Once the installation completes (it will take a while), you can run code anytime by entering the shell and typing the <strong>code</strong> command. (i.e. Ctrl+Alt+T, shell, return, code return). I'm working on making this less hassle.</li>
-</ol>
+<dt>Where are the packages being hosted?</dt>
+<dd>The release packages are hosted by JFrog Bintray, who are graciously providing this service for free under their open-source plan.</dd>
 
-<strong>NOTE: Visual Studio Code may fail on the first run after installation, giving an error with a red band in the window, but should work fine on subsequent runs.  This is a bug I'm looking into currently.</strong>
+<dt>This is really cool. Can I help with this?</dt>
+<dd>Yes you can! Any and all help is appreciated, but you'll need to digitally sign the <a href="https://cla.microsoft.com/">Microsoft CLA</a> first, so that we can contribute any fixes back upstream to the core repository.</dd>
 
-<h3 id="manual-chromebook-installation">Manual Chromebook installation</h3>
-<p>To install Visual Studio Code into an existing chroot, simply enter the chroot and follow the <a href="#linux-header-scripts">standard Linux instructions</a> below, depending on the distribution you are running (YUM or APT-based).</p>
+<dt>So who maintains this site?</dt>
+<dd>I'm Jay. Nice to meet you. You can find my details in the <a href="#contact-me">contact section</a>.</dd>
 
-<h1 id="linux-header">Linux installation</h1>
+<dt>Are you a Microsoft MVP?</dt>
+<dd>I am not.</dd>
+
+</dl>
+
+<h1 id="#instructions"><i class="fa fa-info"></i>&nbsp;Instructions</h1>
 
 <p>You have two options here.  The <a href="#linux-install-scripts">scripted installation</a> will install Visual Studio Code, and will also set up the package repository so that you can get regular updates.  The <a href="#linux-header-manual">manual installation</a> section will allow you to just get the latest packages for your architecture and distribution.</p>
 
