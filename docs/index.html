@@ -18,6 +18,51 @@ image_url: images/code.png
 <h1 id="testing"><i class="fa fa-check-square-o"></i>&nbsp;Testing</h1>
 <p>For each and every release, the build system prepares a clean virtual system for the given architecture. The finished package is then installed and tested with the full suite of tests from Microsoft. Once this is done, a test report is prepared that can be downloaded for each release.</p>
 
+<h1 id="#instructions"><i class="fa fa-info"></i>&nbsp;Instructions</h1>
+
+<p>You have two options here.  The <a href="#linux-install-scripts">scripted installation</a> will install Visual Studio Code, and will also set up the package repository so that you can get regular updates.  The <a href="#linux-header-manual">manual installation</a> section will allow you to just get the latest packages for your architecture and distribution.</p>
+
+<h2 id="linux-install-scripts"><i class="fa fa-linux"></i>&nbsp;Linux Installation</h2>
+<i>(including Raspberry Pis, Odroids and other single-board computers)</i>
+
+<p>Packages are currently available in DEB and RPM format for ARM, x86 and amd64 systems.</p>
+
+<p>You can use the scripts here to install the packages and add their repository to your system.</p>
+
+<p>Open a new terminal. If you need super-user rights (you probably do), then you can enter <strong>sudo -s</strong> and press return
+to enter a super-user session. Run the installer for your current distribution:</p>
+
+<h3 id="header-apt"><img src="images/debian-logo.png" width="18" height="18">&nbsp;APT instructions</h3>
+<i>(including Debian, Raspbian, Ubuntu and Linux Mint)</i>
+
+<pre id="install-apt">. <( wget -O - https://code.headmelted.com/installers/apt.sh )</pre>
+
+<h3 id="header-yum"><img src="images/rpm-logo.png" width="18" height="18">&nbsp;YUM instructions</h3>
+<i>(including Fedora, Pidora, Red Hat and SUSE)</i>
+
+<pre id="install-yum">. <( wget -O - https://code.headmelted.com/installers/yum.sh )</pre>
+
+<p>Press the return key.  Once the installer has completed, you should have a "Code - OSS (headmelted)" entry in your desktop program list.</p>
+
+<h3 id="linux-header-manual">Manual Linux installation</h1>
+
+<p>If for any reason the script above will not work on your system, or you do not want to add the package source
+for updates, you can get the latest version of the package for your system below.</p>
+
+<h4 id="header-gpg"><img src="images/gpg-logo.png" width="18" height="18">&nbsp;Public GPG key</h3>
+
+<p>For either APT or YUM installation, you'll want the public GPG key to verify the package, which you can download <a href="https://bintray.com/user/downloadSubjectPublicKey?username=headmelted">here</a>.</p>
+
+<h4 id="header-apt"><img src="images/debian-logo.png" width="18" height="18">&nbsp;APT packages</h3>
+<i>(including Debian, Raspbian, Ubuntu and Linux Mint)</i>
+
+<p>These packages are now available directly from <a href="https://github.com/headmelted/codebuilds/releases">the releases page</a>.</p>
+
+<h4 id="header-yum"><img src="images/rpm-logo.png" width="18" height="18">&nbsp;YUM packages</h3>
+<i>(including Fedora, Pidora, Red Hat and SUSE)</i>
+
+<p>These packages are currently unavailable.  I'll try to get these back online as soon as possible.</p>
+
 <h1 id="faq"><i class="fa fa-question-circle"></i>&nbsp;Frequently asked questions</h1>
 
 <dl>
@@ -73,52 +118,12 @@ image_url: images/code.png
 
 </dl>
 
-<h1 id="#instructions"><i class="fa fa-info"></i>&nbsp;Instructions</h1>
+<h1 id="#license"><i class="fa fa-balance-scale"></i>&nbsp;License</h1>
 
-<p>You have two options here.  The <a href="#linux-install-scripts">scripted installation</a> will install Visual Studio Code, and will also set up the package repository so that you can get regular updates.  The <a href="#linux-header-manual">manual installation</a> section will allow you to just get the latest packages for your architecture and distribution.</p>
+<p>Your use of the software releases discussed here is subject to the terms of the <a href="https://github.com/headmelted/codebuilds/blob/master/LICENSE.txt">CODEBUILDS license</a> (which can be found at https://github.com/Microsoft/vscode/blob/master/CODEBUILDS_LICENSE.txt), and is also subject to the <a href="https://github.com/Microsoft/vscode/blob/master/LICENSE.txt">Microsoft vscode license</a> (which can be found at https://github.com/Microsoft/vscode/blob/master/LICENSE.txt).</p>
 
-<h2 id="linux-install-scripts">Installation Scripts</h2>
-<i>(including Raspberry Pis, Odroids and other single-board computers)</i>
+<h1 id="#disclaimer"><i class="fa fa-legal"></i>&nbsp;DISCLAIMER</h1>
 
-<p>Packages are currently available in DEB and RPM format for ARM, x86 and amd64 systems.</p>
-
-<p>You can use the scripts here to install the packages and add their repository to your system.</p>
-
-<p>Open a new terminal. If you need super-user rights (you probably do), then you can enter <strong>sudo -s</strong> and press return
-to enter a super-user session. Run the installer for your current distribution:</p>
-
-<h3 id="header-apt"><img src="images/debian-logo.png" width="18" height="18">&nbsp;APT instructions</h3>
-<i>(including Debian, Raspbian, Ubuntu and Linux Mint)</i>
-
-<pre id="install-apt">. <( wget -O - https://code.headmelted.com/installers/apt.sh )</pre>
-
-<h3 id="header-yum"><img src="images/rpm-logo.png" width="18" height="18">&nbsp;YUM instructions</h3>
-<i>(including Fedora, Pidora, Red Hat and SUSE)</i>
-
-<pre id="install-yum">. <( wget -O - https://code.headmelted.com/installers/yum.sh )</pre>
-
-<p>Press the return key.  Once the installer has completed, you should have a "Code - OSS (headmelted)" entry in your desktop program list.</p>
-
-<h1 id="linux-header-manual">Manual Linux installation</h1>
-
-<p>If for any reason the script above will not work on your system, or you do not want to add the package source
-for updates, you can get the latest version of the package for your system below.</p>
-
-<h3 id="header-gpg"><img src="images/gpg-logo.png" width="18" height="18">&nbsp;Public GPG key</h3>
-
-<p>For either APT or YUM installation, you'll want the public GPG key to verify the package, which you can download <a href="https://bintray.com/user/downloadSubjectPublicKey?username=headmelted">here</a>.</p>
-
-<h3 id="header-apt"><img src="images/debian-logo.png" width="18" height="18">&nbsp;APT packages</h3>
-<i>(including Debian, Raspbian, Ubuntu and Linux Mint)</i>
-
-<p>These packages are now available directly from <a href="https://github.com/headmelted/codebuilds/releases">the releases page</a>.</p>
-
-<h3 id="header-yum"><img src="images/rpm-logo.png" width="18" height="18">&nbsp;YUM packages</h3>
-<i>(including Fedora, Pidora, Red Hat and SUSE)</i>
-
-<p>These packages are currently unavailable.  I'll try to get these back online as soon as possible.</p>
-
-<h1 id="#disclaimer">DISCLAIMER</h1>
-
-<p>THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS
-  BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.</p>
+<p>
+  THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+</p>
