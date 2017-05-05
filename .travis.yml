@@ -182,7 +182,7 @@ script:
   - echo "Display lsblk...";
   - lsblk;
   - echo "Entering virtual system with proot...";
-  - sudo proot -q qemu-arm -r root -b boot:/boot -b ../.build/linux/deb/armhf/deb/:/deb -b ../test:/test -b ../scripts:/scripts -b ../codebuilds-tools:/codebuilds-tools /codebuild-tools/proot.sh;
+  - sudo proot -q qemu-arm -R ./root -b ./boot:/boot -b ../.build/linux/deb/armhf/deb/:/deb -b ../test:/test -b ../scripts:/scripts -b ../codebuilds-tools:/codebuilds-tools /codebuild-tools/proot.sh;
 
 deploy:
   provider: releases
