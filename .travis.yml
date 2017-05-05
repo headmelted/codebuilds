@@ -3,6 +3,9 @@ dist: trusty
 cache:
   directories:
     - ./cache
+branches:
+  only:
+  - /^2017.*$/
 
 # x86 toolchain (used as a base for non-sudo compilation, which is faster) 
 include: &toolchain_x86
