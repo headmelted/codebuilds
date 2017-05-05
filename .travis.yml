@@ -181,13 +181,8 @@ script:
   - sudo mount /dev/mapper/loop0p2 root;
   - echo "Display lsblk...";
   - lsblk;
-  - echo "Installng realpath...";
-  - sudo apt-get install -y realpath;
-  - echo "Resolving APT packages directory...";
-  - DEBIAN_PACKAGE_DIRECTORY=$( realpath "/home/travis/build/headmelted/codebuilds/.build/linux/**/*.deb/../" );
-  - echo "APT packages directory is ${DEBIAN_PACKAGE_DIRECTORY}.";
   - echo "Entering virtual system with proot...";
-  - sudo proot -q qemu-arm -r root -b boot:/boot -b ${DEBIAN_PACKAGE_DIRECTORY}:/deb -b /home/travis/build/headmelted/codebuilds/test:/test -b /home/travis/build/headmelted/codebuilds/scripts:/scripts -b /home/travis/build/headmelted/codebuilds/codebuilds-tools:/codebuilds-tools /codebuild-tools/proot.sh;
+  - sudo proot -q qemu-arm -r root -b boot:/boot -b /home/travis/headmelted/codebuilds/.build/linux/deb/armhf/deb/:/deb -b /home/travis/build/test:/test -b /home/travis/build/headmelted/codebuilds/scripts:/scripts -b /home/travis/build/headmelted/codebuilds/codebuilds-tools:/codebuilds-tools /codebuild-tools/proot.sh;
 
 deploy:
   provider: releases
