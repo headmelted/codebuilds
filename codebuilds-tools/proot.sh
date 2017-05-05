@@ -1,3 +1,5 @@
+#!/bin/bash
+
 echo "Installing pre-requisites...";
 sudo apt-get install -y xvfb yum;
 
