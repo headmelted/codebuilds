@@ -138,26 +138,23 @@ a {
   @include small {
     padding: 2rem 1rem;
   }
-  
-  .social-icons {
-    
-    margin-bottom:-60px;
-    margin-top:10px;
     
     .social-icon-tag {
+      opacity: 0.7;
+      float:right;
       display: none;
     }
     
     @include large {
     .social-icon-tag {
       display:inline-block;
-      opacity: 0.7;
-      position:relative;
-      left:-95px;
-      margin-right:-90px;
-      top:-15px;
     }
     }
+  
+  .social-icons {
+    
+    margin-bottom:-60px;
+    margin-top:10px;
     
     a {
       display:inline-block;
