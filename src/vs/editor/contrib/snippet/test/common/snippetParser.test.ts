@@ -363,21 +363,32 @@ suite('SnippetParser', () => {
 		assert.equal(snippet.offset(array[0]), 3);
 	});
 
-	test('TextmateSnippet#adjustIndentation', () => {
+	test('TextmateSnippet#withIndentation', () => {
 		let snippet = SnippetParser.parse('foo\n  bar');
-		assert.equal(Marker.toString(snippet.marker), 'foo\n  bar');
-		snippet.adjustIndentation(s => s.replace(/  /, '\t'));
-		assert.equal(Marker.toString(snippet.marker), 'foo\n\tbar');
+		assert.equal(snippet.value, 'foo\n  bar');
+		let snippet1 = snippet.withIndentation(s => s.replace(/  /, '\t'));
+		let snippet2 = snippet.withIndentation(s => s.replace(/  /, ' '));
+		assert.equal(snippet.value, 'foo\n  bar');
+		assert.equal(snippet1.value, 'foo\n\tbar');
+		assert.equal(snippet2.value, 'foo\n bar');
+
+		snippet = SnippetParser.parse('foo\n  bar');
+		assert.equal(snippet.value, 'foo\n  bar');
+		let newSnippet = snippet.withIndentation(s => s.replace(/  /, '\t'));
+		assert.equal(snippet.value, 'foo\n  bar');
+		assert.equal(newSnippet.value, 'foo\n\tbar');
 
 		snippet = SnippetParser.parse('foo\r\n  bar\r\n  far');
-		assert.equal(Marker.toString(snippet.marker), 'foo\r\n  bar\r\n  far');
-		snippet.adjustIndentation(s => s.replace(/  /, '\t'));
-		assert.equal(Marker.toString(snippet.marker), 'foo\r\n\tbar\r\n\tfar');
+		assert.equal(snippet.value, 'foo\r\n  bar\r\n  far');
+		newSnippet = snippet.withIndentation(s => s.replace(/  /, '\t'));
+		assert.equal(snippet.value, 'foo\r\n  bar\r\n  far');
+		assert.equal(newSnippet.value, 'foo\r\n\tbar\r\n\tfar');
 
 		snippet = SnippetParser.parse('foo${1:bar\r  far\r  boo}');
-		assert.equal(Marker.toString(snippet.marker), 'foobar\r  far\r  boo');
-		snippet.adjustIndentation(s => s.replace(/  /, '\t'));
-		assert.equal(Marker.toString(snippet.marker), 'foobar\r\tfar\r\tboo');
+		assert.equal(snippet.value, 'foobar\r  far\r  boo');
+		newSnippet = snippet.withIndentation(s => s.replace(/  /, '\t'));
+		assert.equal(snippet.value, 'foobar\r  far\r  boo');
+		assert.equal(newSnippet.value, 'foobar\r\tfar\r\tboo');
 
 	});
 });
