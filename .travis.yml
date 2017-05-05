@@ -173,9 +173,9 @@ script:
       mv image ../cache/uncompressed_${ARCH};
     fi;
   - echo "Binding network loopbacks...";
-  - sudo kpartx -a -v ./cache/uncompressed;
+  - sudo kpartx -a -v ./cache/uncompressed_${ARCH};
   - echo "Testing network loopbacks...";
-  - sudo kpartx -l ./cache/uncompressed;
+  - sudo kpartx -l ./cache/uncompressed_${ARCH};
   - echo "Reading loopbacks...";
   - sudo fdisk -l /dev/loop0;
   - echo "Making boot and root directories...";
@@ -187,7 +187,7 @@ script:
   - echo "Display lsblk...";
   - lsblk;
   - echo "Entering virtual system with proot...";
-  - sudo proot -R ./root -q qemu-arm -b boot:/boot -b ../.build/linux/deb/${ARCH}/deb:/deb -b ../test:/test -b ../scripts:/scripts -b ../codebuilds-tools:/codebuilds-tools /codebuilds-tools/proot.sh;
+  - sudo proot -R ./root -q qemu-arm -b boot:/boot -b ../.build/linux/deb/${ARCH}/deb:/deb -b ../test:/test -b ../scripts:/scripts -b ../codebuilds-tools:/codebuilds-tools /bin/bash /codebuilds-tools/proot.sh;
 
 deploy:
   provider: releases
