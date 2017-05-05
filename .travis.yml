@@ -140,11 +140,9 @@ script:
   - echo "Installing dependencies for proot testing...";
   - sudo apt-get install -y qemu kpartx pv;
   - echo "Checking for cached testing image...";
-  - if [ ! -e ./images/uncompressed ]; then
+  - if [ ! -e ./cache/uncompressed_${ARCH} ]; then
       echo "Creating test_image directory...";
       mkdir ./test_image;
-      echo "Creating cache directory...";
-      mkdir ./test_image/cache;
       echo "Entering test_image directory...";
       cd ./test_image;
       TESTING_IMAGE_FORMAT="${TESTING_IMAGE##*.}";
@@ -164,12 +162,15 @@ script:
         echo "Extracted contents:";
         ls;
         echo "Retrieving image file name...";
-        TESTING_IMAGE_FILE=$(find ./* -name "*.img");
-        echo "Moving uncompressed image file (${TESTING_IMAGE_FILE}) to image...";
-        mv "${TESTING_IMAGE_FILE}" image;
+        TESTING_IMAGE_FILE=$(find ./* -name "*.{iso,img,bin}");
+        echo "Testing image file matched to ${TESTING_IMAGE_FILE}.";
+        if [[ "${TESTING_IMAGE_FILE}" != ""  ]]; then
+          echo "Moving uncompressed image file (${TESTING_IMAGE_FILE}) to image...";
+          mv "${TESTING_IMAGE_FILE}" image;
+        fi;
       fi;
       echo "Moving uncompressed image into ./cache...";
-      mv image ./cache/uncompressed;
+      mv image ../cache/uncompressed_${ARCH};
     fi;
   - echo "Binding network loopbacks...";
   - sudo kpartx -a -v ./cache/uncompressed;
