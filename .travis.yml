@@ -101,6 +101,7 @@ script:
       sudo rm -rf /etc/apt/sources.list.d/**;
       sudo rm /etc/apt/sources.list; 
       echo "deb [arch=amd64,i386] http://archive.ubuntu.com/ubuntu xenial main universe multiverse restricted" | sudo tee /etc/apt/sources.list;
+      echo "deb [arch=${ARCH}] http://ports.ubuntu.com/ubuntu-ports trusty main universe multiverse restricted" | sudo tee -a /etc/apt/sources.list;
       echo "deb [arch=${ARCH}] http://ports.ubuntu.com/ubuntu-ports xenial main universe multiverse restricted" | sudo tee -a /etc/apt/sources.list;
       echo "deb-src http://archive.ubuntu.com/ubuntu xenial main universe multiverse restricted" | sudo tee -a /etc/apt/sources.list;
       sudo dpkg --add-architecture ${ARCH};
