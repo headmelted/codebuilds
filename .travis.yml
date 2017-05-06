@@ -193,10 +193,11 @@ script:
   - sudo mount /dev/mapper/loop0p2 root;
   - echo "Display lsblk...";
   - lsblk;
+  - echo "Returning to parent...";
+  - cd ..;
   - echo "Entering virtual system with proot...";
-  - sudo proot -r ./root -q qemu-${QEMU_ARCH} -b boot:/boot -b .build/linux/deb/${ARCH}/deb:/deb -b test:/test -b scripts:/scripts -b codebuilds-tools:/codebuilds-tools "/bin/bash /codebuilds-tools/proot.sh";
-
-deploy:
+  - sudo proot -r test_image/root -q qemu-${QEMU_ARCH} -b test_image/boot -b .build/linux/deb/${ARCH}/deb -b test -b scripts -b codebuilds-tools ls;
+  
   provider: releases
   api_key: "$GITHUB_TOKEN"
   file_glob: true

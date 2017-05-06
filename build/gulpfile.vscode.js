@@ -191,15 +191,9 @@ function packageTask(platform, arch, opts) {
 	platform = platform || process.platform;
 	arch = platform === 'win32' ? 'ia32' : arch;
 
-    console.log("Destination: " + destination);
-    console.log("Platform: " + platform);
-	console.log("Package arch: " + arch);
-	
 	return () => {
 		const out = opts.minified ? 'out-vscode-min' : 'out-vscode';
 		
-		console.log("out: " + out);
-
 		const checksums = computeChecksums(out, [
 			'vs/workbench/electron-browser/workbench.main.js',
 			'vs/workbench/electron-browser/workbench.main.css',
@@ -227,7 +221,7 @@ function packageTask(platform, arch, opts) {
 			'!extensions/typescript/bin/**',
 			'!extensions/vscode-api-tests/**',
 			'!extensions/vscode-colorize-tests/**',
-			...builtInExtensions.map(e => `!extensions/${e.name}/**`)
+			builtInExtensions.map(e => `!extensions/${e.name}/**`)
 		];
 
 		const nlsFilter = filter('**/*.nls.json', { restore: true });
@@ -238,7 +232,7 @@ function packageTask(platform, arch, opts) {
 			.pipe(nlsDev.createAdditionalLanguageFiles(languages, path.join(__dirname, '..', 'i18n')))
 			.pipe(nlsFilter.restore);
 
-		const marketplaceExtensions = es.merge(...builtInExtensions.map(extension => {
+		const marketplaceExtensions = es.merge(builtInExtensions.map(extension => {
 			return ext.src(extension.name, extension.version)
 				.pipe(rename(p => p.dirname = `extensions/${extension.name}/${p.dirname}`));
 		}));
