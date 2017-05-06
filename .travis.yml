@@ -100,8 +100,6 @@ notifications:
 script:
   - echo "Downloading proot to /usr/local/bin/proot...";
   - sudo wget "https://github.com/proot-me/proot-static-build/releases/download/v5.1.1/proot_5.1.1_x86_64_rc2" -O /usr/local/bin/proot;
-  - echo "Setting execute bit on proot...";
-  - sudo chmod +x /usr/local/bin/proot;
   - export CXX="${GPP_COMPILER}" CC="${GCC_COMPILER}";
   - if [[ "${CROSS_TOOLCHAIN}" == "true" ]]; then
       sudo rm -rf /etc/apt/sources.list.d/**;
@@ -170,7 +168,7 @@ script:
           echo "Moving uncompressed image file (${TESTING_IMAGE_FILE}) to image...";
           mv "${TESTING_IMAGE_FILE}" image;
         else
-          echo "ERROR - COULD NOT UNDERSTAND IMAGE FILE ${TESTING_IMAGE_FILE}";
+          echo "File not .img, no rename needed, continuing...";
         fi;
       fi;
       echo "Moving uncompressed image into ./cache...";
@@ -194,7 +192,7 @@ script:
   - echo "Display lsblk...";
   - lsblk;
   - echo "Entering virtual system with proot...";
-  - sudo proot -r ./root -q qemu-${QEMU_ARCH} -b boot:/boot -b ../.build/linux/deb/${ARCH}/deb:/deb -b ../test:/test -b ../scripts:/scripts -b ../codebuilds-tools:/codebuilds-tools /bin/bash /codebuilds-tools/proot.sh;
+  - sudo proot -r ./root -q qemu-${QEMU_ARCH} -b boot:/boot -b .build/linux/deb/${ARCH}/deb:/deb -b test:/test -b scripts:/scripts -b codebuilds-tools:/codebuilds-tools /bin/bash /codebuilds-tools/proot.sh;
 
 deploy:
   provider: releases
