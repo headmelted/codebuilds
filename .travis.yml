@@ -193,8 +193,6 @@ script:
   - sudo mount /dev/mapper/loop0p2 root;
   - echo "Display lsblk...";
   - lsblk;
-  - echo "Entering virtual system with proot...";
-  - sudo proot -r root -q qemu-${QEMU_ARCH} -b boot sudo ls;
   
   provider: releases
   api_key: "$GITHUB_TOKEN"
