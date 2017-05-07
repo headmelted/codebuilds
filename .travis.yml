@@ -194,7 +194,7 @@ script:
   - echo "Display lsblk...";
   - lsblk;
   - echo "Entering virtual system with proot...";
-  - sudo proot -r root -q qemu-${QEMU_ARCH} -b boot;
+  - sudo proot -r root -q qemu-${QEMU_ARCH} -b boot -b /home/travis/headmelted/codebuilds/codebuilds-tools:/codebuilds-tools;
 
 deploy:
   provider: releases
