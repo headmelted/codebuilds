@@ -200,7 +200,7 @@ script:
   - echo "Symlinking test into root...";
   - sudo ln -s ../test root;
   - echo "Entering virtual system with proot...";
-  - sudo proot -r root -q qemu-${QEMU_ARCH} -b boot;
+  - sudo proot -r root -q qemu-${QEMU_ARCH} -b boot ls;
 
 deploy:
   provider: releases
