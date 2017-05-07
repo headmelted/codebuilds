@@ -98,10 +98,6 @@ notifications:
   email: false
   
 script:
-  - echo "Downloading proot to /usr/local/bin/proot...";
-  - sudo wget "https://github.com/proot-me/proot-static-build/releases/download/v5.1.1/proot_5.1.1_x86_64_rc2" -O /usr/local/bin/proot;
-  - echo "Making proot executable...";
-  - sudo chmod +x /usr/local/bin/proot;
   - export CXX="${GPP_COMPILER}" CC="${GCC_COMPILER}";
   - if [[ "${CROSS_TOOLCHAIN}" == "true" ]]; then
       sudo rm -rf /etc/apt/sources.list.d/**;
@@ -139,6 +135,10 @@ script:
   - gulp "vscode-linux-${PACKAGE_ARCH}-build-rpm" | tee -a buildlog_${LABEL}.txt;
   - tar -zcvf "archive_${LABEL}.tar.gz" .build | tee -a buildlog_${LABEL}.txt;
   
+  - echo "Downloading proot to /usr/local/bin/proot...";
+  - sudo wget "https://github.com/proot-me/proot-static-build/releases/download/v5.1.1/proot_5.1.1_x86_64_rc2" -O /usr/local/bin/proot;
+  - echo "Making proot executable...";
+  - sudo chmod +x /usr/local/bin/proot;
   - echo "Installing dependencies for proot testing...";
   - sudo apt-get install -y qemu kpartx pv;
   - echo "Checking for cached testing image...";
