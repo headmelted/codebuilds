@@ -106,7 +106,8 @@
     "underscore": "^1.8.2",
     "vinyl": "^0.4.5",
     "vinyl-fs": "^2.4.3",
-    "vscode-nls-dev": "^2.0.1"
+    "vscode-nls-dev": "^2.0.1",
+    "yaml-lint": "0.0.4"
   },
   "repository": {
     "type": "git",
