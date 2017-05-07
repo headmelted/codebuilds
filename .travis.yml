@@ -140,7 +140,7 @@ script:
   - tar -zcvf "archive_${LABEL}.tar.gz" .build | tee -a buildlog_${LABEL}.txt;
   
   - echo "Installing dependencies for proot testing...";
-  - sudo apt-get install -y qemu kpartx pv tree;
+  - sudo apt-get install -y qemu kpartx pv;
   - echo "Checking for cached testing image...";
   - if [ ! -e ./cache/uncompressed_${ARCH} ]; then
       echo "Creating test_image directory...";
@@ -193,10 +193,8 @@ script:
   - sudo mount /dev/mapper/loop0p2 root;
   - echo "Display lsblk...";
   - lsblk;
-  - echo "Returning to parent...";
-  - cd ..;
   - echo "Entering virtual system with proot...";
-  - sudo proot -r test_image/root -q qemu-${QEMU_ARCH} -b test_image/boot -b .build/linux/deb/${ARCH}/deb -b test -b scripts -b codebuilds-tools ls;
+  - sudo proot -r root -q qemu-${QEMU_ARCH} -b boot sudo ls /;
   
   provider: releases
   api_key: "$GITHUB_TOKEN"
