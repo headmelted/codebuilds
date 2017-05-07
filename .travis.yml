@@ -195,7 +195,8 @@ script:
   - lsblk;
   - echo "Entering virtual system with proot...";
   - sudo proot -r root -q qemu-${QEMU_ARCH} -b boot;
-  
+
+deploy:
   provider: releases
   api_key: "$GITHUB_TOKEN"
   file_glob: true
