@@ -12,4 +12,3 @@ out-vscode/
 out-vscode-min/
 build/node_modules
 coverage/
-push.sh
