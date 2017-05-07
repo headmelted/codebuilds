@@ -5,7 +5,7 @@ cache:
     - ./cache
 branches:
   only:
-  - /^2017.*$/
+    - /^2017.*$/
 
 # x86 toolchain (used as a base for non-sudo compilation, which is faster) 
 include: &toolchain_x86
@@ -193,6 +193,8 @@ script:
   - sudo mount /dev/mapper/loop0p2 root;
   - echo "Display lsblk...";
   - lsblk;
+  - echo "Entering virtual system with proot...";
+  - sudo proot -r root -q qemu-${QEMU_ARCH} -b boot;
   
   provider: releases
   api_key: "$GITHUB_TOKEN"
