@@ -186,21 +186,16 @@ script:
   - echo "Reading loopbacks...";
   - sudo fdisk -l /dev/loop0;
   - echo "Making boot and root directories...";
-  - mkdir boot root;
+  - mkdir -p boot root;
   - echo "Mounting boot sector...";
   - sudo mount /dev/mapper/loop0p1 boot;
   - echo "Mounting root directory...";
   - sudo mount /dev/mapper/loop0p2 root;
   - echo "Display lsblk...";
   - lsblk;
-  - echo "Symlinking codebuilds-tools into root...";
-  - sudo ln -s ../codebuild-tools root;
-  - echo "Symlinking scripts into root...";
-  - sudo ln -s ../scripts root;
-  - echo "Symlinking test into root...";
-  - sudo ln -s ../test root;
+  - cd ..;
   - echo "Entering virtual system with proot...";
-  - sudo proot -r root -q qemu-${QEMU_ARCH} -b boot ls;
+  - sudo proot -S test_image/root -q qemu-${QEMU_ARCH} -b test_image/boot ls;
 
 deploy:
   provider: releases

@@ -44,7 +44,8 @@
   },
   "devDependencies": {
     "@types/minimist": "^1.2.0",
-    "@types/mocha": "^2.2.39",
+    "@types/mocha": "^2.2.41",
+    "@types/node": "^7.0.18",
     "@types/semver": "^5.3.30",
     "@types/sinon": "^1.16.34",
     "@types/winreg": "^1.2.30",
