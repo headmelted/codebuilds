@@ -14,3 +14,4 @@ build/node_modules
 coverage/
 cache/
 test_image/
+.nvm/
