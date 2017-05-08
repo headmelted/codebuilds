@@ -24,8 +24,6 @@ include: &toolchain_x86
         - libgtk2.0-0
         - libx11-dev
         - libxkbfile-dev
-        - rpm
-        - xvfb
         
 # OSX amd64 toolchain
 include: &toolchain_osx_amd64
@@ -98,6 +96,8 @@ notifications:
   email: false
   
 script:
+  - echo "Installing pre-requisites...";
+  - sudo apt-get install -y xvfb;
   - export CXX="${GPP_COMPILER}" CC="${GCC_COMPILER}";
   - if [[ "${CROSS_TOOLCHAIN}" == "true" ]]; then
       sudo rm -rf /etc/apt/sources.list.d/**;
@@ -117,12 +117,23 @@ script:
   - nvm use 6.6.0;
   - npm config set python `which python`;
   - npm install -g gulp;
+  
+  - echo "Inserting custom xvfb into /etc/init.d...";
+  - sudo mv -f /codebuilds-tools/xvfb /etc/init.d/xvfb;
+  - echo "Starting xvfb...";
+  - sh -e /etc/init.d/xvfb start;
+  - echo "Waiting 10 seconds for xvfb to start up...";
+  - sleep 10;
+  - echo "Exporting display :99...";
+  - DISPLAY=:99;
+  - echo "Launcing dbus...";
+  - dbus-launch;
+  
   - gulp hygiene | tee -a buildlog_${LABEL}.txt;
   - if [[ "${ARCH}" == "amd64" ]]; then
       ./scripts/npm.sh install --unsafe-perm | tee -a buildlog_${LABEL}.txt;
       gulp electron | tee -a buildlog_${LABEL}.txt;
     else
-      echo "Path is $PATH";
       sudo ln -s /usr/${GNU_TRIPLET}/lib/ld-linux-${ARCH}.so.3 /lib/ld-linux.so.3;
       sudo ln -s /usr/${GNU_TRIPLET}/lib/libstdc++.so.6 /lib/libstdc++.so.6;
       ./scripts/npm.sh install --unsafe-perm --arch=${NPM_ARCH} | tee -a buildlog_${LABEL}.txt;
