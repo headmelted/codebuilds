@@ -120,8 +120,8 @@ script:
   - npm config set python `which python`;
   - npm install -g gulp;
   
-  # - echo "Inserting custom xvfb into /etc/init.d...";
-  # - sudo mv -f /codebuilds-tools/xvfb /etc/init.d/xvfb;
+  - echo "Inserting custom xvfb into /etc/init.d...";
+  - sudo mv -f /codebuilds-tools/xvfb /etc/init.d/xvfb;
   - echo "Exporting display :99.0...";
   - export DISPLAY=:99.0;
   - echo "Starting xvfb...";
@@ -145,7 +145,7 @@ script:
   
   - echo "Retrieving dependencies for build...";
   - objdump -p .build/electron/code-oss;
-  - gulp "vscode-linux-${PLATFORM_ARCH}" | tee -a buildlog_${LABEL}.txt;
+  - gulp "vscode-linux-${PACKAGE_ARCH}" | tee -a buildlog_${LABEL}.txt;
   - gulp "vscode-linux-${PACKAGE_ARCH}-build-deb" | tee -a buildlog_${LABEL}.txt;
   - gulp "vscode-linux-${PACKAGE_ARCH}-build-rpm" | tee -a buildlog_${LABEL}.txt;
   - tar -zcvf "archive_${LABEL}.tar.gz" .build | tee -a buildlog_${LABEL}.txt;
