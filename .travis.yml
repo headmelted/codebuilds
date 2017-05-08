@@ -132,6 +132,10 @@ script:
   - gulp compile --max_old_space_size=4096 | tee -a buildlog_${LABEL}.txt;
   - gulp optimize-vscode --max_old_space_size=4096 | tee -a buildlog_${LABEL}.txt;
   
+  - sudo apt-get install -y qemu binfmt-support qemu-user-static;
+  - ./scripts/test.sh;
+  - ./scripts/test-integration.sh;
+  
   - echo "Retrieving dependencies for build...";
   - objdump -p .build/electron/code-oss;
   - gulp "vscode-linux-${PLATFORM_ARCH}" | tee -a buildlog_${LABEL}.txt;
