@@ -123,6 +123,7 @@ script:
       gulp electron | tee -a buildlog_${LABEL}.txt;
     else
       ln -s /usr/${GNU_TRIPLET}/lib/ld-linux-${ARCH}.so.3 /lib/ld-linux.so.3;
+      ln -s /usr/${GNU_TRIPLET}/lib/libstdc++.so.6 /lib/libstdc++.so.6;
       ./scripts/npm.sh install --unsafe-perm --arch=${NPM_ARCH} | tee -a buildlog_${LABEL}.txt;
       gulp electron --arch=${VSCODE_ELECTRON_PLATFORM} | tee -a buildlog_${LABEL}.txt;
     fi;
