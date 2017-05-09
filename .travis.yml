@@ -121,7 +121,7 @@ script:
   - npm install -g gulp;
   
   - echo "Inserting custom xvfb into /etc/init.d...";
-  - sudo mv -f /codebuilds-tools/xvfb /etc/init.d/xvfb;
+  - sudo mv -f ./codebuilds-tools/xvfb /etc/init.d/xvfb;
   - echo "Exporting display :99.0...";
   - export DISPLAY=:99.0;
   - echo "Starting xvfb...";
