@@ -95,7 +95,7 @@ notifications:
   email: false
   
 script:
-  - sudo bash -c "./codebuilds-tools/build.sh";
+  - sudo bash -c "./codebuilds-tools/docker.sh";
 
 deploy:
   provider: releases
