@@ -95,7 +95,7 @@ notifications:
   email: false
   
 script:
-  - sudo bash -c "./codebuilds-tools/docker.sh";
+  - sudo bash -c "${TRAVIS_BUILD_DIR}/codebuilds-tools/docker.sh";
 
 deploy:
   provider: releases
