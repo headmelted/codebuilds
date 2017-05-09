@@ -1,4 +1,5 @@
 sudo: required
+language: generic
 dist: trusty
 services:
   - docker
