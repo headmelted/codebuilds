@@ -5,4 +5,4 @@ docker pull ${DOCKER_IMAGE};
 docker images;
 chmod +x ${TRAVIS_BUILD_DIR}/codebuilds-tools/build.sh;
 echo "Binding [${TRAVIS_BUILD_DIR}]...";
-docker run -v ${TRAVIS_BUILD_DIR}:/root/containerfolder -i -t ${DOCKER_IMAGE} /bin/bash -c "ls ${TRAVIS_BUILD_DIR}";
+docker run -v ../:/root/containerfolder -i -t ${DOCKER_IMAGE} /bin/bash -c "ls ${TRAVIS_BUILD_DIR}";
