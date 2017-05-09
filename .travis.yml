@@ -118,6 +118,7 @@ script:
   - nvm install 6.6.0;
   - nvm use 6.6.0;
   - npm config set python `which python`;
+  - npm install gulp;
   - npm install -g gulp;
   
   - echo "Inserting custom xvfb into /etc/init.d...";
