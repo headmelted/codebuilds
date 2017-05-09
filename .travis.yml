@@ -93,10 +93,6 @@ matrix:
 notifications:
   email: false
   
-before_install:
-  - docker pull debian/sid;
-  - docker run -d -p 127.0.0.1:80:4567 debian/sid /bin/bash -c "ls /;"
-  
 script:
   - sudo bash -c "./codebuilds-tools/build.sh";
 
