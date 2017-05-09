@@ -96,7 +96,7 @@ notifications:
   email: false
   
 script:
-  - sudo bash -c "${TRAVIS_BUILD_DIR}/codebuilds-tools/build.sh";
+  - sudo bash -c ./codebuilds-tools/build.sh;
 
 deploy:
   provider: releases
