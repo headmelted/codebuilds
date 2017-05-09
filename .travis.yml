@@ -139,9 +139,6 @@ script:
   - gulp compile --max_old_space_size=4096 | tee -a buildlog_${LABEL}.txt;
   - gulp optimize-vscode --max_old_space_size=4096 | tee -a buildlog_${LABEL}.txt;
   
-  - dpkg -s qemu-arm-static;
-  
-  
   - ./scripts/test.sh;
   - ./scripts/test-integration.sh;
   
