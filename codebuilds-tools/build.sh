@@ -29,6 +29,9 @@ if [[ "${CROSS_TOOLCHAIN}" == "true" ]]; then
 
   echo "Enabling ${QEMU_ARCH} emulator...";
   update-binfmts --enable qemu-${QEMU_ARCH};
+  
+  echo "Symlinking libstdc++.so.6...";
+  ln -s /usr/arm-linux-gnueabihf/lib/libstdc++.so.6 /lib/libstdc++.so.6;
 
   echo "Emulators available:" && update-binfmts --display;
    
