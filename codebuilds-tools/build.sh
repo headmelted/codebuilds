@@ -55,11 +55,17 @@ else
   gulp electron --arch=${VSCODE_ELECTRON_PLATFORM} | tee -a ../buildlog_${LABEL}.txt;
 fi;
 
+echo "Starting hygiene...";
 gulp hygiene | tee -a ../buildlog_${LABEL}.txt;
+echo "Starting compile...";
 gulp compile --max_old_space_size=4096 | tee -a ../buildlog_${LABEL}.txt;
+echo "Starting optimize...";
 gulp optimize-vscode --max_old_space_size=4096 | tee -a ../buildlog_${LABEL}.txt;
-  
+
+echo "Starting test...";
 ./scripts/test.sh;
+
+echo "Starting integration tests...";
 ./scripts/test-integration.sh;
   
 echo "Retrieving dependencies for build...";
