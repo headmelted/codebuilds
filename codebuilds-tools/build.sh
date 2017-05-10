@@ -7,7 +7,7 @@ if [[ "${CROSS_TOOLCHAIN}" == "true" ]]; then
   echo "Entering workspace directory...";
   cd ..;
   
-  echo "Current directory is [$(cwd)]";
+  echo "Current directory is [$(pwd)].";
   
   echo "Adding ${ARCH} architecture...";
   dpkg --add-architecture ${ARCH};
@@ -27,8 +27,10 @@ git clone --depth 1 https://github.com/creationix/nvm.git ./.nvm;
 source ./.nvm/nvm.sh;
 nvm install 6.6.0;
 nvm use 6.6.0;
+
 echo "Setting python binding...";
 npm config set python `which python`;
+
 echo "Installing gulp...";
 npm install gulp;
 npm install -g gulp;
@@ -44,7 +46,7 @@ sh -e /etc/init.d/xvfb start;
 
 echo "Waiting 10 seconds for xvfb to start up...";
 sleep 3;
-  
+
 gulp hygiene | tee -a buildlog_${LABEL}.txt;
 
 if [[ "${ARCH}" == "amd64" ]]; then
