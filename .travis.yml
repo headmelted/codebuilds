@@ -88,6 +88,8 @@ include: &toolchain_linux_arm64
 matrix:
   include:
   - os: linux
+    <<: *toolchain_linux_amd64
+  - os: linux
     <<: *toolchain_linux_armhf
   - os: linux
     <<: *toolchain_linux_arm64
@@ -96,7 +98,7 @@ notifications:
   email: false
   
 script:
-  - sudo bash -c "./codebuilds-tools/docker.sh";
+  - sudo bash -c "./codebuilds-tools/build.sh";
 
 deploy:
   provider: releases

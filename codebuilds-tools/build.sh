@@ -3,9 +3,6 @@
 export CXX="${GPP_COMPILER}" CC="${GCC_COMPILER}" DEBIAN_FRONTEND="noninteractive";
 
 if [[ "${CROSS_TOOLCHAIN}" == "true" ]]; then
-
-  echo "Entering workspace directory...";
-  cd /workspace;
   
   echo " directory is [$(pwd)].";
   
@@ -77,12 +74,16 @@ gulp compile --max_old_space_size=4096 | tee -a ../buildlog_${LABEL}.txt;
 echo "Starting optimize...";
 gulp optimize-vscode --max_old_space_size=4096 | tee -a ../buildlog_${LABEL}.txt;
 
-echo "Starting test...";
-./scripts/test.sh;
+if [[ "${LABEL}" == "amd64_linux" ]]; then
 
-echo "Starting integration tests...";
-./scripts/test-integration.sh;
-  
+  echo "Starting test...";
+  ./scripts/test.sh;
+
+  echo "Starting integration tests...";
+  ./scripts/test-integration.sh;
+
+fi;
+
 echo "Retrieving dependencies for build...";
 objdump -p .build/electron/code-oss;
 
