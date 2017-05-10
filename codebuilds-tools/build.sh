@@ -7,6 +7,8 @@ if [[ "${CROSS_TOOLCHAIN}" == "true" ]]; then
   echo "Entering workspace directory...";
   cd ..;
   
+  echo "Current directory is [$(cwd)]";
+  
   echo "Adding ${ARCH} architecture...";
   dpkg --add-architecture ${ARCH};
 
