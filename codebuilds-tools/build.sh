@@ -7,7 +7,7 @@ echo "Updating package repositories...";
 apt-get update;
 
 echo "Installing pre-requisites...";
-apt-get install -y xvfb;
+apt-get install -y xvfb git;
 
 export CXX="${GPP_COMPILER}" CC="${GCC_COMPILER}";
 
