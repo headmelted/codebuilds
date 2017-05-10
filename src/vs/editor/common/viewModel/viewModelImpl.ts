@@ -25,6 +25,7 @@ import { IConfigurationChangedEvent } from 'vs/editor/common/config/editorOption
 import { CursorEventType, ICursorPositionChangedEvent, VerticalRevealType, ICursorSelectionChangedEvent, ICursorRevealRangeEvent, CursorScrollRequest } from 'vs/editor/common/controller/cursorEvents';
 import { Cursor } from 'vs/editor/common/controller/cursor';
 import { CharacterHardWrappingLineMapperFactory } from "vs/editor/common/viewModel/characterHardWrappingLineMapper";
+import { ViewLayout } from 'vs/editor/common/viewLayout/viewLayout';
 
 export class CoordinatesConverter implements ICoordinatesConverter {
 
@@ -93,6 +94,7 @@ export class ViewModel extends Disposable implements IViewModel {
 	private readonly model: editorCommon.IModel;
 	private readonly lines: SplitLinesCollection;
 	public readonly coordinatesConverter: ICoordinatesConverter;
+	public readonly viewLayout: ViewLayout;
 
 	private readonly decorations: ViewModelDecorations;
 	private readonly cursors: ViewModelCursors;
@@ -128,6 +130,12 @@ export class ViewModel extends Disposable implements IViewModel {
 		this.configuration.setMaxLineNumber(this.model.getLineCount());
 
 		this.coordinatesConverter = new CoordinatesConverter(this.lines);
+
+		this.viewLayout = this._register(new ViewLayout(this.configuration, this.getLineCount()));
+
+		this._register(this.viewLayout.onDidScroll((e) => {
+			this._emit([new viewEvents.ViewScrollChangedEvent(e)]);
+		}));
 
 		this._isDisposing = false;
 		this._centeredViewLine = -1;
@@ -206,7 +214,9 @@ export class ViewModel extends Disposable implements IViewModel {
 				}
 				case CursorEventType.CursorScrollRequest: {
 					const e = <CursorScrollRequest>data;
-					this.cursors.onCursorScrollRequest(eventsCollector, e);
+					this.viewLayout.setScrollPosition({
+						scrollTop: e.desiredScrollTop
+					});
 					break;
 				}
 				default:
@@ -224,10 +234,12 @@ export class ViewModel extends Disposable implements IViewModel {
 
 		const conf = this.configuration.editor;
 
-		if (this.lines.setWrappingSettings(eventsCollector, conf.wrappingInfo.wrappingIndent, conf.wrappingInfo.wrappingColumn, conf.fontInfo.typicalFullwidthCharacterWidth / conf.fontInfo.typicalHalfwidthCharacterWidth)) {
+		if (this.lines.setWrappingSettings(conf.wrappingInfo.wrappingIndent, conf.wrappingInfo.wrappingColumn, conf.fontInfo.typicalFullwidthCharacterWidth / conf.fontInfo.typicalHalfwidthCharacterWidth)) {
+			eventsCollector.emit(new viewEvents.ViewFlushedEvent());
 			eventsCollector.emit(new viewEvents.ViewLineMappingChangedEvent());
 			this.decorations.onLineMappingChanged(eventsCollector);
 			this.cursors.onLineMappingChanged(eventsCollector);
+			this.viewLayout.onFlushed(this.getLineCount());
 			revealPreviousCenteredModelRange = true;
 		}
 
@@ -238,6 +250,7 @@ export class ViewModel extends Disposable implements IViewModel {
 		}
 
 		eventsCollector.emit(new viewEvents.ViewConfigurationChangedEvent(e));
+		this.viewLayout.onConfigurationChanged(e);
 
 		if (revealPreviousCenteredModelRange && previousCenteredModelRange) {
 			// modelLine -> viewLine
@@ -286,25 +299,48 @@ export class ViewModel extends Disposable implements IViewModel {
 						const change = changes[j];
 
 						switch (change.changeType) {
-							case textModelEvents.RawContentChangedType.Flush:
-								this.lines.onModelFlushed(eventsCollector);
+							case textModelEvents.RawContentChangedType.Flush: {
+								this.lines.onModelFlushed();
+								eventsCollector.emit(new viewEvents.ViewFlushedEvent());
 								this.decorations.reset();
+								this.viewLayout.onFlushed(this.getLineCount());
 								hadOtherModelChange = true;
 								break;
-
-							case textModelEvents.RawContentChangedType.LinesDeleted:
-								this.lines.onModelLinesDeleted(eventsCollector, versionId, change.fromLineNumber, change.toLineNumber);
+							}
+							case textModelEvents.RawContentChangedType.LinesDeleted: {
+								const linesDeletedEvent = this.lines.onModelLinesDeleted(versionId, change.fromLineNumber, change.toLineNumber);
+								if (linesDeletedEvent !== null) {
+									eventsCollector.emit(linesDeletedEvent);
+									this.viewLayout.onLinesDeleted(linesDeletedEvent.fromLineNumber, linesDeletedEvent.toLineNumber);
+								}
 								hadOtherModelChange = true;
 								break;
-
-							case textModelEvents.RawContentChangedType.LinesInserted:
-								this.lines.onModelLinesInserted(eventsCollector, versionId, change.fromLineNumber, change.toLineNumber, change.detail.split('\n'));
+							}
+							case textModelEvents.RawContentChangedType.LinesInserted: {
+								const linesInsertedEvent = this.lines.onModelLinesInserted(versionId, change.fromLineNumber, change.toLineNumber, change.detail.split('\n'));
+								if (linesInsertedEvent !== null) {
+									eventsCollector.emit(linesInsertedEvent);
+									this.viewLayout.onLinesInserted(linesInsertedEvent.fromLineNumber, linesInsertedEvent.toLineNumber);
+								}
 								hadOtherModelChange = true;
 								break;
-
-							case textModelEvents.RawContentChangedType.LineChanged:
-								hadModelLineChangeThatChangedLineMapping = this.lines.onModelLineChanged(eventsCollector, versionId, change.lineNumber, change.detail);
+							}
+							case textModelEvents.RawContentChangedType.LineChanged: {
+								const [lineMappingChanged, linesChangedEvent, linesInsertedEvent, linesDeletedEvent] = this.lines.onModelLineChanged(versionId, change.lineNumber, change.detail);
+								hadModelLineChangeThatChangedLineMapping = lineMappingChanged;
+								if (linesChangedEvent) {
+									eventsCollector.emit(linesChangedEvent);
+								}
+								if (linesInsertedEvent) {
+									eventsCollector.emit(linesInsertedEvent);
+									this.viewLayout.onLinesInserted(linesInsertedEvent.fromLineNumber, linesInsertedEvent.toLineNumber);
+								}
+								if (linesDeletedEvent) {
+									eventsCollector.emit(linesDeletedEvent);
+									this.viewLayout.onLinesDeleted(linesDeletedEvent.fromLineNumber, linesDeletedEvent.toLineNumber);
+								}
 								break;
+							}
 						}
 					}
 					this.lines.acceptVersionId(versionId);
@@ -337,10 +373,12 @@ export class ViewModel extends Disposable implements IViewModel {
 				}
 				case textModelEvents.TextModelEventType.ModelOptionsChanged: {
 					// A tab size change causes a line mapping changed event => all view parts will repaint OK, no further event needed here
-					if (this.lines.setTabSize(eventsCollector, this.model.getOptions().tabSize)) {
+					if (this.lines.setTabSize(this.model.getOptions().tabSize)) {
+						eventsCollector.emit(new viewEvents.ViewFlushedEvent());
 						eventsCollector.emit(new viewEvents.ViewLineMappingChangedEvent());
 						this.decorations.onLineMappingChanged(eventsCollector);
 						this.cursors.onLineMappingChanged(eventsCollector);
+						this.viewLayout.onFlushed(this.getLineCount());
 					}
 
 					break;
@@ -369,11 +407,13 @@ export class ViewModel extends Disposable implements IViewModel {
 
 	public setHiddenAreas(ranges: Range[]): void {
 		let eventsCollector = new ViewEventsCollector();
-		let lineMappingChanged = this.lines.setHiddenAreas(eventsCollector, ranges);
+		let lineMappingChanged = this.lines.setHiddenAreas(ranges);
 		if (lineMappingChanged) {
+			eventsCollector.emit(new viewEvents.ViewFlushedEvent());
 			eventsCollector.emit(new viewEvents.ViewLineMappingChangedEvent());
 			this.decorations.onLineMappingChanged(eventsCollector);
 			this.cursors.onLineMappingChanged(eventsCollector);
+			this.viewLayout.onFlushed(this.getLineCount());
 		}
 		this._emit(eventsCollector.finalize());
 	}
