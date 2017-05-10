@@ -32,7 +32,7 @@ echo "Setting python binding...";
 npm config set python `which python`;
 
 echo "Installing gulp...";
-npm install gulp;
+npm install gulp event-stream;
 npm install -g gulp;
   
 echo "Inserting custom xvfb into /etc/init.d...";
