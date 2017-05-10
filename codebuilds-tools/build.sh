@@ -48,16 +48,16 @@ echo "Waiting 10 seconds for xvfb to start up...";
 sleep 3;
 
 if [[ "${ARCH}" == "amd64" ]]; then
-  ./scripts/npm.sh install --unsafe-perm | tee -a buildlog_${LABEL}.txt;
-  gulp electron | tee -a buildlog_${LABEL}.txt;
+  ./scripts/npm.sh install --unsafe-perm | tee -a ../buildlog_${LABEL}.txt;
+  gulp electron | tee -a ../buildlog_${LABEL}.txt;
 else
-  ./scripts/npm.sh install --unsafe-perm --arch=${NPM_ARCH} | tee -a buildlog_${LABEL}.txt;
-  gulp electron --arch=${VSCODE_ELECTRON_PLATFORM} | tee -a buildlog_${LABEL}.txt;
+  ./scripts/npm.sh install --unsafe-perm --arch=${NPM_ARCH} | tee -a ../buildlog_${LABEL}.txt;
+  gulp electron --arch=${VSCODE_ELECTRON_PLATFORM} | tee -a ../buildlog_${LABEL}.txt;
 fi;
 
-gulp hygiene | tee -a buildlog_${LABEL}.txt;
-gulp compile --max_old_space_size=4096 | tee -a buildlog_${LABEL}.txt;
-gulp optimize-vscode --max_old_space_size=4096 | tee -a buildlog_${LABEL}.txt;
+gulp hygiene | tee -a ../buildlog_${LABEL}.txt;
+gulp compile --max_old_space_size=4096 | tee -a ../buildlog_${LABEL}.txt;
+gulp optimize-vscode --max_old_space_size=4096 | tee -a ../buildlog_${LABEL}.txt;
   
 ./scripts/test.sh;
 ./scripts/test-integration.sh;
@@ -65,10 +65,10 @@ gulp optimize-vscode --max_old_space_size=4096 | tee -a buildlog_${LABEL}.txt;
 echo "Retrieving dependencies for build...";
 objdump -p .build/electron/code-oss;
 
-gulp "vscode-linux-${PACKAGE_ARCH}" | tee -a buildlog_${LABEL}.txt;
-gulp "vscode-linux-${PACKAGE_ARCH}-build-deb" | tee -a buildlog_${LABEL}.txt;
-gulp "vscode-linux-${PACKAGE_ARCH}-build-rpm" | tee -a buildlog_${LABEL}.txt;
-tar -zcvf "archive_${LABEL}.tar.gz" .build | tee -a buildlog_${LABEL}.txt;
+gulp "vscode-linux-${PACKAGE_ARCH}" | tee -a ../buildlog_${LABEL}.txt;
+gulp "vscode-linux-${PACKAGE_ARCH}-build-deb" | tee -a ../buildlog_${LABEL}.txt;
+gulp "vscode-linux-${PACKAGE_ARCH}-build-rpm" | tee -a ../buildlog_${LABEL}.txt;
+tar -zcvf "archive_${LABEL}.tar.gz" .build | tee -a ../buildlog_${LABEL}.txt;
   
   # - echo "Downloading proot to /usr/local/bin/proot...";
   # - sudo wget "https://github.com/proot-me/proot-static-build/releases/download/v5.1.1/proot_5.1.1_x86_64_rc2" -O /usr/local/bin/proot;
