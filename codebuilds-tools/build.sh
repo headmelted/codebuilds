@@ -8,7 +8,7 @@ if [[ "${CROSS_TOOLCHAIN}" == "true" ]]; then
   cd ..;
   
   echo "Adding ${ARCH} architecture...";
-  sudo dpkg --add-architecture ${ARCH};
+  dpkg --add-architecture ${ARCH};
 
   echo "Updating package repositories...";
   apt-get update -yq;

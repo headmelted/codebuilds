@@ -1,6 +1,6 @@
 #!/bin/bash
 
-DOCKER_IMAGE=debian:latest;
+DOCKER_IMAGE=debian:unstable;
 docker pull ${DOCKER_IMAGE};
 docker images;
 
