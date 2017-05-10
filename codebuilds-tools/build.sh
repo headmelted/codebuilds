@@ -5,7 +5,7 @@ export CXX="${GPP_COMPILER}" CC="${GCC_COMPILER}";
 if [[ "${CROSS_TOOLCHAIN}" == "true" ]]; then
 
   echo "Entering workspace directory...";
-  cd ..;
+  cd /workspace;
   
   echo "Current directory is [$(pwd)].";
   
