@@ -32,7 +32,7 @@ echo "Setting python binding...";
 npm config set python `which python`;
 
 echo "Installing gulp...";
-npm install gulp event-stream;
+npm install gulp;
 npm install -g gulp;
   
 echo "Inserting custom xvfb into /etc/init.d...";
@@ -47,8 +47,6 @@ sh -e /etc/init.d/xvfb start;
 echo "Waiting 10 seconds for xvfb to start up...";
 sleep 3;
 
-gulp hygiene | tee -a buildlog_${LABEL}.txt;
-
 if [[ "${ARCH}" == "amd64" ]]; then
   ./scripts/npm.sh install --unsafe-perm | tee -a buildlog_${LABEL}.txt;
   gulp electron | tee -a buildlog_${LABEL}.txt;
@@ -57,6 +55,7 @@ else
   gulp electron --arch=${VSCODE_ELECTRON_PLATFORM} | tee -a buildlog_${LABEL}.txt;
 fi;
 
+gulp hygiene | tee -a buildlog_${LABEL}.txt;
 gulp compile --max_old_space_size=4096 | tee -a buildlog_${LABEL}.txt;
 gulp optimize-vscode --max_old_space_size=4096 | tee -a buildlog_${LABEL}.txt;
   
