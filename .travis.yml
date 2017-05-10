@@ -96,6 +96,7 @@ notifications:
   email: false
   
 script:
+  - sudo ln -s ${TRAVIS_BUILD_DIR} /workspace;
   - sudo bash -c "./codebuilds-tools/docker.sh";
 
 deploy:
