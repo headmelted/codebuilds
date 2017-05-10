@@ -1,7 +1,7 @@
 #!/bin/bash
 
 echo "Entering workspace directory...";
-cd workspace;
+cd ..;
 
 echo "Updating package repositories...";
 apt-get update;
