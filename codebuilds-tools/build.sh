@@ -1,5 +1,8 @@
 #!/bin/bash
 
+echo "Updating package repositories...";
+apt-get update;
+
 echo "Installing pre-requisites...";
 apt-get install -y xvfb;
 
