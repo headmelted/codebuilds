@@ -1,7 +1,7 @@
 #!/bin/bash
 
 echo "Installing pre-requisites...";
-sudo apt-get install -y xvfb;
+apt-get install -y xvfb;
 
 export CXX="${GPP_COMPILER}" CC="${GCC_COMPILER}";
 
