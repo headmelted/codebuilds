@@ -1,8 +1,6 @@
-sudo: required
-language: generic
 dist: trusty
-services:
-  - docker
+# services:
+#   - docker
 cache:
   directories:
     - ./cache
@@ -12,6 +10,7 @@ branches:
 
 # x86 toolchain (used as a base for non-sudo compilation, which is faster) 
 include: &toolchain_x86
+  language: cpp
   addons:
     apt:
       sources:
@@ -51,6 +50,7 @@ include: &toolchain_linux_amd64
 # cross toolchain (used as a base for multiarch cross-compilation configurations below) 
 include: &toolchain_linux_cross
   sudo: required # for dpkg --add-architecture locking
+  language: generic
   
 # armhf toolchain
 include: &toolchain_linux_armhf
