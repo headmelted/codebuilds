@@ -8,21 +8,21 @@ apt-get install -y xvfb;
 
 export CXX="${GPP_COMPILER}" CC="${GCC_COMPILER}";
 
-if [[ "${CROSS_TOOLCHAIN}" == "true" ]]; then
-  sudo rm -rf /etc/apt/sources.list.d/**;
-  sudo rm /etc/apt/sources.list; 
-  echo "deb [arch=amd64,i386] http://archive.ubuntu.com/ubuntu xenial main universe multiverse restricted" | sudo tee /etc/apt/sources.list;
-  echo "deb [arch=amd64,i386] http://archive.ubuntu.com/ubuntu xenial-security main universe multiverse restricted" | sudo tee /etc/apt/sources.list;
-  echo "deb [arch=${ARCH}] http://ports.ubuntu.com/ubuntu-ports xenial main universe multiverse restricted" | sudo tee -a /etc/apt/sources.list;
-  echo "deb-src http://archive.ubuntu.com/ubuntu xenial main universe multiverse restricted" | sudo tee -a /etc/apt/sources.list;
-  sudo dpkg --add-architecture ${ARCH};
-  sudo apt-get update -yq;
-  sudo apt-get install -y --force-yes libwww-perl libexpat1 libxml-libxml-perl libxml-sax-expat-perl gcc-${GNU_TRIPLET} g++-${GNU_TRIPLET} pkg-config-${GNU_TRIPLET} crossbuild-essential-${ARCH} libstdc++6-${ARCH}-cross g++-multilib-${GNU_MULTILIB_TRIPLET} gcc-multilib-${GNU_MULTILIB_TRIPLET} dpkg-dev perl libconfig-inifiles-perl libxml-simple-perl liblocale-gettext-perl libgcc1 libgcc1:${ARCH} libdpkg-perl libconfig-auto-perl libdebian-dpkgcross-perl ucf debconf dpkg-cross libdbus-1-3:${ARCH} libffi6:${ARCH} libpcre3:${ARCH} libselinux1:${ARCH} libp11-kit0:${ARCH} libcomerr2:${ARCH} libk5crypto3:${ARCH} libkrb5-3:${ARCH} libpango-1.0-0:${ARCH} libpangocairo-1.0-0:${ARCH} libpangoft2-1.0-0:${ARCH} libxcursor1:${ARCH} libxfixes3:${ARCH} libglib2.0-0:${ARCH} libfreetype6:${ARCH} libavahi-client3:${ARCH} libgssapi-krb5-2:${ARCH} libexpat1:${ARCH} libjpeg8:${ARCH} libpng-dev libpng-dev:${ARCH} libtiff5:${ARCH} fontconfig-config libgdk-pixbuf2.0-common libgdk-pixbuf2.0-0:${ARCH} libfontconfig1:${ARCH} libcups2:${ARCH} libcairo2:${ARCH} libc6 libc6:${ARCH} libc6-dev:${ARCH} libatk1.0-0:${ARCH} libgtk2.0-0:${ARCH} libx11-dev:${ARCH} libxkbfile-dev:${ARCH} libx11-xcb-dev libx11-xcb-dev:${ARCH} libxtst6 libxtst6:${ARCH} libxss-dev libxss-dev:${ARCH} libgconf-2-4:${ARCH} libasound2:${ARCH} qemu binfmt-support qemu-user-static rpm;
-  sudo apt-get install -f -y;
-  export LD_LIBRARY_PATH=/usr/lib/${GNU_TRIPLET}/;
-  sudo ln -s /usr/${GNU_TRIPLET}/lib/libstdc++.so.6 /lib/libstdc++.so.6;
-  echo "Emulators available:" && update-binfmts --display;
-fi;
+# if [[ "${CROSS_TOOLCHAIN}" == "true" ]]; then
+#   sudo rm -rf /etc/apt/sources.list.d/**;
+#   sudo rm /etc/apt/sources.list; 
+#   echo "deb [arch=amd64,i386] http://archive.ubuntu.com/ubuntu xenial main universe multiverse restricted" | sudo tee /etc/apt/sources.list;
+#   echo "deb [arch=amd64,i386] http://archive.ubuntu.com/ubuntu xenial-security main universe multiverse restricted" | sudo tee /etc/apt/sources.list;
+#   echo "deb [arch=${ARCH}] http://ports.ubuntu.com/ubuntu-ports xenial main universe multiverse restricted" | sudo tee -a /etc/apt/sources.list;
+#   echo "deb-src http://archive.ubuntu.com/ubuntu xenial main universe multiverse restricted" | sudo tee -a /etc/apt/sources.list;
+#   sudo dpkg --add-architecture ${ARCH};
+#   sudo apt-get update -yq;
+#   sudo apt-get install -y --force-yes libwww-perl libexpat1 libxml-libxml-perl libxml-sax-expat-perl gcc-${GNU_TRIPLET} g++-${GNU_TRIPLET} pkg-config-${GNU_TRIPLET} crossbuild-essential-${ARCH} libstdc++6-${ARCH}-cross g++-multilib-${GNU_MULTILIB_TRIPLET} gcc-multilib-${GNU_MULTILIB_TRIPLET} dpkg-dev perl libconfig-inifiles-perl libxml-simple-perl liblocale-gettext-perl libgcc1 libgcc1:${ARCH} libdpkg-perl libconfig-auto-perl libdebian-dpkgcross-perl ucf debconf dpkg-cross libdbus-1-3:${ARCH} libffi6:${ARCH} libpcre3:${ARCH} libselinux1:${ARCH} libp11-kit0:${ARCH} libcomerr2:${ARCH} libk5crypto3:${ARCH} libkrb5-3:${ARCH} libpango-1.0-0:${ARCH} libpangocairo-1.0-0:${ARCH} libpangoft2-1.0-0:${ARCH} libxcursor1:${ARCH} libxfixes3:${ARCH} libglib2.0-0:${ARCH} libfreetype6:${ARCH} libavahi-client3:${ARCH} libgssapi-krb5-2:${ARCH} libexpat1:${ARCH} libjpeg8:${ARCH} libpng-dev libpng-dev:${ARCH} libtiff5:${ARCH} fontconfig-config libgdk-pixbuf2.0-common libgdk-pixbuf2.0-0:${ARCH} libfontconfig1:${ARCH} libcups2:${ARCH} libcairo2:${ARCH} libc6 libc6:${ARCH} libc6-dev:${ARCH} libatk1.0-0:${ARCH} libgtk2.0-0:${ARCH} libx11-dev:${ARCH} libxkbfile-dev:${ARCH} libx11-xcb-dev libx11-xcb-dev:${ARCH} libxtst6 libxtst6:${ARCH} libxss-dev libxss-dev:${ARCH} libgconf-2-4:${ARCH} libasound2:${ARCH} qemu binfmt-support qemu-user-static rpm;
+#   sudo apt-get install -f -y;
+#   export LD_LIBRARY_PATH=/usr/lib/${GNU_TRIPLET}/;
+#   sudo ln -s /usr/${GNU_TRIPLET}/lib/libstdc++.so.6 /lib/libstdc++.so.6;
+#   echo "Emulators available:" && update-binfmts --display;
+# fi;
 
 git submodule update --init --recursive;
 git clone --depth 1 https://github.com/creationix/nvm.git ./.nvm;
@@ -34,7 +34,7 @@ npm install gulp;
 npm install -g gulp;
   
 echo "Inserting custom xvfb into /etc/init.d...";
-sudo mv -f ./codebuilds-tools/xvfb /etc/init.d/xvfb;
+mv -f ./codebuilds-tools/xvfb /etc/init.d/xvfb;
 
 echo "Exporting display :99.0...";
 export DISPLAY=:99.0;
