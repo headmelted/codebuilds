@@ -19,13 +19,13 @@ if [[ ${LABEL} == "armhf_linux" ]]; then
   echo "Mounting image file...";
   mount -o loop,offset=$((92160*512)) image.img image;
   echo "Listing mounted image...";
-  ls image;
+  ls image/boot;
   echo "Creating boot directory...";
   mkdir boot;
   echo "Copying kernel...";
-  cp image/kernel7.img boot;
+  cp ./image/kernel7.img boot;
   echo "Copying dtb...";
-  cp image/bcm2709-rpi-2-b.dtb boot;
+  cp ./image/bcm2709-rpi-2-b.dtb boot;
   echo "Emptying ld.so.preload...";
   echo "" > /image/etc/ld.so.preload;
   echo "Running qemu-system-${ARCH}...";
