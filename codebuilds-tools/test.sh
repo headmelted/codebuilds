@@ -4,32 +4,58 @@
 #mv -f ./codebuilds-tools/xvfb /etc/init.d/xvfb;
 
 if [[ ${LABEL} == "armhf_linux" ]]; then
+
   echo "Installing QEMU...";
   apt-get install -y qemu-system-${QEMU_ARCH};
+  
   echo "Retrieving raspbian image...";
   wget "https://downloads.raspberrypi.org/raspbian_lite/images/raspbian_lite-2017-04-10/2017-04-10-raspbian-jessie-lite.zip" -O image.zip;
+  
   echo "Unzipping raspbian image...";
   unzip image.zip;
+  
   echo "Removing raspbian zip...";
   rm -rf image.zip;
+  
   echo "Moving image file...";
   mv *.img image.img;
-  echo "Creating mount directory...";
-  mkdir image;
-  echo "Mounting image file...";
-  mount -o loop,offset=$((92160*512)) image.img image;
-  echo "Listing mounted image...";
-  ls image/boot;
+  
+  echo "Creating mount directories...";
+  mkdir image ./image/boot ./image/root;
+  
+  echo "Mounting boot...";
+  mount -o loop,offset=4194304 image.img ./image/boot;
+  
+  echo "Listing boot...";
+  ls ./image/boot;
+  
   echo "Creating boot directory...";
   mkdir boot;
-  echo "Copying kernel...";
-  cp ./image/kernel7.img boot;
-  echo "Copying dtb...";
-  cp ./image/bcm2709-rpi-2-b.dtb boot;
+  
+  echo "Copying kernel to boot...";
+  cp ./image/boot/kernel7.img ./boot;
+  
+  echo "Copying dtb to boot...";
+  cp ./image/bcm2709-rpi-2-b.dtb ./boot;
+  
+  echo "Unmounting boot...";
+  umount ./image/boot;
+  
+  echo "Mounting root directory...";
+  mount -o loop,offset=$((92160*512)) image.img ./image/root;
+  
   echo "Emptying ld.so.preload...";
-  echo "" > /image/etc/ld.so.preload;
-  echo "Running qemu-system-${ARCH}...";
-  qemu-system-arm -M raspi2 -kernel boot/kernel7.img -sd image.img -append "rw earlyprintk loglevel=8 console=ttyAMA0,115200 dwc_otg.lpm_enable=0 root=/dev/mmcblk0p2" -dtb boot/bcm2709-rpi-2-b.dtb -serial stdio;
+  echo "" > ./image/root/etc/ld.so.preload;
+  
+  echo "Syncing mount...";
+  sync;
+  
+  echo "Unmounting root...";
+  umount ./image/root;
+  
+  echo "Running qemu-system-arm...";
+  qemu-system-arm -M raspi2 -kernel ./image/boot/kernel7.img -sd image.img -append "rw earlyprintk loglevel=8 console=ttyAMA0,115200 dwc_otg.lpm_enable=0 root=/dev/mmcblk0p2" -dtb ./image/boot/bcm2709-rpi-2-b.dtb -serial stdio;
+  
 fi;
 
 echo "Exporting display :99.0...";
