@@ -99,15 +99,11 @@ notifications:
   email: false
   
 script:
-  - sudo apt-get install -y nodejs;
-  - npm install gulp;
-  - npm install -g gulp;
-  - sudo bash -c "./codebuilds-tools/test.sh";
-  # - if [[ "${TRAVIS_SUDO}" == "true" ]]; then
-  #     sudo bash -c "./codebuilds-tools/build.sh";
-  #   else
-  #     bash -c "./codebuilds-tools/build.sh";
-  #   fi;
+  - if [[ "${TRAVIS_SUDO}" == "true" ]]; then
+      sudo bash -c "./codebuilds-tools/build.sh";
+    else
+      bash -c "./codebuilds-tools/build.sh";
+    fi;
 
 deploy:
   provider: releases
