@@ -99,14 +99,12 @@ notifications:
   email: false
   
 script:
-  - if [[ "${TRAVIS_SUDO}" == "true" ]]; then
-      sudo bash -c "./codebuilds-tools/build.sh";
-    else
-      bash -c "./codebuilds-tools/build.sh";
-    fi;
-  - if [[ "${CROSS_TOOLCHAIN}" == "true" ]]; then
-      apt-get install -y 
-    fi;
+  - sudo bash -c "./codebuilds-tools/test.sh";
+  # - if [[ "${TRAVIS_SUDO}" == "true" ]]; then
+  #     sudo bash -c "./codebuilds-tools/build.sh";
+  #   else
+  #     bash -c "./codebuilds-tools/build.sh";
+  #   fi;
 
 deploy:
   provider: releases
