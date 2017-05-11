@@ -47,8 +47,8 @@ echo "Installing gulp...";
 npm install gulp;
 npm install -g gulp;
   
-echo "Inserting custom xvfb into /etc/init.d...";
-mv -f ./codebuilds-tools/xvfb /etc/init.d/xvfb;
+#echo "Inserting custom xvfb into /etc/init.d...";
+#mv -f ./codebuilds-tools/xvfb /etc/init.d/xvfb;
 
 echo "Exporting display :99.0...";
 export DISPLAY=:99.0;
