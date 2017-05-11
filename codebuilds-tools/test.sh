@@ -18,6 +18,8 @@ if [[ ${LABEL} == "armhf_linux" ]]; then
   mkdir image;
   echo "Mounting image file...";
   mount -o loop,offset=$((92160*512)) image.img image;
+  echo "Listing mounted image...";
+  ls image;
   echo "Creating boot directory...";
   mkdir boot;
   echo "Copying kernel...";
