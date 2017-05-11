@@ -46,6 +46,7 @@ include: &toolchain_linux_amd64
     - GCC_COMPILER=gcc-4.9
     - VSCODE_ELECTRON_PLATFORM=x64
     - PACKAGE_ARCH=x64
+    - TESTING_CONTAINER=debian:jessie
     
 # cross toolchain (used as a base for multiarch cross-compilation configurations below) 
 include: &toolchain_linux_cross
@@ -67,6 +68,7 @@ include: &toolchain_linux_armhf
     - VSCODE_ELECTRON_PLATFORM=arm
     - PACKAGE_ARCH=armhf
     - QEMU_ARCH=arm
+    - TESTING_CONTAINER=jsurf/rpi-raspbian:latest
   
 # arm64 toolchain
 include: &toolchain_linux_arm64
@@ -83,6 +85,7 @@ include: &toolchain_linux_arm64
     - VSCODE_ELECTRON_PLATFORM=arm
     - PACKAGE_ARCH=arm64
     - QEMU_ARCH=aarch64
+    - TESTING_CONTAINER=forumi0721/debian-aarch64-base:latest
 
 # Travis CI build matrix.  Each entry below will trigger an extra, parallel build on Travis.
 matrix:

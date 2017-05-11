@@ -4,11 +4,6 @@ DOCKER_IMAGE=debian:unstable;
 docker pull ${DOCKER_IMAGE};
 docker images;
 
-echo "Exporting environment variables...";
-
-echo "Making build script executable...";
-chmod +x ${TRAVIS_BUILD_DIR}/codebuilds-tools/build.sh;
-
 echo "Binding workspace...";
 docker run -it --cap-add SYS_ADMIN -v ${TRAVIS_BUILD_DIR}:/workspace \
     -e "LABEL=${LABEL}" \
