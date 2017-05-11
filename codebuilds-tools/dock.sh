@@ -24,5 +24,5 @@ docker run -it --cap-add SYS_ADMIN -v ${TRAVIS_BUILD_DIR}:/workspace \
     -e "VSCODE_ELECTRON_PLATFORM=${VSCODE_ELECTRON_PLATFORM}" \
     -e "PACKAGE_ARCH=${PACKAGE_ARCH}" \
     -e "QEMU_ARCH=${QEMU_ARCH}" \
-    -e "HOME=/workspace"
+    -e "HOME=/workspace" \
      $1 /bin/bash -c "/workspace/$2";
