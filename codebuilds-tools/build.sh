@@ -9,6 +9,19 @@ if [[ "${CROSS_TOOLCHAIN}" == "true" ]]; then
   
   echo " directory is [$(pwd)].";
   
+  echo "Removing existing sources lists...";
+  rm -rf /etc/apt/sources.list.d/**;
+  rm /etc/apt/sources.list;
+  
+  echo "Adding 16.04 (xenial) package sources for amd64 and i386...";
+  echo "deb [arch=amd64,i386] http://archive.ubuntu.com/ubuntu xenial main universe multiverse restricted" | tee /etc/apt/sources.list;
+  
+  echo "Adding 16.04 (xenial) package sources for ${ARCH}...";
+  echo "deb [arch=${ARCH}] http://ports.ubuntu.com/ubuntu-ports xenial main universe multiverse restricted" | tee -a /etc/apt/sources.list;
+  
+  echo "Adding 16.04 (xenial) package sources for source code...";
+  echo "deb-src http://archive.ubuntu.com/ubuntu xenial main universe multiverse restricted" | tee -a /etc/apt/sources.list;
+  
   echo "Adding ${ARCH} architecture...";
   dpkg --add-architecture ${ARCH};
 

@@ -103,8 +103,8 @@ notifications:
   email: false
   
 script:
-  - if [[ "${TRAVIS_SUDO}" == "true" && "${#BUILD_CONTAINER}" > 0 ]]; then
-      sudo bash -c "./codebuilds-tools/dock.sh ${BUILD_CONTAINER} ./codebuilds-tools/build.sh";
+  - if [[ "${TRAVIS_SUDO}" == "true" ]]; then
+      sudo bash -c "./codebuilds-tools/build.sh";
     else
       bash -c "./codebuilds-tools/build.sh";
     fi;
