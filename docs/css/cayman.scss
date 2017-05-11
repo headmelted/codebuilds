@@ -1,3 +1,6 @@
+---
+---
+
 // Breakpoints
 $large-breakpoint: 64em;
 $medium-breakpoint: 42em;
@@ -188,6 +191,25 @@ a {
         }
       }
     }
+  }
+}
+
+.callout {
+  h2 { font-size:large; }
+  .callout-logo {
+    position: absolute;
+    left: 0px;
+    top: 0px;
+    width: 0px;
+    right: 0px;
+    color:white;
+    opacity:0.25;
+    width:75%;
+    height:75%;
+    z-index: -1;
+  }
+  &.callout-android {
+    background-color:#A4C639;
   }
 }
 

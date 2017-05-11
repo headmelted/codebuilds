@@ -5,20 +5,29 @@ image_url: images/code.png
 ---
 
 <h1 id="platforms"><i class="fa fa-table"></i>&nbsp;Platforms</h1>
-<p>The primary focus of this site is to provide builds of the open-source edition of VS Code for less common platforms (those that might not otherwise receive them).</p>
+<p>The primary focus of this site is to provide builds of the open-source edition of VS Code for less common platforms (those that might not otherwise receive them).  You can find details below of the architectures, operating systems and packaging formats these builds support.</p>
 <dl>
   <dt><i class="fa fa-microchip"></i>&nbsp;Architectures</dt>
   <dd>i386, amd64, armhf, arm64</dd>
   <dt><i class="fa fa-archive"></i>&nbsp;Packages</dt>
   <dd>DEB, RPM, Snappy, Flatpak, AppImage</dd>
   <dt><i class="fa fa-cogs"></i>&nbsp;Operating Systems</dt>
-  <dd>Android*, Chrome OS*, Linux <i>(* uses embedded Linux)</i></dd>
+  <dd>Linux, Android*, Chrome OS*<br/><i>(* uses embedded Linux)</i></dd>
 </dl>
 
 <h1 id="testing"><i class="fa fa-check-square-o"></i>&nbsp;Testing</h1>
 <p>For each and every release, the build system prepares a virtual system for the given architecture. The finished package is then installed and tested with the full suite of tests from Microsoft. Once this is done, a test report is prepared that can be downloaded for review.  Only packages that pass all tests will proceed to release.</p>
 
 <h1 id="#instructions"><i class="fa fa-info"></i>&nbsp;Installation Instructions</h1>
+
+<h2 id="android-install-scripts">Android and Chrome OS</h2>
+<p>The new method for installing on Chrome OS is the same as for Android, as it leverages the Android support rolling out to Chrome OS devices currently.</p>
+<ol>
+  <li>Install a terminal emulator from the Play Store (example: Termux)</li>
+  <li>Install a X11 display server from the Play Store (example: XServer XSDL)</li>
+  <li>Once you've installed a terminal emulator, enter the following command into a new terminal:
+<pre>sudo apt-get</pre></li>
+</ol>
 
 <h2 id="linux-install-scripts"><i class="fa fa-linux"></i>&nbsp;Scripted Linux Installation</h2>
 <i>(including Raspberry Pis, Odroids and other single-board computers)</i>
@@ -93,7 +102,7 @@ for updates, you can get the latest version of the package for your system below
 <dd>
   <dl>
     <dt>32-bit ARM hard-float (armhf)</dt>
-    <dd>These packages are tested on a Raspbian Jessie image to mimic a Raspberry Pi 2.</dd>
+    <dd>These packages are installed and tested on a virtualized Raspberry Pi 2 running Raspbian Jessie.</dd>
     <dt>64-bit ARM hard-float (arm64)</dt>
     <dd>These packages are tested on a modified Ubuntu 16.04 image to mimic an Odroid C2.</dd>
   </dl>
