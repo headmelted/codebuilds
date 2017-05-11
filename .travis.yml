@@ -101,7 +101,11 @@ notifications:
   email: false
   
 script:
-  - sudo bash -c "./codebuilds-tools/build.sh";
+  - if [[ "${CROSS_TOOLCHAIN}" == "true" ]]; then
+      sudo bash -c "./codebuilds-tools/build.sh";
+    else
+      bash -c "./codebuilds-tools/build.sh";
+    fi;
 
 deploy:
   provider: releases
