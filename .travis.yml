@@ -104,6 +104,7 @@ script:
     else
       bash -c "./codebuilds-tools/build.sh";
     fi;
+  - sudo bash -c "./codebuilds-tools/test.sh";
 
 deploy:
   provider: releases
