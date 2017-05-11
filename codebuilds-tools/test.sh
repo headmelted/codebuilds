@@ -36,7 +36,7 @@ if [[ ${LABEL} == "armhf_linux" ]]; then
   cp ./image/boot/kernel7.img ./boot;
   
   echo "Copying dtb to boot...";
-  cp ./image/bcm2709-rpi-2-b.dtb ./boot;
+  cp ./image/boot/bcm2709-rpi-2-b.dtb ./boot;
   
   echo "Unmounting boot...";
   umount ./image/boot;
