@@ -68,8 +68,6 @@ include: &toolchain_linux_armhf
     - VSCODE_ELECTRON_PLATFORM=arm
     - PACKAGE_ARCH=armhf
     - QEMU_ARCH=arm
-    - BUILD_CONTAINER=debian:sid
-    - TESTING_CONTAINER=jsurf/rpi-raspbian:latest
   
 # arm64 toolchain
 include: &toolchain_linux_arm64
@@ -86,8 +84,6 @@ include: &toolchain_linux_arm64
     - VSCODE_ELECTRON_PLATFORM=arm
     - PACKAGE_ARCH=arm64
     - QEMU_ARCH=aarch64
-    - BUILD_CONTAINER=debian:sid
-    - TESTING_CONTAINER=forumi0721/debian-aarch64-base:latest
 
 # Travis CI build matrix.  Each entry below will trigger an extra, parallel build on Travis.
 matrix:
@@ -107,6 +103,9 @@ script:
       sudo bash -c "./codebuilds-tools/build.sh";
     else
       bash -c "./codebuilds-tools/build.sh";
+    fi;
+  - if [[ "${CROSS_TOOLCHAIN}" == "true" ]]; then
+      apt-get install -y 
     fi;
 
 deploy:
