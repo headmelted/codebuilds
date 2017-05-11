@@ -1,5 +1,8 @@
 #!/bin/bash
 
+echo "Changing directory to $HOME...";
+cd $HOME;
+
 export CXX="${GPP_COMPILER}" CC="${GCC_COMPILER}" DEBIAN_FRONTEND="noninteractive";
 
 if [[ "${CROSS_TOOLCHAIN}" == "true" ]]; then
