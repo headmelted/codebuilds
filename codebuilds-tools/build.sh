@@ -53,8 +53,8 @@ fi;
 git submodule update --init --recursive;
 git clone --depth 1 https://github.com/creationix/nvm.git ./.nvm;
 source ./.nvm/nvm.sh;
-nvm install 6.6.0;
-nvm use 6.6.0;
+nvm install 7.4.0;
+nvm use 7.4.0;
 
 echo "Setting python binding...";
 npm config set python `which python`;
@@ -65,14 +65,18 @@ npm install -g gulp;
 
 if [[ "${ARCH}" == "amd64" ]]; then
   ./scripts/npm.sh install --unsafe-perm | tee -a ../buildlog_${LABEL}.txt;
-  gulp electron | tee -a ../buildlog_${LABEL}.txt;
 else
   ./scripts/npm.sh install --unsafe-perm --arch=${NPM_ARCH} | tee -a ../buildlog_${LABEL}.txt;
-  gulp electron --arch=${VSCODE_ELECTRON_PLATFORM} | tee -a ../buildlog_${LABEL}.txt;
 fi;
 
 echo "Starting hygiene...";
 gulp hygiene | tee -a ../buildlog_${LABEL}.txt;
+
+if [[ "${ARCH}" == "amd64" ]]; then
+  gulp electron | tee -a ../buildlog_${LABEL}.txt;
+else
+  gulp electron --arch=${VSCODE_ELECTRON_PLATFORM} | tee -a ../buildlog_${LABEL}.txt;
+fi;
 
 echo "Starting compile...";
 gulp compile --max_old_space_size=4096 | tee -a ../buildlog_${LABEL}.txt;
