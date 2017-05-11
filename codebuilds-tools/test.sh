@@ -14,6 +14,8 @@ if [[ ${LABEL} == "armhf_linux" ]]; then
   rm -rf image.zip;
   echo "Moving image file...";
   mv *.img image.img;
+  echo "Creating mount directory...";
+  mkdir image;
   echo "Mounting image file...";
   mount -o loop,offset=$((92160*512)) image.img image;
   echo "Creating boot directory...";
