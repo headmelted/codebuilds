@@ -1,7 +1,7 @@
 #!/bin/bash
 
-echo "Changing directory to $HOME...";
-cd $HOME;
+echo "Changing directory to $HOME/codebuilds...";
+cd $HOME/codebuilds;
 
 export CXX="${GPP_COMPILER}" CC="${GCC_COMPILER}" DEBIAN_FRONTEND="noninteractive";
 
