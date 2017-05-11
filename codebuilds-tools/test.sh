@@ -4,15 +4,28 @@
 #mv -f ./codebuilds-tools/xvfb /etc/init.d/xvfb;
 
 if [[ ${LABEL} == "armhf_linux" ]]; then
+  echo "Installing QEMU...";
   apt-get install -y qemu-system-${QEMU_ARCH};
+  echo "Retrieving raspbian image...";
   wget "https://downloads.raspberrypi.org/raspbian_lite/images/raspbian_lite-2017-04-10/2017-04-10-raspbian-jessie-lite.zip" -O image.zip;
+  echo "Unzipping raspbian image...";
   unzip image.zip;
+  echo "Removing raspbian zip...";
   rm -rf image.zip;
+  echo "Moving image file...";
   mv *.img image.img;
-  mount -o loop,offset=$((92160*512)) image.img /image;
+  echo "Mounting image file...";
+  mount -o loop,offset=$((92160*512)) image.img image;
+  echo "Creating boot directory...";
+  mkdir boot;
+  echo "Copying kernel...";
+  cp image/kernel7.img boot;
+  echo "Copying dtb...";
+  cp image/bcm2709-rpi-2-b.dtb boot;
+  echo "Emptying ld.so.preload...";
   echo "" > /image/etc/ld.so.preload;
-  wget "https://github.com/dhruvvyas90/qemu-rpi-kernel/raw/master/kernel-qemu-4.4.34-jessie" -O ./kernel-qemu;
-  qemu-system-${QEMU_ARCH} -kernel kernel-qemu -cpu arm1176 -m 256 -M versatilepb -no-reboot -serial stdio -append "root=/dev/sda2 panic=1" -hda ./image.img -redir tcp:5022::22;
+  echo "Running qemu-system-${ARCH}...";
+  qemu-system-arm -M raspi2 -kernel boot/kernel7.img -sd image.img -append "rw earlyprintk loglevel=8 console=ttyAMA0,115200 dwc_otg.lpm_enable=0 root=/dev/mmcblk0p2" -dtb boot/bcm2709-rpi-2-b.dtb -serial stdio;
 fi;
 
 echo "Exporting display :99.0...";
