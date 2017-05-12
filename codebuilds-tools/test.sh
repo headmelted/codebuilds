@@ -9,7 +9,7 @@ if [[ ${LABEL} == "armhf_linux" ]]; then
   apt-get install -y qemu-system-${QEMU_ARCH};
   
   echo "Retrieving raspbian image...";
-  wget "https://downloads.raspberrypi.org/raspbian_lite/images/raspbian_lite-2017-04-10/2017-04-10-raspbian-jessie-lite.zip" -O image.zip;
+  wget "https://downloads.raspberrypi.org/raspbian_lite/images/raspbian_lite-2015-11-24/2015-11-21-raspbian-jessie-lite.zip" -O image.zip;
   
   echo "Unzipping raspbian image...";
   unzip image.zip;
