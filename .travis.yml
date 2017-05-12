@@ -99,6 +99,7 @@ notifications:
   email: false
   
 script:
+  - mv ./resources/linux/code.png ./docs/images/code.png;
   - if [[ "${TRAVIS_SUDO}" == "true" ]]; then
       sudo bash -c "./codebuilds-tools/build.sh";
     else
