@@ -63,23 +63,23 @@ echo "Installing gulp...";
 npm install gulp;
 npm install -g gulp;
 
-# if [[ "${ARCH}" == "amd64" ]]; then
-#   ./scripts/npm.sh install --unsafe-perm | tee -a ../buildlog_${LABEL}.txt;
-# else
-#   ./scripts/npm.sh install --unsafe-perm --arch=${NPM_ARCH} | tee -a ../buildlog_${LABEL}.txt;
-# fi;
+if [[ "${ARCH}" == "amd64" ]]; then
+  ./scripts/npm.sh install | tee -a ../buildlog_${LABEL}.txt;
+else
+  ./scripts/npm.sh install --arch=${NPM_ARCH} | tee -a ../buildlog_${LABEL}.txt;
+fi;
 
-# echo "Starting hygiene...";
-# gulp hygiene | tee -a ../buildlog_${LABEL}.txt;
+#echo "Starting hygiene...";
+#gulp hygiene | tee -a ../buildlog_${LABEL}.txt;
 
-# if [[ "${ARCH}" == "amd64" ]]; then
-#   gulp electron | tee -a ../buildlog_${LABEL}.txt;
-# else
-#   gulp electron --arch=${VSCODE_ELECTRON_PLATFORM} | tee -a ../buildlog_${LABEL}.txt;
-# fi;
+if [[ "${ARCH}" == "amd64" ]]; then
+  gulp electron | tee -a ../buildlog_${LABEL}.txt;
+else
+  gulp electron --arch=${VSCODE_ELECTRON_PLATFORM} | tee -a ../buildlog_${LABEL}.txt;
+fi;
 
-# echo "Starting compile...";
-# gulp compile --max_old_space_size=4096 | tee -a ../buildlog_${LABEL}.txt;
+echo "Starting compile...";
+gulp compile --max_old_space_size=4096 | tee -a ../buildlog_${LABEL}.txt;
 
-#echo "Starting optimize...";
-#gulp optimize-vscode --max_old_space_size=4096 | tee -a ../buildlog_${LABEL}.txt;
+echo "Starting optimize...";
+gulp optimize-vscode --max_old_space_size=4096 | tee -a ../buildlog_${LABEL}.txt;
