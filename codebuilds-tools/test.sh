@@ -54,7 +54,7 @@ if [[ ${LABEL} == "armhf_linux" ]]; then
   umount ./image/root;
   
   echo "Running qemu-system-arm...";
-  qemu-system-arm -M raspi2 -dtb "./image/boot/bcm2709-rpi-2-b.dtb" -kernel "./image/boot/kernel7.img" -sd image.img -append "rw earlyprintk loglevel=8 console=ttyAMA0,115200 dwc_otg.lpm_enable=0 root=/dev/mmcblk0p2";
+  qemu-system-arm -vga none -M raspi2 -dtb "./image/boot/bcm2709-rpi-2-b.dtb" -kernel "./image/boot/kernel7.img" -sd image.img -append "rw earlyprintk loglevel=8 console=ttyAMA0,115200 dwc_otg.lpm_enable=0 root=/dev/mmcblk0p2";
   
 fi;
 
