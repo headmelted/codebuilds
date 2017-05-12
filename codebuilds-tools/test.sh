@@ -36,7 +36,7 @@ if [[ ${LABEL} == "armhf_linux" ]]; then
   cp ./image/boot/kernel7.img ./boot;
   
   echo "Copying dtb to boot...";
-  cp ./image/boot/bcm2710-rpi-3-b.dtb ./boot;
+  cp ./image/boot/bcm2709-rpi-2-b.dtb ./boot;
   
   echo "Unmounting boot...";
   umount ./image/boot;
@@ -54,7 +54,7 @@ if [[ ${LABEL} == "armhf_linux" ]]; then
   umount ./image/root;
   
   echo "Running qemu-system-arm...";
-  qemu-system-arm -curses -M raspi2 -dtb "./image/boot/bcm2710-rpi-3-b.dtb" -kernel "./image/boot/kernel7.img" -sd image.img -append "rw earlyprintk loglevel=8 console=ttyAMA0,115200 dwc_otg.lpm_enable=0 root=/dev/mmcblk0p2";
+  qemu-system-arm -curses -M raspi2 -dtb "./image/boot/bcm2709-rpi-2-b.dtb" -kernel "./image/boot/kernel7.img" -sd image.img -append "rw earlyprintk loglevel=8 console=ttyAMA0,115200 dwc_otg.lpm_enable=0 root=/dev/mmcblk0p2";
   
 fi;
 
