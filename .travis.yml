@@ -105,6 +105,7 @@ script:
       bash -c "./codebuilds-tools/build.sh";
     fi;
   - sudo bash -c "./codebuilds-tools/test.sh";
+  - sudo bash -c "./codebuilds-tools/package.sh";
 
 deploy:
   provider: releases
