@@ -1,4 +1,5 @@
 #!/bin/bash
+set -e;
 
 #Sample Usage: pushToBintray.sh package
 

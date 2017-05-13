@@ -1,4 +1,5 @@
 #!/bin/bash
+set -e;
 
 echo "Changing directory to $HOME/codebuilds...";
 cd $HOME/codebuilds;
