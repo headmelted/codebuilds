@@ -4,15 +4,21 @@ set -e;
 #echo "Inserting custom xvfb into /etc/init.d...";
 #mv -f ./codebuilds-tools/xvfb /etc/init.d/xvfb;
 
+echo "Checking if cache directory exists...";
+if [[ ! -d ./cache ]]; then 
+  echo "Creating cache directory...";
+  mkdir cache
+fi;
+
 if [[ ${LABEL} == "armhf_linux" ]]; then
 
   echo "Installing QEMU...";
   apt-get install -y qemu-system-${QEMU_ARCH};
   
   echo "Cache directory [$(pwd)/../cache] contains:"
-  ls ../cache;
+  ls ./cache;
   
-  if [[ ! -f ../cache/image.img ]]; then
+  if [[ ! -f ./cache/image.img ]]; then
   
   echo "Cached raspbian image not available!";
   

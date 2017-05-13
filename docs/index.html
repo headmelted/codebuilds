@@ -18,6 +18,12 @@ image_url: images/code.png
 <h1 id="testing"><i class="fa fa-check-square-o"></i>&nbsp;Testing</h1>
 <p>For each and every release, the build system prepares a virtual system for the given architecture. The finished package is then installed and tested with the full suite of tests from Microsoft. Once this is done, a test report is prepared that can be downloaded for review.  Only packages that pass all tests will proceed to release.</p>
 
+<section class="test-matrix">
+  <img src="images/devices/raspi2.jpg">
+  <h2>Raspberry Pi 2 B (armhf)</h2>
+  <p>The builds use a virtualized Raspberry Pi 2 B running Raspbian Jessie to test the armhf builds of the software. This is chosen as it's the most popular platform the builds are targeted at, and because it's on the lower end of devices in this class, so it makes for a good baseline to establish stability of the application.</p>
+</section>
+
 <h1 id="#instructions"><i class="fa fa-info"></i>&nbsp;Installation Instructions</h1>
 
 <h2 id="android-install-scripts">Android and Chrome OS</h2>
