@@ -9,6 +9,13 @@ if [[ ${LABEL} == "armhf_linux" ]]; then
   echo "Installing QEMU...";
   apt-get install -y qemu-system-${QEMU_ARCH};
   
+  echo "Cache directory [$(pwd)/../cache] contains:"
+  ls ../cache;
+  
+  if [[ ! -f ../cache/image.img ]]; then
+  
+  echo "Cached raspbian image not available!";
+  
   echo "Retrieving raspbian image...";
   wget "https://downloads.raspberrypi.org/raspbian_lite/images/raspbian_lite-2015-11-24/2015-11-21-raspbian-jessie-lite.zip" -O image.zip;
   
@@ -57,8 +64,15 @@ if [[ ${LABEL} == "armhf_linux" ]]; then
   echo "Unmounting root...";
   umount ./image/root;
   
+  echo "Moving patched image to cache...";
+  mv image.img ../cache/image.img;
+  
+  fi;
+  
+  echo "Cached image.img available!";
+  
   echo "Booting Raspberry Pi 2...";
-  qemu-system-arm -nographic -serial mon:stdio -M raspi2 -dtb "./boot/bcm2709-rpi-2-b.dtb" -kernel "./boot/kernel7.img" -sd image.img -append "rw earlyprintk loglevel=8 console=ttyAMA0,115200 dwc_otg.lpm_enable=0 root=/dev/mmcblk0p2";
+  qemu-system-arm -nographic -serial mon:stdio -M raspi2 -dtb "./boot/bcm2709-rpi-2-b.dtb" -kernel "./boot/kernel7.img" -sd ../cache/image.img -append "rw earlyprintk loglevel=8 console=ttyAMA0,115200 dwc_otg.lpm_enable=0 root=/dev/mmcblk0p2";
   
 fi;
 
