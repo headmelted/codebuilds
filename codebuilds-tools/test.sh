@@ -56,7 +56,7 @@ if [[ ${LABEL} == "armhf_linux" ]]; then
     umount ./image/boot;
   
     echo "Mounting root directory...";
-    mount -o loop,offset=$((92160*512)) -t ext4 image.img ./image/root;
+    mount -t ext4 -o loop,offset=47185920 image.img ./image/root;
   
     echo "Emptying ld.so.preload...";
     echo "" > ./image/root/etc/ld.so.preload;
