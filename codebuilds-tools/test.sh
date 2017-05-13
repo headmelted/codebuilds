@@ -20,65 +20,72 @@ if [[ ${LABEL} == "armhf_linux" ]]; then
   
   if [[ ! -f ./cache/image.img ]]; then
   
-  echo "Cached raspbian image not available!";
+    echo "Cached raspbian image not available!";
   
-  echo "Retrieving raspbian image...";
-  wget "https://downloads.raspberrypi.org/raspbian_lite/images/raspbian_lite-2015-11-24/2015-11-21-raspbian-jessie-lite.zip" -O image.zip;
+    echo "Retrieving raspbian image...";
+    wget "https://downloads.raspberrypi.org/raspbian_lite/images/raspbian_lite-2015-11-24/2015-11-21-raspbian-jessie-lite.zip" -O image.zip;
   
-  echo "Unzipping raspbian image...";
-  unzip image.zip;
+    echo "Unzipping raspbian image...";
+    unzip image.zip;
   
-  echo "Removing raspbian zip...";
-  rm -rf image.zip;
+    echo "Removing raspbian zip...";
+    rm -rf image.zip;
   
-  echo "Moving image file...";
-  mv *.img image.img;
+    echo "Moving image file...";
+    mv *.img image.img;
+    
+    echo "Creating mount directories...";
+    mkdir image ./image/boot ./image/root;
   
-  echo "Creating mount directories...";
-  mkdir image ./image/boot ./image/root;
+    echo "Mounting boot...";
+    mount -o loop,offset=4194304 image.img ./image/boot;
   
-  echo "Mounting boot...";
-  mount -o loop,offset=4194304 image.img ./image/boot;
+    echo "Listing boot...";
+    ls ./image/boot;
   
-  echo "Listing boot...";
-  ls ./image/boot;
+    echo "Creating boot directory...";
+    mkdir boot;
   
-  echo "Creating boot directory...";
-  mkdir boot;
+    echo "Copying kernel...";
+    cp ./image/boot/kernel7.img ./;
   
-  echo "Copying kernel to boot...";
-  cp ./image/boot/kernel7.img ./boot;
+    echo "Copying dtb...";
+    cp ./image/boot/bcm2709-rpi-2-b.dtb ./;
   
-  echo "Copying dtb to boot...";
-  cp ./image/boot/bcm2709-rpi-2-b.dtb ./boot;
+    echo "Unmounting boot...";
+    umount ./image/boot;
   
-  echo "Unmounting boot...";
-  umount ./image/boot;
+    echo "Mounting root directory...";
+    mount -o loop,offset=$((92160*512)) image.img ./image/root;
   
-  echo "Mounting root directory...";
-  mount -o loop,offset=$((92160*512)) image.img ./image/root;
+    echo "Emptying ld.so.preload...";
+    echo "" > ./image/root/etc/ld.so.preload;
   
-  echo "Emptying ld.so.preload...";
-  echo "" > ./image/root/etc/ld.so.preload;
+    echo "Setting getty for automatic login...";
+    cp ./image/root/etc/systemd/system/autologin@.service ./image/root/etc/systemd/system/getty.target.wants/getty@tty1.service;
   
-  echo "Setting getty for automatic login...";
-  cp ./image/root/etc/systemd/system/autologin@.service ./image/root/etc/systemd/system/getty.target.wants/getty@tty1.service;
+    echo "Syncing mount...";
+    sync;
   
-  echo "Syncing mount...";
-  sync;
+    echo "Unmounting root...";
+    umount ./image/root;
   
-  echo "Unmounting root...";
-  umount ./image/root;
+    echo "Copying patched images to cache...";
+    cp image.img ./cache/image.img;
+    cp kernel7.img ./cache/kernel7.img;
+    cp bcm2709-rpi-2-b.dtb ./cache/bcm2709-rpi-2-b.dtb;
   
-  echo "Moving patched image to cache...";
-  mv image.img ../cache/image.img;
+  else
+  
+    echo "Cached images available!";
+    cp ./cache/image.img image.img;
+    cp ./cache/kernel7.img kernel7.img;
+    cp ./cache/bcm2709-rpi-2-b.dtb bcm2709-rpi-2-b.dtb;
   
   fi;
   
-  echo "Cached image.img available!";
-  
   echo "Booting Raspberry Pi 2...";
-  qemu-system-arm -nographic -serial mon:stdio -M raspi2 -dtb "./boot/bcm2709-rpi-2-b.dtb" -kernel "./boot/kernel7.img" -sd ../cache/image.img -append "rw earlyprintk loglevel=8 console=ttyAMA0,115200 dwc_otg.lpm_enable=0 root=/dev/mmcblk0p2";
+  qemu-system-arm -nographic -serial mon:stdio -M raspi2 -dtb bcm2709-rpi-2-b.dtb -kernel kernel7.img -sd image.img -append "rw earlyprintk loglevel=8 console=ttyAMA0,115200 dwc_otg.lpm_enable=0 root=/dev/mmcblk0p2";
   
 fi;
 
