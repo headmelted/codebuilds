@@ -38,7 +38,7 @@ if [[ ${LABEL} == "armhf_linux" ]]; then
     mkdir image ./image/boot ./image/root;
   
     echo "Mounting boot...";
-    mount -t vfat -o loop,offset=4194304 image.img ./image/boot;
+    mount -o loop,offset=4194304 image.img ./image/boot;
   
     echo "Listing boot...";
     ls ./image/boot;
@@ -56,7 +56,7 @@ if [[ ${LABEL} == "armhf_linux" ]]; then
     umount ./image/boot;
   
     echo "Mounting root directory...";
-    mount -t ext4 -o loop,offset=$((92160*512)) image.img ./image/root;
+    mount -o loop,offset=$((92160*512)) image.img ./image/root;
   
     echo "Emptying ld.so.preload...";
     echo "" > ./image/root/etc/ld.so.preload;
