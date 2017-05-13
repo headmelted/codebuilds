@@ -71,7 +71,7 @@ if [[ ${LABEL} == "armhf_linux" ]]; then
     echo "" > ./image/root/etc/ld.so.preload;
   
     echo "Setting getty for automatic login...";
-    cp ./image/root/etc/systemd/system/autologin@.service ./image/root/etc/systemd/system/getty.target.wants/getty@tty1.service;
+    cp --remove-destination ./image/root/etc/systemd/system/autologin@.service ./image/root/etc/systemd/system/getty.target.wants/getty@tty1.service;
   
     echo "Syncing mount...";
     sync;
