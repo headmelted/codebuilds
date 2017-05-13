@@ -54,9 +54,18 @@ if [[ ${LABEL} == "armhf_linux" ]]; then
   
     echo "Unmounting boot...";
     umount ./image/boot;
+    
+    echo "Getting root offset...";
+    root_offset=$(fdisk -l image.img | grep -oP "(image\.img2)( *)([0-9]*?) " | grep -oE "*([0-9]*)*" | tail -1);
+    
+    echo "Root offset is $root_offset.";
+    
+    root_sector_offset=$(($offset*512));
+    
+    echo "Root sector offset is $root_sector_offset.";
   
     echo "Mounting root directory...";
-    mount -t ext4 -o loop,offset=47185920 image.img ./image/root;
+    mount -t ext4 -o loop,offset=$root_sector_offset image.img ./image/root;
   
     echo "Emptying ld.so.preload...";
     echo "" > ./image/root/etc/ld.so.preload;
