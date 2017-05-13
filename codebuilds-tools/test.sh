@@ -60,7 +60,7 @@ if [[ ${LABEL} == "armhf_linux" ]]; then
     
     echo "Root offset is $root_offset.";
     
-    root_sector_offset=$(($offset*512));
+    root_sector_offset=$(($root_offset*512));
     
     echo "Root sector offset is $root_sector_offset.";
   
