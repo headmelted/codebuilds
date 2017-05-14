@@ -85,14 +85,16 @@ if [[ ${LABEL} == "armhf_linux" ]]; then
     cat ./image/root/etc/systemd/system/getty@tty1.service.d/autologin.conf;
     
     echo "Adding test script to profile startup...";
-    echo ". /image/root/testing/test.sh" >> /etc/profile;
+    echo ". /testing/test.sh" >> ./image/root/etc/profile;
     
     echo "Making test directory...";
     mkdir ./image/root/testing;
     
-    echo "Copying working directories into build...";
-    cp ./test ./image/root/testing/;
-    cp ./node_modules ./image/root/testing;
+    echo "Copying test directory into build...";
+    cp -r ./test/* ./image/root/testing/test/*;
+    
+    echo "Copying node_modules directory into build...";
+    cp -r ./node_modules/* ./image/root/testing/node_modules/*;
   
     #echo "Setting getty for automatic login...";
     #cp --remove-destination ./image/root/etc/systemd/system/autologin@.service ./image/root/etc/systemd/system/getty.target.wants/getty@tty1.service;
