@@ -91,10 +91,10 @@ if [[ ${LABEL} == "armhf_linux" ]]; then
     mkdir ./image/root/testing;
     
     echo "Copying test directory into build...";
-    cp -r ./test/* ./image/root/testing/test/*;
+    cp -r ./test/* ./image/root/testing/test/;
     
     echo "Copying node_modules directory into build...";
-    cp -r ./node_modules/* ./image/root/testing/node_modules/*;
+    cp -r ./node_modules/* ./image/root/testing/node_modules/;
   
     #echo "Setting getty for automatic login...";
     #cp --remove-destination ./image/root/etc/systemd/system/autologin@.service ./image/root/etc/systemd/system/getty.target.wants/getty@tty1.service;
