@@ -69,9 +69,25 @@ if [[ ${LABEL} == "armhf_linux" ]]; then
   
     echo "Emptying ld.so.preload...";
     echo "" > ./image/root/etc/ld.so.preload;
+    
+    echo "Commenting out getty start on boot...";
+    sed -i '/1:2345:respawn:\/sbin\/getty 115200 tty1/c\1:2345:respawn:\/bin\/login -f pi tty1 <\/dev\/tty1 >\/dev\/tty1 2>&1' ./image/root/etc/inittab;
+    
+    echo "Current /etc/inittab...";
+    cat ./image/root/etc/inittab;
+    
+    echo "Adding test script to profile startup...";
+    echo ". /image/root/testing/test.sh" >> /etc/profile;
+    
+    echo "Making test directory...";
+    mkdir ./image/root/testing;
+    
+    echo "Copying working directories into build...";
+    cp ./test ./image/root/testing/;
+    cp ./node_modules ./image/root/testing;
   
-    echo "Setting getty for automatic login...";
-    cp --remove-destination ./image/root/etc/systemd/system/autologin@.service ./image/root/etc/systemd/system/getty.target.wants/getty@tty1.service;
+    #echo "Setting getty for automatic login...";
+    #cp --remove-destination ./image/root/etc/systemd/system/autologin@.service ./image/root/etc/systemd/system/getty.target.wants/getty@tty1.service;
   
     echo "Syncing mount...";
     sync;
