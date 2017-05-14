@@ -70,11 +70,19 @@ if [[ ${LABEL} == "armhf_linux" ]]; then
     echo "Emptying ld.so.preload...";
     echo "" > ./image/root/etc/ld.so.preload;
     
-    echo "Commenting out getty start on boot...";
-    sed -i '/1:2345:respawn:\/sbin\/getty 115200 tty1/c\1:2345:respawn:\/bin\/login -f pi tty1 <\/dev\/tty1 >\/dev\/tty1 2>&1' ./image/root/etc/inittab;
+    echo "Creating getty tty1 service descriptor...";
+    mkdir -pv /etc/systemd/system/getty@tty1.service.d;
     
-    echo "Current /etc/inittab...";
-    cat ./image/root/etc/inittab;
+    echo "Adding ExecStart commands to ./image/root/etc/systemd/system/getty@tty1.service.d/autologin.conf....";
+    echo "[Service]" >> ./image/root/etc/systemd/system/getty@tty1.service.d/autologin.conf;
+    echo "ExecStart=" >> ./image/root/etc/systemd/system/getty@tty1.service.d/autologin.conf;
+    echo "ExecStart=-/sbin/agetty --autologin pi --noclear %I 38400 linux" >> ./image/root/etc/systemd/system/getty@tty1.service.d/autologin.conf;
+
+    # echo "Commenting out getty start on boot...";
+    # sed -i '/1:2345:respawn:\/sbin\/getty 115200 tty1/c\1:2345:respawn:\/bin\/login -f pi tty1 <\/dev\/tty1 >\/dev\/tty1 2>&1' ./image/root/etc/inittab;
+    
+    echo "Current ./image/root/etc/systemd/system/getty@tty1.service.d/autologin.conf....";
+    cat ./image/root/etc/systemd/system/getty@tty1.service.d/autologin.conf;
     
     echo "Adding test script to profile startup...";
     echo ". /image/root/testing/test.sh" >> /etc/profile;
