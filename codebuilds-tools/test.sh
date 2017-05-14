@@ -87,13 +87,15 @@ if [[ ${LABEL} == "armhf_linux" ]]; then
     echo "Adding test script to profile startup...";
     echo ". /testing/test.sh" >> ./image/root/etc/profile;
     
-    echo "Making test directory...";
+    echo "Making testing directory...";
     mkdir ./image/root/testing;
     
     echo "Copying test directory into build...";
+    mkdir ./image/root/testing/test;
     cp -r ./test/* ./image/root/testing/test/;
     
     echo "Copying node_modules directory into build...";
+    mkdir ./image/root/testing/node_modules;
     cp -r ./node_modules/* ./image/root/testing/node_modules/;
   
     #echo "Setting getty for automatic login...";
