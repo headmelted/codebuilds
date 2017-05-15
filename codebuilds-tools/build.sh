@@ -60,34 +60,18 @@ nvm use 7.4.0;
 echo "Setting python binding...";
 npm config set python `which python`;
 
-echo "Installing gulp...";
+echo "Installing dependencies...";
 npm install gulp;
-npm install -g gulp;
+npm install -g gulp tslint typescript requirejs;
 
-if [[ "${ARCH}" == "web" ]]; then
-  echo "Installing browserify...";
-  npm install browserify;
-  npm install -g browserify;
-else
-  echo "Installing requirejs...";
-  npm install requirejs;
-  npm install -g requirejs;
-fi;
-
-if [[ "${ARCH}" == "amd64" ]]; then
-  ./scripts/npm.sh install | tee -a ../buildlog_${LABEL}.txt;
-else
-  ./scripts/npm.sh install --arch=${NPM_ARCH} | tee -a ../buildlog_${LABEL}.txt;
-fi;
+echo "Running npm install...";
+./scripts/npm.sh install --arch=${VSCODE_ELECTRON_PLATFORM} | tee -a ../buildlog_${LABEL}.txt;
 
 #echo "Starting hygiene...";
 #gulp hygiene | tee -a ../buildlog_${LABEL}.txt;
 
-if [[ "${ARCH}" == "amd64" ]]; then
-  gulp electron --unsafe-perm | tee -a ../buildlog_${LABEL}.txt;
-else
-  gulp electron --unsafe-perm --arch=${VSCODE_ELECTRON_PLATFORM} | tee -a ../buildlog_${LABEL}.txt;
-fi;
+echo "Starting electron...";
+gulp electron --unsafe-perm --arch=${VSCODE_ELECTRON_PLATFORM} | tee -a ../buildlog_${LABEL}.txt;
 
 echo "Starting compile...";
 gulp compile --unsafe-perm --max_old_space_size=4096 | tee -a ../buildlog_${LABEL}.txt;

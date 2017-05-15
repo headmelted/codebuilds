@@ -42,15 +42,13 @@ const flatpakManifest = {
 
 
 function getDebPackageArch(arch) {
-	return { x64: 'amd64', ia32: 'i386', armhf: 'armhf', arm64: 'arm64' }[arch];
+	return { x64: 'amd64', ia32: 'i386', arm: 'armhf' }[arch];
 }
 
 function prepareDebPackage(arch) {
 	const binaryDir = '../VSCode-linux-' + arch;
 	const debArch = getDebPackageArch(arch);
-	console.log("prepareDebPackage arch|debArch|binaryDir: " + arch + "|" + debArch + "|" + binaryDir);
 	const destination = '.build/linux/deb/' + debArch + '/' + product.applicationName + '-' + debArch;
-	console.log("Build destination: " + destination);
 
 	return function () {
 		const desktop = gulp.src('resources/linux/code.desktop', { base: '.' })
@@ -70,8 +68,6 @@ function prepareDebPackage(arch) {
 
 		const code = gulp.src(binaryDir + '/**/*', { base: binaryDir })
 			.pipe(rename(function (p) { p.dirname = 'usr/share/' + product.applicationName + '/' + p.dirname; }));
-
-		
 
 		let size = 0;
 		const control = code.pipe(es.through(
@@ -110,14 +106,12 @@ function prepareDebPackage(arch) {
 
 function buildDebPackage(arch) {
 	const debArch = getDebPackageArch(arch);
-	var shellTasks = [
+	return shell.task([
 		'chmod 755 ' + product.applicationName + '-' + debArch + '/DEBIAN/postinst ' + product.applicationName + '-' + debArch + '/DEBIAN/prerm ' + product.applicationName + '-' + debArch + '/DEBIAN/postrm',
 		'mkdir -p deb',
 		'fakeroot dpkg-deb -b ' + product.applicationName + '-' + debArch + ' deb',
 		'dpkg-scanpackages deb /dev/null > Packages'
-	];
-	console.log(shellTasks.toString());
-	return shell.task(shellTasks, { cwd: '.build/linux/deb/' + debArch });
+	], { cwd: '.build/linux/deb/' + debArch });
 }
 
 function getRpmBuildPath(rpmArch) {
@@ -125,7 +119,7 @@ function getRpmBuildPath(rpmArch) {
 }
 
 function getRpmPackageArch(arch) {
-	return { x64: 'x86_64', ia32: 'i386', armhf: 'armv7l', arm64: 'armv8' }[arch];
+	return { x64: 'x86_64', ia32: 'i386', arm: 'armhf' }[arch];
 }
 
 function prepareRpmPackage(arch) {
@@ -186,7 +180,7 @@ function buildRpmPackage(arch) {
 }
 
 function getFlatpakArch(arch) {
-	return { x64: 'x86_64', ia32: 'i386', armhf: 'armhf', arm64: 'arm64' }[arch];
+	return { x64: 'x86_64', ia32: 'i386', arm: 'arm' }[arch];
 }
 
 function prepareFlatpak(arch) {
@@ -258,20 +252,35 @@ function buildFlatpak(arch) {
 	};
 }
 
-var archs = ['ia32', 'x64', 'armhf', 'arm64'];
+gulp.task('clean-vscode-linux-ia32-deb', util.rimraf('.build/linux/deb/i386'));
+gulp.task('clean-vscode-linux-x64-deb', util.rimraf('.build/linux/deb/amd64'));
+gulp.task('clean-vscode-linux-arm-deb', util.rimraf('.build/linux/deb/armhf'));
+gulp.task('clean-vscode-linux-ia32-rpm', util.rimraf('.build/linux/rpm/i386'));
+gulp.task('clean-vscode-linux-x64-rpm', util.rimraf('.build/linux/rpm/x86_64'));
+gulp.task('clean-vscode-linux-arm-rpm', util.rimraf('.build/linux/rpm/armhf'));
 
-// TODO@joao TODO@daniel
-// commented out the dependencies to the actual building of VS Code
-// we gotta make sure those targets run before these run, in our TFS builds
+gulp.task('vscode-linux-ia32-prepare-deb', ['clean-vscode-linux-ia32-deb'], prepareDebPackage('ia32'));
+gulp.task('vscode-linux-x64-prepare-deb', ['clean-vscode-linux-x64-deb'], prepareDebPackage('x64'));
+gulp.task('vscode-linux-arm-prepare-deb', ['clean-vscode-linux-arm-deb'], prepareDebPackage('arm'));
+gulp.task('vscode-linux-ia32-build-deb', ['vscode-linux-ia32-prepare-deb'], buildDebPackage('ia32'));
+gulp.task('vscode-linux-x64-build-deb', ['vscode-linux-x64-prepare-deb'], buildDebPackage('x64'));
+gulp.task('vscode-linux-arm-build-deb', ['vscode-linux-arm-prepare-deb'], buildDebPackage('arm'));
 
-archs.forEach(function(arch) { gulp.task('clean-vscode-linux-' + arch + '-deb', util.rimraf('.build/linux/deb/' + getDebPackageArch(arch))); });
-archs.forEach(function(arch) { gulp.task('vscode-linux-' + arch + '-prepare-deb', ['clean-vscode-linux-' + arch + '-deb'], prepareDebPackage(arch)); });
-archs.forEach(function(arch) { gulp.task('vscode-linux-' + arch + '-build-deb', ['vscode-linux-' + arch + '-prepare-deb'], buildDebPackage(arch)); });
+gulp.task('vscode-linux-ia32-prepare-rpm', ['clean-vscode-linux-ia32-rpm'], prepareRpmPackage('ia32'));
+gulp.task('vscode-linux-x64-prepare-rpm', ['clean-vscode-linux-x64-rpm'], prepareRpmPackage('x64'));
+gulp.task('vscode-linux-arm-prepare-rpm', ['clean-vscode-linux-arm-rpm'], prepareRpmPackage('arm'));
+gulp.task('vscode-linux-ia32-build-rpm', ['vscode-linux-ia32-prepare-rpm'], buildRpmPackage('ia32'));
+gulp.task('vscode-linux-x64-build-rpm', ['vscode-linux-x64-prepare-rpm'], buildRpmPackage('x64'));
+gulp.task('vscode-linux-arm-build-rpm', ['vscode-linux-arm-prepare-rpm'], buildRpmPackage('arm'));
 
-archs.forEach(function(arch) { gulp.task('clean-vscode-linux-' + arch + '-rpm', util.rimraf('.build/linux/rpm/' + getRpmPackageArch(arch))); });
-archs.forEach(function(arch) { gulp.task('vscode-linux-' + arch + '-prepare-rpm', ['clean-vscode-linux-' + arch + '-rpm'], prepareRpmPackage(arch)); });
-archs.forEach(function(arch) { gulp.task('vscode-linux-' + arch + '-build-rpm', ['vscode-linux-' + arch + '-prepare-rpm'], buildRpmPackage(arch)); });
+gulp.task('clean-vscode-linux-ia32-flatpak', util.rimraf('.build/linux/flatpak/i386'));
+gulp.task('clean-vscode-linux-x64-flatpak', util.rimraf('.build/linux/flatpak/x86_64'));
+gulp.task('clean-vscode-linux-arm-flatpak', util.rimraf('.build/linux/flatpak/arm'));
 
-archs.forEach(function(arch) { gulp.task('clean-vscode-linux-' + arch + '-flatpak', util.rimraf('.build/linux/flatpak/' + getRpmPackageArch(arch))); });
-archs.forEach(function(arch) { gulp.task('vscode-linux-' + arch + '-prepare-flatpak', ['clean-vscode-linux-' + arch + '-flatpak'/*, 'vscode-linux-ia32-min'*/], prepareFlatpak(arch)); });
-archs.forEach(function(arch) { gulp.task('vscode-linux-' + arch + '-build-flatpak', ['vscode-linux-' + arch + '-prepare-flatpak'/*, 'vscode-linux-ia32-min'*/], buildFlatpak(arch)); });
+gulp.task('vscode-linux-ia32-prepare-flatpak', ['clean-vscode-linux-ia32-flatpak'], prepareFlatpak('ia32'));
+gulp.task('vscode-linux-x64-prepare-flatpak', ['clean-vscode-linux-x64-flatpak'], prepareFlatpak('x64'));
+gulp.task('vscode-linux-arm-prepare-flatpak', ['clean-vscode-linux-arm-flatpak'], prepareFlatpak('arm'));
+
+gulp.task('vscode-linux-ia32-flatpak', ['vscode-linux-ia32-prepare-flatpak'], buildFlatpak('ia32'));
+gulp.task('vscode-linux-x64-flatpak', ['vscode-linux-x64-prepare-flatpak'], buildFlatpak('x64'));
+gulp.task('vscode-linux-arm-flatpak', ['vscode-linux-arm-prepare-flatpak'], buildFlatpak('arm'));
