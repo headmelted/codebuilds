@@ -23,7 +23,7 @@ if [[ ${LABEL} == "armhf_linux" ]]; then
     echo "Cached raspbian image not available!";
   
     echo "Retrieving raspbian image...";
-    wget "https://downloads.raspberrypi.org/raspbian_lite/images/raspbian_lite-2015-11-24/2015-11-21-raspbian-jessie-lite.zip" -O image.zip;
+    wget "https://downloads.raspberrypi.org/raspbian_lite_latest" -O image.zip;
   
     echo "Unzipping raspbian image...";
     unzip image.zip;
