@@ -99,14 +99,9 @@ notifications:
   email: false
   
 script:
-  - bash -c "./codebuilds-tools/environment.sh";
-  - if [[ "${TRAVIS_SUDO}" == "true" ]]; then
-      sudo bash -c "./codebuilds-tools/build.sh";
-    else
-      bash -c "./codebuilds-tools/build.sh";
-    fi;
-  # - sudo bash -c "./codebuilds-tools/test.sh";
-  - sudo bash -c "./codebuilds-tools/package.sh";
+  - . ./codebuilds-tools/environment.sh
+  - . ./codebuilds-tools/build.sh
+  - . ./codebuilds-tools/package.sh
 
 deploy:
   provider: releases
