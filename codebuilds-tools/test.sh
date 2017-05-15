@@ -129,8 +129,8 @@ fi;
 echo "Exporting display :99.0...";
 export DISPLAY=:99.0;
 
-echo "Moving xvfb init script...";
-cp ./codebuilds-tools/xvfb /etc/init.d/xvfb;
+# echo "Moving xvfb init script...";
+# cp ./codebuilds-tools/xvfb /etc/init.d/xvfb;
 
 echo "Starting xvfb...";
 sh -e /etc/init.d/xvfb start;
