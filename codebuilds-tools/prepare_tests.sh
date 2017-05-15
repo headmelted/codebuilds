@@ -138,9 +138,3 @@ sh -e /etc/init.d/xvfb start;
 echo "Waiting 10 seconds for xvfb to start up...";
 sleep 10;
 
-echo "Starting test...";
-./scripts/test.sh;
-
-echo "Starting integration tests...";
-./scripts/test-integration.sh;
-

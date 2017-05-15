@@ -100,7 +100,11 @@ notifications:
 script:
   - . ./codebuilds-tools/environment.sh
   - . ./codebuilds-tools/build.sh
-  - . ./codebuilds-tools/test.sh
+  - . ./codebuilds-tools/prepare_tests.sh
+  - echo "Starting test..."
+  - ./scripts/test.sh
+  - echo "Starting integration tests..."
+  - ./scripts/test-integration.sh
   - . ./codebuilds-tools/package.sh
 
 deploy:
