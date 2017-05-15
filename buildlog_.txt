@@ -1,0 +1,12 @@
+[14:54:39] Using gulpfile ~/workspace/build/gulpfile.js
+[14:54:39] Task 'vscode-linux-' is not in your gulpfile
+[14:54:39] Please check the documentation for proper gulpfile formatting
+[14:54:40] Using gulpfile ~/workspace/build/gulpfile.js
+[14:54:40] Task 'vscode-linux--build-deb' is not in your gulpfile
+[14:54:40] Please check the documentation for proper gulpfile formatting
+[14:54:41] Using gulpfile ~/workspace/build/gulpfile.js
+[14:54:41] Task 'vscode-linux--build-rpm' is not in your gulpfile
+[14:54:41] Please check the documentation for proper gulpfile formatting
+[14:54:41] Using gulpfile ~/workspace/build/gulpfile.js
+[14:54:41] Task 'vscode-linux--build-flatpak' is not in your gulpfile
+[14:54:41] Please check the documentation for proper gulpfile formatting

@@ -46,7 +46,6 @@ include: &toolchain_linux_amd64
     - GCC_COMPILER=gcc-4.9
     - VSCODE_ELECTRON_PLATFORM=x64
     - PACKAGE_ARCH=x64
-    - TESTING_CONTAINER=debian:jessie
     
 # cross toolchain (used as a base for multiarch cross-compilation configurations below) 
 include: &toolchain_linux_cross
@@ -101,6 +100,7 @@ notifications:
 script:
   - . ./codebuilds-tools/environment.sh
   - . ./codebuilds-tools/build.sh
+  - . ./codebuilds-tools/test.sh
   - . ./codebuilds-tools/package.sh
 
 deploy:

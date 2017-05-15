@@ -60,6 +60,3 @@ gulp electron --unsafe-perm --arch=${VSCODE_ELECTRON_PLATFORM} | tee -a ../build
 
 echo "Starting compile...";
 gulp compile --unsafe-perm --max_old_space_size=4096 | tee -a ../buildlog_${LABEL}.txt;
-
-echo "Starting optimize...";
-gulp optimize-vscode --unsafe-perm --max_old_space_size=4096 | tee -a ../buildlog_${LABEL}.txt;

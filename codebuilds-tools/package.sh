@@ -1,8 +1,7 @@
 #!/bin/bash
 set -e;
 
-echo "Retrieving dependencies for build...";
-objdump -p .build/electron/code-oss;
+cd build;
 
 echo "Starting vscode-linux-${PACKAGE_ARCH}...";
 gulp "vscode-linux-${PACKAGE_ARCH}" | tee -a ../buildlog_${LABEL}.txt;

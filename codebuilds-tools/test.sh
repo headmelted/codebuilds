@@ -136,7 +136,7 @@ echo "Starting xvfb...";
 sh -e /etc/init.d/xvfb start;
 
 echo "Waiting 10 seconds for xvfb to start up...";
-sleep 3;
+sleep 10;
 
 echo "Starting test...";
 ./scripts/test.sh;
