@@ -4,8 +4,6 @@ set -e;
 # echo "Changing directory to $HOME/codebuilds...";
 # cd $HOME/codebuilds;
 
-export CXX="${GPP_COMPILER}" CC="${GCC_COMPILER}" DEBIAN_FRONTEND="noninteractive";
-
 if [[ "${CROSS_TOOLCHAIN}" == "true" ]]; then
   
   echo " directory is [$(pwd)].";
@@ -51,24 +49,11 @@ if [[ "${CROSS_TOOLCHAIN}" == "true" ]]; then
    
 fi;
 
-git submodule update --init --recursive;
-git clone --depth 1 https://github.com/creationix/nvm.git ./.nvm;
-source ./.nvm/nvm.sh;
-nvm install 7.4.0;
-nvm use 7.4.0;
-
-echo "Setting python binding...";
-npm config set python `which python`;
-
-echo "Installing dependencies...";
-npm install gulp;
-npm install -g gulp tslint typescript requirejs;
-
 echo "Running npm install...";
-./scripts/npm.sh install --arch=${VSCODE_ELECTRON_PLATFORM} | tee -a ../buildlog_${LABEL}.txt;
+./scripts/npm.sh install --unsafe-perm --arch=${VSCODE_ELECTRON_PLATFORM} | tee -a ../buildlog_${LABEL}.txt;
 
-#echo "Starting hygiene...";
-#gulp hygiene | tee -a ../buildlog_${LABEL}.txt;
+echo "Starting hygiene...";
+gulp hygiene | tee -a ../buildlog_${LABEL}.txt;
 
 echo "Starting electron...";
 gulp electron --unsafe-perm --arch=${VSCODE_ELECTRON_PLATFORM} | tee -a ../buildlog_${LABEL}.txt;
