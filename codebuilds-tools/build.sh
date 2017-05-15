@@ -74,13 +74,13 @@ fi;
 #gulp hygiene | tee -a ../buildlog_${LABEL}.txt;
 
 if [[ "${ARCH}" == "amd64" ]]; then
-  gulp electron | tee -a ../buildlog_${LABEL}.txt;
+  gulp electron --unsafe-perm | tee -a ../buildlog_${LABEL}.txt;
 else
-  gulp electron --arch=${VSCODE_ELECTRON_PLATFORM} | tee -a ../buildlog_${LABEL}.txt;
+  gulp electron --unsafe-perm --arch=${VSCODE_ELECTRON_PLATFORM} | tee -a ../buildlog_${LABEL}.txt;
 fi;
 
 echo "Starting compile...";
-gulp compile --max_old_space_size=4096 | tee -a ../buildlog_${LABEL}.txt;
+gulp compile --unsafe-perm --max_old_space_size=4096 | tee -a ../buildlog_${LABEL}.txt;
 
 echo "Starting optimize...";
-gulp optimize-vscode --max_old_space_size=4096 | tee -a ../buildlog_${LABEL}.txt;
+gulp optimize-vscode --unsafe-perm --max_old_space_size=4096 | tee -a ../buildlog_${LABEL}.txt;
