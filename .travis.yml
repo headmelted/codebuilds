@@ -26,6 +26,7 @@ include: &toolchain_x86
         - libx11-dev
         - libxkbfile-dev
         - rpm
+        - graphicsmagick
         
 # OSX amd64 toolchain
 include: &toolchain_osx_amd64
