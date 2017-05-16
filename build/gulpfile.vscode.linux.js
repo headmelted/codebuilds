@@ -42,7 +42,7 @@ const flatpakManifest = {
 
 
 function getDebPackageArch(arch) {
-	return { x64: 'amd64', ia32: 'i386', arm: 'armhf' }[arch];
+	return { x64: 'amd64', ia32: 'i386', armhf: 'armhf', arm64: 'arm64' }[arch];
 }
 
 function prepareDebPackage(arch) {
@@ -122,7 +122,7 @@ function getRpmBuildPath(rpmArch) {
 }
 
 function getRpmPackageArch(arch) {
-	return { x64: 'x86_64', ia32: 'i386', arm: 'armhf' }[arch];
+	return { x64: 'x86_64', ia32: 'i386', armhf: 'armhf', arm64: 'arm64' }[arch];
 }
 
 function prepareRpmPackage(arch) {
