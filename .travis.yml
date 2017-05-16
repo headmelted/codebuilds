@@ -105,9 +105,9 @@ script:
       . ./codebuilds-tools/prepare_tests.sh
       echo "Starting test..."
       ./scripts/test.sh
+    fi;
   # - echo "Starting integration tests..."
   # - ./scripts/test-integration.sh
-    fi;
   - . ./codebuilds-tools/package.sh
 
 deploy:
