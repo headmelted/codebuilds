@@ -4,8 +4,8 @@ Section: devel
 Depends: libnotify4, libnss3, gnupg, apt, libxkbfile1, libgconf-2-4
 Priority: optional
 Architecture: @@ARCHITECTURE@@
-Maintainer: Microsoft Corporation <vscode-linux@microsoft.com>
-Homepage: https://code.visualstudio.com/
+Maintainer: Jay Rodgers <headmelted@gmail.com>
+Homepage: https://codebuilds.org/
 Installed-Size: @@INSTALLEDSIZE@@
 Provides: visual-studio-@@NAME@@
 Conflicts: visual-studio-@@NAME@@
