@@ -25,6 +25,7 @@ include: &toolchain_x86
         - libgtk2.0-0
         - libx11-dev
         - libxkbfile-dev
+        - rpm
         
 # OSX amd64 toolchain
 include: &toolchain_osx_amd64
