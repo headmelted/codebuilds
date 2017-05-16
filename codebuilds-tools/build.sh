@@ -52,8 +52,8 @@ fi;
 echo "Running npm install...";
 ./scripts/npm.sh install --unsafe-perm --arch=${VSCODE_ELECTRON_PLATFORM};
 
-echo "Starting hygiene...";
-gulp hygiene;
+#echo "Starting hygiene...";
+#gulp hygiene;
 
 echo "Starting electron...";
 gulp electron --unsafe-perm --arch=${VSCODE_ELECTRON_PLATFORM};

@@ -14,4 +14,4 @@ echo "Starting vscode-linux-${PACKAGE_ARCH}-build-flatpak...";
 gulp "vscode-linux-${PACKAGE_ARCH}-prepare-flatpak";
 
 # echo "Tarring build folder for release...";
-# tar -zcvf "archive_${LABEL}.tar.gz" .build | tee -a ../buildlog_${LABEL}.txt;
+# tar -zcvf "code-oss_${LABEL}.tar.gz" .build;
