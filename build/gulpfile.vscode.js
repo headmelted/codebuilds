@@ -222,7 +222,7 @@ function packageTask(platform, arch, opts) {
 			'!extensions/typescript/bin/**',
 			'!extensions/vscode-api-tests/**',
 			'!extensions/vscode-colorize-tests/**',
-			builtInExtensions.map(e => `!extensions/${e.name}/**`)
+			...builtInExtensions.map(e => `!extensions/${e.name}/**`)
 		];
 
 		const nlsFilter = filter('**/*.nls.json', { restore: true });

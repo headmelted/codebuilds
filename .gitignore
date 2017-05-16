@@ -16,3 +16,4 @@ cache/
 test_image/
 .nvm/
 jq-linux64
+emsdk-portable/

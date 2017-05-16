@@ -102,9 +102,9 @@ script:
   - . ./codebuilds-tools/build.sh
   - . ./codebuilds-tools/prepare_tests.sh
   - echo "Starting test..."
-  # - ./scripts/test.sh
+  - ./scripts/test.sh
   - echo "Starting integration tests..."
-  # - ./scripts/test-integration.sh
+  - ./scripts/test-integration.sh
   - . ./codebuilds-tools/package.sh
 
 deploy:
@@ -114,6 +114,7 @@ deploy:
   file:
     - .build/linux/**/*.deb
     - .build/linux/**/*.rpm
+    - .build/linux/**/*.flatpak
     - ./buildlog_*.txt
     - ./archive_*.tar.gz
   skip_cleanup: true
@@ -125,3 +126,4 @@ after_deploy:
   - cd codebuild-tools;
   - bash ./pushToBintray.sh ../.build/linux/**/*.deb;
   - bash ./pushToBintray.sh ../.build/linux/**/*.rpm;
+  - bash ./pushToBintray.sh ../.build/linux/**/*.flatpak;

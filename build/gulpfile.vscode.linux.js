@@ -49,6 +49,8 @@ function prepareDebPackage(arch) {
 	const binaryDir = '../VSCode-linux-' + arch;
 	const debArch = getDebPackageArch(arch);
 	const destination = '.build/linux/deb/' + debArch + '/' + product.applicationName + '-' + debArch;
+	
+	console.log("prepareDebPackage:(debArch:[" + debArch + "], binaryDir:[" + binaryDir + "], destination:[" + destination + "])");
 
 	return function () {
 		const desktop = gulp.src('resources/linux/code.desktop', { base: '.' })
@@ -106,6 +108,7 @@ function prepareDebPackage(arch) {
 
 function buildDebPackage(arch) {
 	const debArch = getDebPackageArch(arch);
+	console.log("buildDebPackage:(debArch:[" + debArch + "])");
 	return shell.task([
 		'chmod 755 ' + product.applicationName + '-' + debArch + '/DEBIAN/postinst ' + product.applicationName + '-' + debArch + '/DEBIAN/prerm ' + product.applicationName + '-' + debArch + '/DEBIAN/postrm',
 		'mkdir -p deb',
@@ -125,6 +128,8 @@ function getRpmPackageArch(arch) {
 function prepareRpmPackage(arch) {
 	const binaryDir = '../VSCode-linux-' + arch;
 	const rpmArch = getRpmPackageArch(arch);
+	
+	console.log("prepareRpmPackage:(rpmArch:[" + rpmArch + "], binaryDir:[" + binaryDir + "])");
 
 	return function () {
 		const desktop = gulp.src('resources/linux/code.desktop', { base: '.' })
@@ -171,6 +176,8 @@ function buildRpmPackage(arch) {
 	const rpmBuildPath = getRpmBuildPath(rpmArch);
 	const rpmOut = rpmBuildPath + '/RPMS/' + rpmArch;
 	const destination = '.build/linux/rpm/' + rpmArch;
+	
+	console.log("buildRpmPackage:(rpmArch:[" + rpmArch + "], rpmBuildPath:[" + rpmBuildPath + "], rpmOut:[" + rpmOut + "], destination:[" + destination + "])");
 
 	return shell.task([
 		'mkdir -p ' + destination,
@@ -187,6 +194,8 @@ function prepareFlatpak(arch) {
 	const binaryDir = '../VSCode-linux-' + arch;
 	const flatpakArch = getFlatpakArch(arch);
 	const destination = '.build/linux/flatpak/' + flatpakArch;
+	
+	console.log("prepareFlatpak:(flatpakArch:[" + flatpakArch + "], binaryDir:[" + binaryDir + "], destination:[" + destination + "])");
 
 	return function () {
 		// This is not imported in the global scope to avoid requiring ImageMagick
@@ -247,7 +256,10 @@ function buildFlatpak(arch) {
 			buildOptions.gpgHomedir = process.env.GPG_HOME_DIR;
 		}
 	}
+	console.log('buildFlatpak:(flatpakArch:[' + flatpakArch + '], manifest:[' + JSON.stringify(manifest) + '], buildOptions:[' + JSON.stringify(buildOptions) + '])');
+	
 	return function (cb) {
+		console.log('flatpak-bundler.bundle(manifest:[' + JSON.stringify(manifest) + '], buildOptions:[' + JSON.stringify(buildOptions) + '])');
 		require('flatpak-bundler').bundle(manifest, buildOptions, cb);
 	};
 }
