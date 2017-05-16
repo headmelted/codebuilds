@@ -4,6 +4,7 @@ site_url: https://code.headmelted.com
 image_url: images/code.png 
 ---
 
+<section class="callout">
 <h1 id="platforms"><i class="fa fa-table"></i>&nbsp;Platforms</h1>
 <p>The primary focus of this site is to provide builds of the open-source edition of VS Code for less common platforms (those that might not otherwise receive them).  You can find details below of the architectures, operating systems and packaging formats these builds support.</p>
 <dl>
@@ -14,19 +15,16 @@ image_url: images/code.png
   <dt><i class="fa fa-cogs"></i>&nbsp;Operating Systems</dt>
   <dd>Linux, Android*, Chrome OS*<br/><i>(* uses embedded Linux)</i></dd>
 </dl>
-
-<h1 id="testing"><i class="fa fa-check-square-o"></i>&nbsp;Testing</h1>
-<p>For each and every release, the build system prepares a virtual system for the given architecture. The finished package is then installed and tested with the full suite of tests from Microsoft. Once this is done, a test report is prepared that can be downloaded for review.  Only packages that pass all tests will proceed to release.</p>
-
-<section class="test-matrix">
-  <img src="images/devices/raspi2.jpg">
-  <h2>Raspberry Pi 2 B (armhf)</h2>
-  <p>The builds use a virtualized Raspberry Pi 2 B running Raspbian Jessie to test the armhf builds of the software. This is chosen as it's the most popular platform the builds are targeted at, and because it's on the lower end of devices in this class, so it makes for a good baseline to establish stability of the application.</p>
 </section>
 
-<h1 id="#instructions"><i class="fa fa-info"></i>&nbsp;Installation Instructions</h1>
+<section class="callout">
+<h1 id="testing"><i class="fa fa-check-square-o"></i>&nbsp;Testing</h1>
+<p>For each and every release, the build system prepares a virtual system for the given architecture. The finished package is then installed and tested with the full suite of tests from Microsoft. Once this is done, a test report is prepared that can be downloaded for review.  Only packages that pass all tests will proceed to release.</p>
+</section>
 
-<h2 id="android-install-scripts">Android and Chrome OS</h2>
+<section class="callout callout-android">
+<h2 id="android-install-scripts">Android Instructions</h2>
+<i class="fa fa-android callout-logo"></i>
 <p>The new method for installing on Chrome OS is the same as for Android, as it leverages the Android support rolling out to Chrome OS devices currently.</p>
 <ol>
   <li>Install a terminal emulator from the Play Store (example: Termux)</li>
@@ -34,7 +32,9 @@ image_url: images/code.png
   <li>Once you've installed a terminal emulator, enter the following command into a new terminal:
 <pre>sudo apt-get</pre></li>
 </ol>
+</section>
 
+<section class="callout">
 <h2 id="linux-install-scripts"><i class="fa fa-linux"></i>&nbsp;Scripted Linux Installation</h2>
 <i>(including Raspberry Pis, Odroids and other single-board computers)</i>
 
@@ -75,7 +75,9 @@ for updates, you can get the latest version of the package for your system below
 <i>(including Fedora, Pidora, Red Hat and SUSE)</i>
 
 <p>These packages are currently unavailable.  I'll try to get these back online as soon as possible.</p>
+</section>
 
+<section "callout">
 <h1 id="faq"><i class="fa fa-question-circle"></i>&nbsp;Frequently asked questions</h1>
 
 <dl>
@@ -139,13 +141,16 @@ for updates, you can get the latest version of the package for your system below
 <dd>I'm Jay. Nice to meet you. You can find my details in the <a href="#contact-me">contact section</a>.</dd>
 
 </dl>
+</section>
 
+<section class="callout">
 <h1 id="#license"><i class="fa fa-balance-scale"></i>&nbsp;License</h1>
-
 <p>Your use of the software releases discussed here is subject to the terms of the <a href="https://github.com/headmelted/codebuilds/blob/master/LICENSE.txt">CODEBUILDS license</a> (which can be found at https://github.com/headmelted/codebuilds/blob/master/CODEBUILDS_LICENSE.txt), and is also subject to the <a href="https://github.com/Microsoft/vscode/blob/master/LICENSE.txt">Microsoft vscode license</a> (which can be found at https://github.com/Microsoft/vscode/blob/master/LICENSE.txt).</p>
+</section>
 
+<section class="callout">
 <h1 id="#disclaimer"><i class="fa fa-legal"></i>&nbsp;DISCLAIMER</h1>
-
 <p>
   THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 </p>
+</section>

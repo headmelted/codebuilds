@@ -108,6 +108,7 @@ a {
   background-image: url('../images/nav-bg.gif');
   background-color: $header-bg-color;
   padding: 0em 0.5em 0.1em 0.5em;
+  margin-bottom: 1rem;
 }
 
 .page-header {
@@ -195,17 +196,27 @@ a {
 }
 
 .callout {
+  width:100%;
+  @include large {
+    padding: 1rem 6rem;
+    font-size: 1.1rem;
+  }
+  @include medium {
+    padding: 1rem 4rem;
+    font-size: 1.1rem;
+  }
+  @include small {
+    padding: 0.5rem 1rem;
+    font-size: 1rem;
+  }
   h2 { font-size:large; }
-  .callout-logo {
+  i.callout-logo {
     position: absolute;
-    left: 0px;
-    top: 0px;
-    width: 0px;
-    right: 0px;
-    color:white;
-    opacity:0.25;
-    width:75%;
-    height:75%;
+    left: 50%;
+    right: 50%;
+    width: 200px;
+    height: 200px;
+    color:black;
     z-index: -1;
   }
   &.callout-android {
@@ -249,17 +260,13 @@ a {
     margin-top: 0;
   }
   @include large {
-    max-width: 64rem;
-    padding: 2rem 6rem;
     margin: 0 auto;
     font-size: 1.1rem;
   }
   @include medium {
-    padding: 2rem 4rem;
     font-size: 1.1rem;
   }
   @include small {
-    padding: 2rem 1rem;
     font-size: 1rem;
   }
   img {
