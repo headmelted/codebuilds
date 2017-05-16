@@ -197,6 +197,7 @@ a {
 
 .callout {
   width:100%;
+  position:relative;
   @include large {
     padding: 1rem 6rem;
     font-size: 1.1rem;
@@ -210,18 +211,19 @@ a {
     font-size: 1rem;
   }
   h2 { font-size:large; }
-  i.callout-logo {
-    position: absolute;
-    left: 50%;
-    right: 50%;
-    width: 200px;
-    height: 200px;
-    color:black;
-    z-index: -1;
+  .callout-logo {
+    position:absolute;
+    display:block;
+    width:100%;
+    padding:0;
+    font-size: 13rem;
+    color:white;
+    text-align:center;
+    margin: 0;
   }
-  &.callout-android {
-    background-color:#A4C639;
-  }
+  // &.callout-android {
+  //   background-color:#A4C639;
+  // }
 }
 
 .project-name {

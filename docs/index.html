@@ -5,6 +5,7 @@ image_url: images/code.png
 ---
 
 <section class="callout">
+<div class="callout-content">
 <h1 id="platforms"><i class="fa fa-table"></i>&nbsp;Platforms</h1>
 <p>The primary focus of this site is to provide builds of the open-source edition of VS Code for less common platforms (those that might not otherwise receive them).  You can find details below of the architectures, operating systems and packaging formats these builds support.</p>
 <dl>
@@ -13,29 +14,49 @@ image_url: images/code.png
   <dt><i class="fa fa-archive"></i>&nbsp;Packages</dt>
   <dd>DEB, RPM, Flatpak</dd>
   <dt><i class="fa fa-cogs"></i>&nbsp;Operating Systems</dt>
-  <dd>Linux, Android*, Chrome OS*<br/><i>(* uses embedded Linux)</i></dd>
+  <dd><a href="#linux-install-scripts">Linux</a>, <a href="#android-install-scripts">Android*</a>, <a href="#chromeos-install-scripts">Chrome OS*</a><br/><i>(* uses embedded Linux)</i></dd>
 </dl>
+</div>
 </section>
 
-<section class="callout">
+<section class="callout callout-testing">
+<div class="callout-content">
 <h1 id="testing"><i class="fa fa-check-square-o"></i>&nbsp;Testing</h1>
 <p>For each and every release, the build system prepares a virtual system for the given architecture. The finished package is then installed and tested with the full suite of tests from Microsoft. Once this is done, a test report is prepared that can be downloaded for review.  Only packages that pass all tests will proceed to release.</p>
+</div>
 </section>
 
 <section class="callout callout-android">
-<h2 id="android-install-scripts">Android Instructions</h2>
-<i class="fa fa-android callout-logo"></i>
-<p>The new method for installing on Chrome OS is the same as for Android, as it leverages the Android support rolling out to Chrome OS devices currently.</p>
+<div class="callout-content">
+<h1 id="android-install-scripts"><i class="fa fa-android"></i>&nbsp;Android</h1>
+<p><strong><i class="fa fa-warning"></i>&nbsp;Please be aware that running the application on Android will require a physical keyboard</strong> (<i>the target devices of these releases are Android tablets</i>).</p>
 <ol>
   <li>Install a terminal emulator from the Play Store (example: Termux)</li>
   <li>Install a X11 display server from the Play Store (example: XServer XSDL)</li>
   <li>Once you've installed a terminal emulator, enter the following command into a new terminal:
 <pre>sudo apt-get</pre></li>
 </ol>
+</div>
 </section>
 
-<section class="callout">
-<h2 id="linux-install-scripts"><i class="fa fa-linux"></i>&nbsp;Scripted Linux Installation</h2>
+<section class="callout callout-chromeos">
+<div class="callout-content">
+<h1 id="chromeos-install-scripts"><i class="fa fa-chrome"></i>&nbsp;Chrome OS</h1>
+<h2><strong><i class="fa fa-star"></i>&nbsp;New method</strong></h2>
+<p>If your Chrome OS device supports Android, you now have the option of following <a href="#android-install-scripts">the Android instructions</a> (<i>which allows you to avoid entering Developer Mode or installing Crouton</i>).</p>
+<h2><strong><i class="fa fa-warning"></i>&nbsp;Legacy method</strong></h2>
+<p>The instructions below are only for users who do <strong>not</strong> currently have Android support on their device, as these instructions require you to put your device into Developer Mode.  <strong>There are important security implications to doing this, so please consider the ramifications carefully before deciding to do so.</strong></p>
+<ol>
+  <li>Install a terminal emulator from the Play Store (example: Termux)</li>
+  <li>Install a X11 display server from the Play Store (example: XServer XSDL)</li>
+  <li>Once you've installed a terminal emulator, enter the following command into a new terminal:
+<pre>sudo apt-get</pre></li>
+</ol></div>
+</section>
+
+<section class="callout callout-linux">
+<div class="callout-content">
+<h1 id="linux-install-scripts"><i class="fa fa-linux"></i>&nbsp;Linux</h1>
 <i>(including Raspberry Pis, Odroids and other single-board computers)</i>
 
 <p>Packages are currently available in DEB and RPM format for ARM, x86 and amd64 systems.</p>
@@ -57,7 +78,7 @@ to enter a super-user session. Run the installer for your current distribution:<
 
 <p>Press the return key.  Once the installer has completed, you should have a "Code" entry in your desktop program list.</p>
 
-<h3 id="linux-header-manual"><i class="fa fa-linux"></i>&nbsp;Manual Linux installation</h1>
+<h3 id="linux-header-manual">Manual installation</h1>
 
 <p>If for any reason the script above will not work on your system, or you do not want to add the package source
 for updates, you can get the latest version of the package for your system below.</p>
@@ -66,18 +87,15 @@ for updates, you can get the latest version of the package for your system below
 
 <p>For either APT or YUM installation, you'll want the public GPG key to verify the package, which you can download <a href="https://bintray.com/user/downloadSubjectPublicKey?username=headmelted">here</a>.</p>
 
-<h4 id="header-apt"><img src="images/debian-logo.png" width="18" height="18">&nbsp;APT packages</h3>
-<i>(including Debian, Raspbian, Ubuntu and Linux Mint)</i>
+<h4 id="header-apt">APT and YUM packages</h3>
 
 <p>These packages are now available directly from <a href="https://github.com/headmelted/codebuilds/releases">the releases page</a>.</p>
 
-<h4 id="header-yum"><img src="images/rpm-logo.png" width="18" height="18">&nbsp;YUM packages</h3>
-<i>(including Fedora, Pidora, Red Hat and SUSE)</i>
-
-<p>These packages are currently unavailable.  I'll try to get these back online as soon as possible.</p>
+</div>
 </section>
 
-<section "callout">
+<section class="callout callout-faq">
+<div class="callout-content">
 <h1 id="faq"><i class="fa fa-question-circle"></i>&nbsp;Frequently asked questions</h1>
 
 <dl>
@@ -101,7 +119,7 @@ for updates, you can get the latest version of the package for your system below
 <dd>Absolutely not, and there are good security reasons not to.</dd>
 
 <dt>Do I need to put my Chromebook into Developer Mode?</dt>
-<dd>Absolutely not, and there are good security reasons not to.</dd>
+<dd>Only if your Chromebook does not currently have Android support. There are good security reasons not to enable Developer Mode.</dd>
 
 <dt>Will Visual Studio Code run on my device?</dt>
 <dd>The best way to find out if your device is compatible is to go to the <a href="#instructions">Instructions</a> section and try it for yourself.</dd>
@@ -141,16 +159,21 @@ for updates, you can get the latest version of the package for your system below
 <dd>I'm Jay. Nice to meet you. You can find my details in the <a href="#contact-me">contact section</a>.</dd>
 
 </dl>
+</div>
 </section>
 
-<section class="callout">
-<h1 id="#license"><i class="fa fa-balance-scale"></i>&nbsp;License</h1>
+<section class="callout callout-license">
+<div class="callout-content">
+<h1 id="license"><i class="fa fa-balance-scale"></i>&nbsp;License</h1>
 <p>Your use of the software releases discussed here is subject to the terms of the <a href="https://github.com/headmelted/codebuilds/blob/master/LICENSE.txt">CODEBUILDS license</a> (which can be found at https://github.com/headmelted/codebuilds/blob/master/CODEBUILDS_LICENSE.txt), and is also subject to the <a href="https://github.com/Microsoft/vscode/blob/master/LICENSE.txt">Microsoft vscode license</a> (which can be found at https://github.com/Microsoft/vscode/blob/master/LICENSE.txt).</p>
+</div>
 </section>
 
-<section class="callout">
-<h1 id="#disclaimer"><i class="fa fa-legal"></i>&nbsp;DISCLAIMER</h1>
+<section class="callout callout-disclaimer">
+<div class="callout-disclaimer">
+<h1 id="disclaimer"><i class="fa fa-legal"></i>&nbsp;DISCLAIMER</h1>
 <p>
   THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 </p>
+</div>
 </section>
