@@ -1,15 +1,15 @@
 #!/bin/bash
 set -e;
 
-. ./environment.sh;
-. ./build.sh
+. /workspace/codebuilds-tools/environment.sh;
+. /workspace/codebuilds-tools/build.sh
 if [[ "${LABEL}" == "amd64_linux" ]]; then
-  . ./prepare_tests.sh;
+  . /workspace/codebuilds-tools/prepare_tests.sh;
   echo "Starting test...";
-  ../scripts/test.sh;
+  /workspace/scripts/test.sh;
 fi;
 
 # echo "Starting integration tests...";
 # ./scripts/test-integration.sh;
 
-. ./package.sh;
+. /workspace/codebuilds-tools/package.sh;
