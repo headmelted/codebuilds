@@ -59,6 +59,7 @@ fi;
 
 echo "Installing flatpak repository...";
 add-apt-repository -y ppa:alexlarsson/flatpak;
+apt-get install -y flatpak;
 
 echo "Updating package repositories to include flatpak...";
 apt update -yq;
