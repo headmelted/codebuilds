@@ -6,18 +6,6 @@ export CXX="${GPP_COMPILER}" CC="${GCC_COMPILER}" DEBIAN_FRONTEND="noninteractiv
 echo "Deleting .nvm directory if it already exists...";
 rm -rf .nvm;
 
-echo "Updating package repositories...";
-apt update -yq;
-
-echo "Installing software-properties-common...";
-apt install -y software-properties-common;
-
-echo "Installing flatpak repository...";
-add-apt-repository -y ppa:alexlarsson/flatpak;
-
-echo "Updating package repositories to include flatpak...";
-apt update -yq;
-
 if [ "${CROSS_TOOLCHAIN}" == "true" ]; then
 
   echo " directory is [$(pwd)].";
@@ -37,9 +25,7 @@ if [ "${CROSS_TOOLCHAIN}" == "true" ]; then
   
   echo "Adding ${ARCH} architecture...";
   dpkg --add-architecture ${ARCH};
-
-  echo "Updating package repositories...";
-  apt-get update -yq;
+  
 
   # echo "Reading proc...";
   # ls /proc/sys/fs/;
@@ -60,8 +46,22 @@ if [ "${CROSS_TOOLCHAIN}" == "true" ]; then
    
 fi;
 
+echo "Updating package repositories...";
+apt update -yq;
+
+echo "Installing software-properties-common...";
+apt install -y software-properties-common;
+
+echo "Installing flatpak repository...";
+add-apt-repository -y ppa:alexlarsson/flatpak;
+
+echo "Updating package repositories to include flatpak...";
+apt update -yq;
+
+if [ "${CROSS_TOOLCHAIN}" == "true" ]; then echo "Installing crossbuild dependencies..."; apt install -y crossbuild-essential-${ARCH} libstdc++6-${ARCH}-cross; fi;
+
 echo "Installing dependencies...";
-apt install -y xvfb wget git flatpak python curl zip rpm graphicsmagick gcc g++ gcc-multilib g++-multilib libc6-dev-i386 build-essential libgtk2.0-0:${ARCH} libxkbfile-dev:${ARCH} libx11-dev:${ARCH} libwww-perl libexpat1 libxml-libxml-perl libxml-sax-expat-perl gcc g++ gcc-multilib g++-multilib gcc-${GNU_TRIPLET} g++-${GNU_TRIPLET} crossbuild-essential-${ARCH} libstdc++6-${ARCH}-cross dpkg-dev perl libconfig-inifiles-perl libxml-simple-perl liblocale-gettext-perl libgcc1 libgcc1:${ARCH} libdpkg-perl libconfig-auto-perl libdebian-dpkgcross-perl ucf debconf dpkg-cross libdbus-1-3:${ARCH} libffi6:${ARCH} libpcre3:${ARCH} libselinux1:${ARCH} libp11-kit0:${ARCH} libcomerr2:${ARCH} libk5crypto3:${ARCH} libkrb5-3:${ARCH} libpango-1.0-0:${ARCH} libpangocairo-1.0-0:${ARCH} libpangoft2-1.0-0:${ARCH} libxcursor1:${ARCH} libxfixes3:${ARCH} libfreetype6:${ARCH} libavahi-client3:${ARCH} libgssapi-krb5-2:${ARCH} libexpat1:${ARCH} libjpeg8:${ARCH} libpng-dev libpng-dev:${ARCH} libtiff5:${ARCH} fontconfig-config libgdk-pixbuf2.0-common libgdk-pixbuf2.0-0:${ARCH} libfontconfig1:${ARCH} libcups2:${ARCH} libcairo2:${ARCH} libc6 libc6:${ARCH} libc6-dev:${ARCH} libatk1.0-0:${ARCH} libx11-xcb-dev libx11-xcb-dev:${ARCH} libxtst6 libxtst6:${ARCH} libxss-dev libxss-dev:${ARCH} libgconf-2-4:${ARCH} libasound2:${ARCH};
+apt install -y xvfb wget git flatpak python curl zip rpm graphicsmagick gcc g++ gcc-multilib g++-multilib libc6-dev-i386 build-essential libgtk2.0-0:${ARCH} libxkbfile-dev:${ARCH} libx11-dev:${ARCH} libwww-perl libexpat1 libxml-libxml-perl libxml-sax-expat-perl gcc g++ gcc-multilib g++-multilib gcc-${GNU_TRIPLET} g++-${GNU_TRIPLET} dpkg-dev perl libconfig-inifiles-perl libxml-simple-perl liblocale-gettext-perl libgcc1 libgcc1:${ARCH} libdpkg-perl libconfig-auto-perl libdebian-dpkgcross-perl ucf debconf dpkg-cross libdbus-1-3:${ARCH} libffi6:${ARCH} libpcre3:${ARCH} libselinux1:${ARCH} libp11-kit0:${ARCH} libcomerr2:${ARCH} libk5crypto3:${ARCH} libkrb5-3:${ARCH} libpango-1.0-0:${ARCH} libpangocairo-1.0-0:${ARCH} libpangoft2-1.0-0:${ARCH} libxcursor1:${ARCH} libxfixes3:${ARCH} libfreetype6:${ARCH} libavahi-client3:${ARCH} libgssapi-krb5-2:${ARCH} libexpat1:${ARCH} libjpeg8:${ARCH} libpng-dev libpng-dev:${ARCH} libtiff5:${ARCH} fontconfig-config libgdk-pixbuf2.0-common libgdk-pixbuf2.0-0:${ARCH} libfontconfig1:${ARCH} libcups2:${ARCH} libcairo2:${ARCH} libc6 libc6:${ARCH} libc6-dev:${ARCH} libatk1.0-0:${ARCH} libx11-xcb-dev libx11-xcb-dev:${ARCH} libxtst6 libxtst6:${ARCH} libxss-dev libxss-dev:${ARCH} libgconf-2-4:${ARCH} libasound2:${ARCH};
 
 echo "Installing flatpak dependencies...";
 wget https://sdk.gnome.org/keys/gnome-sdk.gpg -O gnome-sdk.gpg;
