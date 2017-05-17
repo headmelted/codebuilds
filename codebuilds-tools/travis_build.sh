@@ -1,7 +1,7 @@
 #!/bin/bash
 set -e;
 
-cd /;
+cd /workspace;
 
 echo "Listing workspace...";
 ls .
