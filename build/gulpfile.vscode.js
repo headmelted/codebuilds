@@ -192,7 +192,7 @@ function packageTask(platform, arch, opts) {
 
 	const destination = path.join(path.dirname(root), 'VSCode') + (platform ? '-' + platform : '') + (arch ? '-' + arch : '');
 	platform = platform || process.platform;
-	//arch = process.env.VSCODE_ELECTRON_PLATFORM || platform === 'win32' ? 'ia32' : arch;
+	arch = process.env.VSCODE_ELECTRON_PLATFORM || platform === 'win32' ? 'ia32' : arch;
 	
 	console.log("packageTask:(destination:[" + destination + "], platform:[" + platform + "], arch:[" + arch + "], process.env.VSCODE_ELECTRON_PLATFORM:[" + process.env.VSCODE_ELECTRON_PLATFORM + "])");
 
