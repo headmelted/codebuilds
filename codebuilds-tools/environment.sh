@@ -22,7 +22,7 @@ echo "Updating package repositories to include flatpak...";
 apt update -yq;
 
 if [ "${CROSS_TOOLCHAIN}" != "true" ]; then
-  apt install -y wget git flatpak python curl zip libgtk2.0-0:${ARCH} libxkbfile-dev:${ARCH} libx11-dev:${ARCH} rpm graphicsmagick gcc-4.9 g++-4.9 gcc-4.9-multilib g++-4.9-multilib libc6-dev-i386;
+  apt install -y wget git flatpak python curl zip libgtk2.0-0:${ARCH} libxkbfile-dev:${ARCH} libx11-dev:${ARCH} rpm graphicsmagick gcc-4.9 g++-4.9 gcc-4.9-multilib g++-4.9-multilib libc6-dev-i386 build-essential;
 else
   
   # echo " directory is [$(pwd)].";
