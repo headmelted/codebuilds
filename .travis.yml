@@ -121,7 +121,7 @@ deploy:
     tags: true
     
 after_deploy:
-  - cd codebuild-tools;
+  - cd codebuilds-tools;
   - bash ./pushToBintray.sh ../.build/linux/**/*.deb;
   - bash ./pushToBintray.sh ../.build/linux/**/*.rpm;
   - bash ./pushToBintray.sh ../.build/linux/**/*.flatpak;
