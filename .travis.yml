@@ -100,7 +100,7 @@ notifications:
   email: false
   
 script:
-  - . ./codebuilds-tools/travis-build.sh
+  - . ./codebuilds-tools/travis-build.sh;
 
 deploy:
   provider: releases
