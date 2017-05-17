@@ -22,20 +22,20 @@ if [ "${CROSS_TOOLCHAIN}" != "true" ]; then
   apt install -y xvfb wget git flatpak python curl zip libgtk2.0-0:${ARCH} libxkbfile-dev:${ARCH} libx11-dev:${ARCH} rpm graphicsmagick gcc-4.9 g++-4.9 gcc-4.9-multilib g++-4.9-multilib libc6-dev-i386 build-essential;
 else
   
-  # echo " directory is [$(pwd)].";
+  echo " directory is [$(pwd)].";
   
-  # echo "Removing existing sources lists...";
-  # sudo rm -rf /etc/apt/sources.list.d/**;
-  # sudo rm /etc/apt/sources.list;
+  echo "Removing existing sources lists...";
+  rm -rf /etc/apt/sources.list.d/**;
+  rm /etc/apt/sources.list;
   
-  # echo "Adding 16.04 (zesty) package sources for amd64 and i386...";
-  # echo "deb [arch=amd64,i386] http://archive.ubuntu.com/ubuntu zesty main universe multiverse restricted" | sudo tee /etc/apt/sources.list;
+  echo "Adding ${UBUNTU_VERSION} package sources for amd64 and i386...";
+  echo "deb [arch=amd64,i386] http://archive.ubuntu.com/ubuntu ${UBUNTU_VERSION} main universe multiverse restricted" | tee /etc/apt/sources.list;
   
   echo "Adding ${UBUNTU_VERSION} package sources for ${ARCH}...";
   echo "deb [arch=${ARCH}] http://ports.ubuntu.com/ubuntu-ports ${UBUNTU_VERSION} main universe multiverse restricted" | tee -a /etc/apt/sources.list;
   
-  # echo "Adding 16.04 (zesty) package sources for source code...";
-  # echo "deb-src http://archive.ubuntu.com/ubuntu zesty main universe multiverse restricted" | sudo tee -a /etc/apt/sources.list;
+  echo "Adding ${UBUNTU_VERSION} package sources for source code...";
+  echo "deb-src http://archive.ubuntu.com/ubuntu ${UBUNTU_VERSION} main universe multiverse restricted" | tee -a /etc/apt/sources.list;
   
   echo "Adding ${ARCH} architecture...";
   dpkg --add-architecture ${ARCH};
