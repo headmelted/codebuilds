@@ -17,6 +17,9 @@ if [ "${CROSS_TOOLCHAIN}" != "true" ]; then
 
 else
   
+  echo "Reading sources.list..."
+  cat /etc/apt/sources.list;
+  
   echo "Removing existing sources lists...";
   rm -rf /etc/apt/sources.list.d/**;
   rm /etc/apt/sources.list;
