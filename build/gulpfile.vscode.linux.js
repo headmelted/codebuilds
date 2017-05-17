@@ -187,7 +187,7 @@ function buildRpmPackage(arch) {
 }
 
 function getFlatpakArch(arch) {
-	return { x64: 'x86_64', ia32: 'i386', arm: 'arm' }[arch];
+	return { x64: 'x86_64', ia32: 'i386', armhf: 'armhf', arm64: 'arm64'}[arch];
 }
 
 function prepareFlatpak(arch) {
