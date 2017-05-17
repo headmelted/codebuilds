@@ -1,6 +1,11 @@
 #!/bin/bash
 set -e;
 
+cd /workspace;
+
+echo "Listing workspace...";
+ls .
+
 . /workspace/codebuilds-tools/environment.sh;
 . /workspace/codebuilds-tools/build.sh
 if [[ "${LABEL}" == "amd64_linux" ]]; then
