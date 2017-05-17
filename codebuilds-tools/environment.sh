@@ -62,10 +62,12 @@ fi;
 
 echo "Installing flatpak repository...";
 add-apt-repository -y ppa:alexlarsson/flatpak;
-apt-get install -y flatpak;
 
 echo "Updating package repositories to include flatpak...";
 apt update -yq;
+
+echo "Installing flatpak package...";
+apt-get install -y flatpak;
 
 echo "Installing flatpak dependencies...";
 wget https://sdk.gnome.org/keys/gnome-sdk.gpg -O gnome-sdk.gpg;
