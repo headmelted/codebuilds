@@ -141,6 +141,8 @@ gulp.task('electron', ['clean-electron'], () => {
 	const arch = process.env.VSCODE_ELECTRON_PLATFORM || (platform === 'win32' ? 'ia32' : process.arch);
 	const opts = _.extend({}, config, { platform, arch, ffmpegChromium: true, keepDefaultApp: true });
 	const name = product.nameShort;
+	
+	console.log("electron:(platform:[" + platform + "], arch:[" + arch + "], opts:[" + opts + "], name:[" + name + "])");
 
 	return gulp.src('package.json')
 		.pipe(json({ name }))
