@@ -32,7 +32,7 @@ else
   # echo "deb [arch=amd64,i386] http://archive.ubuntu.com/ubuntu zesty main universe multiverse restricted" | sudo tee /etc/apt/sources.list;
   
   echo "Adding ${UBUNTU_VERSION} package sources for ${ARCH}...";
-  echo "deb [arch=${ARCH}] http://ports.ubuntu.com/ubuntu-ports ${UBUNTU_VERSION} main universe multiverse restricted" | sudo tee -a /etc/apt/sources.list;
+  echo "deb [arch=${ARCH}] http://ports.ubuntu.com/ubuntu-ports ${UBUNTU_VERSION} main universe multiverse restricted" | tee -a /etc/apt/sources.list;
   
   # echo "Adding 16.04 (zesty) package sources for source code...";
   # echo "deb-src http://archive.ubuntu.com/ubuntu zesty main universe multiverse restricted" | sudo tee -a /etc/apt/sources.list;
