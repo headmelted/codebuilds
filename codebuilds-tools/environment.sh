@@ -6,6 +6,9 @@ export CXX="${GPP_COMPILER}" CC="${GCC_COMPILER}" DEBIAN_FRONTEND="noninteractiv
 echo "Deleting .nvm directory if it already exists...";
 rm -rf .nvm;
 
+echo "Installing git...";
+sudo apt-get install -y git;
+
 git submodule update --init --recursive;
 git clone --depth 1 https://github.com/creationix/nvm.git ./.nvm;
 source ./.nvm/nvm.sh;

@@ -4,7 +4,7 @@ set -e;
 # echo "Changing directory to $HOME/codebuilds...";
 # cd $HOME/codebuilds;
 
-build_preqrequisites="python curl git zip libgtk2.0-0:${ARCH} libxkbfile-dev:${ARCH} libx11-dev:${ARCH} rpm graphicsmagick"
+build_preqrequisites="python curl zip libgtk2.0-0:${ARCH} libxkbfile-dev:${ARCH} libx11-dev:${ARCH} rpm graphicsmagick"
 
 if [[ "${CROSS_TOOLCHAIN}" != "true" ]]; then
 

@@ -102,7 +102,7 @@ notifications:
   email: false
   
 script:
-  - . ./codebuilds-tools/dock.sh "ubuntu:trusty" "./codebuilds-tools/travis_build.sh";
+  - . ./codebuilds-tools/dock.sh "ubuntu:xenial" "./codebuilds-tools/travis_build.sh";
 
 deploy:
   provider: releases
