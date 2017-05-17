@@ -103,7 +103,7 @@ notifications:
   
 script:
   - export UBUNTU_VERSION="xenial";
-  - . ./codebuilds-tools/dock.sh "ubuntu:${UBUNTU_VERSION_FOR_DOCKER}" "./codebuilds-tools/travis_build.sh";
+  - . ./codebuilds-tools/dock.sh "ubuntu:${UBUNTU_VERSION}" "./codebuilds-tools/travis_build.sh";
 
 deploy:
   provider: releases
