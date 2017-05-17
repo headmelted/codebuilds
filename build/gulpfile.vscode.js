@@ -194,7 +194,7 @@ function packageTask(platform, arch, opts) {
 	platform = platform || process.platform;
 	arch = process.env.VSCODE_ELECTRON_PLATFORM || platform === 'win32' ? 'ia32' : arch;
 	
-	console.log("packageTask:(destination:[" + destination + "], platform:[" + platform + "], arch:[" + arch + "], electronArch:[" + electronArch + "])");
+	console.log("packageTask:(destination:[" + destination + "], platform:[" + platform + "], arch:[" + arch + "])");
 
 	return () => {
 		const out = opts.minified ? 'out-vscode-min' : 'out-vscode';
