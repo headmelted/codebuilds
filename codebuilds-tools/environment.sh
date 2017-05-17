@@ -23,7 +23,7 @@ else
   
   echo "Adding ${UBUNTU_VERSION} package sources for amd64 and i386...";
   echo "deb [arch=amd64,i386] http://archive.ubuntu.com/ubuntu ${UBUNTU_VERSION} main universe multiverse restricted" | tee /etc/apt/sources.list;
-  echo "deb [arch=amd64,i386] http://archive.ubuntu.com/ubuntu ${UBUNTU_VERSION}-security main universe multiverse restricted" | tee /etc/apt/sources.list;
+  echo "deb [arch=amd64,i386] http://security.ubuntu.com/ubuntu ${UBUNTU_VERSION}-security main universe multiverse restricted" | tee /etc/apt/sources.list;
   echo "deb [arch=amd64,i386] http://archive.ubuntu.com/ubuntu ${UBUNTU_VERSION}-updates main universe multiverse restricted" | tee /etc/apt/sources.list;
   echo "deb [arch=amd64,i386] http://archive.ubuntu.com/ubuntu ${UBUNTU_VERSION}-backports main universe multiverse restricted" | tee /etc/apt/sources.list;
   
@@ -35,7 +35,7 @@ else
   
   echo "Adding ${UBUNTU_VERSION} package sources for source code...";
   echo "deb-src http://archive.ubuntu.com/ubuntu ${UBUNTU_VERSION} main universe multiverse restricted" | tee -a /etc/apt/sources.list;
-  echo "deb-src http://archive.ubuntu.com/ubuntu ${UBUNTU_VERSION}-security main universe multiverse restricted" | tee -a /etc/apt/sources.list;
+  echo "deb-src http://security.ubuntu.com/ubuntu ${UBUNTU_VERSION}-security main universe multiverse restricted" | tee -a /etc/apt/sources.list;
   echo "deb-src http://archive.ubuntu.com/ubuntu ${UBUNTU_VERSION}-updates main universe multiverse restricted" | tee -a /etc/apt/sources.list;
   echo "deb-src http://archive.ubuntu.com/ubuntu ${UBUNTU_VERSION}-backports main universe multiverse restricted" | tee -a /etc/apt/sources.list;
   
