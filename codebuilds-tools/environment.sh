@@ -68,10 +68,9 @@ else
 fi;
 
 echo "Installing flatpak dependencies...";
-wget https://sdk.gnome.org/keys/gnome-sdk.gpg;
+wget https://sdk.gnome.org/keys/gnome-sdk.gpg -O gnome-sdk.gpg;
 flatpak --user remote-add --gpg-import=gnome-sdk.gpg gnome https://sdk.gnome.org/repo/;
-flatpak --user install org.freedesktop.Platform 1.4;
-flatpak --user install org.freedesktop.Sdk 1.4;
+flatpak --user install org.freedesktop.Platform//1.4 org.freedesktop.Sdk//1.4;
 
 git submodule update --init --recursive;
 git clone --depth 1 https://github.com/creationix/nvm.git ./.nvm;
