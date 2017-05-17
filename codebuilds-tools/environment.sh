@@ -14,8 +14,6 @@ if [ "${CROSS_TOOLCHAIN}" != "true" ]; then
 
 else
   
-  echo " directory is [$(pwd)].";
-  
   echo "Removing existing sources lists...";
   rm -rf /etc/apt/sources.list.d/**;
   rm /etc/apt/sources.list;
@@ -70,6 +68,8 @@ wget https://sdk.gnome.org/keys/gnome-sdk.gpg -O gnome-sdk.gpg;
 flatpak --user remote-add --gpg-import=gnome-sdk.gpg gnome https://sdk.gnome.org/repo/;
 flatpak --user install gnome org.freedesktop.Platform//1.4 org.freedesktop.Sdk//1.4;
 
+echo "Current directory is [$(pwd)].";
+  
 echo "Installing nvm..."
 git submodule update --init --recursive;
 git clone --depth 1 https://github.com/creationix/nvm.git ./.nvm;
