@@ -9,8 +9,11 @@ rm -rf .nvm;
 echo "Installing flatpak repository...";
 add-apt-repository ppa:alexlarsson/flatpak;
 
-echo "Updating apt...";
-apt-get update;
+echo "Adding ${ARCH} architecture...";
+dpkg --add-architecture ${ARCH};
+
+echo "Updating package repositories...";
+apt-get update -yq;
 
 build_preqrequisites="git flatpak python curl zip libgtk2.0-0:${ARCH} libxkbfile-dev:${ARCH} libx11-dev:${ARCH} rpm graphicsmagick"
 
