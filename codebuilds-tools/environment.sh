@@ -10,16 +10,19 @@ echo "Adding ${ARCH} architecture...";
 dpkg --add-architecture ${ARCH};
 
 echo "Updating package repositories...";
-apt-get update -yq;
+apt update -yq;
+
+echo "Install wget.."
+apt install -y wget;
 
 echo "Installing software-properties-common...";
-apt-get install -y software-properties-common;
+apt install -y software-properties-common;
 
 echo "Installing flatpak repository...";
 add-apt-repository -y ppa:alexlarsson/flatpak;
 
 echo "Updating package repositories to include flatpak...";
-apt-get update -yq;
+apt update -yq;
 
 build_preqrequisites="wget git flatpak python curl zip libgtk2.0-0:${ARCH} libxkbfile-dev:${ARCH} libx11-dev:${ARCH} rpm graphicsmagick";
 
@@ -70,7 +73,9 @@ else
 fi;
 
 echo "Installing apt pre-requisites...";
-apt-get install -y $build_prerequisites $platform_prerequisites;
+echo "$build_preqrequisites $platform_prerequisites";
+
+apt install -y $build_prerequisites $platform_prerequisites;
 
 echo "Installing flatpak dependencies...";
 wget https://sdk.gnome.org/keys/gnome-sdk.gpg;
