@@ -124,4 +124,3 @@ after_deploy:
   - cd codebuilds-tools;
   - bash ./pushToBintray.sh ../.build/linux/**/*.deb;
   - bash ./pushToBintray.sh ../.build/linux/**/*.rpm;
-  - bash ./pushToBintray.sh ../.build/linux/**/*.flatpak;
