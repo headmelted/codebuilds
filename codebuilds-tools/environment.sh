@@ -6,13 +6,19 @@ export CXX="${GPP_COMPILER}" CC="${GCC_COMPILER}" DEBIAN_FRONTEND="noninteractiv
 echo "Deleting .nvm directory if it already exists...";
 rm -rf .nvm;
 
-echo "Installing flatpak repository...";
-add-apt-repository ppa:alexlarsson/flatpak;
-
 echo "Adding ${ARCH} architecture...";
 dpkg --add-architecture ${ARCH};
 
 echo "Updating package repositories...";
+apt-get update -yq;
+
+echo "Installing software-properties-common...";
+apt-get install -y software-properties-common;
+
+echo "Installing flatpak repository...";
+add-apt-repository ppa:alexlarsson/flatpak;
+
+echo "Updating package repositories to include flatpak...";
 apt-get update -yq;
 
 build_preqrequisites="git flatpak python curl zip libgtk2.0-0:${ARCH} libxkbfile-dev:${ARCH} libx11-dev:${ARCH} rpm graphicsmagick";
