@@ -21,7 +21,7 @@ add-apt-repository -y ppa:alexlarsson/flatpak;
 echo "Updating package repositories to include flatpak...";
 apt-get update -yq;
 
-build_preqrequisites="git flatpak python curl zip libgtk2.0-0:${ARCH} libxkbfile-dev:${ARCH} libx11-dev:${ARCH} rpm graphicsmagick";
+build_preqrequisites="wget git flatpak python curl zip libgtk2.0-0:${ARCH} libxkbfile-dev:${ARCH} libx11-dev:${ARCH} rpm graphicsmagick";
 
 if [[ "${CROSS_TOOLCHAIN}" != "true" ]]; then
   platform_prerequisites="gcc-4.9 g++-4.9 gcc-4.9-multilib g++-4.9-multilib libc6-dev-i386";
