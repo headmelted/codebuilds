@@ -16,7 +16,7 @@ echo "Installing software-properties-common...";
 apt-get install -y software-properties-common;
 
 echo "Installing flatpak repository...";
-add-apt-repository ppa:alexlarsson/flatpak;
+add-apt-repository -y ppa:alexlarsson/flatpak;
 
 echo "Updating package repositories to include flatpak...";
 apt-get update -yq;
