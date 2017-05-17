@@ -193,11 +193,9 @@ function packageTask(platform, arch, opts) {
 	const destination = path.join(path.dirname(root), 'VSCode') + (platform ? '-' + platform : '') + (arch ? '-' + arch : '');
 	platform = platform || process.platform;
 	arch = platform === 'win32' ? 'ia32' : arch;
+	const electronArch = process.env.VSCODE_ELECTRON_PLATFORM || arch;
 	
-	var electronArch = "";
-	if ( arch == "armhf" || arch == "arm64" ) electronArch = "arm"; else electronArch = arch;
-	
-	console.log("packageTask:(destination:[" + destination + "], platform:[" + platform + "], arch:[" + arch + "])");
+	console.log("packageTask:(destination:[" + destination + "], platform:[" + platform + "], arch:[" + arch + "], electronArch:[" + electronArch + "])");
 
 	return () => {
 		const out = opts.minified ? 'out-vscode-min' : 'out-vscode';
