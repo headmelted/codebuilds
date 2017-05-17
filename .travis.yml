@@ -100,16 +100,7 @@ notifications:
   email: false
   
 script:
-  - . ./codebuilds-tools/environment.sh
-  - . ./codebuilds-tools/build.sh
-  - if [[ "${LABEL}" == "amd64_linux" ]]; then
-      . ./codebuilds-tools/prepare_tests.sh;
-      echo "Starting test...";
-      ./scripts/test.sh;
-    fi;
-  # - echo "Starting integration tests..."
-  # - ./scripts/test-integration.sh
-  - . ./codebuilds-tools/package.sh
+  - . ./codebuilds-tools/travis-build.sh
 
 deploy:
   provider: releases
