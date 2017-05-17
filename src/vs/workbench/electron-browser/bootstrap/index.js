@@ -14,7 +14,7 @@ if (window.location.search.indexOf('prof-startup') >= 0) {
 
 /*global window,document,define*/
 
-const startTimer = require('../../../base/common/startupTimers').startTimer;
+const startTimer = require('../../../base/node/startupTimers').startTimer;
 const path = require('path');
 const electron = require('electron');
 const remote = electron.remote;
@@ -159,7 +159,7 @@ function main() {
 
 	// In the bundled version the nls plugin is packaged with the loader so the NLS Plugins
 	// loads as soon as the loader loads. To be able to have pseudo translation
-	const loaderTimer = startTimer('require:loader.js')
+	const loaderTimer = startTimer('load:loader')
 	createScript(rootUrl + '/vs/loader.js', function () {
 		define('fs', ['original-fs'], function (originalFS) { return originalFS; }); // replace the patched electron fs with the original node fs for all AMD code
 		loaderTimer.stop();
@@ -192,7 +192,7 @@ function main() {
 			beforeLoadWorkbenchMain: Date.now()
 		};
 
-		const workbenchMainTimer = startTimer('require:workbench.main')
+		const workbenchMainTimer = startTimer('load:workbench.main')
 		require([
 			'vs/workbench/electron-browser/workbench.main',
 			'vs/nls!vs/workbench/electron-browser/workbench.main',
