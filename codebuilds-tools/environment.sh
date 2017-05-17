@@ -12,9 +12,6 @@ dpkg --add-architecture ${ARCH};
 echo "Updating package repositories...";
 apt update -yq;
 
-echo "Install wget.."
-apt install -y wget;
-
 echo "Installing software-properties-common...";
 apt install -y software-properties-common;
 
@@ -26,7 +23,7 @@ apt update -yq;
 
 build_preqrequisites="wget git flatpak python curl zip libgtk2.0-0:${ARCH} libxkbfile-dev:${ARCH} libx11-dev:${ARCH} rpm graphicsmagick";
 
-if [[ "${CROSS_TOOLCHAIN}" != "true" ]]; then
+if [ "${CROSS_TOOLCHAIN}" != "true" ]; then
   platform_prerequisites="gcc-4.9 g++-4.9 gcc-4.9-multilib g++-4.9-multilib libc6-dev-i386";
 else
   
@@ -75,7 +72,7 @@ fi;
 echo "Installing apt pre-requisites...";
 echo "$build_preqrequisites $platform_prerequisites";
 
-apt install -y $build_prerequisites $platform_prerequisites;
+apt install -y "$build_prerequisites $platform_prerequisites";
 
 echo "Installing flatpak dependencies...";
 wget https://sdk.gnome.org/keys/gnome-sdk.gpg;
