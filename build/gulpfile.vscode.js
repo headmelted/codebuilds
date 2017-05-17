@@ -143,7 +143,7 @@ gulp.task('electron', ['clean-electron'], () => {
 	const opts = _.extend({}, config, { platform, arch, ffmpegChromium: true, keepDefaultApp: true });
 	const name = product.nameShort;
 	
-	console.log("electron:(platform:[" + platform + "], arch:[" + arch + "], opts:[" + opts + "], name:[" + name + "])");
+	console.log("electron:(platform:[" + platform + "], arch:[" + arch + "], opts:[" + JSON.stringify(opts) + "], name:[" + name + "])");
 
 	return gulp.src('package.json')
 		.pipe(json({ name }))
