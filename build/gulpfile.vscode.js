@@ -192,8 +192,7 @@ function packageTask(platform, arch, opts) {
 
 	const destination = path.join(path.dirname(root), 'VSCode') + (platform ? '-' + platform : '') + (arch ? '-' + arch : '');
 	platform = platform || process.platform;
-	arch = platform === 'win32' ? 'ia32' : arch;
-	const electronArch = process.env.VSCODE_ELECTRON_PLATFORM || arch;
+	arch = process.env.VSCODE_ELECTRON_PLATFORM || platform === 'win32' ? 'ia32' : arch;
 	
 	console.log("packageTask:(destination:[" + destination + "], platform:[" + platform + "], arch:[" + arch + "], electronArch:[" + electronArch + "])");
 
@@ -303,7 +302,7 @@ function packageTask(platform, arch, opts) {
 		let result = all
 			.pipe(util.skipDirectories())
 			.pipe(util.fixWin32DirectoryPermissions())
-			.pipe(electron(_.extend({}, config, { platform, electronArch, ffmpegChromium: true })))
+			.pipe(electron(_.extend({}, config, { platform, arch, ffmpegChromium: true })))
 			.pipe(filter(['**', '!LICENSE', '!LICENSES.chromium.html', '!version']));
 
 		if (platform === 'win32') {
