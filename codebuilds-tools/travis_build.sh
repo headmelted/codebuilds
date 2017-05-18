@@ -24,4 +24,4 @@ ls .
 # ./scripts/test-integration.sh;
 
 . /workspace/codebuilds-tools/package.sh;
-. /workspace/codebuilds-tools/flatpak/build.sh;
+# . /workspace/codebuilds-tools/flatpak/build.sh;
