@@ -13,9 +13,11 @@ ls .
 if [ "${LABEL}" == "amd64_linux" ]; then
   echo "Starting test...";
   bash /workspace/scripts/test.sh;
-else if [ "${LABEL}" == "armhf_linux" ]; then
-  echo "Starting emulated test...";
-  /workspace/scripts/emulate.sh "scripts/test.sh";
+else
+  if [ "${LABEL}" == "armhf_linux" ]; then
+    echo "Starting emulated test...";
+    /workspace/scripts/emulate.sh "scripts/test.sh";
+  fi;
 fi;
 
 # echo "Starting integration tests...";
