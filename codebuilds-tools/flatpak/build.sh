@@ -5,7 +5,7 @@ echo "Updating package repositories...";
 apt update -yq;
 
 echo "Installing flatpak dependencies...";
-apt install -y ostree wget;
+apt install -y ostree wget flatpak-builder;
 
 if [[ ! -d repo ]]
 then
