@@ -1,9 +1,11 @@
 #!/bin/bash
 set -e;
 
-echo "Downloading ostree...";
-wget "http://mirrors.kernel.org/ubuntu/pool/universe/o/ostree/ostree_2016.10-1_amd64.deb";
-dpkg -i ostree_2016.10-1_amd64.deb;
+echo "Updating package repositories...";
+apt update -yq;
+
+echo "Installing flatpak dependencies...";
+apt install -y ostree wget;
 
 if [[ ! -d repo ]]
 then
