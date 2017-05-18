@@ -122,5 +122,5 @@ deploy:
     
 after_deploy:
   - cd codebuilds-tools;
-  - bash ./pushToBintray.sh ../.build/linux/**/*.deb;
-  - bash ./pushToBintray.sh ../.build/linux/**/*.rpm;
+  - bash ./pushToBintray.sh $(find .build/linux -type f -name "*.deb");
+  - bash ./pushToBintray.sh $(find .build/linux -type f -name "*.rpm");
