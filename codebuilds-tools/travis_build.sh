@@ -8,10 +8,10 @@ ls .
 
 . /workspace/codebuilds-tools/environment.sh;
 . /workspace/codebuilds-tools/build.sh
-if [[ "${LABEL}" == "amd64_linux" ]]; then
+if [ "${LABEL}" == "amd64_linux" ]; then
   . /workspace/codebuilds-tools/prepare_tests.sh;
   echo "Starting test...";
-  . /workspace/scripts/test.sh;
+  bash /workspace/scripts/test.sh;
 fi;
 
 # echo "Starting integration tests...";
