@@ -1,6 +1,9 @@
 #!/bin/bash
 set -e;
 
+echo "Installing ostree...";
+apt-get install -y ostree;
+
 if [[ ! -d repo ]]
 then
   ostree init --mode=archive-z2 --repo=repo
