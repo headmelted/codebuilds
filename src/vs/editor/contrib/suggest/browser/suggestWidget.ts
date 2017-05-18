@@ -29,7 +29,7 @@ import { alert } from 'vs/base/browser/ui/aria/aria';
 import { ITelemetryService } from 'vs/platform/telemetry/common/telemetry';
 import { attachListStyler } from 'vs/platform/theme/common/styler';
 import { IThemeService, ITheme, registerThemingParticipant } from 'vs/platform/theme/common/themeService';
-import { registerColor, editorWidgetBackground, listFocusBackground, activeContrastBorder, listHighlightForeground, editorForeground, editorWidgetBorder } from 'vs/platform/theme/common/colorRegistry';
+import { registerColor, editorWidgetBackground, listFocusBackground, activeContrastBorder, listHighlightForeground, editorForeground, editorWidgetBorder, focusBorder } from 'vs/platform/theme/common/colorRegistry';
 import { IStorageService, StorageScope } from 'vs/platform/storage/common/storage';
 
 const sticky = false; // for development purposes
@@ -40,7 +40,7 @@ interface ISuggestionTemplateData {
 	colorspan: HTMLElement;
 	highlightedLabel: HighlightedLabel;
 	typeLabel: HTMLElement;
-	documentationDetails: HTMLElement;
+	readMore: HTMLElement;
 	disposables: IDisposable[];
 }
 
@@ -95,8 +95,8 @@ class Renderer implements IRenderer<ICompletionItem, ISuggestionTemplateData> {
 		data.disposables.push(data.highlightedLabel);
 		data.typeLabel = append(main, $('span.type-label'));
 
-		data.documentationDetails = append(main, $('span.docs-details'));
-		data.documentationDetails.title = nls.localize('readMore', "Read More...{0}", this.triggerKeybindingLabel);
+		data.readMore = append(main, $('span.readMore'));
+		data.readMore.title = nls.localize('readMore', "Read More...{0}", this.triggerKeybindingLabel);
 
 		const configureFont = () => {
 			const configuration = this.editor.getConfiguration();
@@ -111,8 +111,8 @@ class Renderer implements IRenderer<ICompletionItem, ISuggestionTemplateData> {
 			main.style.lineHeight = lineHeightPx;
 			data.icon.style.height = lineHeightPx;
 			data.icon.style.width = lineHeightPx;
-			data.documentationDetails.style.height = lineHeightPx;
-			data.documentationDetails.style.width = lineHeightPx;
+			data.readMore.style.height = lineHeightPx;
+			data.readMore.style.width = lineHeightPx;
 		};
 
 		configureFont();
@@ -149,20 +149,20 @@ class Renderer implements IRenderer<ICompletionItem, ISuggestionTemplateData> {
 		data.typeLabel.textContent = (suggestion.detail || '').replace(/\n.*$/m, '');
 
 		if (canExpandCompletionItem(element)) {
-			show(data.documentationDetails);
-			data.documentationDetails.onmousedown = e => {
+			show(data.readMore);
+			data.readMore.onmousedown = e => {
 				e.stopPropagation();
 				e.preventDefault();
 			};
-			data.documentationDetails.onclick = e => {
+			data.readMore.onclick = e => {
 				e.stopPropagation();
 				e.preventDefault();
 				this.widget.toggleDetails();
 			};
 		} else {
-			hide(data.documentationDetails);
-			data.documentationDetails.onmousedown = null;
-			data.documentationDetails.onclick = null;
+			hide(data.readMore);
+			data.readMore.onmousedown = null;
+			data.readMore.onclick = null;
 		}
 
 	}
@@ -185,8 +185,7 @@ const enum State {
 class SuggestionDetails {
 
 	private el: HTMLElement;
-	private back: HTMLElement;
-	private header: HTMLElement;
+	private close: HTMLElement;
 	private scrollbar: DomScrollableElement;
 	private body: HTMLElement;
 	private type: HTMLElement;
@@ -211,11 +210,10 @@ class SuggestionDetails {
 		append(this.el, this.scrollbar.getDomNode());
 		this.disposables.push(this.scrollbar);
 
-		this.header = append(this.body, $('.header'));
-		this.type = append(this.header, $('p.type'));
+		this.close = append(this.body, $('span.close'));
+		this.close.title = nls.localize('readLess', "Read less...{0}", triggerKeybindingLabel);
+		this.type = append(this.body, $('p.type'));
 
-		this.back = append(this.header, $('span.go-back'));
-		this.back.title = nls.localize('goback', "Read less...{0}", triggerKeybindingLabel);
 
 		this.docs = append(this.body, $('p.docs'));
 		this.ariaLabel = null;
@@ -243,13 +241,13 @@ class SuggestionDetails {
 		this.type.innerText = item.suggestion.detail || '';
 		this.docs.textContent = item.suggestion.documentation;
 
-		this.el.style.height = this.type.clientHeight + this.docs.clientHeight + 8 + 'px';
+		this.el.style.height = this.type.offsetHeight + this.docs.offsetHeight + 'px';
 
-		this.back.onmousedown = e => {
+		this.close.onmousedown = e => {
 			e.preventDefault();
 			e.stopPropagation();
 		};
-		this.back.onclick = e => {
+		this.close.onclick = e => {
 			e.preventDefault();
 			e.stopPropagation();
 			this.widget.toggleDetails();
@@ -299,8 +297,8 @@ class SuggestionDetails {
 
 		this.el.style.fontSize = fontSizePx;
 		this.type.style.fontFamily = fontFamily;
-		this.back.style.height = lineHeightPx;
-		this.back.style.width = lineHeightPx;
+		this.close.style.height = lineHeightPx;
+		this.close.style.width = lineHeightPx;
 	}
 
 	dispose(): void {
@@ -356,6 +354,8 @@ export class SuggestWidget implements IContentWidget, IDelegate<ICompletionItem>
 	private readonly listWidth = 330;
 	private readonly minWidgetWidth = 430;
 	private storageService: IStorageService;
+	private detailsFocusBorderColor: string;
+	private detailsBorderColor: string;
 
 	constructor(
 		private editor: ICodeEditor,
@@ -486,10 +486,13 @@ export class SuggestWidget implements IContentWidget, IDelegate<ICompletionItem>
 		}
 		let borderColor = theme.getColor(editorSuggestWidgetBorder);
 		if (borderColor) {
-			let borderWidth = theme.type === 'hc' ? 2 : 1;
-			this.listElement.style.border = `${borderWidth}px solid ${borderColor}`;
-			this.details.element.style.border = `${borderWidth}px solid ${borderColor}`;
-			this.messageElement.style.border = `${borderWidth}px solid ${borderColor}`;
+			this.listElement.style.borderColor = borderColor.toString();
+			this.details.element.style.borderColor = borderColor.toString();
+			this.messageElement.style.borderColor = borderColor.toString();
+		}
+		let focusBorderColor = theme.getColor(focusBorder);
+		if (focusBorderColor) {
+			this.detailsFocusBorderColor = focusBorderColor.toString();
 		}
 	}
 
@@ -556,9 +559,14 @@ export class SuggestWidget implements IContentWidget, IDelegate<ICompletionItem>
 
 				this.list.setFocus([index]);
 				this.list.reveal(index);
-				this.showDetails();
-				this.adjustDocsPosition();
-				this._ariaAlert(this._getSuggestionAriaAlertLabel(item));
+
+				if (this.storageService.getBoolean('expandSuggestionDocs', StorageScope.GLOBAL, false)) {
+					this.showDetails();
+					this.adjustDocsPosition();
+					this._ariaAlert(this.details.getAriaLabel());
+				} else {
+					removeClass(this.element, 'docs-expanded');
+				}
 			})
 			.then(null, err => !isPromiseCanceledError(err) && onUnexpectedError(err))
 			.then(() => this.currentSuggestionDetails = null);
@@ -599,10 +607,12 @@ export class SuggestWidget implements IContentWidget, IDelegate<ICompletionItem>
 				this.show();
 				break;
 			case State.Open:
-				hide(this.messageElement, this.details.element);
+				hide(this.messageElement);
 				show(this.listElement);
 				if (this.storageService.getBoolean('expandSuggestionDocs', StorageScope.GLOBAL, false)) {
 					show(this.details.element);
+				} else {
+					hide(this.details.element);
 				}
 				this.show();
 				break;
@@ -704,10 +714,6 @@ export class SuggestWidget implements IContentWidget, IDelegate<ICompletionItem>
 		switch (this.state) {
 			case State.Hidden:
 				return false;
-			case State.Details:
-				this.list.focusNext(1, true);
-				this.renderDetails();
-				return true;
 			case State.Loading:
 				return !this.isAuto;
 			default:
@@ -750,10 +756,6 @@ export class SuggestWidget implements IContentWidget, IDelegate<ICompletionItem>
 		switch (this.state) {
 			case State.Hidden:
 				return false;
-			case State.Details:
-				this.list.focusPrevious(1, true);
-				this.renderDetails();
-				return true;
 			case State.Loading:
 				return !this.isAuto;
 			default:
@@ -790,31 +792,37 @@ export class SuggestWidget implements IContentWidget, IDelegate<ICompletionItem>
 	toggleDetailsFocus(): void {
 		if (this.state === State.Details) {
 			this.setState(State.Open);
+			if (this.detailsBorderColor) {
+				this.details.element.style.borderColor = this.detailsBorderColor;
+			}
 		} else if (this.state === State.Open) {
 			this.setState(State.Details);
+			if (this.detailsFocusBorderColor) {
+				this.details.element.style.borderColor = this.detailsFocusBorderColor;
+			}
 		}
 	}
 
 	toggleDetails(): void {
-		let expandDocs = this.storageService.getBoolean('expandSuggestionDocs', StorageScope.GLOBAL, false);
-		if (expandDocs) {
+
+		if (this.storageService.getBoolean('expandSuggestionDocs', StorageScope.GLOBAL, false)) {
+			this.storageService.store('expandSuggestionDocs', false, StorageScope.GLOBAL);
 			hide(this.details.element);
 			removeClass(this.element, 'docs-expanded');
+			this.editor.layoutContentWidget(this);
 		} else {
-			show(this.details.element);
-			addClass(this.element, 'docs-expanded');
-			this.show();
+			this.storageService.store('expandSuggestionDocs', true, StorageScope.GLOBAL);
+			this.showDetails();
 		}
-		this.storageService.store('expandSuggestionDocs', !expandDocs, StorageScope.GLOBAL);
 	}
 
 	showDetails(): void {
 		if (this.state !== State.Open && this.state !== State.Details) {
 			return;
 		}
-		if (this.storageService.getBoolean('expandSuggestionDocs', StorageScope.GLOBAL, false)) {
-			addClass(this.element, 'docs-expanded');
-		}
+
+		show(this.details.element);
+		addClass(this.element, 'docs-expanded');
 
 		this.show();
 		this.editor.focus();
