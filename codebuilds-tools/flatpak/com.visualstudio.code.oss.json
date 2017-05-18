@@ -79,7 +79,7 @@
                 {
                     "type": "git",
                     "url": "https://github.com/headmelted/codebuilds",
-                    "branch": "master"
+                    "branch": "@@TAG@@"
                 },
                 {
                     "type": "file",

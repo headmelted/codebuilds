@@ -14,6 +14,9 @@ then
   ../qemu.sh;
 fi
 
+echo "Setting tag in json configuration...";
+sed -i -e "s/@@TAG@@/${TRAVIS_TAG}/g" com.visualstudio.code.oss.json;
+
 flatpak-builder \
     --force-clean \
     --ccache \
