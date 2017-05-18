@@ -94,10 +94,10 @@ notifications:
   
 script:
   - if [ "${FLATPAK_ISOLATED_BUILD}" == "true" ]; then
-      export UBUNTU_VERSION="xenial";
+      export UBUNTU_VERSION="yakkety";
       dock_script="./codebuilds-tools/flatpak/build.sh";
     else
-      export UBUNTU_VERSION="yakkety";
+      export UBUNTU_VERSION="xenial";
       dock_script="./codebuilds-tools/travis_build.sh";
     fi;
   - . ./codebuilds-tools/dock.sh "ubuntu:${UBUNTU_VERSION}" $dock_script;
