@@ -24,9 +24,16 @@ if [[ ${LABEL} == "armhf_linux" ]]; then
     
     echo "Creating mount directories...";
     mkdir image ./image/boot ./image/root;
+    
+    echo "Getting boot offset...";
+    boot_offset=$(fdisk -l image.img | grep -oP "(image\.img1)( *)([0-9]*?) " | grep -oE "*([0-9]*)*" | tail -1);
+    
+    echo "Boot offset is $boot_offset.";
+    
+    boot_sector_offset=$(($boot_offset*512));
   
     echo "Mounting boot...";
-    mount -o loop,offset=4194304 image.img ./image/boot;
+    mount -o loop,offset=$boot_sector_offset image.img ./image/boot;
   
     echo "Listing boot...";
     ls ./image/boot;
