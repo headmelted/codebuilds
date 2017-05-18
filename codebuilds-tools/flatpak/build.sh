@@ -20,6 +20,6 @@ flatpak-builder \
     --require-changes \
     --repo=repo \
     --arch=$VSCODE_ELECTRON_PLATFORM \
-    --subject="build of com.visualstudio.code.oss, $(date)" \
+    --subject="com.visualstudio.code.oss.${TRAVIS_TAG}" \
     build \
     com.visualstudio.code.oss.json;
