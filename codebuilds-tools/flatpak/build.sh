@@ -18,7 +18,7 @@ then
 fi
 
 echo "Setting tag in json configuration...";
-sed -i -e "s/@@TAG@@/${TRAVIS_TAG}/g" com.visualstudio.code.oss.json;
+sed -i -e "s/@@TAG@@/${TRAVIS_TAG}/g" /workspace/codebuilds-tools/flatpak/com.visualstudio.code.oss.json;
 
 flatpak-builder \
     --force-clean \
@@ -28,4 +28,4 @@ flatpak-builder \
     --arch=$VSCODE_ELECTRON_PLATFORM \
     --subject="com.visualstudio.code.oss.${TRAVIS_TAG}" \
     build \
-    com.visualstudio.code.oss.json;
+    /workspace/codebuilds-tools/flatpak/com.visualstudio.code.oss.json;
