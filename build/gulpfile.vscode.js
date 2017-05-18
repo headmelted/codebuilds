@@ -136,7 +136,22 @@ const config = {
 	repo: product.electronRepository || void 0
 };
 
-gulp.task('clean-electron', util.rimraf('.build/electron'));
+function getElectron(arch = process.arch) {
+	return () => {
+		const electronOpts = _.extend({}, config, {
+			platform: process.platform,
+			arch,
+			ffmpegChromium: true,
+			keepDefaultApp: true
+		});
+
+		return gulp.src('package.json')
+			.pipe(json({ name: product.nameShort }))
+			.pipe(electron(electronOpts))
+			.pipe(filter(['**', '!**/app/package.json']))
+			.pipe(vfs.dest('.build/electron'));
+	};
+}
 
 gulp.task('electron', ['clean-electron'], () => {
 	const platform = process.platform;
@@ -189,9 +204,7 @@ function computeChecksum(filename) {
 	return hash;
 }
 
-function packageTask(platform, arch, opts) {
-	opts = opts || {};
-
+function packageTask(platform, arch, opts = {}) {
 	const destination = path.join(path.dirname(root), 'VSCode') + (platform ? '-' + platform : '') + (arch ? '-' + arch : '');
 	platform = platform || process.platform;
 	arch = (process.env.VSCODE_ELECTRON_PLATFORM || ((platform === 'win32') ? 'ia32' : arch));
@@ -341,14 +354,16 @@ gulp.task('clean-vscode-linux-x64', util.rimraf(path.join(buildRoot, 'VSCode-lin
 gulp.task('clean-vscode-linux-armhf', util.rimraf(path.join(buildRoot, 'VSCode-linux-armhf')));
 gulp.task('clean-vscode-linux-arm64', util.rimraf(path.join(buildRoot, 'VSCode-linux-arm64')));
 
-gulp.task('vscode-win32', ['optimize-vscode', 'clean-vscode-win32'], packageTask('win32'));
+gulp.task('vscode-win32-ia32', ['optimize-vscode', 'clean-vscode-win32-ia32'], packageTask('win32', 'ia32'));
+gulp.task('vscode-win32-x64', ['optimize-vscode', 'clean-vscode-win32-x64'], packageTask('win32', 'x64'));
 gulp.task('vscode-darwin', ['optimize-vscode', 'clean-vscode-darwin'], packageTask('darwin'));
 gulp.task('vscode-linux-ia32', ['optimize-vscode', 'clean-vscode-linux-ia32'], packageTask('linux', 'ia32'));
 gulp.task('vscode-linux-x64', ['optimize-vscode', 'clean-vscode-linux-x64'], packageTask('linux', 'x64'));
 gulp.task('vscode-linux-armhf', ['optimize-vscode', 'clean-vscode-linux-armhf'], packageTask('linux', 'armhf'));
 gulp.task('vscode-linux-arm64', ['optimize-vscode', 'clean-vscode-linux-arm64'], packageTask('linux', 'arm64'));
 
-gulp.task('vscode-win32-min', ['minify-vscode', 'clean-vscode-win32'], packageTask('win32', null, { minified: true }));
+gulp.task('vscode-win32-ia32-min', ['minify-vscode', 'clean-vscode-win32-ia32'], packageTask('win32', 'ia32', { minified: true }));
+gulp.task('vscode-win32-x64-min', ['minify-vscode', 'clean-vscode-win32-x64'], packageTask('win32', 'x64', { minified: true }));
 gulp.task('vscode-darwin-min', ['minify-vscode', 'clean-vscode-darwin'], packageTask('darwin', null, { minified: true }));
 gulp.task('vscode-linux-ia32-min', ['minify-vscode', 'clean-vscode-linux-ia32'], packageTask('linux', 'ia32', { minified: true }));
 gulp.task('vscode-linux-x64-min', ['minify-vscode', 'clean-vscode-linux-x64'], packageTask('linux', 'x64', { minified: true }));
