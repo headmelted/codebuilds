@@ -1,8 +1,9 @@
 #!/bin/bash
 set -e;
 
-echo "Installing ostree...";
-apt-get install -y ostree;
+echo "Downloading ostree...";
+wget "http://mirrors.kernel.org/ubuntu/pool/universe/o/ostree/ostree_2016.10-1_amd64.deb";
+dpkg -i ostree_2016.10-1_amd64.deb;
 
 if [[ ! -d repo ]]
 then
