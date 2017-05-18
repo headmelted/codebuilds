@@ -1,11 +1,11 @@
 #!/bin/bash
 set -e;
 
-echo "Checking if cache directory exists...";
-if [[ ! -d ./cache ]]; then 
-  echo "Creating cache directory...";
-  mkdir cache
-fi;
+# echo "Checking if cache directory exists...";
+# if [[ ! -d ./cache ]]; then 
+#   echo "Creating cache directory...";
+#   mkdir cache
+# fi;
 
 if [[ ${LABEL} == "armhf_linux" ]]; then
 

@@ -16,7 +16,7 @@ if [ "${LABEL}" == "amd64_linux" ]; then
 else
   if [ "${LABEL}" == "armhf_linux" ]; then
     echo "Starting emulated test...";
-    /workspace/scripts/emulate.sh "scripts/test.sh";
+    . /workspace/codebuilds-tools/emulate.sh "scripts/test.sh";
   fi;
 fi;
 
