@@ -136,7 +136,7 @@ const config = {
 	repo: product.electronRepository || void 0
 };
 
-function getElectron(arch = process.arch) {
+function getElectron(arch) {
 	return () => {
 		const electronOpts = _.extend({}, config, {
 			platform: process.platform,
@@ -204,7 +204,9 @@ function computeChecksum(filename) {
 	return hash;
 }
 
-function packageTask(platform, arch, opts = {}) {
+function packageTask(platform, arch, opts) {
+	opts = opts || {};
+
 	const destination = path.join(path.dirname(root), 'VSCode') + (platform ? '-' + platform : '') + (arch ? '-' + arch : '');
 	platform = platform || process.platform;
 	arch = (process.env.VSCODE_ELECTRON_PLATFORM || ((platform === 'win32') ? 'ia32' : arch));
