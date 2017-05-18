@@ -57,6 +57,14 @@ include: &toolchain_linux_amd64_flatpak
     - VSCODE_ELECTRON_PLATFORM=x64
     - FLATPAK_ISOLATED_BUILD=true
     
+# i386 toolchain for flatpak builds
+include: &toolchain_linux_i386_flatpak
+  env:
+    - LABEL=i386_flatpak
+    - CROSS_TOOLCHAIN=true
+    - VSCODE_ELECTRON_PLATFORM=i386
+    - FLATPAK_ISOLATED_BUILD=true
+    
 # arm toolchain for flatpak builds
 include: &toolchain_linux_arm_flatpak
   env:
@@ -76,6 +84,8 @@ matrix:
     <<: *toolchain_linux_arm64
   - os: linux
     <<: *toolchain_linux_amd64_flatpak
+  - os: linux
+    <<: *toolchain_linux_i386_flatpak
   - os: linux
     <<: *toolchain_linux_arm_flatpak
     
