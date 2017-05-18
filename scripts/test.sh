@@ -21,6 +21,8 @@ else
 	CODE=".build/electron/$NAME"
 fi
 
+echo "CODE is set to $CODE.";
+
 INTENDED_VERSION="v`node -p "require('./package.json').electronVersion"`"
 INSTALLED_VERSION=$(cat .build/electron/version 2> /dev/null)
 
