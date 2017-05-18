@@ -1,21 +1,12 @@
 #!/bin/bash
 set -e;
 
-# echo "Checking if cache directory exists...";
-# if [[ ! -d ./cache ]]; then 
-#   echo "Creating cache directory...";
-#   mkdir cache
-# fi;
-
 if [[ ${LABEL} == "armhf_linux" ]]; then
 
   echo "Installing QEMU...";
   apt-get install -y qemu-system-${QEMU_ARCH};
   
-  echo "Cache directory [$(pwd)/cache] contains:"
-  ls ./cache;
-  
-  if [[ ! -f ./cache/image.img ]]; then
+  # if [[ ! -f image.img ]]; then
   
     echo "Cached raspbian image not available!";
   
@@ -101,19 +92,19 @@ if [[ ${LABEL} == "armhf_linux" ]]; then
     echo "Unmounting root...";
     umount ./image/root;
   
-    echo "Copying patched images to cache...";
-    cp image.img ./cache/image.img;
-    cp kernel7.img ./cache/kernel7.img;
-    cp bcm2709-rpi-2-b.dtb ./cache/bcm2709-rpi-2-b.dtb;
+    # echo "Copying patched images to cache...";
+    # cp image.img ./cache/image.img;
+    # cp kernel7.img ./cache/kernel7.img;
+    # cp bcm2709-rpi-2-b.dtb ./cache/bcm2709-rpi-2-b.dtb;
   
-  else
+  # else
   
-    echo "Cached images available!";
-    cp ./cache/image.img image.img;
-    cp ./cache/kernel7.img kernel7.img;
-    cp ./cache/bcm2709-rpi-2-b.dtb bcm2709-rpi-2-b.dtb;
+  #   echo "Cached images available!";
+  #   cp ./cache/image.img image.img;
+  #   cp ./cache/kernel7.img kernel7.img;
+  #   cp ./cache/bcm2709-rpi-2-b.dtb bcm2709-rpi-2-b.dtb;
   
-  fi;
+  # fi;
   
 fi;
 
