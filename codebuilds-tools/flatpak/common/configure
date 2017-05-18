@@ -1,0 +1,25 @@
+#!/usr/bin/bash
+
+set -e
+
+take_next=0
+
+for opt in "${@}"
+do
+    if [[ ${opt} == --prefix ]]
+    then
+        take_next=1
+    elif [[ ${take_next} -eq 1 ]]
+    then
+        echo ${opt} >prefix
+        take_next=0
+    elif [[ ${opt} == --prefix=* ]]
+    then
+        echo "${opt#--prefix=}" >prefix
+    fi
+done
+
+if [[ ! -e prefix ]]
+then
+    echo '/app' >prefix
+fi

@@ -1,5 +1,6 @@
 sudo: required
 dist: trusty
+language: generic
 services:
   - docker
 cache:
@@ -8,41 +9,9 @@ cache:
 branches:
   only:
     - /^2017.*$/
-
-# x86 toolchain (used as a base for non-sudo compilation, which is faster) 
-include: &toolchain_x86
-  language: generic
-  # language: cpp
-  # addons:
-  #   apt:
-  #     sources:
-  #       - ubuntu-toolchain-r-test
-  #     packages:
-  #       - gcc-4.9
-  #       - g++-4.9
-  #       - gcc-4.9-multilib
-  #       - g++-4.9-multilib
-  #       - libc6-dev-i386
-  #       - zip
-  #       - libgtk2.0-0
-  #       - libx11-dev
-  #       - libxkbfile-dev
-  #       - rpm
-  #       - graphicsmagick
-        
-# OSX amd64 toolchain
-include: &toolchain_osx_amd64
-  <<: *toolchain_x86
-  env:
-    - LABEL=amd64_osx
-    - ARCH=amd64
-    - GPP_COMPILER=g++
-    - GCC_COMPILER=gcc
-    - VSCODE_ELECTRON_PLATFORM=x64
         
 # linux amd64 toolchain
 include: &toolchain_linux_amd64
-  <<: *toolchain_x86
   env:
     - LABEL=amd64_linux
     - ARCH=amd64
@@ -50,15 +19,9 @@ include: &toolchain_linux_amd64
     - GCC_COMPILER=gcc-4.9
     - VSCODE_ELECTRON_PLATFORM=x64
     - PACKAGE_ARCH=x64
-    
-# cross toolchain (used as a base for multiarch cross-compilation configurations below) 
-include: &toolchain_linux_cross
-  # sudo: required # for dpkg --add-architecture locking
-  language: generic
   
 # armhf toolchain
 include: &toolchain_linux_armhf
-  <<: *toolchain_linux_cross
   env:
     - LABEL=armhf_linux
     - CROSS_TOOLCHAIN=true
@@ -74,7 +37,6 @@ include: &toolchain_linux_armhf
   
 # arm64 toolchain
 include: &toolchain_linux_arm64
-  <<: *toolchain_linux_cross
   env:
     - LABEL=arm64_linux
     - CROSS_TOOLCHAIN=true
@@ -87,6 +49,21 @@ include: &toolchain_linux_arm64
     - VSCODE_ELECTRON_PLATFORM=arm
     - PACKAGE_ARCH=arm64
     - QEMU_ARCH=aarch64
+    
+# amd64 toolchain for flatpak builds
+include: &toolchain_linux_amd64_flatpak
+  env:
+    - LABEL=amd64_flatpak
+    - VSCODE_ELECTRON_PLATFORM=x64
+    - FLATPAK_ISOLATED_BUILD=true
+    
+# arm toolchain for flatpak builds
+include: &toolchain_linux_arm_flatpak
+  env:
+    - LABEL=arm_flatpak
+    - CROSS_TOOLCHAIN=true
+    - VSCODE_ELECTRON_PLATFORM=arm
+    - FLATPAK_ISOLATED_BUILD=true
 
 # Travis CI build matrix.  Each entry below will trigger an extra, parallel build on Travis.
 matrix:
@@ -97,13 +74,22 @@ matrix:
     <<: *toolchain_linux_armhf
   - os: linux
     <<: *toolchain_linux_arm64
+  - os: linux
+    <<: *toolchain_linux_amd64_flatpak
+  - os: linux
+    <<: *toolchain_linux_arm_flatpak
     
 notifications:
   email: false
   
 script:
   - export UBUNTU_VERSION="xenial";
-  - . ./codebuilds-tools/dock.sh "ubuntu:${UBUNTU_VERSION}" "./codebuilds-tools/travis_build.sh";
+  - if [ "${FLATPAK_ISOLATED_BUILD}" == "true" ]; then
+      dock_script="./codebuilds-tools/flatpak/build.sh";
+    else
+      dock_script="./codebuilds-tools/travis_build.sh";
+    fi;
+  - . ./codebuilds-tools/dock.sh "ubuntu:${UBUNTU_VERSION}" $dock_script;
 
 deploy:
   provider: releases
@@ -122,5 +108,5 @@ deploy:
     
 after_deploy:
   - cd codebuilds-tools;
-  - bash ./pushToBintray.sh $(find .build/linux -type f -name "*.deb");
-  - bash ./pushToBintray.sh $(find .build/linux -type f -name "*.rpm");
+  - bash ./pushToBintray.sh $(find ../.build/linux -type f -name "*.deb");
+  - bash ./pushToBintray.sh $(find ../.build/linux -type f -name "*.rpm");
