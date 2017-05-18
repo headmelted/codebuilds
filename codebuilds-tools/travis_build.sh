@@ -8,7 +8,7 @@ ls .
 
 . /workspace/codebuilds-tools/environment.sh;
 . /workspace/codebuilds-tools/build.sh;
-. /workspace/codebuilds-tools/startxvfb.sh;
+# . /workspace/codebuilds-tools/startxvfb.sh;
 
 # if [ "${LABEL}" == "amd64_linux" ]; then
 #   echo "Starting test...";
@@ -24,4 +24,4 @@ ls .
 # ./scripts/test-integration.sh;
 
 . /workspace/codebuilds-tools/package.sh;
-. /codebuilds-tools/flatpak/build.sh;
+. /workspace/codebuilds-tools/flatpak/build.sh;
