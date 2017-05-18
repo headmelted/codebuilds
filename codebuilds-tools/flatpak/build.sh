@@ -20,10 +20,10 @@ then
   ostree init --mode=archive-z2 --repo=repo
 fi
 
-if [ "${CROSS_TOOLCHAIN}" == "true" ]
-then
-  ../qemu.sh;
-fi
+# if [ "${CROSS_TOOLCHAIN}" == "true" ]
+# then
+#   ../qemu.sh;
+# fi
 
 echo "Setting tag in json configuration...";
 sed -i -e "s/@@TAG@@/${TRAVIS_TAG}/g" /workspace/codebuilds-tools/flatpak/com.visualstudio.code.oss.json;

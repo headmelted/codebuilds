@@ -49,29 +49,6 @@ include: &toolchain_linux_arm64
     - VSCODE_ELECTRON_PLATFORM=arm
     - PACKAGE_ARCH=arm64
     - QEMU_ARCH=aarch64
-    
-# amd64 toolchain for flatpak builds
-include: &toolchain_linux_amd64_flatpak
-  env:
-    - LABEL=amd64_flatpak
-    - VSCODE_ELECTRON_PLATFORM=x64
-    - FLATPAK_ISOLATED_BUILD=true
-    
-# i386 toolchain for flatpak builds
-include: &toolchain_linux_i386_flatpak
-  env:
-    - LABEL=i386_flatpak
-    - CROSS_TOOLCHAIN=true
-    - VSCODE_ELECTRON_PLATFORM=i386
-    - FLATPAK_ISOLATED_BUILD=true
-    
-# arm toolchain for flatpak builds
-include: &toolchain_linux_arm_flatpak
-  env:
-    - LABEL=arm_flatpak
-    - CROSS_TOOLCHAIN=true
-    - VSCODE_ELECTRON_PLATFORM=arm
-    - FLATPAK_ISOLATED_BUILD=true
 
 # Travis CI build matrix.  Each entry below will trigger an extra, parallel build on Travis.
 matrix:
@@ -82,25 +59,13 @@ matrix:
     <<: *toolchain_linux_armhf
   - os: linux
     <<: *toolchain_linux_arm64
-  - os: linux
-    <<: *toolchain_linux_amd64_flatpak
-  - os: linux
-    <<: *toolchain_linux_i386_flatpak
-  - os: linux
-    <<: *toolchain_linux_arm_flatpak
     
 notifications:
   email: false
   
 script:
-  - if [ "${FLATPAK_ISOLATED_BUILD}" == "true" ]; then
-      export UBUNTU_VERSION="yakkety";
-      dock_script="./codebuilds-tools/flatpak/build.sh";
-    else
-      export UBUNTU_VERSION="xenial";
-      dock_script="./codebuilds-tools/travis_build.sh";
-    fi;
-  - . ./codebuilds-tools/dock.sh "ubuntu:${UBUNTU_VERSION}" $dock_script;
+  - export UBUNTU_VERSION="xenial";
+  - . ./codebuilds-tools/dock.sh "ubuntu:${UBUNTU_VERSION}" "./codebuilds-tools/travis_build.sh";
 
 deploy:
   provider: releases
