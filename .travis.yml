@@ -82,21 +82,22 @@ matrix:
     <<: *toolchain_linux_armhf
   - os: linux
     <<: *toolchain_linux_arm64
-  # - os: linux
-  #   <<: *toolchain_linux_amd64_flatpak
-  # - os: linux
-  #   <<: *toolchain_linux_i386_flatpak
-  # - os: linux
-  #   <<: *toolchain_linux_arm_flatpak
+  - os: linux
+    <<: *toolchain_linux_amd64_flatpak
+  - os: linux
+    <<: *toolchain_linux_i386_flatpak
+  - os: linux
+    <<: *toolchain_linux_arm_flatpak
     
 notifications:
   email: false
   
 script:
-  - export UBUNTU_VERSION="xenial";
   - if [ "${FLATPAK_ISOLATED_BUILD}" == "true" ]; then
+      export UBUNTU_VERSION="xenial";
       dock_script="./codebuilds-tools/flatpak/build.sh";
     else
+      export UBUNTU_VERSION="yakkety";
       dock_script="./codebuilds-tools/travis_build.sh";
     fi;
   - . ./codebuilds-tools/dock.sh "ubuntu:${UBUNTU_VERSION}" $dock_script;
