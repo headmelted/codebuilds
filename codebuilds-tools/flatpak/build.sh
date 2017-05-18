@@ -1,11 +1,19 @@
 #!/bin/bash
 set -e;
 
+echo "Installing flatpak repository...";
+add-apt-repository -y ppa:alexlarsson/flatpak;
+
 echo "Updating package repositories...";
 apt update -yq;
 
 echo "Installing flatpak dependencies...";
-apt install -y ostree wget flatpak-builder;
+apt install -y ostree wget flatpak flatpak-builder;
+
+echo "Installing flatpak dependencies...";
+wget https://sdk.gnome.org/keys/gnome-sdk.gpg -O gnome-sdk.gpg;
+flatpak --user remote-add --gpg-import=gnome-sdk.gpg gnome https://sdk.gnome.org/repo/;
+flatpak --user install gnome org.freedesktop.Platform//1.4 org.freedesktop.Sdk//1.4;
 
 if [[ ! -d repo ]]
 then

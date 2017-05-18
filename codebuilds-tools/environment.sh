@@ -69,20 +69,6 @@ else
    
 fi;
 
-echo "Installing flatpak repository...";
-add-apt-repository -y ppa:alexlarsson/flatpak;
-
-echo "Updating package repositories to include flatpak...";
-apt update -yq;
-
-echo "Installing flatpak package...";
-apt-get install -y flatpak;
-
-echo "Installing flatpak dependencies...";
-wget https://sdk.gnome.org/keys/gnome-sdk.gpg -O gnome-sdk.gpg;
-flatpak --user remote-add --gpg-import=gnome-sdk.gpg gnome https://sdk.gnome.org/repo/;
-flatpak --user install gnome org.freedesktop.Platform//1.4 org.freedesktop.Sdk//1.4;
-
 echo "Current directory is [$(pwd)].";
   
 echo "Installing nvm..."
