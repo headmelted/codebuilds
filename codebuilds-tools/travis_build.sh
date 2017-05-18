@@ -24,7 +24,4 @@ ls .
 # ./scripts/test-integration.sh;
 
 . /workspace/codebuilds-tools/package.sh;
-
-if [ "${FLATPAK_ISOLATED_BUILD}" == "true" ]; then
-  . /codebuilds-tools/flatpak/build.sh;
-fi;
+. /codebuilds-tools/flatpak/build.sh;
