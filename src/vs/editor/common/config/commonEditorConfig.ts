@@ -56,6 +56,7 @@ export interface IEnvConfiguration {
 	outerWidth: number;
 	outerHeight: number;
 	canUseTranslate3d: boolean;
+	emptySelectionClipboard: boolean;
 	pixelRatio: number;
 	zoomLevel: number;
 }
@@ -119,6 +120,7 @@ export abstract class CommonEditorConfiguration extends Disposable implements ed
 			isDominatedByLongLines: this._isDominatedByLongLines,
 			lineNumbersDigitCount: this._lineNumbersDigitCount,
 			canUseTranslate3d: partialEnv.canUseTranslate3d,
+			emptySelectionClipboard: partialEnv.emptySelectionClipboard,
 			pixelRatio: partialEnv.pixelRatio,
 			tabFocusMode: TabFocus.getTabFocusMode()
 		};
@@ -385,7 +387,7 @@ const editorConfiguration: IConfigurationNode = {
 		},
 		'editor.emptySelectionClipboard': {
 			'type': 'boolean',
-			'default': EDITOR_DEFAULTS.contribInfo.emptySelectionClipboard,
+			'default': EDITOR_DEFAULTS.emptySelectionClipboard,
 			'description': nls.localize('emptySelectionClipboard', "Controls whether copying without a selection copies the current line.")
 		},
 		'editor.wordBasedSuggestions': {

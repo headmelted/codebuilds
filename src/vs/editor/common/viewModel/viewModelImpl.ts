@@ -401,6 +401,28 @@ export class ViewModel extends ViewEventEmitter implements IViewModel {
 		return this.coordinatesConverter.convertViewRangeToModelRange(currentCenteredViewRange);
 	}
 
+	public getCompletelyVisibleViewRange(): Range {
+		const partialData = this.viewLayout.getLinesViewportData();
+		const startViewLineNumber = partialData.completelyVisibleStartLineNumber;
+		const endViewLineNumber = partialData.completelyVisibleEndLineNumber;
+
+		return new Range(
+			startViewLineNumber, this.getLineMinColumn(startViewLineNumber),
+			endViewLineNumber, this.getLineMaxColumn(endViewLineNumber)
+		);
+	}
+
+	public getCompletelyVisibleViewRangeAtScrollTop(scrollTop: number): Range {
+		const partialData = this.viewLayout.getLinesViewportDataAtScrollTop(scrollTop);
+		const startViewLineNumber = partialData.completelyVisibleStartLineNumber;
+		const endViewLineNumber = partialData.completelyVisibleEndLineNumber;
+
+		return new Range(
+			startViewLineNumber, this.getLineMinColumn(startViewLineNumber),
+			endViewLineNumber, this.getLineMaxColumn(endViewLineNumber)
+		);
+	}
+
 	public getTabSize(): number {
 		return this.model.getOptions().tabSize;
 	}
@@ -498,13 +520,13 @@ export class ViewModel extends ViewEventEmitter implements IViewModel {
 		return this.model.validatePosition(position);
 	}
 
-	public getPlainTextToCopy(ranges: Range[], enableEmptySelectionClipboard: boolean): string {
+	public getPlainTextToCopy(ranges: Range[], emptySelectionClipboard: boolean): string {
 		let newLineCharacter = this.model.getEOL();
 
 		if (ranges.length === 1) {
 			let range: Range = ranges[0];
 			if (range.isEmpty()) {
-				if (enableEmptySelectionClipboard) {
+				if (emptySelectionClipboard) {
 					let modelLineNumber = this.coordinatesConverter.convertViewPositionToModelPosition(new Position(range.startLineNumber, 1)).lineNumber;
 					return this.model.getLineContent(modelLineNumber) + newLineCharacter;
 				} else {
@@ -524,7 +546,7 @@ export class ViewModel extends ViewEventEmitter implements IViewModel {
 		}
 	}
 
-	public getHTMLToCopy(viewRanges: Range[], enableEmptySelectionClipboard: boolean): string {
+	public getHTMLToCopy(viewRanges: Range[], emptySelectionClipboard: boolean): string {
 		if (this.model.getLanguageIdentifier().id === LanguageId.PlainText) {
 			return null;
 		}
@@ -536,7 +558,7 @@ export class ViewModel extends ViewEventEmitter implements IViewModel {
 
 		let range = this.coordinatesConverter.convertViewRangeToModelRange(viewRanges[0]);
 		if (range.isEmpty()) {
-			if (!enableEmptySelectionClipboard) {
+			if (!emptySelectionClipboard) {
 				// nothing to copy
 				return null;
 			}
