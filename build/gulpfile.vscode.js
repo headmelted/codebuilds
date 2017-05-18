@@ -153,7 +153,7 @@ function getElectron(arch = process.arch) {
 	};
 }
 
-gulp.task('electron', ['clean-electron'], () => {
+gulp.task('electron', () => {
 	const platform = process.platform;
 	const arch = process.env.VSCODE_ELECTRON_PLATFORM || (platform === 'win32' ? 'ia32' : process.arch);
 	const opts = _.extend({}, config, { platform, arch, ffmpegChromium: true, keepDefaultApp: true });

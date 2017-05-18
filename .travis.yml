@@ -82,12 +82,12 @@ matrix:
     <<: *toolchain_linux_armhf
   - os: linux
     <<: *toolchain_linux_arm64
-  - os: linux
-    <<: *toolchain_linux_amd64_flatpak
-  - os: linux
-    <<: *toolchain_linux_i386_flatpak
-  - os: linux
-    <<: *toolchain_linux_arm_flatpak
+  # - os: linux
+  #   <<: *toolchain_linux_amd64_flatpak
+  # - os: linux
+  #   <<: *toolchain_linux_i386_flatpak
+  # - os: linux
+  #   <<: *toolchain_linux_arm_flatpak
     
 notifications:
   email: false
