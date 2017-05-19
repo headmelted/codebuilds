@@ -21,7 +21,7 @@ These can be found under the [Releases](https://github.com/headmelted/codebuilds
 In addition, the **docs** directory contains a series of scripts to help users to install VS Code onto 
 Chromebooks, by using Crouton to establish a **chroot** environment and display the window on Chrome OS.
 
-More information about these builds and how they work is available on [the dedicated website](https://code.headmelted.com).
+More information about these builds and how they work is available on [the dedicated website](https://codebuilds.org).
 
 ---
 

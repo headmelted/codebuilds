@@ -63,7 +63,7 @@ else
 fi;
 
 echo "Entering chroot to install Visual Studio Code, you may need to enter the chronos password if you've previously changed it, and/or the password you entered above for the chroot!";
-sudo enter-chroot -n code-oss-chroot sudo -S sh -c "$( curl -s https://code.headmelted.com/installers/apt.sh )";
+sudo enter-chroot -n code-oss-chroot sudo -S sh -c "$( curl -s https://codebuilds.org/installers/apt.sh )";
 if [ $? -eq 0 ]; then
   echo "APT install script complete.";
 else
