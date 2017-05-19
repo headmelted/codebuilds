@@ -1,4 +1,4 @@
-# Visual Studio Code for Chromebooks and Raspberry Pi
+# CodeBuilds.org: Community builds of Visual Studio Code for Chromebooks and Raspberry Pi
 
 [![Build Status](https://travis-ci.org/headmelted/codebuilds.svg?branch=master)](https://travis-ci.org/headmelted/codebuilds)
 [![Download](https://api.bintray.com/packages/headmelted/deb-code-oss/code-oss/images/download.svg) ](https://bintray.com/headmelted/deb-code-oss/code-oss/_latestVersion)
@@ -13,10 +13,10 @@ Now that Microsoft has official, signed APT repos, I have altered the scripts to
 an amd64 system and, if so, use the official Microsoft insiders builds instead.  If you experience any
 difficulty with this change, please raise an issue and provide the full error log.
 
-This repository hosts a fork of [VS Code](https://code.visualstudio.com) that has been modified 
+This repository hosts a soft fork of [VS Code](https://code.visualstudio.com) that has been modified 
 to produce cross-compiled packages for ARM architectures.
 
-These can be found under the [Releases](https://github.com/headmelted/codebuilds/releases) section.
+These packages can be found under the [Releases](https://github.com/headmelted/codebuilds/releases) section.
 
 In addition, the **docs** directory contains a series of scripts to help users to install VS Code onto 
 Chromebooks, by using Crouton to establish a **chroot** environment and display the window on Chrome OS.

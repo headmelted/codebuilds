@@ -16,8 +16,8 @@ echo "
 
 This tool will guide you through setting up your Chromebook for Visual Studio Code.
 
-Code requires a Linux environment to run, so we'll need to install a Ubuntu 14.04
-(Trusty Tahr) environment first. Then we'll install git, and some helpers to make
+Code requires a Linux environment to run, so we'll need to install a Ubuntu 16.04
+(Xenial Xerus) environment first. Then we'll install git, and some helpers to make
 using Code as smooth as possible on your Chromebook, including a launch helper that
 will start Code in it's own window 'code'.
 
@@ -52,7 +52,7 @@ echo "Downloading crouton...";
 wget https://goo.gl/fd3zc -O crouton;
 echo "crouton downloaded.";
 
-echo "Preparing trusty chroot with XIWI (you will be prompted for a root password.  You can use crouton to encrypt the chroot later if you wish.)..."
+echo "Preparing xenial chroot with XIWI (you will be prompted for a root password.  You can use crouton to encrypt the chroot later if you wish.)..."
 chmod +x ./crouton;
 sudo sh ./crouton -t xiwi -n code-oss-chroot;
 if [ $? -eq 0 ]; then
