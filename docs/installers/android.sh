@@ -48,7 +48,7 @@ apt-get update;
 echo "Done!"
 
 echo "Running install script for APT...";
-. <( wget -O - "https://codebuilds.org/installers/apt.sh" );
+. <( wget -O - "https://code.headmelted.com/installers/apt.sh" );
 if [ $? -eq 0 ]; then
   echo "APT install script complete.";
 else

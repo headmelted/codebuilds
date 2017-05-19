@@ -3,10 +3,10 @@ Version:  @@VERSION@@
 Release:  @@RELEASE@@.el7
 Summary:  Code editing. Redefined.
 Group:    Development/Tools
-Vendor:   Codebuilds.org
+Vendor:   code.headmelted.com
 Packager: Jay Rodgers <headmelted@gmail.com>
 License:  @@LICENSE@@
-URL:      https://codebuilds.org/
+URL:      https://code.headmelted.com/
 Icon:     @@NAME@@.xpm
 Requires: @@DEPENDENCIES@@
 AutoReq:  0

@@ -1,4 +1,4 @@
-# CodeBuilds.org: Community builds of Visual Studio Code for Chromebooks and Raspberry Pi
+# Community builds of Visual Studio Code for Chromebooks and Raspberry Pi
 
 [![Build Status](https://travis-ci.org/headmelted/codebuilds.svg?branch=master)](https://travis-ci.org/headmelted/codebuilds)
 [![Download](https://api.bintray.com/packages/headmelted/deb-code-oss/code-oss/images/download.svg) ](https://bintray.com/headmelted/deb-code-oss/code-oss/_latestVersion)
@@ -21,7 +21,7 @@ These packages can be found under the [Releases](https://github.com/headmelted/c
 In addition, the **docs** directory contains a series of scripts to help users to install VS Code onto 
 Chromebooks, by using Crouton to establish a **chroot** environment and display the window on Chrome OS.
 
-More information about these builds and how they work is available on [the dedicated website](https://codebuilds.org).
+More information about these builds and how they work is available on [the dedicated website](https://code.headmelted.com).
 
 ---
 

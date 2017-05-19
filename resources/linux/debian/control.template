@@ -5,7 +5,7 @@ Depends: libnotify4, libnss3, gnupg, apt, libxkbfile1, libgconf-2-4
 Priority: optional
 Architecture: @@ARCHITECTURE@@
 Maintainer: Jay Rodgers <headmelted@gmail.com>
-Homepage: https://codebuilds.org/
+Homepage: https://code.headmelted.com/
 Installed-Size: @@INSTALLEDSIZE@@
 Provides: visual-studio-@@NAME@@
 Conflicts: visual-studio-@@NAME@@
