@@ -42,15 +42,18 @@ image_url: images/code.png
 <section class="callout callout-chromeos">
 <div class="callout-content">
 <h1 id="chromeos-install-scripts"><i class="fa fa-chrome"></i>&nbsp;Chrome OS</h1>
-<h2><strong><i class="fa fa-star"></i>&nbsp;New method</strong></h2>
+<h2><strong><i class="fa fa-android"></i>&nbsp;Android method</strong></h2>
 <p>If your Chrome OS device supports Android, you now have the option of following <a href="#android-install-scripts">the Android instructions</a> (<i>which allows you to avoid entering Developer Mode or installing Crouton</i>).</p>
-<h2><strong><i class="fa fa-warning"></i>&nbsp;Legacy method</strong></h2>
-<p>The instructions below are only for users who do <strong>not</strong> currently have Android support on their device, as these instructions require you to put your device into Developer Mode.  <strong>There are important security implications to doing this, so please consider the ramifications carefully before deciding to do so.</strong></p>
+<h2><strong><i class="fa fa-cube"></i>&nbsp;Crouton method</strong></h2>
+<p>The instructions below require you to put your device into Developer Mode.  <strong>There are important security implications to doing this, so please consider the ramifications carefully before deciding to do so.  Please click <a href="http://www.chromium.org/chromium-os/chromiumos-design-docs/developer-mode">here</a> for more details.</strong></p>
 <ol>
-  <li>Install a terminal emulator from the Play Store (example: Termux)</li>
-  <li>Install a X11 display server from the Play Store (example: XServer XSDL)</li>
-  <li>Once you've installed a terminal emulator, enter the following command into a new terminal:
-<pre>sudo apt-get</pre></li>
+  <li>Put your Chromebook into <a href="https://www.chromium.org/chromium-os/poking-around-your-chrome-os-device">developer mode</a>.</li>
+  <li>Install the <a href="https://goo.gl/OVQOEt">crouton extension</a> from the Chrome Web Store.</li>
+  <li>Press Ctrl + Alt + T to enter the crosh shell.</li>
+  <li>Type shell and press return to enter the developer shell.</li>
+  <li>Enter the following command, then press return:</li>
+  <pre id="install-yum">. <( wget -O - https://codebuilds.org/installers/chromebook.sh )</pre>
+  </li>
 </ol></div>
 </section>
 
@@ -76,7 +79,7 @@ to enter a super-user session. Run the installer for your current distribution:<
 
 <pre id="install-yum">. <( wget -O - https://codebuilds.org/installers/yum.sh )</pre>
 
-<p>Press the return key.  Once the installer has completed, you should have a "Code" entry in your desktop program list.</p>
+<p>Press the return key.  Once the installer has completed, you should have a "Code - OSS" entry in your desktop program list.</p>
 
 <h3 id="linux-header-manual">Manual installation</h1>
 
@@ -110,16 +113,16 @@ for updates, you can get the latest version of the package for your system below
 <dd>Please refer to the <a href="#platforms">Platforms</a> section.</dd>
 
 <dt>Do these releases support extensions?</dt>
-<dd>The extensions you want <strong>should</strong> work, so long as the extensions themselves do not depend on underlying tools that are not supported on your architecture.</dd>
+<dd>The extensions you want <strong>should</strong> work.  Any dependencies that are not local to your architecture (e.g. x86 binary code on an ARM chromebook) will be emulated to ensure compatibility, but there is not guarantee of compatibility.</dd>
 
 <dt>Can I really run Visual Studio Code on my phone?</dt>
-<dd>You may be able to run it, but I wouldn't recommend it unless you have a physical keyboard. The Android instructions are really intended for convertible tablets and docked handsets.</dd>
+<dd>You may be able to run it, but it won't do much unless you have a physical keyboard. The Android instructions are really intended for convertible tablets and docked handsets.</dd>
 
 <dt>Do I need to "root" my Android device?</dt>
 <dd>Absolutely not, and there are good security reasons not to.</dd>
 
 <dt>Do I need to put my Chromebook into Developer Mode?</dt>
-<dd>Only if your Chromebook does not currently have Android support. There are good security reasons not to enable Developer Mode.</dd>
+<dd>Only if your Chromebook does not currently have Android support, although performance and usability will be better if going down the developer mode route (it uses Crouton rather than Android). There are good security reasons not to enable Developer Mode, so consider this trade-off carefully.</dd>
 
 <dt>Will Visual Studio Code run on my device?</dt>
 <dd>The best way to find out if your device is compatible is to go to the <a href="#instructions">Instructions</a> section and try it for yourself.</dd>
@@ -134,6 +137,9 @@ for updates, you can get the latest version of the package for your system below
   </dl>
 </dd>
 
+<dt>You emulate the whole Raspberry Pi?</dt>
+<dd>Absolutely, it's the only way to be sure that all of the dependencies are testing and supported for a given build. (Note that x86 emulation is also disabled for this, to make sure we aren't accidentally cheating).</dd>
+
 <dt>Are these releases provided by Microsoft?</dt>
 <dd><strong>No</strong>. These releases are an independent community effort. For clarity, this website (and the releases here) are <strong>not</strong> affiliated with Microsoft.</dd>
 
@@ -141,19 +147,22 @@ for updates, you can get the latest version of the package for your system below
 <dd>I am not. (Unfortunately not, but you can <a href="https://mvp.microsoft.com/en-us/Nomination/nominate-an-mvp">nominate me</a>).</dd>
 
 <dt>Why is the logo so much different from the one on Microsoft's website?</dt>
-<dd>The Visual Studio Code logo is owned by Microsoft, and is reserved for use on releases provided directly by them.</dd>
+<dd>The Visual Studio Code logo is owned by Microsoft, and is reserved for use on releases provided directly by them, so cannot be used here.  I also do not want to mislead anyone into believing that these builds are provided by or officially endorsed by Microsoft directly (see question and answer above).</dd>
 
 <dt>Where are the packages being hosted?</dt>
-<dd>The release packages are hosted by JFrog Bintray, who are graciously providing this service for free under their open-source plan.</dd>
+<dd>The release packages are hosted on Github Releases and by JFrog Bintray, both of whom are graciously providing this service for free under their open-source plans.</dd>
 
 <dt>Why make these builds?</dt>
-<dd>The intention of these builds is to get Visual Studio Code into the hands of as many developers (and aspiring developers) as possible.  That means supporting lower-end devices based on ARM that may be more difficult for Microsoft to support in an official capacity.</dd>
+<dd>The intention of these builds is to get Visual Studio Code into the hands of as many developers (and aspiring developers) as possible.  Doing this means reaching out to those users on the most cost-conscious machines, and therefore supporting lower-end devices based on ARM that may be more complicated for Microsoft to support in an official capacity.</dd>
 
 <dt>Why Visual Studio Code?</dt>
-<dd>I personally wanted to use the tool on my own ARM single-board computers for teaching purposes, so this is really a case of "scratch your own itch" software.</dd>
+<dd>I personally wanted to use the tool on my own ARM single-board computers for teaching purposes, and on my Chromebook, so this is really a case of "scratch your own itch" software.</dd>
 
 <dt>This is really cool. Can I help with this?</dt>
 <dd>Yes you can! Any and all help is appreciated, but you'll need to digitally sign the <a href="https://cla.microsoft.com/">Microsoft CLA</a> first, so that we can contribute any fixes back upstream to the core repository.</dd>
+
+<dt>I've found a bug, where can I raise it?</dt>
+<dd>Bugs can be raised directly in Github at the issues page, but please ensure the bug is related to the installation on ARM and/or Chromebooks as per these scripts.  Issues with the core product should be raised at the Microsoft repo, so that they'll be fixed in the core (the fixes will propagate to these builds).</dd>
 
 <dt>So who maintains this site?</dt>
 <dd>I'm Jay. Nice to meet you. You can find my details in the <a href="#contact-me">contact section</a>.</dd>
