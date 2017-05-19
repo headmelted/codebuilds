@@ -54,7 +54,7 @@ echo "crouton downloaded.";
 
 echo "Preparing trusty chroot with XIWI (you will be prompted for a root password.  You can use crouton to encrypt the chroot later if you wish.)..."
 chmod +x ./crouton;
-sudo sh ./crouton -r trusty -t xiwi -n code-oss-chroot;
+sudo sh ./crouton -t xiwi -n code-oss-chroot;
 if [ $? -eq 0 ]; then
   echo "Crouton install script complete.";
 else
