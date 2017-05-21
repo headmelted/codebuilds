@@ -32,10 +32,10 @@ get_apt_config_value() {
 APT_DIR=$(get_apt_config_value Dir)
 APT_ETC=$APT_DIR$(get_apt_config_value Dir::Etc)
 APT_SOURCE_PARTS=$APT_ETC/$(get_apt_config_value Dir::Etc::sourceparts)
-CODE_SOURCE_PART=$APT_SOURCE_PARTS/codebuilds.list
+CODE_SOURCE_PART=$APT_SOURCE_PARTS/headmelted-bintray.list
 
 APT_TRUSTED_PARTS=$APT_ETC/$(get_apt_config_value Dir::Etc::trustedparts)
-CODE_TRUSTED_PART=$APT_TRUSTED_PARTS/codebuilds.gpg
+CODE_TRUSTED_PART=$APT_TRUSTED_PARTS/headmelted-bintray.gpg
 
 # Sourced from https://packages.microsoft.com/keys/microsoft.asc
 if [ ! -f $CODE_TRUSTED_PART ]; then
@@ -91,8 +91,8 @@ zAUwjdD/a4c3suJmbhU+q0crM3/2w6vixdUAcbfb4p+bN3+Uu2ayTdrqQX5nvRLt
 Ynh4/vuCP1Lo+DNqzxDB3vNva9/Vv+rcwNY=
 =Q68x
 -----END PGP PUBLIC KEY BLOCK-----
-" | gpg --dearmor > codebuilds.gpg
-		mv codebuilds.gpg $CODE_TRUSTED_PART
+" | gpg --dearmor > headmelted-bintray.gpg
+		mv headmelted-bintray.gpg $CODE_TRUSTED_PART
 fi;
 
 # Install repository source list
@@ -100,7 +100,7 @@ WRITE_SOURCE=0
 if [ ! -f $CODE_SOURCE_PART ]; then
   # Write source list if it does not exist
   WRITE_SOURCE=1
-elif grep -q "# disabled on upgrade to" /etc/apt/sources.list.d/codebuilds.list; then
+elif grep -q "# disabled on upgrade to" /etc/apt/sources.list.d/headmelted-bintray.list; then
   # Write source list if it was disabled by OS upgrade
   WRITE_SOURCE=1
 fi
@@ -108,5 +108,5 @@ fi
 if [ "$WRITE_SOURCE" -eq "1" ]; then
   echo "### THIS FILE IS AUTOMATICALLY CONFIGURED ###
 # You may comment out this entry, but any other modifications may be lost.
-deb [arch=armhf,arm64] https://dl.bintray.com/headmelted/deb-code-oss stable main" > $CODE_SOURCE_PART
+deb [arch=armhf,arm64] https://dl.bintray.com/headmelted/deb-code-oss nightly main" > $CODE_SOURCE_PART
 fi
