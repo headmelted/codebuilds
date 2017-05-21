@@ -84,5 +84,12 @@ deploy:
     
 after_deploy:
   - cd codebuilds-tools;
-  - bash ./pushToBintray.sh $(find ../.build/linux -type f -name "*.deb");
-  - bash ./pushToBintray.sh $(find ../.build/linux -type f -name "*.rpm");
+  # - bash ./pushToBintray.sh $(find ../.build/linux -type f -name "*.deb");
+  # - bash ./pushToBintray.sh $(find ../.build/linux -type f -name "*.rpm");
+  - cd ../docs;
+  - mkdir packages;
+  - mkdir packages/apt;
+  - cd packages/apt;
+  - cp $(find ../.build/linux -type f -name "*.deb") ./;
+  - dpkg-scanpackages -m . | gzip -c > Packages.gz;
+  
