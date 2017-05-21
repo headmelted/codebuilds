@@ -12,8 +12,9 @@ import { Selection } from 'vs/editor/common/core/selection';
 import { editorCommand, ServicesAccessor, EditorCommand, ICommandOptions } from 'vs/editor/common/editorCommonExtensions';
 import { Position } from 'vs/editor/common/core/position';
 import { Range } from 'vs/editor/common/core/range';
-import { WordNavigationType, WordOperations, getMapForWordSeparators, WordCharacterClassifier } from 'vs/editor/common/controller/cursorWordOperations';
+import { WordNavigationType, WordOperations } from 'vs/editor/common/controller/cursorWordOperations';
 import { ReplaceCommand } from 'vs/editor/common/commands/replaceCommand';
+import { getMapForWordSeparators, WordCharacterClassifier } from "vs/editor/common/controller/wordCharacterClassifier";
 
 export interface MoveWordOptions extends ICommandOptions {
 	inSelectionMode: boolean;
@@ -275,7 +276,9 @@ export abstract class DeleteWordCommand extends EditorCommand {
 			return new ReplaceCommand(deleteRange, '');
 		});
 
+		editor.pushUndoStop();
 		editor.executeCommands(this.id, commands);
+		editor.pushUndoStop();
 	}
 
 	protected abstract _delete(wordSeparators: WordCharacterClassifier, model: IModel, selection: Selection, whitespaceHeuristics: boolean, wordNavigationType: WordNavigationType): Range;

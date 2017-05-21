@@ -6,7 +6,7 @@
 'use strict';
 
 import { getLeadingWhitespace } from 'vs/base/common/strings';
-import { ICommonCodeEditor, IModel, IModelDecorationOptions, TrackedRangeStickiness, IIdentifiedSingleEditOperation } from 'vs/editor/common/editorCommon';
+import { ICommonCodeEditor, IModel, TrackedRangeStickiness, IIdentifiedSingleEditOperation } from 'vs/editor/common/editorCommon';
 import { EditOperation } from 'vs/editor/common/core/editOperation';
 import { TextmateSnippet, Placeholder, SnippetParser } from '../common/snippetParser';
 import { Selection } from 'vs/editor/common/core/selection';
@@ -15,6 +15,7 @@ import { IPosition } from 'vs/editor/common/core/position';
 import { groupBy } from 'vs/base/common/arrays';
 import { dispose } from 'vs/base/common/lifecycle';
 import { EditorSnippetVariableResolver } from "vs/editor/contrib/snippet/common/snippetVariables";
+import { ModelDecorationOptions } from "vs/editor/common/model/textModelWithDecorations";
 
 export class OneSnippet {
 
@@ -27,10 +28,10 @@ export class OneSnippet {
 	private _placeholderGroupsIdx: number;
 
 	private static readonly _decor = {
-		active: <IModelDecorationOptions>{ stickiness: TrackedRangeStickiness.AlwaysGrowsWhenTypingAtEdges, className: 'snippet-placeholder' },
-		inactive: <IModelDecorationOptions>{ stickiness: TrackedRangeStickiness.NeverGrowsWhenTypingAtEdges, className: 'snippet-placeholder' },
-		activeFinal: <IModelDecorationOptions>{ stickiness: TrackedRangeStickiness.NeverGrowsWhenTypingAtEdges, className: 'finish-snippet-placeholder' },
-		inactiveFinal: <IModelDecorationOptions>{ stickiness: TrackedRangeStickiness.NeverGrowsWhenTypingAtEdges, className: 'finish-snippet-placeholder' },
+		active: ModelDecorationOptions.register({ stickiness: TrackedRangeStickiness.AlwaysGrowsWhenTypingAtEdges, className: 'snippet-placeholder' }),
+		inactive: ModelDecorationOptions.register({ stickiness: TrackedRangeStickiness.NeverGrowsWhenTypingAtEdges, className: 'snippet-placeholder' }),
+		activeFinal: ModelDecorationOptions.register({ stickiness: TrackedRangeStickiness.NeverGrowsWhenTypingAtEdges, className: 'finish-snippet-placeholder' }),
+		inactiveFinal: ModelDecorationOptions.register({ stickiness: TrackedRangeStickiness.NeverGrowsWhenTypingAtEdges, className: 'finish-snippet-placeholder' }),
 	};
 
 	constructor(editor: ICommonCodeEditor, snippet: TextmateSnippet, offset: number) {
@@ -253,52 +254,37 @@ export class SnippetSession {
 	}
 
 	private readonly _editor: ICommonCodeEditor;
-	private readonly _template: string;
-	private readonly _overwriteBefore: number;
-	private readonly _overwriteAfter: number;
 	private _snippets: OneSnippet[];
 
-	constructor(editor: ICommonCodeEditor, template: string, overwriteBefore: number = 0, overwriteAfter: number = 0) {
+	constructor(editor: ICommonCodeEditor) {
 		this._editor = editor;
-		this._template = template;
-		this._overwriteBefore = overwriteBefore;
-		this._overwriteAfter = overwriteAfter;
-		this._snippets = [];
 	}
 
 	dispose(): void {
 		dispose(this._snippets);
 	}
 
-	insert(): void {
+	insert(template: string, overwriteBefore: number = 0, overwriteAfter: number = 0): void {
 
 		const model = this._editor.getModel();
 		const { edits, snippets } = SnippetSession.makeInsertEditsAndSnippets(
-			this._editor, this._template, this._overwriteBefore, this._overwriteAfter
+			this._editor, template, overwriteBefore, overwriteAfter
 		);
 
-		// keep snippets around
-		this._snippets = snippets;
+		let isNestedInsert = true;
+		if (!this._snippets) {
+			// keep snippets around
+			this._snippets = snippets;
+			isNestedInsert = false;
+		}
 
 		// make insert edit and start with first selections
 		const newSelections = model.pushEditOperations(this._editor.getSelections(), edits, undoEdits => {
-			if (this._snippets[0].hasPlaceholder) {
+			if (!isNestedInsert && this._snippets[0].hasPlaceholder) {
 				return this._move(true);
 			} else {
 				return undoEdits.map(edit => Selection.fromPositions(edit.range.getEndPosition()));
 			}
-		});
-		this._editor.setSelections(newSelections);
-	}
-
-	insertNested(template: string, overwriteBefore: number = 0, overwriteAfter: number = 0): void {
-		const { edits } = SnippetSession.makeInsertEditsAndSnippets(
-			this._editor, template, overwriteBefore, overwriteAfter
-		);
-		const model = this._editor.getModel();
-		const selections = this._editor.getSelections();
-		const newSelections = model.pushEditOperations(selections, edits, () => {
-			return this._move(true);
 		});
 		this._editor.setSelections(newSelections);
 	}

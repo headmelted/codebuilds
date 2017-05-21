@@ -9,6 +9,7 @@ import { ISuggestion, ISuggestResult, ISuggestSupport, SuggestionType } from 'vs
 import { ISuggestionItem } from 'vs/editor/contrib/suggest/browser/suggest';
 import { CompletionModel } from 'vs/editor/contrib/suggest/browser/completionModel';
 import { IPosition } from 'vs/editor/common/core/position';
+import { TPromise } from "vs/base/common/winjs.base";
 
 suite('CompletionModel', function () {
 
@@ -36,7 +37,7 @@ suite('CompletionModel', function () {
 				}
 			};
 
-			resolve() {
+			resolve(): TPromise<void> {
 				return null;
 			}
 		};
@@ -180,5 +181,25 @@ suite('CompletionModel', function () {
 		assert.equal(a.suggestion.label, 'snippet1');
 		assert.equal(b.suggestion.label, 'Semver');
 		assert.ok(a.score > b.score); // snippet really demoted
+	});
+
+	test('filterText seems ignored in autocompletion, #26874', function () {
+
+		const item1 = createSuggestItem('Map - java.util', 1, 'property');
+		item1.suggestion.filterText = 'Map';
+		const item2 = createSuggestItem('Map - java.util', 1, 'property');
+
+		model = new CompletionModel([item1, item2], 1, {
+			leadingLineContent: 'M',
+			characterCountDelta: 0
+		});
+
+		assert.equal(model.items.length, 2);
+
+		model.lineContext = {
+			leadingLineContent: 'Map ',
+			characterCountDelta: 3
+		};
+		assert.equal(model.items.length, 1);
 	});
 });
