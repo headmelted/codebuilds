@@ -3,10 +3,9 @@
 echo "Detecting architecture...";
 MACHINE_MTYPE="$(uname -m)";
 ARCH="${MACHINE_MTYPE}";
-REPOSITORY_NAME="Microsoft";
+REPOSITORY_NAME="headmelted";
 
-if [ "$ARCH" = "armv7l" ]; then ARCH="armhf"; fi;
-if [ "$ARCH" = "armhf" ]; then REPOSITORY_NAME="headmelted"; fi;
+if [ "$ARCH" = "amd64" ]; then REPOSITORY_NAME="Microsoft"; fi;
 
 echo "Architecture detected as ${ARCH}...";
 

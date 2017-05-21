@@ -14,7 +14,7 @@ image_url: images/code.png
   <dt><i class="fa fa-archive"></i>&nbsp;Packages</dt>
   <dd>DEB, RPM</dd>
   <dt><i class="fa fa-cogs"></i>&nbsp;Operating Systems</dt>
-  <dd><a href="#linux-install-scripts">Linux</a>, <a href="#android-install-scripts">Android*</a>, <a href="#chromeos-install-scripts">Chrome OS*</a><br/><i>(* uses embedded Linux)</i></dd>
+  <dd><a href="#linux-install-scripts">Linux</a>, <!--<a href="#android-install-scripts">Android*</a>, --><a href="#chromeos-install-scripts">Chrome OS*</a><br/><i>(* uses embedded Linux)</i></dd>
 </dl>
 </div>
 </section>
@@ -63,7 +63,7 @@ image_url: images/code.png
 <h1 id="linux-install-scripts"><i class="fa fa-linux"></i>&nbsp;Linux</h1>
 <i>(including Raspberry Pis, Odroids and other single-board computers)</i>
 
-<p>Packages are currently available in DEB and RPM format for ARM, x86 and amd64 systems.</p>
+<p>Packages are currently available in DEB and RPM format.</p>
 
 <p>You can use the scripts here to install the packages and add their repository to your system.</p>
 
@@ -115,13 +115,13 @@ for updates, you can get the latest version of the package for your system below
 
 <dt>Do these releases support extensions?</dt>
 <dd>The extensions you want <strong>should</strong> work.  Any dependencies that are not local to your architecture (e.g. x86 binary code on an ARM chromebook) will be emulated to ensure compatibility, but there is not guarantee of compatibility.</dd>
-
+<!--
 <dt>Can I really run Visual Studio Code on my phone?</dt>
 <dd>You may be able to run it, but it won't do much unless you have a physical keyboard. The Android instructions are really intended for convertible tablets and docked handsets.</dd>
 
 <dt>Do I need to "root" my Android device?</dt>
 <dd>Absolutely not, and there are good security reasons not to.</dd>
-
+-->
 <dt>Do I need to put my Chromebook into Developer Mode?</dt>
 <dd>Only if your Chromebook does not currently have Android support, although performance and usability will be better if going down the developer mode route (it uses Crouton rather than Android). There are good security reasons not to enable Developer Mode, so consider this trade-off carefully.</dd>
 
@@ -138,7 +138,7 @@ for updates, you can get the latest version of the package for your system below
   </dl>
 </dd>
 
-<dt>You emulate the whole Raspberry Pi?</dt>
+<dt>You emulate a whole Raspberry Pi?</dt>
 <dd>Absolutely, it's the only way to be sure that all of the dependencies are tested and supported for a given build. (Note that x86 emulation is also disabled for this, to make sure we aren't accidentally cheating).</dd>
 
 <dt>Are these releases provided by Microsoft?</dt>
