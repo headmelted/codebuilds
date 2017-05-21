@@ -32,9 +32,9 @@ fi;
 echo "Installing ${REPOSITORY_NAME} repository...";
 
 if [ "${REPOSITORY_NAME}" = "headmelted" ]; then
-  echo "deb [arch=armhf,arm64] https://dl.bintray.com/headmelted/deb-code-oss wheezy main" > /etc/apt/sources.list.d/headmelted.list;
+  echo "deb https://dl.bintray.com/headmelted/deb-code-oss" | sudo tee -a /etc/apt/sources.list
 else
-  echo "deb [arch=amd64] https://packages.microsoft.com/repos/vscode stable main" > /etc/apt/sources.list.d/vscode.list;
+  echo "deb https://packages.microsoft.com/repos/vscode stable main" > /etc/apt/sources.list.d/vscode.list;
 fi;
 
 if [ $? -eq 0 ]; then

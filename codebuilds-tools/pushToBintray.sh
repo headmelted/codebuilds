@@ -58,7 +58,7 @@ upload_content() {
   bintray_endpoint="${API}/content/${BINTRAY_USER}/${BINTRAY_REPO}/${PROJECT}/${PCK_NAME}/${PACKAGE_LOCAL}";
   echo "Uploading to ${bintray_endpoint}...";
   if [[ ${PACKAGE_FORMAT} == "deb" ]]; then
-    bintray_endpoint="${bintray_endpoint};deb_distribution=wheezy;deb_component=main;deb_architecture=${TARGET};"
+    bintray_endpoint="${bintray_endpoint};deb_distribution=nightly;deb_component=main;deb_architecture=${TARGET};"
   fi;
   bintray_return_code=$(${CURL} ${headers} --write-out %{http_code} -T ${PACKAGE} ${bintray_endpoint});
   echo $bintray_return_code;
