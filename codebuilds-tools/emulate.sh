@@ -39,6 +39,7 @@ if [[ ${LABEL} == "armhf_linux" ]]; then
     echo "Boot sector offset is $boot_sector_offset.";
   
     echo "Mounting boot...";
+    echo "\"mount -o loop,offset=\$boot_sector_offset image.img ./image/boot\"";
     mount -o loop,offset=$boot_sector_offset image.img ./image/boot;
   
     echo "Listing boot...";
