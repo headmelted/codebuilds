@@ -9,6 +9,7 @@ cache:
 branches:
   only:
     - /^2017.*$/
+    - working
         
 # linux amd64 toolchain
 include: &toolchain_linux_amd64
@@ -86,8 +87,11 @@ after_deploy:
   # - cd codebuilds-tools;
   # - bash ./pushToBintray.sh $(find ../.build/linux -type f -name "*.deb");
   # - bash ./pushToBintray.sh $(find ../.build/linux -type f -name "*.rpm");
-  - mkdir docs/packages docs/packages/apt;
-  - debfile=$(find .build/linux -type f -name "*.deb");
-  - cp $debfile docs/packages/apt/;
-  - dpkg-scanpackages -m docs/packages/apt/ | gzip -c > docs/packages/apt/Packages.gz;
+  - if [ "${TRAVIS_BRANCH}" == "working" ]; then
+      mkdir docs/packages docs/packages/apt;
+      debfile=$(find .build/linux -type f -name "*.deb");
+      cp $debfile docs/packages/apt/;
+      dpkg-scanpackages -m docs/packages/apt/ | gzip -c > docs/packages/apt/Packages.gz;
+      . ./codebuilds-tools/merge.sh;
+    fi;
   
