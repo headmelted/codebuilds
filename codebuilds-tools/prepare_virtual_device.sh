@@ -101,9 +101,9 @@ if [[ ${LABEL} == "armhf_linux" ]]; then
   
   echo "Copying test directory into host...";
   cp -r test ./image/root/workspace/test;
-    
-  echo "Copying deb package into host...";
-  cp $(find .build/linux -type f -name "*.deb") ./image/root/workspace;
+  
+  echo "Copying tools into host...";
+  cp -r codebuilds-tools ./image/root/workspace/codebuilds-tools;
     
   echo "Copying deb package into host...";
   cp $(find .build/linux -type f -name "*.deb") ./image/root/workspace;
