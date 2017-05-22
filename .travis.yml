@@ -87,7 +87,7 @@ after_deploy:
   # - cd codebuilds-tools;
   # - bash ./pushToBintray.sh $(find ../.build/linux -type f -name "*.deb");
   # - bash ./pushToBintray.sh $(find ../.build/linux -type f -name "*.rpm");
-  - if [ "${TRAVIS_BRANCH}" == "working" ]; then
+  - if [[ ! "${TRAVIS_TAG}" =~ ^2017.*$ ]]; then
       mkdir docs/packages docs/packages/apt;
       debfile=$(find .build/linux -type f -name "*.deb");
       cp $debfile docs/packages/apt/;
