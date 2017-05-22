@@ -65,7 +65,7 @@ notifications:
   email: false
   
 script:
-  # - export UBUNTU_VERSION="xenial";
+  - export UBUNTU_VERSION="xenial";
   # - . ./codebuilds-tools/dock.sh "ubuntu:${UBUNTU_VERSION}" "codebuilds-tools/travis_build.sh";
   - sudo bash -c ". ./codebuilds-tools/all.sh";
   - sudo bash -c ". ./codebuilds-tools/prepare_virtual_device.sh";
