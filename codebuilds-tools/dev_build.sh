@@ -1,7 +1,7 @@
 #!/bin/bash
 set -e;
 
-command_list="export LABEL=amd64_linux ARCH=amd64 GPP_COMPILER=g++-4.9 GCC_COMPILER=gcc-4.9 VSCODE_ELECTRON_PLATFORM=x64 PACKAGE_ARCH=x64"
+command_list="export LABEL=amd64_linux ARCH=amd64 GPP_COMPILER=g++ GCC_COMPILER=gcc VSCODE_ELECTRON_PLATFORM=x64 PACKAGE_ARCH=x64"
 
 for var in "$@"
 do

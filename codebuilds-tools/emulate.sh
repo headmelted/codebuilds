@@ -80,15 +80,11 @@ if [[ ${LABEL} == "armhf_linux" ]]; then
     # echo ". /testing/test.sh" >> ./image/root/etc/profile;
     
     echo "Making testing directory...";
-    mkdir ./image/root/testing;
+    mkdir ./image/root/workspace;
     
-    echo "Copying test directory into build...";
-    mkdir ./image/root/testing/test;
-    cp -r ./test/* ./image/root/testing/test/;
-    
-    echo "Copying node_modules directory into build...";
-    mkdir ./image/root/testing/node_modules;
-    cp -r ./node_modules/* ./image/root/testing/node_modules/;
+    echo "Copying workspace into host...";
+    mkdir ./image/root/workspace;
+    cp -r . ./image/root/workspace;
   
     echo "Setting getty for automatic login...";
     cp --remove-destination ./image/root/etc/systemd/system/autologin@.service ./image/root/etc/systemd/system/getty.target.wants/getty@tty1.service;
@@ -116,5 +112,5 @@ if [[ ${LABEL} == "armhf_linux" ]]; then
 fi;
 
 echo "Booting Raspberry Pi 2...";
-qemu-system-arm -nographic -serial mon:stdio -M raspi2 -dtb bcm2709-rpi-2-b.dtb -kernel kernel7.img -sd image.img -append "rw earlyprintk loglevel=8 console=ttyAMA0,115200 dwc_otg.lpm_enable=0 root=/dev/mmcblk0p2,script=/testing/$1";
+qemu-system-arm -nographic -serial mon:stdio -M raspi2 -dtb bcm2709-rpi-2-b.dtb -kernel kernel7.img -sd image.img -append "rw earlyprintk loglevel=8 console=ttyAMA0,115200 dwc_otg.lpm_enable=0 root=/dev/mmcblk0p2,script=$1";
 

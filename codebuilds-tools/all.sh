@@ -22,4 +22,10 @@ ls .
 # ./scripts/test-integration.sh;
 
 . ./codebuilds-tools/package.sh;
+
 # . /workspace/codebuilds-tools/flatpak/build.sh;
+
+if [ "${LABEL}" == "armhf_linux" ]; then
+  echo "Starting emulation for Raspberry Pi 2...";
+  ./emulate.sh "install_package_and_test.sh"; 
+fi;
