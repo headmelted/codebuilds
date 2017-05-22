@@ -87,7 +87,7 @@ after_deploy:
   # - bash ./pushToBintray.sh $(find ../.build/linux -type f -name "*.deb");
   # - bash ./pushToBintray.sh $(find ../.build/linux -type f -name "*.rpm");
   - mkdir docs/packages docs/packages/apt;
-  - var debfile=$(find .build/linux -type f -name "*.deb");
+  - debfile=$(find .build/linux -type f -name "*.deb");
   - cp $debfile docs/packages/apt/$(basename $debfile);
   - dpkg-scanpackages -m docs/packages/apt/ | gzip -c > docs/packages/apt/Packages.gz;
   
