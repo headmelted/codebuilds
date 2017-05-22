@@ -65,6 +65,7 @@ notifications:
   email: false
   
 script:
+  - ./emulate.sh
   - export UBUNTU_VERSION="xenial";
   - . ./codebuilds-tools/dock.sh "ubuntu:${UBUNTU_VERSION}" "codebuilds-tools/travis_build.sh";
 
