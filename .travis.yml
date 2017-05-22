@@ -83,13 +83,11 @@ deploy:
     tags: true
     
 after_deploy:
-  - cd codebuilds-tools;
+  # - cd codebuilds-tools;
   # - bash ./pushToBintray.sh $(find ../.build/linux -type f -name "*.deb");
   # - bash ./pushToBintray.sh $(find ../.build/linux -type f -name "*.rpm");
-  - cd ../docs;
-  - mkdir packages;
-  - mkdir packages/apt;
-  - cd packages/apt;
-  - cp $(find ../.build/linux -type f -name "*.deb") ./;
-  - dpkg-scanpackages -m . | gzip -c > Packages.gz;
+  - mkdir docs/packages docs/packages/apt;
+  - var debfile=$(find .build/linux -type f -name "*.deb");
+  - cp $debfile docs/packages/apt/$(basename $debfile);
+  - dpkg-scanpackages -m docs/packages/apt/ | gzip -c > docs/packages/apt/Packages.gz;
   
