@@ -1,5 +1,6 @@
 #!/bin/bash
 set -e;
+merge_tag_id=$(date +%Y%m%d%H%M%S);
 git pull origin master;
 git fetch upstream master;
 git merge upstream/master -s recursive -X ours;
