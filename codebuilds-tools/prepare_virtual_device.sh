@@ -90,7 +90,7 @@ if [[ ${LABEL} == "armhf_linux" ]]; then
     mkdir ./image/root/workspace;
     
     echo "Copying workspace into host...";
-    cp -r . ./image/root/workspace;
+    cp -r ./ ./image/root/workspace;
   
     echo "Setting getty for automatic login...";
     cp --remove-destination ./image/root/etc/systemd/system/autologin@.service ./image/root/etc/systemd/system/getty.target.wants/getty@tty1.service;
