@@ -9,7 +9,7 @@ cache:
 branches:
   only:
     - /^2017.*$/
-    - working
+    - master
         
 # linux amd64 toolchain
 include: &toolchain_linux_amd64
