@@ -1,7 +1,7 @@
 #!/bin/bash
 set -e;
 
-if [ -f ${TRAVIS_BUILD_DIR}/cache/qemu-built.zip ]; then
+if [ -f ${TRAVIS_BUILD_DIR}/cache/qemu-2.9.0-compiled.tar.gz ]; then
 
   echo "Downloading QEMU source code...";
   wget http://download.qemu-project.org/qemu-2.9.0.tar.xz;
