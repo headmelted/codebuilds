@@ -21,10 +21,12 @@ import { TPromise } from 'vs/base/common/winjs.base';
 import { join } from 'path';
 import { localize } from 'vs/nls';
 import { platform, Platform } from 'vs/base/common/platform';
-import { readdir } from 'vs/base/node/pfs';
+import { readdir, stat } from 'vs/base/node/pfs';
 import { release } from 'os';
 import { stopProfiling } from 'vs/base/node/profiler';
 import { virtualMachineHint } from 'vs/base/node/id';
+import { forEach } from 'vs/base/common/collections';
+import URI from 'vs/base/common/uri';
 
 class ProfilingHint implements IWorkbenchContribution {
 
@@ -208,6 +210,46 @@ class StartupProfiler implements IWorkbenchContribution {
 	}
 }
 
+class PerformanceTelemetry implements IWorkbenchContribution {
+
+	constructor(
+		@ITimerService private readonly _timerService: ITimerService,
+		@ITelemetryService private readonly _telemetryService: ITelemetryService,
+		@IExtensionService extensionService: IExtensionService,
+	) {
+		TPromise.join<any>([
+			TPromise.timeout(7 * 1000),
+			extensionService.onReady()
+		]).then(() => {
+			this._sendWorkbenchMainSizeTelemetry();
+			this._validateTimers();
+		});
+	}
+
+	getId(): string {
+		return 'performance.PerformanceTelemetry';
+	}
+
+	private _validateTimers(): void {
+		const { startupMetrics } = this._timerService;
+		const invalidTimers: string[] = [];
+		forEach(startupMetrics.timers, (entry) => {
+			if (entry.value < 0) {
+				invalidTimers.push(entry.key);
+			}
+		});
+		this._telemetryService.publicLog('perf:invalidTimers', { invalidTimers });
+	}
+
+	private _sendWorkbenchMainSizeTelemetry(): void {
+		const { fsPath } = URI.parse(require.toUrl('vs/workbench/electron-browser/workbench.main.js'));
+		stat(fsPath).then(stats => {
+			this._telemetryService.publicLog('perf:jsFileSize', { workbenchMain: stats.size });
+		});
+	}
+}
+
 const registry = Registry.as<IWorkbenchContributionsRegistry>(Extensions.Workbench);
 registry.registerWorkbenchContribution(ProfilingHint);
 registry.registerWorkbenchContribution(StartupProfiler);
+registry.registerWorkbenchContribution(PerformanceTelemetry);
