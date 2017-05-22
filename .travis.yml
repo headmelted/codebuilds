@@ -20,6 +20,10 @@ include: &toolchain_linux_amd64
     - GCC_COMPILER=gcc-4.9
     - VSCODE_ELECTRON_PLATFORM=x64
     - PACKAGE_ARCH=x64
+  addons:
+    apt:
+      sources:
+        - ubuntu-toolchain-r-test
   
 # armhf toolchain
 include: &toolchain_linux_armhf
