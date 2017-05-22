@@ -90,7 +90,6 @@ if [[ ${LABEL} == "armhf_linux" ]]; then
     mkdir ./image/root/workspace;
     
     echo "Copying workspace into host...";
-    mkdir ./image/root/workspace;
     cp -r . ./image/root/workspace;
   
     echo "Setting getty for automatic login...";
