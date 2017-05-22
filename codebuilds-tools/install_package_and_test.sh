@@ -1,3 +1,9 @@
+#!/bin/bash
+set -e;
+
+# DANGER!
+# THIS SCRIPT IS CACHED AT TRAVIS CI.  CHANGING THIS FILE WILL REQUIRE THAT THE CACHE IS REBUILT!!!!!
+
 dpkg -i $(find .build/linux -type f -name "*.deb");
 echo "Detecting code-oss...";
 which code-oss;
