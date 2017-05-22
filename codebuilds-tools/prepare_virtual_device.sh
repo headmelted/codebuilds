@@ -95,9 +95,6 @@ if [[ ${LABEL} == "armhf_linux" ]]; then
     
   # echo "Adding test script to profile startup...";
   # echo ". /testing/test.sh" >> ./image/root/etc/profile;
-    
-  echo "Making testing directory...";
-  mkdir ./image/root/workspace;
   
   echo "Copying test directory into host...";
   cp -r test ./image/root/workspace/test;

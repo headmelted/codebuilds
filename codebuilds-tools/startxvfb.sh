@@ -1,3 +1,6 @@
+#!/bin/bash
+set -e;
+
 echo "Inserting custom xvfb into /etc/init.d...";
 mv -f ./codebuilds-tools/xvfb /etc/init.d/xvfb;
 

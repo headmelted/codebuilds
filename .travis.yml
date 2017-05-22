@@ -69,6 +69,7 @@ script:
   - . ./codebuilds-tools/dock.sh "ubuntu:${UBUNTU_VERSION}" "codebuilds-tools/travis_build.sh";
   - sudo bash -c ". ./codebuilds-tools/prepare_virtual_device.sh";
   - if [ "${LABEL}" == "armhf_linux" ]; then
+      . ./codebuilds-tools/get_qemu.sh;
       . ./codebuilds-tools/emulate.sh "/install_package_and_test.sh";
     else
       . ./codebuilds-tools/install_package_and_test.sh;
