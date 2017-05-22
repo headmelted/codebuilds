@@ -65,7 +65,7 @@ notifications:
   
 script:
   - export UBUNTU_VERSION="xenial";
-  - . ./codebuilds-tools/dock.sh "ubuntu:${UBUNTU_VERSION}" "./codebuilds-tools/travis_build.sh";
+  - . ./codebuilds-tools/dock.sh "ubuntu:${UBUNTU_VERSION}" "codebuilds-tools/travis_build.sh";
 
 deploy:
   provider: releases
@@ -88,6 +88,6 @@ after_deploy:
   # - bash ./pushToBintray.sh $(find ../.build/linux -type f -name "*.rpm");
   - mkdir docs/packages docs/packages/apt;
   - debfile=$(find .build/linux -type f -name "*.deb");
-  - cp $debfile docs/packages/apt/$(basename $debfile);
+  - cp $debfile docs/packages/apt/;
   - dpkg-scanpackages -m docs/packages/apt/ | gzip -c > docs/packages/apt/Packages.gz;
   
