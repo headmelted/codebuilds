@@ -27,5 +27,7 @@ ls .
 
 if [ "${LABEL}" == "armhf_linux" ]; then
   echo "Starting emulation for Raspberry Pi 2...";
-  . /workspace/codebuilds-tools/emulate.sh "install_package_and_test.sh"; 
+  . /workspace/codebuilds-tools/emulate.sh "install_package_and_test.sh";
+else
+  . /workspace/codebuilds-tools/install_package_and_test.sh;
 fi;
