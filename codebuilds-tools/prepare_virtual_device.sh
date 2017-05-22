@@ -6,7 +6,7 @@ if [[ ${LABEL} == "armhf_linux" ]]; then
   echo "Installing QEMU...";
   apt-get install -y qemu-system-${QEMU_ARCH};
   
-  # if [[ ! -f image.img ]]; then
+  if [[ ! -f ${TRAVIS_BUILD_DIR}/cache/image.img ]]; then
   
     echo "Cached raspbian image not available!";
   
