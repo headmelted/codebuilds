@@ -26,4 +26,4 @@ docker run -it --cap-add SYS_ADMIN -v ${TRAVIS_BUILD_DIR}:/workspace \
     -e "QEMU_ARCH=${QEMU_ARCH}" \
     -e "UBUNTU_VERSION=${UBUNTU_VERSION}" \
     -e "HOME=/workspace" \
-     $1 /bin/bash -c "/workspace/codebuilds-tools/travis_build.sh";
+     $1 /bin/bash -c "/workspace/${2}";
