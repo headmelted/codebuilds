@@ -69,7 +69,7 @@ notifications:
   email: false
   
 script:
-  - export UBUNTU_VERSION="yakkety";
+  - export UBUNTU_VERSION="artful";
   # - . ./codebuilds-tools/dock.sh "ubuntu:${UBUNTU_VERSION}" "codebuilds-tools/travis_build.sh";
   - sudo bash -c ". ./codebuilds-tools/all.sh";
   - sudo bash -c ". ./codebuilds-tools/prepare_virtual_device.sh";
