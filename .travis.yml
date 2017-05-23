@@ -80,13 +80,13 @@ script:
   - sudo ln -s ${TRAVIS_BUILD_DIR} /workspace;
   - export TRAVIS_BUILD_DIR=/workspace;
   - export UBUNTU_VERSION="yakkety";
-  # - . ./codebuilds-tools/dock.sh "ubuntu:${UBUNTU_VERSION}" "codebuilds-tools/travis_build.sh";
-  - . ./codebuilds-tools/all.sh;
+  # - . /workspace/codebuilds-tools/dock.sh "ubuntu:${UBUNTU_VERSION}" "codebuilds-tools/travis_build.sh";
+  - . /workspace/codebuilds-tools/all.sh;
   - if [ "${QEMU_ARCH}" != "" ]; then
       sudo bash -c ". /workspace/codebuilds-tools/prepare_virtual_device.sh";
       sudo bash -c ". /workspace/codebuilds-tools/emulate.sh '/workspace/codebuilds-tools/install_package_and_test.sh'";
     else
-      . ./codebuilds-tools/install_package_and_test.sh;
+      . /workspace/codebuilds-tools/install_package_and_test.sh;
     fi
 
 deploy:
@@ -109,10 +109,10 @@ after_deploy:
   # - bash ./pushToBintray.sh $(find ../.build/linux -type f -name "*.deb");
   # - bash ./pushToBintray.sh $(find ../.build/linux -type f -name "*.rpm");
   - if [[ ! "${TRAVIS_TAG}" =~ ^2017.*$ ]]; then
-      mkdir docs/packages docs/packages/apt;
-      debfile=$(find .build/linux -type f -name "*.deb");
-      cp $debfile docs/packages/apt/;
-      dpkg-scanpackages -m docs/packages/apt/ | gzip -c > docs/packages/apt/Packages.gz;
-      . ./codebuilds-tools/merge.sh;
+      mkdir /workspace/docs/packages /workspace/docs/packages/apt;
+      debfile=$(find /workspace/.build/linux -type f -name "*.deb");
+      cp $debfile /workspace/docs/packages/apt/;
+      dpkg-scanpackages -m docs/packages/apt/ | gzip -c > /workspace/docs/packages/apt/Packages.gz;
+      . /workspace/codebuilds-tools/merge.sh;
     fi;
   

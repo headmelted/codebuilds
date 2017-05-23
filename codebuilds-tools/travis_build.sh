@@ -3,4 +3,4 @@ set -e;
 
 cd /workspace;
 
-. ./codebuilds-tools/all.sh;
+. /workspace/codebuilds-tools/all.sh;

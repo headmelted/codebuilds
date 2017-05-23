@@ -4,8 +4,8 @@ set -e;
 echo "Listing workspace...";
 ls .
 
-. ./codebuilds-tools/environment.sh;
-. ./codebuilds-tools/build.sh;
+. /workspace/codebuilds-tools/environment.sh;
+. /workspace/codebuilds-tools/build.sh;
 # . /workspace/codebuilds-tools/startxvfb.sh;
 
 # if [ "${LABEL}" == "amd64_linux" ]; then
@@ -21,6 +21,6 @@ ls .
 # echo "Starting integration tests...";
 # ./scripts/test-integration.sh;
 
-. ./codebuilds-tools/package.sh;
+. /workspace/codebuilds-tools/package.sh;
 
 # . /workspace/codebuilds-tools/flatpak/build.sh;

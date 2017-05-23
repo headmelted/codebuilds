@@ -5,7 +5,7 @@ command_list="export LABEL=amd64_linux ARCH=amd64 GPP_COMPILER=g++ GCC_COMPILER=
 
 for var in "$@"
 do
-    command_list="$command_list && . ./codebuilds-tools/$var.sh";
+    command_list="$command_list && . /workspace/codebuilds-tools/$var.sh";
 done
 
 echo "Executing command as sudo:";
