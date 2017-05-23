@@ -124,6 +124,9 @@ apt-get install -y qemu-system-${QEMU_ARCH};
   
   echo "Copying tools into host...";
   cp -r codebuilds-tools ./image/root/workspace/codebuilds-tools;
+  
+  echo "Copying scripts into host...";
+  cp -r scripts ./image/root/workspace/scripts;
     
   echo "Copying deb package into host...";
   cp $(find .build/linux -type f -name "*.deb") ./image/root/workspace;

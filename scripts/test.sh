@@ -15,11 +15,11 @@ echo "Root directory set to $ROOT.";
 
 if [[ "$OSTYPE" == "darwin"* ]]; then
 	NAME=`node -p "require('./product.json').nameLong"`
-	CODE="./.build/electron/$NAME.app/Contents/MacOS/Electron"
 else
 	NAME=`node -p "require('./product.json').applicationName"`
-	CODE=".build/electron/$NAME"
 fi
+
+CODE=$(which $NAME);
 
 echo "CODE is set to $CODE.";
 

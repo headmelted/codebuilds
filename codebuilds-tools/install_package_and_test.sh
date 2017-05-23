@@ -9,4 +9,6 @@ which code-oss;
 
 echo "Calling startxvfb.sh...";
 sudo bash -c "${TRAVIS_BUILD_DIR}/codebuilds-tools/startxvfb.sh";
-$(which code-oss) test/electron/index.js $@;
+
+echo "Calling test script...";
+bash -c "${TRAVIS_BUILD_DIR}/scripts/test.sh";

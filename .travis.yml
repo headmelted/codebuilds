@@ -84,11 +84,10 @@ script:
   - sudo bash -c ". ./codebuilds-tools/all.sh";
   - if [ "${QEMU_ARCH}" != "" ]; then
       sudo bash -c ". ./codebuilds-tools/prepare_virtual_device.sh";
-      sudo bash -c ". ./codebuilds-tools/emulate.sh '/install_package_and_test.sh'";
+      sudo bash -c ". ./codebuilds-tools/emulate.sh '/workspace/codebuilds-tools/emulator_wrapper.sh'";
     else
       . ./codebuilds-tools/install_package_and_test.sh;
     fi
-
 
 deploy:
   provider: releases
