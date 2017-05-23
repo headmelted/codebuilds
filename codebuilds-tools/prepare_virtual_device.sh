@@ -59,10 +59,10 @@ if [[ ${LABEL} == "armhf_linux" ]]; then
   mkdir boot;
   
   echo "Copying kernel...";
-  cp ./image/boot/kernel7.img ./;
+  cp ./image/boot/kernel*.img ./;
   
   echo "Copying dtb...";
-  cp ./image/boot/bcm2709-rpi-2-b.dtb ./;
+  cp ./image/boot/*.dtb ./;
   
   echo "Unmounting boot...";
   umount ./image/boot;
