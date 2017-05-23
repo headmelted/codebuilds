@@ -79,7 +79,6 @@ notifications:
 script:
   - export UBUNTU_VERSION="yakkety";
   # - . ./codebuilds-tools/dock.sh "ubuntu:${UBUNTU_VERSION}" "codebuilds-tools/travis_build.sh";
-  - sudo su
   - . ./codebuilds-tools/all.sh;
   - if [ "${QEMU_ARCH}" != "" ]; then
       sudo bash -c ". ./codebuilds-tools/prepare_virtual_device.sh";
