@@ -23,8 +23,6 @@ set -e;
        unxz *.xz;
      else
        if [ "$image_ext" == "7z" ]; then
-         echo "Installing p7zip-full...";
-         apt-get install -y p7zip-full;
          echo "Decompressing 7z image...";
          7z x *.7z;
        fi;
