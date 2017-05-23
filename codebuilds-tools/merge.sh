@@ -1,5 +1,6 @@
 #!/bin/bash
 set -e;
+cd /workspace;
 chmod 600 deploy-key;
 mv deploy-key ~/.ssh/merge_rsa;
 git remote add master git@github.com:headmelted/codebuilds.git;
