@@ -12,7 +12,7 @@ docker pull "$1";
 docker images;
 
 echo "Binding workspace...";
-docker run -it --cap-add SYS_ADMIN -v ${TRAVIS_BUILD_DIR}:/workspace \
+docker run -it --cap-add SYS_ADMIN -v /workspace:/workspace \
     -e "LABEL=${LABEL}" \
     -e "CROSS_TOOLCHAIN=${CROSS_TOOLCHAIN}" \
     -e "ARCH=${ARCH}" \

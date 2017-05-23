@@ -10,7 +10,7 @@ echo "Detecting code-oss...";
 which code-oss;
 
 echo "Calling startxvfb.sh...";
-sudo bash -c "${TRAVIS_BUILD_DIR}/codebuilds-tools/startxvfb.sh";
+sudo bash -c "/workspace/codebuilds-tools/startxvfb.sh";
 
 echo "Calling test script...";
-bash -c "${TRAVIS_BUILD_DIR}/scripts/test.sh";
+bash -c "/workspace/scripts/test.sh";

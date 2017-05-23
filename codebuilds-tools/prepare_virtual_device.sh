@@ -4,7 +4,7 @@ set -e;
 echo "Installing QEMU...";
 apt-get install -y qemu-system-${QEMU_ARCH};
 
-  if [[ ! -f ${TRAVIS_BUILD_DIR}/cache/image.img ]]; then
+  if [[ ! -f /workspace/cache/image.img ]]; then
   
     echo "Cached image not available!";
     
@@ -34,7 +34,7 @@ apt-get install -y qemu-system-${QEMU_ARCH};
     mv *.img image.img;
     
     echo "Copying image file to cache..."
-    cp image.img ${TRAVIS_BUILD_DIR}/cache/image.img;
+    cp image.img /workspace/cache/image.img;
     
     echo "Moving image out of working directory...";
     mv image.img ../image.img;
@@ -45,7 +45,7 @@ apt-get install -y qemu-system-${QEMU_ARCH};
   else
   
     echo "Image is cached, restoring...";
-    cp ${TRAVIS_BUILD_DIR}/cache/image.img ${TRAVIS_BUILD_DIR}/image.img;
+    cp /workspace/cache/image.img /workspace/image.img;
     
   fi;
     
@@ -143,15 +143,15 @@ apt-get install -y qemu-system-${QEMU_ARCH};
   umount ./image/root;
   
   #   echo "Copying patched images to cache...";
-  #   cp image.img ${TRAVIS_BUILD_DIR}/cache/image.img;
-  #   cp kernel7.img ${TRAVIS_BUILD_DIR}/cache/kernel7.img;
-  #   cp bcm2709-rpi-2-b.dtb ${TRAVIS_BUILD_DIR}/cache/bcm2709-rpi-2-b.dtb;
+  #   cp image.img /workspace/cache/image.img;
+  #   cp kernel7.img /workspace/cache/kernel7.img;
+  #   cp bcm2709-rpi-2-b.dtb /workspace/cache/bcm2709-rpi-2-b.dtb;
   
   # else
   
   #   echo "Cached images available!";
-  #   cp ${TRAVIS_BUILD_DIR}/cache/image.img image.img;
-  #   cp ${TRAVIS_BUILD_DIR}/cache/kernel7.img kernel7.img;
-  #   cp ${TRAVIS_BUILD_DIR}/cache/bcm2709-rpi-2-b.dtb bcm2709-rpi-2-b.dtb;
+  #   cp /workspace/cache/image.img image.img;
+  #   cp /workspace/cache/kernel7.img kernel7.img;
+  #   cp /workspace/cache/bcm2709-rpi-2-b.dtb bcm2709-rpi-2-b.dtb;
   
   # fi;
