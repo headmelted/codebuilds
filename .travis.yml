@@ -58,7 +58,7 @@ include: &toolchain_linux_arm64
     - VSCODE_ELECTRON_PLATFORM=arm
     - PACKAGE_ARCH=arm64
     - QEMU_ARCH=aarch64
-    - QEMU_IMAGE="https://odroid.in/ubuntu_16.04lts/ubuntu64-16.04-minimal-odroid-c2-20160815.img.xz"
+    - QEMU_IMAGE="https://dl.armbian.com/odroidc2/Ubuntu_xenial_default.7z"
     - QEMU_KERNEL="Image"
     - QEMU_DTB="meson64_odroidc2.dtb"
     - QEMU_MACHINE="virt"

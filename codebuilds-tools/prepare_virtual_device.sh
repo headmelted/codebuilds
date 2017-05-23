@@ -22,8 +22,15 @@ apt-get install -y qemu-system-${QEMU_ARCH};
       unzip *.zip;
     else
      if [ "$image_ext" == "xz" ]; then
-       echo "Decompressing XZ image...";
+       echo "Decompressing xz image...";
        unxz *.xz;
+     else
+       if [ "$image_ext" == "7z" ]; then
+         echo "Installing p7zip-full...";
+         apt-get install -y p7zip-full;
+         echo "Decompressing 7z image...";
+         7z x *.7z;
+       fi;
      fi;
     fi;
     
