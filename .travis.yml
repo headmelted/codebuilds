@@ -41,9 +41,9 @@ include: &toolchain_linux_armhf
     - QEMU_ARCH=arm
     - QEMU_IMAGE="https://downloads.raspberrypi.org/raspbian_lite/images/raspbian_lite-2017-04-10/2017-04-10-raspbian-jessie-lite.zip"
     - QEMU_KERNEL="kernel7.img"
-    - QEMU_DTB="bcm2710-rpi-3-b.dtb"
+    - QEMU_DTB="bcm2709-rpi-2-b.dtb"
     - QEMU_MEMORY="1024"
-    - QEMU_CPU="cortex-a53"
+    - QEMU_CPU="arm1176"
   
 # arm64 toolchain
 include: &toolchain_linux_arm64
@@ -59,7 +59,7 @@ include: &toolchain_linux_arm64
     - VSCODE_ELECTRON_PLATFORM=arm
     - PACKAGE_ARCH=arm64
     - QEMU_ARCH=aarch64
-    - QEMU_IMAGE="https://odroid.in/ubuntu_16.04lts/ubuntu64-16.04.2lts-mate-odroid-c2-20170301.img.xz"
+    - QEMU_IMAGE="https://odroid.in/ubuntu_16.04lts/ubuntu64-16.04-minimal-odroid-c2-20160815.img.xz"
     - QEMU_KERNEL="Image"
     - QEMU_DTB="meson64_odroidc2.dtb"
     - QEMU_MEMORY="2048"
