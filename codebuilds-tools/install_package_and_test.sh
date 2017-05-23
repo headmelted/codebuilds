@@ -14,4 +14,4 @@ echo "Calling startxvfb.sh...";
 sudo bash -c "/workspace/codebuilds-tools/startxvfb.sh";
 
 echo "Calling test script...";
-. /workspace/scripts/test.sh;
+xvfb-run /usr/bin/code-oss test/electron/index.js;

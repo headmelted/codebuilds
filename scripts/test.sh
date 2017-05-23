@@ -9,10 +9,17 @@ else
 	ROOT=$(dirname $(dirname $(readlink -f $0)))
 fi
 
-cd $ROOT;
+cd $ROOT
 
 echo "Root directory set to $ROOT.";
-CODE=$(which code-oss);
+
+if [[ "$OSTYPE" == "darwin"* ]]; then
+	NAME=`node -p "require('./product.json').nameLong"`
+else
+	NAME=`node -p "require('./product.json').applicationName"`
+fi
+
+CODE=$(which $NAME);
 
 echo "CODE is set to $CODE.";
 
@@ -23,7 +30,7 @@ INSTALLED_VERSION=$(cat .build/electron/version 2> /dev/null)
 test -d node_modules || ./scripts/npm.sh install
 
 # Get electron
-test -f "$CODE"
+(test -f "$CODE" && [ $INTENDED_VERSION == $INSTALLED_VERSION ]) || ./node_modules/.bin/gulp electron
 
 # Unit Tests
 if [[ "$1" == "--xvfb" ]]; then
