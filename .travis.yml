@@ -81,7 +81,7 @@ script:
   - export TRAVIS_BUILD_DIR=/workspace;
   - export UBUNTU_VERSION="yakkety";
   # - . /workspace/codebuilds-tools/dock.sh "ubuntu:${UBUNTU_VERSION}" "codebuilds-tools/travis_build.sh";
-  - . /workspace/codebuilds-tools/all.sh;
+  - sudo bash -c ". /workspace/codebuilds-tools/all.sh";
   - if [ "${QEMU_ARCH}" != "" ]; then
       sudo bash -c ". /workspace/codebuilds-tools/prepare_virtual_device.sh";
       sudo bash -c ". /workspace/codebuilds-tools/emulate.sh '/workspace/codebuilds-tools/install_package_and_test.sh'";
