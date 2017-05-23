@@ -39,6 +39,9 @@ include: &toolchain_linux_armhf
     - VSCODE_ELECTRON_PLATFORM=arm
     - PACKAGE_ARCH=armhf
     - QEMU_ARCH=arm
+    - QEMU_IMAGE="https://downloads.raspberrypi.org/raspbian_lite/images/raspbian_lite-2017-04-10/2017-04-10-raspbian-jessie-lite.zip"
+    - QEMU_KERNEL="kernel7.img"
+    - QEMU_DTB="bcm2710-rpi-3-b.dtb"
   
 # arm64 toolchain
 include: &toolchain_linux_arm64
@@ -54,6 +57,7 @@ include: &toolchain_linux_arm64
     - VSCODE_ELECTRON_PLATFORM=arm
     - PACKAGE_ARCH=arm64
     - QEMU_ARCH=aarch64
+    - QEMU_IMAGE="https://odroid.in/ubuntu_16.04lts/ubuntu64-16.04.2lts-mate-odroid-c2-20170301.img.xz"
 
 # Travis CI build matrix.  Each entry below will trigger an extra, parallel build on Travis.
 matrix:
@@ -72,9 +76,8 @@ script:
   - export UBUNTU_VERSION="yakkety";
   # - . ./codebuilds-tools/dock.sh "ubuntu:${UBUNTU_VERSION}" "codebuilds-tools/travis_build.sh";
   - sudo bash -c ". ./codebuilds-tools/all.sh";
-  - sudo bash -c ". ./codebuilds-tools/prepare_virtual_device.sh";
-  - if [ "${LABEL}" == "armhf_linux" ]; then
-      sudo apt-get install -y qemu-system-arm;
+  - if [ "${QEMU_ARCH}" != "" ]; then
+      sudo bash -c ". ./codebuilds-tools/prepare_virtual_device.sh";
       sudo bash -c ". ./codebuilds-tools/emulate.sh '/install_package_and_test.sh'";
     else
       sudo bash -c ". ./codebuilds-tools/install_package_and_test.sh";

@@ -1,23 +1,34 @@
 #!/bin/bash
 set -e;
 
-if [[ ${LABEL} == "armhf_linux" ]]; then
+echo "Installing QEMU...";
+apt-get install -y qemu-system-${QEMU_ARCH};
 
-  echo "Installing QEMU...";
-  apt-get install -y qemu-system-${QEMU_ARCH};
-  
   if [[ ! -f ${TRAVIS_BUILD_DIR}/cache/image.img ]]; then
   
-    echo "Cached raspbian image not available!";
+    echo "Cached image not available!";
+    
+    echo "Creating working directory for image...";
+    mkdir image_work && cd image_work;
   
-    echo "Retrieving raspbian image...";
-    wget "https://downloads.raspberrypi.org/raspbian_lite_latest" -O image.zip;
+    echo "Retrieving image...";
+    wget "${QEMU_IMAGE}";
+    
+    image_ext=${QEMU_IMAGE##*.};
+    echo "Detected image extension as ${image_ext}"
   
-    echo "Unzipping raspbian image...";
-    unzip image.zip;
-  
-    echo "Removing raspbian zip...";
-    rm -rf image.zip;
+    if [ "$image_ext" == "zip" ]; then
+      echo "Unzipping image...";
+      unzip *.zip;
+    else
+     if [ "$image_ext" == "xz" ]; then
+       echo "Decompressing XZ image...";
+       unxz *.xz;
+     fi;
+    fi;
+    
+    echo "Removing compressed image...";
+    rm -rf "*.${image_ext}";
   
     echo "Renaming image file to image.img...";
     mv *.img image.img;
@@ -25,9 +36,15 @@ if [[ ${LABEL} == "armhf_linux" ]]; then
     echo "Copying image file to cache..."
     cp image.img ${TRAVIS_BUILD_DIR}/cache/image.img;
     
+    echo "Moving image out of working directory...";
+    mv image.img ../image.img;
+    
+    echo "Returning to parent directory...";
+    cd ..;
+    
   else
   
-    echo "Raspbian is cached, restoring...";
+    echo "Image is cached, restoring...";
     cp ${TRAVIS_BUILD_DIR}/cache/image.img ${TRAVIS_BUILD_DIR}/image.img;
     
   fi;
@@ -58,11 +75,11 @@ if [[ ${LABEL} == "armhf_linux" ]]; then
   echo "Creating boot directory...";
   mkdir boot;
   
-  echo "Copying kernel...";
-  cp ./image/boot/kernel*.img ./;
+  echo "Copying kernel ${QEMU_KERNEL}...";
+  cp ./image/boot/${QEMU_KERNEL} ./boot.img;
   
-  echo "Copying dtb...";
-  cp ./image/boot/*.dtb ./;
+  echo "Copying dtb ${QEMU_DTB}...";
+  cp ./image/boot/${QEMU_DTB} ./boot.dtb;
   
   echo "Unmounting boot...";
   umount ./image/boot;
@@ -92,6 +109,9 @@ if [[ ${LABEL} == "armhf_linux" ]]; then
     
   echo "Current ./image/root/etc/systemd/system/getty@tty1.service.d/autologin.conf....";
   cat ./image/root/etc/systemd/system/getty@tty1.service.d/autologin.conf;
+  
+  echo "Setting getty for automatic login...";
+  cp --remove-destination ./image/root/etc/systemd/system/autologin@.service ./image/root/etc/systemd/system/getty.target.wants/getty@tty1.service;
     
   # echo "Adding test script to profile startup...";
   # echo ". /testing/test.sh" >> ./image/root/etc/profile;
@@ -104,9 +124,6 @@ if [[ ${LABEL} == "armhf_linux" ]]; then
     
   echo "Copying deb package into host...";
   cp $(find .build/linux -type f -name "*.deb") ./image/root/workspace;
-  
-  echo "Setting getty for automatic login...";
-  cp --remove-destination ./image/root/etc/systemd/system/autologin@.service ./image/root/etc/systemd/system/getty.target.wants/getty@tty1.service;
   
   echo "Syncing mount...";
   sync;
@@ -127,5 +144,3 @@ if [[ ${LABEL} == "armhf_linux" ]]; then
   #   cp ${TRAVIS_BUILD_DIR}/cache/bcm2709-rpi-2-b.dtb bcm2709-rpi-2-b.dtb;
   
   # fi;
-  
-fi;
