@@ -1,9 +1,6 @@
 #!/bin/bash
 set -e;
 
-echo "Installing QEMU...";
-apt-get install -y qemu-system-${QEMU_ARCH};
-
   if [[ ! -f /workspace/cache/image.img ]]; then
   
     echo "Cached image not available!";

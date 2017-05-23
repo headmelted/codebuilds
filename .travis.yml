@@ -82,6 +82,8 @@ script:
   - export UBUNTU_VERSION="yakkety";
   - sudo bash -c ". /workspace/codebuilds-tools/all.sh";
   - if [ "${QEMU_ARCH}" != "" ]; then
+      echo "Installing QEMU...";
+      sudo apt-get install -y qemu-system-${QEMU_ARCH};
       . /workspace/codebuilds-tools/prepare_virtual_device.sh;
       . /workspace/codebuilds-tools/emulate.sh '/workspace/codebuilds-tools/install_package_and_test.sh';
     else
