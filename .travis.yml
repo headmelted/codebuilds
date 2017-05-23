@@ -77,12 +77,14 @@ notifications:
   email: false
   
 script:
+  - sudo ln -s ${TRAVIS_BUILD_DIR} /workspace;
+  - export TRAVIS_BUILD_DIR=/workspace;
   - export UBUNTU_VERSION="yakkety";
   # - . ./codebuilds-tools/dock.sh "ubuntu:${UBUNTU_VERSION}" "codebuilds-tools/travis_build.sh";
   - . ./codebuilds-tools/all.sh;
   - if [ "${QEMU_ARCH}" != "" ]; then
       sudo bash -c ". ./codebuilds-tools/prepare_virtual_device.sh";
-      sudo bash -c ". ./codebuilds-tools/emulate.sh '/workspace/codebuilds-tools/emulator_wrapper.sh'";
+      sudo bash -c ". ./codebuilds-tools/emulate.sh '/workspace/codebuilds-tools/install_package_and_test.sh'";
     else
       . ./codebuilds-tools/install_package_and_test.sh;
     fi

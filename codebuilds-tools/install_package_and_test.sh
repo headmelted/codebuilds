@@ -1,6 +1,8 @@
 #!/bin/bash
 set -e;
 
+export TRAVIS_BUILD_DIR=/workspace;
+
 echo "Installing deb...";
 sudo dpkg -i $(find .build/linux -type f -name '*.deb');
     
