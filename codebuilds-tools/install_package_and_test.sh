@@ -1,7 +1,8 @@
 #!/bin/bash
 set -e;
 
-export TRAVIS_BUILD_DIR=/workspace;
+echo "Setting up nvm for tests...";
+. /workspace/codebuilds-tools/setup_nvm.sh;
 
 echo "Installing deb...";
 sudo dpkg -i $(find .build/linux -type f -name '*.deb');
@@ -13,4 +14,4 @@ echo "Calling startxvfb.sh...";
 sudo bash -c "/workspace/codebuilds-tools/startxvfb.sh";
 
 echo "Calling test script...";
-bash -c "/workspace/scripts/test.sh";
+. /workspace/scripts/test.sh;

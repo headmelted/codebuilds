@@ -5,6 +5,7 @@ echo "Listing workspace...";
 ls .
 
 . /workspace/codebuilds-tools/environment.sh;
+. /workspace/codebuilds-tools/setup_nvm.sh;
 . /workspace/codebuilds-tools/build.sh;
 # . /workspace/codebuilds-tools/startxvfb.sh;
 

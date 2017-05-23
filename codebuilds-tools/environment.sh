@@ -68,18 +68,3 @@ else
   # echo "Emulators available:" && update-binfmts --display;
    
 fi;
-
-echo "Current directory is [$(pwd)].";
-  
-echo "Installing nvm..."
-git submodule update --init --recursive;
-git clone --depth 1 https://github.com/creationix/nvm.git ./.nvm;
-source ./.nvm/nvm.sh;
-nvm install 7.4.0;
-nvm use 7.4.0;
-
-echo "Setting python binding...";
-npm config set python `which python`;
-
-echo "Installing gulp...";
-npm install -g gulp;
