@@ -77,7 +77,7 @@ script:
       sudo apt-get install -y qemu-system-arm;
       sudo bash -c ". ./codebuilds-tools/emulate.sh '/install_package_and_test.sh'";
     else
-      . ./codebuilds-tools/install_package_and_test.sh;
+      sudo bash -c ". ./codebuilds-tools/install_package_and_test.sh";
     fi
 
 deploy:
