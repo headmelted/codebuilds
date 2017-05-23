@@ -60,6 +60,8 @@ include: &toolchain_linux_arm64
     - PACKAGE_ARCH=arm64
     - QEMU_ARCH=aarch64
     - QEMU_IMAGE="https://odroid.in/ubuntu_16.04lts/ubuntu64-16.04.2lts-mate-odroid-c2-20170301.img.xz"
+    - QEMU_KERNEL="Image"
+    - QEMU_DTB="meson64_odroidc2.dtb"
     - QEMU_MEMORY="2048"
     - QEMU_CPU="cortex-a53"
 
