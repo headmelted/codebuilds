@@ -96,8 +96,10 @@ apt-get install -y qemu-system-${QEMU_ARCH};
   echo "Mounting root directory...";
   mount -t ext4 -o loop,offset=$root_sector_offset image.img ./image/root;
   
-  echo "Emptying ld.so.preload...";
-  echo "" > ./image/root/etc/ld.so.preload;
+  if [ "${QEMU_MACHINE}" == "raspi2" ]; then
+    echo "Emptying ld.so.preload...";
+    echo "" > ./image/root/etc/ld.so.preload;
+  fi;
     
   echo "Creating getty tty1 service descriptor...";
   mkdir -pv /etc/systemd/system/getty@tty1.service.d;
