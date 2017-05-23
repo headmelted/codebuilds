@@ -40,27 +40,17 @@ apt-get install -y qemu-system-${QEMU_ARCH};
     echo "Renaming image file to image.img...";
     mv *.img image.img;
     
-    echo "Copying image file to cache..."
-    cp image.img /workspace/cache/image.img;
-    
-    echo "Moving image out of working directory...";
-    mv image.img ../image.img;
+    echo "Moving image file to cache..."
+    mv image.img /workspace/cache/image.img;
     
     echo "Returning to parent directory...";
     cd ..;
     
-  else
-  
-    echo "Image is cached, restoring...";
-    cp /workspace/cache/image.img /workspace/image.img;
-    
-  fi;
-    
   echo "Creating mount directories...";
-  mkdir image ./image/boot ./image/root;
+  mkdir /workspace/image /workspace/image/boot /workspace/image/root;
     
   echo "Reading disk structure...";
-  fdisk -l image.img;
+  fdisk -l /workspace/cache/image.img;
     
   echo "Getting boot offset...";
   boot_offset=0;
@@ -74,7 +64,7 @@ apt-get install -y qemu-system-${QEMU_ARCH};
   
   echo "Mounting boot...";
   echo "\"mount -o loop,offset=\$boot_sector_offset image.img ./image/boot\"";
-  mount -o loop,offset=$boot_sector_offset image.img ./image/boot;
+  mount -o loop,offset=$boot_sector_offset /workspace/cache/image.img /workspace/image/boot;
   
   echo "Listing boot...";
   ls ./image/boot;
@@ -82,17 +72,17 @@ apt-get install -y qemu-system-${QEMU_ARCH};
   echo "Creating boot directory...";
   mkdir boot;
   
-  echo "Copying kernel ${QEMU_KERNEL}...";
-  cp ./image/boot/${QEMU_KERNEL} ./boot.img;
+  echo "Copying kernel ${QEMU_KERNEL} to cache...";
+  cp ./image/boot/${QEMU_KERNEL} /workspace/cache/boot.img;
   
-  echo "Copying dtb ${QEMU_DTB}...";
-  cp ./image/boot/${QEMU_DTB} ./boot.dtb;
+  echo "Copying dtb ${QEMU_DTB} to cache...";
+  cp ./image/boot/${QEMU_DTB} /workspace/cache/boot.dtb;
   
   echo "Unmounting boot...";
-  umount ./image/boot;
+  umount /workspace/image/boot;
     
   echo "Getting root offset...";
-  root_offset=$(fdisk -l image.img | grep -oP "(image\.img2)( *)([0-9]*?) " | grep -oE "*([0-9]*)*" | tail -1);
+  root_offset=$(fdisk -l /workspace/cache/image.img | grep -oP "(image\.img2)( *)([0-9]*?) " | grep -oE "*([0-9]*)*" | tail -1);
     
   echo "Root offset is $root_offset.";
     
@@ -101,66 +91,65 @@ apt-get install -y qemu-system-${QEMU_ARCH};
   echo "Root sector offset is $root_sector_offset.";
   
   echo "Mounting root directory...";
-  mount -t ext4 -o loop,offset=$root_sector_offset image.img ./image/root;
+  mount -t ext4 -o loop,offset=$root_sector_offset /workspace/cache/image.img /workspace/image/root;
   
   if [ "${QEMU_MACHINE}" == "raspi2" ]; then
     echo "Emptying ld.so.preload...";
-    echo "" > ./image/root/etc/ld.so.preload;
+    echo "" > /workspace/image/root/etc/ld.so.preload;
   fi;
     
   echo "Creating getty tty1 service descriptor...";
   mkdir -pv /etc/systemd/system/getty@tty1.service.d;
   
-  if [ ! -f ./image/root/etc/systemd/system/getty@tty1.service.d/autologin.conf ]; then
+  if [ ! -f /workspace/image/root/etc/systemd/system/getty@tty1.service.d/autologin.conf ]; then
     echo "autologin.conf does not exist, creating...";
-    touch ./image/root/etc/systemd/system/getty@tty1.service.d/autologin.conf;
+    touch /workspace/image/root/etc/systemd/system/getty@tty1.service.d/autologin.conf;
   fi;
     
   echo "Adding ExecStart commands to ./image/root/etc/systemd/system/getty@tty1.service.d/autologin.conf....";
-  echo "[Service]" >> ./image/root/etc/systemd/system/getty@tty1.service.d/autologin.conf;
-  echo "ExecStart=" >> ./image/root/etc/systemd/system/getty@tty1.service.d/autologin.conf;
-  echo "ExecStart=-/sbin/agetty --autologin pi --noclear %I 38400 linux" >> ./image/root/etc/systemd/system/getty@tty1.service.d/autologin.conf;
+  echo "[Service]" >> /workspace/image/root/etc/systemd/system/getty@tty1.service.d/autologin.conf;
+  echo "ExecStart=" >> /workspace/image/root/etc/systemd/system/getty@tty1.service.d/autologin.conf;
+  echo "ExecStart=-/sbin/agetty --autologin pi --noclear %I 38400 linux" >> /workspace/image/root/etc/systemd/system/getty@tty1.service.d/autologin.conf;
     
   echo "Current ./image/root/etc/systemd/system/getty@tty1.service.d/autologin.conf....";
-  cat ./image/root/etc/systemd/system/getty@tty1.service.d/autologin.conf;
+  cat /workspace/image/root/etc/systemd/system/getty@tty1.service.d/autologin.conf;
   
   echo "Setting getty for automatic login...";
-  cp --remove-destination ./image/root/etc/systemd/system/autologin@.service ./image/root/etc/systemd/system/getty.target.wants/getty@tty1.service;
+  cp --remove-destination /workspace/image/root/etc/systemd/system/autologin@.service /workspace/image/root/etc/systemd/system/getty.target.wants/getty@tty1.service;
     
   # echo "Adding test script to profile startup...";
   # echo ". /testing/test.sh" >> ./image/root/etc/profile;
   
   echo "Creating workspace directory...";
-  mkdir ./image/root/workspace;
+  mkdir /workspace/image/root/workspace;
   
   echo "Copying test directory into host...";
-  cp -r test ./image/root/workspace/test;
+  cp -r /workspace/test ./image/root/workspace/test;
   
   echo "Copying tools into host...";
-  cp -r codebuilds-tools ./image/root/workspace/codebuilds-tools;
+  cp -r /workspace/codebuilds-tools /workspace/image/root/workspace/codebuilds-tools;
   
   echo "Copying scripts into host...";
-  cp -r scripts ./image/root/workspace/scripts;
+  cp -r /workspace/scripts /workspace/image/root/workspace/scripts;
     
   echo "Copying deb package into host...";
-  cp $(find .build/linux -type f -name "*.deb") ./image/root/workspace;
+  cp $(find /workspace/.build/linux -type f -name "*.deb") /workspace/image/root/workspace;
   
   echo "Syncing mount...";
   sync;
   
   echo "Unmounting root...";
-  umount ./image/root;
+  umount /workspace/image/root;
+    
+  else
   
-  #   echo "Copying patched images to cache...";
-  #   cp image.img /workspace/cache/image.img;
-  #   cp kernel7.img /workspace/cache/kernel7.img;
-  #   cp bcm2709-rpi-2-b.dtb /workspace/cache/bcm2709-rpi-2-b.dtb;
+    echo "Restoring image.img (rootfs) from cache...";
+    cp /workspace/cache/image.img /workspace/image.img;
   
-  # else
+    echo "Restoring boot.dtb from cache...";
+    cp /workspace/cache/image.img /workspace/boot.dtb;
   
-  #   echo "Cached images available!";
-  #   cp /workspace/cache/image.img image.img;
-  #   cp /workspace/cache/kernel7.img kernel7.img;
-  #   cp /workspace/cache/bcm2709-rpi-2-b.dtb bcm2709-rpi-2-b.dtb;
-  
-  # fi;
+    echo "Restoring boot.img (kernel) from cache...";
+    cp /workspace/cache/image.img /workspace/boot.img;
+    
+  fi;
