@@ -101,6 +101,11 @@ apt-get install -y qemu-system-${QEMU_ARCH};
     
   echo "Creating getty tty1 service descriptor...";
   mkdir -pv /etc/systemd/system/getty@tty1.service.d;
+  
+  if [ ! -f ./image/root/etc/systemd/system/getty@tty1.service.d/autologin.conf ]; then
+    echo "autologin.conf does not exist, creating...";
+    touch ./image/root/etc/systemd/system/getty@tty1.service.d/autologin.conf;
+  fi;
     
   echo "Adding ExecStart commands to ./image/root/etc/systemd/system/getty@tty1.service.d/autologin.conf....";
   echo "[Service]" >> ./image/root/etc/systemd/system/getty@tty1.service.d/autologin.conf;
