@@ -92,8 +92,8 @@ script:
       sudo ln -s ${TRAVIS_BUILD_DIR} /workspace;
       export TRAVIS_BUILD_DIR=/workspace;
       if [[ "${FLATPAK_BUILD}" == "true" ]]; then
-        echo "Starting flatpak build...";
-        . /workspace/codebuilds-tools/flatpak_all.sh;
+        echo "Starting flatpak build in docker...";
+        dock.sh "ubuntu:yakkety" "codebuilds-tools/flatpak_all.sh";
       else
         echo "Starting non-flatpak build...";
         export UBUNTU_VERSION="yakkety";
