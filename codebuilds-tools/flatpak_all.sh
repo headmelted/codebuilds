@@ -1,6 +1,9 @@
 #!/bin/bash
 set -e;
 
+echo "Updating APT repositories...";
+apt-get update;
+
 echo "Installing flatpak dependencies (including static QEMU for ${QEMU_ARCH})...";
 apt-get install -y qemu-system-${QEMU_ARCH} qemu-user-static flatpak;
 
