@@ -9,15 +9,15 @@ ls .
 . /workspace/codebuilds-tools/build.sh;
 # . /workspace/codebuilds-tools/startxvfb.sh;
 
-# if [ "${LABEL}" == "amd64_linux" ]; then
-#   echo "Starting test...";
-#   /workspace/scripts/test.sh;
-# else
-#   if [ "${LABEL}" == "armhf_linux" ]; then
-#     echo "Starting emulated test...";
-#     . /workspace/codebuilds-tools/emulate.sh "scripts/test.sh";
-#   fi;
-# fi;
+
+  # - if [ "${QEMU_ARCH}" != "" ]; then
+  #     echo "Installing QEMU...";
+  #     sudo apt-get install -y qemu-system-${QEMU_ARCH};
+  #     . /workspace/codebuilds-tools/prepare_virtual_device.sh;
+  #     . /workspace/codebuilds-tools/emulate.sh '/workspace/codebuilds-tools/install_package_and_test.sh';
+  #   else
+  #     . /workspace/codebuilds-tools/install_package_and_test.sh;
+  #   fi
 
 # echo "Starting integration tests...";
 # ./scripts/test-integration.sh;
