@@ -43,6 +43,13 @@ include: &toolchain_linux_armhf
     - QEMU_KERNEL="kernel7.img"
     - QEMU_DTB="bcm2709-rpi-2-b.dtb"
     - QEMU_MACHINE="raspi2"
+
+
+  
+# armhf toolchain
+include: &toolchain_linux_armhf_flatpak
+  env:
+    - LABEL=flatpak_armhf
   
 # arm64 toolchain
 include: &toolchain_linux_arm64
@@ -82,11 +89,13 @@ script:
       export TRAVIS_BUILD_DIR=/workspace;
       export UBUNTU_VERSION="yakkety";
       sudo bash -c ". /workspace/codebuilds-tools/all.sh";
-      mkdir /workspace/docs/packages /workspace/docs/packages/apt;
-      debfile=$(find /workspace/.build/linux -type f -name "*.deb");
-      cp $debfile /workspace/docs/packages/apt/;
-      dpkg-scanpackages -m docs/packages/apt/ | gzip -c > /workspace/docs/packages/apt/Packages.gz;
-      . /workspace/codebuilds-tools/merge.sh;
+      if [[ "${LABEL}" == "armhf_linux" ]]; then
+        mkdir /workspace/docs/packages /workspace/docs/packages/apt;
+        debfile=$(find /workspace/.build/linux -type f -name "*.deb");
+        cp $debfile /workspace/docs/packages/apt/;
+        dpkg-scanpackages -m docs/packages/apt/ | gzip -c > /workspace/docs/packages/apt/Packages.gz;
+        . /workspace/codebuilds-tools/merge.sh;
+      fi;
     fi;
 
 deploy:

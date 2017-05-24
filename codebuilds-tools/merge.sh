@@ -28,7 +28,7 @@ echo "Fetching upstream...";
 git fetch upstream master;
 
 echo "Merging upstream onto origin with a preference of ours...";
-git merge upstream/master -s recursive -X ours;
+git merge upstream/master -s recursive -X ours -m $1;
 
 echo "Staging all changes...";
 git add .;
