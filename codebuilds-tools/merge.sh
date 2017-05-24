@@ -30,8 +30,8 @@ git fetch upstream master;
 echo "Merging upstream onto origin with a preference of ours...";
 git merge upstream/master -s recursive -X ours -m "Merging for $merge_tag_id.";
 
-echo "Staging all changes...";
-git add .;
+echo "Staging packaging changes...";
+git add /workspace/docs/packages;
 
 echo "Committing changes...";
 git commit -m "Committing merge for $merge_tag_id.";
