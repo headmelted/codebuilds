@@ -1,4 +1,4 @@
-#!/bin/bash;
+#!/bin/bash
 set -e;
 
 echo "Installing flatpak dependencies (including static QEMU for ${QEMU_ARCH})...";
