@@ -68,6 +68,7 @@ include: &toolchain_linux_arm64
 include: &toolchain_linux_armhf_flatpak
   env:
     - LABEL=flatpak_armhf
+    - ARCH=armhf
     - QEMU_ARCH=arm
 
 # Travis CI build matrix.  Each entry below will trigger an extra, parallel build on Travis.
