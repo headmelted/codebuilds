@@ -28,16 +28,16 @@ echo "Fetching upstream...";
 git fetch upstream master;
 
 echo "Merging upstream onto origin with a preference of ours...";
-git merge upstream/master -s recursive -X ours -m $1;
+git merge upstream/master -s recursive -X ours -m "Merging for $merge_tag_id.";
 
 echo "Staging all changes...";
 git add .;
 
 echo "Committing changes...";
-git commit -m "Merging for $merge_tag_id";
+git commit -m "Committing merge for $merge_tag_id.";
 
 echo "Tagging changes with $merge_tag_id...";
-git tag -a "$merge_tag_id" -m "Merging for $merge_tag_id";
+git tag -a "$merge_tag_id" -m "Tagging merge for $merge_tag_id.";
 
 echo "Pushing changes back to origin...";
 git push origin master;
