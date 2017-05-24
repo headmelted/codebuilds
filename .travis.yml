@@ -101,8 +101,10 @@ script:
         dpkg-scanpackages -m docs/packages/apt/ | gzip -c > /workspace/docs/packages/apt/Packages.gz;
       fi;
     else
-      echo "Merging packages repository back up to Github Pages...";
-      . /workspace/codebuilds-tools/merge.sh;
+      if [[ "${LABEL}" == "armhf_linux" ]]; then
+        echo "Merging packages repository back up to Github Pages...";
+        . /workspace/codebuilds-tools/merge.sh;
+      fi;
     fi;
 
 deploy:
