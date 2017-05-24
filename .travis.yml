@@ -1,6 +1,6 @@
 sudo: required
 dist: trusty
-language: genericS
+language: generic
 cache:
   directories:
   - cache
