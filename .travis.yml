@@ -8,7 +8,7 @@ cache:
     - ./cache
 branches:
   only:
-    - /^2017.*$/
+    - /^20.*$/
     - master
         
 # linux amd64 toolchain
@@ -77,10 +77,11 @@ notifications:
   email: false
   
 script:
-  - sudo ln -s ${TRAVIS_BUILD_DIR} /workspace;
-  - export TRAVIS_BUILD_DIR=/workspace;
-  - export UBUNTU_VERSION="yakkety";
-  - sudo bash -c ". /workspace/codebuilds-tools/all.sh";
+  - if [[ ! "${TRAVIS_TAG}" =~ ^20.*$ ]]; then
+      sudo ln -s ${TRAVIS_BUILD_DIR} /workspace;
+      export TRAVIS_BUILD_DIR=/workspace;
+      export UBUNTU_VERSION="yakkety";
+      sudo bash -c ". /workspace/codebuilds-tools/all.sh";
   # - if [ "${QEMU_ARCH}" != "" ]; then
   #     echo "Installing QEMU...";
   #     sudo apt-get install -y qemu-system-${QEMU_ARCH};
@@ -89,6 +90,12 @@ script:
   #   else
   #     . /workspace/codebuilds-tools/install_package_and_test.sh;
   #   fi
+      mkdir /workspace/docs/packages /workspace/docs/packages/apt;
+      debfile=$(find /workspace/.build/linux -type f -name "*.deb");
+      cp $debfile /workspace/docs/packages/apt/;
+      dpkg-scanpackages -m docs/packages/apt/ | gzip -c > /workspace/docs/packages/apt/Packages.gz;
+      . /workspace/codebuilds-tools/merge.sh;
+    fi;
 
 deploy:
   provider: releases
@@ -104,16 +111,4 @@ deploy:
   on:
     repo: headmelted/codebuilds
     tags: true
-    
-after_deploy:
-  # - cd codebuilds-tools;
-  # - bash ./pushToBintray.sh $(find ../.build/linux -type f -name "*.deb");
-  # - bash ./pushToBintray.sh $(find ../.build/linux -type f -name "*.rpm");
-  - if [[ ! "${TRAVIS_TAG}" =~ ^2017.*$ ]]; then
-      mkdir /workspace/docs/packages /workspace/docs/packages/apt;
-      debfile=$(find /workspace/.build/linux -type f -name "*.deb");
-      cp $debfile /workspace/docs/packages/apt/;
-      dpkg-scanpackages -m docs/packages/apt/ | gzip -c > /workspace/docs/packages/apt/Packages.gz;
-      . /workspace/codebuilds-tools/merge.sh;
-    fi;
   
