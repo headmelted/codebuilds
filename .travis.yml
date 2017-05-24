@@ -50,6 +50,8 @@ include: &toolchain_linux_armhf
 include: &toolchain_linux_armhf_flatpak
   env:
     - LABEL=flatpak_armhf
+    - QEMU_ARCH=arm
+    - FLATPAK_BUILD=true
   
 # arm64 toolchain
 include: &toolchain_linux_arm64
@@ -79,6 +81,8 @@ matrix:
     <<: *toolchain_linux_armhf
   - os: linux
     <<: *toolchain_linux_arm64
+  - os: linux
+    <<: *toolchain_linux_armhf_flatpak
     
 notifications:
   email: false
@@ -87,14 +91,20 @@ script:
   - if [[ ! "${TRAVIS_TAG}" =~ ^20.*$ ]]; then
       sudo ln -s ${TRAVIS_BUILD_DIR} /workspace;
       export TRAVIS_BUILD_DIR=/workspace;
-      export UBUNTU_VERSION="yakkety";
-      sudo bash -c ". /workspace/codebuilds-tools/all.sh";
-      if [[ "${LABEL}" == "armhf_linux" ]]; then
-        mkdir /workspace/docs/packages /workspace/docs/packages/apt;
-        debfile=$(find /workspace/.build/linux -type f -name "*.deb");
-        cp $debfile /workspace/docs/packages/apt/;
-        dpkg-scanpackages -m docs/packages/apt/ | gzip -c > /workspace/docs/packages/apt/Packages.gz;
-        . /workspace/codebuilds-tools/merge.sh;
+      if [[ "${FLATPAK_BUILD}" == "true" ]]; then
+        echo "Starting flatpak build...";
+        . /workspace/flatpak_all.sh;
+      else
+        echo "Starting non-flatpak build...";
+        export UBUNTU_VERSION="yakkety";
+        sudo bash -c ". /workspace/codebuilds-tools/all.sh";
+        if [[ "${LABEL}" == "armhf_linux" ]]; then
+          mkdir /workspace/docs/packages /workspace/docs/packages/apt;
+          debfile=$(find /workspace/.build/linux -type f -name "*.deb");
+          cp $debfile /workspace/docs/packages/apt/;
+          dpkg-scanpackages -m docs/packages/apt/ | gzip -c > /workspace/docs/packages/apt/Packages.gz;
+          . /workspace/codebuilds-tools/merge.sh;
+        fi;
       fi;
     fi;
 
