@@ -4,16 +4,16 @@ set -e;
 cd /workspace;
 
 echo "Decrypting merger_rsa.enc...";
-openssl aes-256-cbc -K $encrypted_26b4962af0e7_key -iv $encrypted_26b4962af0e7_iv -in merger_rsa.enc -out merger_rsa -d;
+openssl aes-256-cbc -K $encrypted_26b4962af0e7_key -iv $encrypted_26b4962af0e7_iv -in merger_rsa.enc -out /tmp/merger_rsa -d;
 
 echo "Changing permissions of merger_rsa...";
-chmod 600 merger_rsa;
+chmod 600 /tmp/merger_rsa;
 
-echo "Moving merger_rsa to ~/.ssh/merger_rsa...";
-mv merger_rsa ~/.ssh/merger_rsa;
+echo "Calling ssh-agent...";
+eval "$(ssh-agent -s)";
 
-echo "Updating ssh-config...";
-mv -fv /workspace/codebuilds-tools/merge-ssh-config ~/.ssh/config;
+echo "Calling ssh-add on decrypted key...";
+ssh-add /tmp/merger_rsa;
 
 echo "Setting git e-mail...";
 git config --global user.email "${SSH_GIT_EMAIL}";
