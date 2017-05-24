@@ -8,7 +8,7 @@ apt-get install -y qemu-system-${QEMU_ARCH} qemu-user-static flatpak;
 # systemctl restart systemd-binfmt.service;
 
 echo "Installing flatpak runtimes for ${QEMU_ARCH}...";
-flatpak install gnome org.freedesktop.Sdk/${QEMU_ARCH}/1.6 org.freedesktop.Platform/${QEMU_ARCH}/1.6;
+flatpak install --user gnome org.freedesktop.Sdk/${QEMU_ARCH}/1.6 org.freedesktop.Platform/${QEMU_ARCH}/1.6;
 
 echo "Initializing flatpak directory...";
 flatpak build-init /workspace/flatpak code-oss org.freedesktop.Sdk/${QEMU_ARCH} org.freedesktop.Platform/${QEMU_ARCH};
