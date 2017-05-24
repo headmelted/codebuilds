@@ -2,10 +2,10 @@ sudo: required
 dist: trusty
 language: generic
 services:
-  - docker
+- docker
 cache:
   directories:
-    - ./cache
+  - "./cache"
 branches:
   only:
     - /^20.*$/
@@ -43,14 +43,6 @@ include: &toolchain_linux_armhf
     - QEMU_KERNEL="kernel7.img"
     - QEMU_DTB="bcm2709-rpi-2-b.dtb"
     - QEMU_MACHINE="raspi2"
-
-
-  
-# armhf toolchain
-include: &toolchain_linux_armhf_flatpak
-  env:
-    - LABEL=flatpak_armhf
-    - QEMU_ARCH=arm
     - FLATPAK_BUILD=true
   
 # arm64 toolchain
@@ -71,6 +63,13 @@ include: &toolchain_linux_arm64
     - QEMU_KERNEL="Image"
     - QEMU_DTB="meson64_odroidc2.dtb"
     - QEMU_MACHINE="virt"
+
+
+# armhf toolchain
+include: &toolchain_linux_armhf_flatpak
+  env:
+    - LABEL=flatpak_armhf
+    - QEMU_ARCH=arm
 
 # Travis CI build matrix.  Each entry below will trigger an extra, parallel build on Travis.
 matrix:
