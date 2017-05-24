@@ -90,8 +90,13 @@ script:
       sudo ln -s ${TRAVIS_BUILD_DIR} /workspace;
       export TRAVIS_BUILD_DIR=/workspace;
       if [[ "${LABEL}" == "flatpak_armhf" ]]; then
-        echo "Starting flatpak build in docker...";
-        /workspace/codebuilds-tools/dock.sh "ubuntu:yakkety" "codebuilds-tools/flatpak_all.sh";
+        export UBUNTU_VERSION="yakkety";
+        echo "Repointing APT for flatpak...";
+        sudo bash -c ". /workspace/codebuilds-tools/repoint_apt.sh";
+        echo "Updating package repositories...";
+        sudo apt-get update -yq;
+        echo "Starting flatpak build...";
+        sudo /workspace/codebuilds-tools/flatpak_all.sh;
       else
         echo "Starting non-flatpak build...";
         export UBUNTU_VERSION="yakkety";
