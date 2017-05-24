@@ -12,8 +12,8 @@ chmod 600 merger_rsa;
 echo "Moving merger_rsa to ~/.ssh/merger_rsa...";
 mv merger_rsa ~/.ssh/merger_rsa;
 
-# echo "Adding origin...";
-# git remote add origin git@github.com:headmelted/codebuilds.git;
+echo "Adding origin...";
+git remote add origin git@github.com:headmelted/codebuilds.git;
 
 echo "Adding upstream...";
 git remote add upstream https://github.com/Microsoft/vscode.git;
