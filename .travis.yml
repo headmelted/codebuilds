@@ -119,5 +119,6 @@ deploy:
   skip_cleanup: true
   on:
     repo: headmelted/codebuilds
+    condition: $LABEL = "armhf_linux"
     tags: true
   
