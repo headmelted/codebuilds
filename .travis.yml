@@ -80,8 +80,6 @@ matrix:
     <<: *toolchain_linux_armhf
   - os: linux
     <<: *toolchain_linux_arm64
-  - os: linux
-    <<: *toolchain_linux_armhf_flatpak
     
 notifications:
   email: false
@@ -90,16 +88,16 @@ script:
   - if [[ ! "${TRAVIS_TAG}" =~ ^20.*$ ]]; then
       sudo ln -s ${TRAVIS_BUILD_DIR} /workspace;
       export TRAVIS_BUILD_DIR=/workspace;
-      if [[ "${LABEL}" == "flatpak_armhf" ]]; then
-        export UBUNTU_VERSION="yakkety";
-        echo "Repointing APT for flatpak...";
-        sudo bash -c ". /workspace/codebuilds-tools/repoint_apt.sh";
-        echo "Updating package repositories...";
-        sudo apt-get update -yq;
-        echo "Starting flatpak build...";
-        sudo /workspace/codebuilds-tools/flatpak_all.sh;
-      else
-        echo "Starting non-flatpak build...";
+      # if [[ "${LABEL}" == "flatpak_armhf" ]]; then
+      #   export UBUNTU_VERSION="yakkety";
+      #   echo "Repointing APT for flatpak...";
+      #   sudo bash -c ". /workspace/codebuilds-tools/repoint_apt.sh";
+      #   echo "Updating package repositories...";
+      #   sudo apt-get update -yq;
+      #   echo "Starting flatpak build...";
+      #   sudo /workspace/codebuilds-tools/flatpak_all.sh;
+      # else
+        # echo "Starting non-flatpak build...";
         export UBUNTU_VERSION="yakkety";
         sudo bash -c ". /workspace/codebuilds-tools/all.sh";
         if [[ "${LABEL}" == "armhf_linux" ]]; then
@@ -116,7 +114,7 @@ script:
           echo "Merging packages repository back up to Github Pages...";
           . /workspace/codebuilds-tools/merge.sh;
         fi;
-      fi;
+      # fi;
     fi;
 
 deploy:
