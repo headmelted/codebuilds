@@ -473,9 +473,9 @@ export class TerminalInstance implements ITerminalInstance {
 		}
 		const env = TerminalInstance.createTerminalEnv(process.env, shell, this._getCwd(shell, workspace), locale, this._cols, this._rows);
 		this._title = shell.name || '';
-		this._process = cp.fork('./terminalProcess', [], {
-			env: env,
-			cwd: URI.parse(path.dirname(require.toUrl('./terminalProcess'))).fsPath
+		this._process = cp.fork(URI.parse(require.toUrl('bootstrap')).fsPath, ['--type=terminal'], {
+			env,
+			cwd: URI.parse(path.dirname(require.toUrl('../node/terminalProcess'))).fsPath
 		});
 		if (!shell.name) {
 			// Only listen for process title changes when a name is not provided
@@ -622,6 +622,7 @@ export class TerminalInstance implements ITerminalInstance {
 			env['PTYCOLS'] = cols.toString();
 			env['PTYROWS'] = rows.toString();
 		}
+		env['AMD_ENTRYPOINT'] = 'vs/workbench/parts/terminal/node/terminalProcess';
 		return env;
 	}
 
