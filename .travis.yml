@@ -93,7 +93,7 @@ script:
       export TRAVIS_BUILD_DIR=/workspace;
       if [[ "${FLATPAK_BUILD}" == "true" ]]; then
         echo "Starting flatpak build...";
-        . /workspace/flatpak_all.sh;
+        . /workspace/codebuilds-tools/flatpak_all.sh;
       else
         echo "Starting non-flatpak build...";
         export UBUNTU_VERSION="yakkety";
