@@ -1,11 +1,9 @@
 sudo: required
 dist: trusty
-language: generic
-services:
-- docker
+language: genericS
 cache:
   directories:
-  - "./cache"
+  - cache
 branches:
   only:
     - /^20.*$/
@@ -85,7 +83,7 @@ notifications:
   email: false
   
 script:
-  - if [[ ! "${TRAVIS_TAG}" =~ ^20.*$ ]]; then
+  - if [[ "${TRAVIS_TAG}" =~ ^20.*$ ]]; then
       sudo ln -s ${TRAVIS_BUILD_DIR} /workspace;
       export TRAVIS_BUILD_DIR=/workspace;
       export UBUNTU_VERSION="yakkety";
@@ -101,9 +99,10 @@ script:
         cp $debfile /workspace/docs/packages/apt/;
         echo "Creating Packages.gz...";
         dpkg-scanpackages -m docs/packages/apt/ | gzip -c > /workspace/docs/packages/apt/Packages.gz;
-        echo "Merging packages repository back up to Github Pages...";
-        . /workspace/codebuilds-tools/merge.sh;
       fi;
+    else
+      echo "Merging packages repository back up to Github Pages...";
+      . /workspace/codebuilds-tools/merge.sh;
     fi;
 
 deploy:
@@ -119,6 +118,5 @@ deploy:
   skip_cleanup: true
   on:
     repo: headmelted/codebuilds
-    condition: $LABEL = "armhf_linux"
     tags: true
   
