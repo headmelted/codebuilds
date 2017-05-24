@@ -257,6 +257,16 @@ const editorConfiguration: IConfigurationNode = {
 			'default': EDITOR_DEFAULTS.viewInfo.minimap.maxColumn,
 			'description': nls.localize('minimap.maxColumn', "Limit the width of the minimap to render at most a certain number of columns")
 		},
+		'editor.find.seedSearchStringFromSelection': {
+			'type': 'boolean',
+			'default': EDITOR_DEFAULTS.contribInfo.find.seedSearchStringFromSelection,
+			'description': nls.localize('find.seedSearchStringFromSelection', "Controls if we seed the search string in Find Widget from editor selection")
+		},
+		'editor.find.autoFindInSelection': {
+			'type': 'boolean',
+			'default': EDITOR_DEFAULTS.contribInfo.find.autoFindInSelection,
+			'description': nls.localize('find.autoFindInSelection', "Controls if Find in Selection flag is turned on when multiple characters or lines of text are selected in the editor")
+		},
 		'editor.wordWrap': {
 			'type': 'string',
 			'enum': ['off', 'on', 'wordWrapColumn', 'bounded'],
