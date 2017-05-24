@@ -4,8 +4,8 @@ set -e;
 echo "Installing flatpak dependencies (including static QEMU for ${QEMU_ARCH})...";
 apt-get install -y qemu-system-${QEMU_ARCH} qemu-user-static flatpak;
 
-echo "Restarting systemd-binfmt.service daemon...";
-systemctl restart systemd-binfmt.service;
+# echo "Restarting systemd-binfmt.service daemon...";
+# systemctl restart systemd-binfmt.service;
 
 echo "Installing flatpak runtimes for ...";
 flatpak install --user gnome org.freedesktop.Sdk/${QEMU_ARCH}/1.6 org.freedesktop.Platform/${QEMU_ARCH}/1.6;
