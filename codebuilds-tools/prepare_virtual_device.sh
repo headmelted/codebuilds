@@ -49,7 +49,7 @@ set -e;
     
   echo "Getting boot offset...";
   boot_offset=0;
-  boot_offset=$(fdisk -l image.img | grep -oP "(image\.img1)( *)([0-9]*?) " | grep -oE "*([0-9]*)*" | tail -1);
+  boot_offset=$(fdisk -l /workspace/cache/image.img | grep -oP "(image\.img1)( *)([0-9]*?) " | grep -oE "*([0-9]*)*" | tail -1);
     
   echo "Boot offset is $boot_offset.";
     
@@ -58,11 +58,11 @@ set -e;
   echo "Boot sector offset is $boot_sector_offset.";
   
   echo "Mounting boot...";
-  echo "\"mount -o loop,offset=\$boot_sector_offset image.img ./image/boot\"";
+  echo "\"mount -o loop,offset=\$boot_sector_offset image.img /workspace/image/boot\"";
   mount -o loop,offset=$boot_sector_offset /workspace/cache/image.img /workspace/image/boot;
   
   echo "Listing boot...";
-  ls ./image/boot;
+  ls /workspace/image/boot;
   
   echo "Creating boot directory...";
   mkdir boot;
