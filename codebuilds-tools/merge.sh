@@ -1,8 +1,8 @@
 #!/bin/bash
 set -e;
 cd /workspace;
-chmod 600 deploy-key;
-mv deploy-key ~/.ssh/merge_rsa;
+chmod 600 deploy_key;
+mv deploy_key ~/.ssh/merge_rsa;
 git remote add master git@github.com:headmelted/codebuilds.git;
 git remote add upstream https://github.com/Microsoft/vscode.git;
 merge_tag_id=$(date +%Y%m%d%H%M%S);

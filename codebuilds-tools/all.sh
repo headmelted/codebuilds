@@ -1,12 +1,10 @@
 #!/bin/bash
 set -e;
 
-echo "Listing workspace...";
-ls .
-
 . /workspace/codebuilds-tools/environment.sh;
 . /workspace/codebuilds-tools/setup_nvm.sh;
 . /workspace/codebuilds-tools/build.sh;
+. /workspace/codebuilds-tools/package.sh;
 # . /workspace/codebuilds-tools/startxvfb.sh;
 
 
@@ -21,7 +19,5 @@ ls .
 
 # echo "Starting integration tests...";
 # ./scripts/test-integration.sh;
-
-. /workspace/codebuilds-tools/package.sh;
 
 # . /workspace/codebuilds-tools/flatpak/build.sh;
