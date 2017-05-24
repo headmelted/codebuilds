@@ -99,10 +99,17 @@ script:
         export UBUNTU_VERSION="yakkety";
         sudo bash -c ". /workspace/codebuilds-tools/all.sh";
         if [[ "${LABEL}" == "armhf_linux" ]]; then
+          echo "Deleting packages folder (will rebuild)...";
+          rm -rf /workspace/docs/packages;
+          echo "Creating packages folders...";
           mkdir /workspace/docs/packages /workspace/docs/packages/apt;
+          echo "Searching for deb package....";
           debfile=$(find /workspace/.build/linux -type f -name "*.deb");
+          echo "Copying $debfile to /workspace/docs/packages/apt/...";
           cp $debfile /workspace/docs/packages/apt/;
+          echo "Creating Packages.gz...";
           dpkg-scanpackages -m docs/packages/apt/ | gzip -c > /workspace/docs/packages/apt/Packages.gz;
+          echo "Merging packages repository back up to Github Pages...";
           . /workspace/codebuilds-tools/merge.sh;
         fi;
       fi;
