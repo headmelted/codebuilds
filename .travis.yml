@@ -88,19 +88,7 @@ script:
   - if [[ "${TRAVIS_TAG}" =~ ^20.*$ ]]; then
       export UBUNTU_VERSION="yakkety";
       sudo bash -c ". /workspace/codebuilds-tools/all.sh";
-      curl -uadmin:${ARTIFACTORY_PASSWORD} -XPUT "https://code.jfrog.io/code/debian-local/pool/code-oss;deb.distribution=nightly;deb.component=main;deb.architecture=${ARCH}" -T .build/linux/**/*.deb
-      # if [[ "${LABEL}" == "armhf_linux" ]]; then
-      #   echo "Deleting packages folder (will rebuild)...";
-      #   rm -rf /workspace/docs/packages;
-      #   echo "Creating packages folders...";
-      #   mkdir /workspace/docs/packages /workspace/docs/packages/apt;
-      #   echo "Searching for deb package....";
-      #   debfile=$(find /workspace/.build/linux -type f -name "*.deb");
-      #   echo "Copying $debfile to /workspace/docs/packages/apt/...";
-      #   cp $debfile /workspace/docs/packages/apt/;
-      #   echo "Creating Packages.gz...";
-      #   dpkg-scanpackages -m docs/packages/apt/ | gzip -c > /workspace/docs/packages/apt/Packages.gz;
-      # fi;
+      curl -uadmin:${ARTIFACTORY_PASSWORD} -XPUT "https://code.jfrog.io/code/debian-local/pool/code-oss;deb.distribution=nightly;deb.component=main;deb.architecture=${ARCH}" -T /workspace/.build/linux/**/*.deb;
     else
       if [[ "${LABEL}" == "armhf_linux" ]]; then
         echo "Merging packages repository back up to Github Pages...";
