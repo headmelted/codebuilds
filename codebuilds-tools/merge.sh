@@ -12,6 +12,15 @@ chmod 600 merger_rsa;
 echo "Moving merger_rsa to ~/.ssh/merger_rsa...";
 mv merger_rsa ~/.ssh/merger_rsa;
 
+echo "Updating ssh-config...";
+mv -fv /workspace/codebuilds-tools/merge-ssh-config ~/.ssh/config;
+
+echo "Setting git e-mail...";
+git config --global user.email "${SSH_GIT_EMAIL}";
+
+echo "Setting git user name...";
+git config --global user.name "${SSH_GIT_USER}";
+
 echo "Re-pointing origin for push over SSH...";
 git remote set-url origin git@github.com:headmelted/codebuilds.git;
 

@@ -1,0 +1,7 @@
+Host github.com
+	User				          	git
+	IdentityFile		      	~/.ssh/merger_rsa
+	StrictHostKeyChecking 	no
+	PasswordAuthentication	no
+	CheckHostIP			      	no
+	BatchMode			        	yes
