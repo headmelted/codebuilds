@@ -43,7 +43,6 @@ include: &toolchain_linux_armhf
     - QEMU_KERNEL="kernel7.img"
     - QEMU_DTB="bcm2709-rpi-2-b.dtb"
     - QEMU_MACHINE="raspi2"
-    - FLATPAK_BUILD=true
   
 # arm64 toolchain
 include: &toolchain_linux_arm64
@@ -90,7 +89,7 @@ script:
   - if [[ ! "${TRAVIS_TAG}" =~ ^20.*$ ]]; then
       sudo ln -s ${TRAVIS_BUILD_DIR} /workspace;
       export TRAVIS_BUILD_DIR=/workspace;
-      if [[ "${FLATPAK_BUILD}" == "true" ]]; then
+      if [[ "${LABEL}" == "flatpak_armhf" ]]; then
         echo "Starting flatpak build in docker...";
         /workspace/codebuilds-tools/dock.sh "ubuntu:yakkety" "codebuilds-tools/flatpak_all.sh";
       else
