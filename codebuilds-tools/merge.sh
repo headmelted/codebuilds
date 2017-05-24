@@ -40,7 +40,7 @@ echo "Merging upstream onto origin with a preference of ours...";
 git merge upstream/master -s recursive -X ours -m "Merging for $merge_tag_id.";
 
 echo "Staging packaging changes...";
-git add /workspace/docs/packages;
+git add .;
 
 echo "Committing changes...";
 git commit -m "Committing merge for $merge_tag_id.";
@@ -53,4 +53,3 @@ git push origin master;
 
 echo "Pushing tags to origin...";
 git push origin master --tags;
-
