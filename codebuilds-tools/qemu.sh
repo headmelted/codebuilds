@@ -53,7 +53,7 @@ echo "export HOME=/workspace" >> /workspace/.jail/workspace/.env.sh;
 chmod a+x /workspace/.jail/workspace/.env.sh;
 
 echo "Executing script ($1) in jail...";
-sudo chroot /workspace/.jail bash -c "cd /workspace && . ./.env.sh && echo 'Listing workspace in jail...' && ls /workspace && $1";
+sudo chroot /workspace/.jail bash -c "cd /workspace && . ./.env.sh && echo 'Environment: \$(uname -a)' && echo 'Listing workspace in jail...' && ls /workspace && $1";
 
 # echo "Mounting binfmt_misc...";
 # mount binfmt_misc -t binfmt_misc /proc/sys/fs/binfmt_misc;
