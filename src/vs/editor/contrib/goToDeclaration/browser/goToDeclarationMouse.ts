@@ -10,33 +10,26 @@ import * as nls from 'vs/nls';
 import { Throttler } from 'vs/base/common/async';
 import { onUnexpectedError } from 'vs/base/common/errors';
 import { MarkedString } from 'vs/base/common/htmlContent';
-import { KeyCode } from 'vs/base/common/keyCodes';
-import * as platform from 'vs/base/common/platform';
 import { TPromise } from 'vs/base/common/winjs.base';
-import * as browser from 'vs/base/browser/browser';
-import { IKeyboardEvent } from 'vs/base/browser/keyboardEvent';
 import { IModeService } from 'vs/editor/common/services/modeService';
 import { Range } from 'vs/editor/common/core/range';
 import * as editorCommon from 'vs/editor/common/editorCommon';
 import { Location, DefinitionProviderRegistry } from 'vs/editor/common/modes';
-import { ICodeEditor, IEditorMouseEvent, IMouseTarget, MouseTargetType } from 'vs/editor/browser/editorBrowser';
+import { ICodeEditor, IMouseTarget, MouseTargetType } from 'vs/editor/browser/editorBrowser';
 import { editorContribution } from 'vs/editor/browser/editorBrowserExtensions';
 import { getDefinitionsAtPosition } from './goToDeclaration';
 import { IDisposable, dispose } from 'vs/base/common/lifecycle';
 import { ITextModelResolverService } from 'vs/editor/common/services/resolverService';
-import { ICursorSelectionChangedEvent } from 'vs/editor/common/controller/cursorEvents';
 import { registerThemingParticipant } from 'vs/platform/theme/common/themeService';
 import { editorActiveLinkForeground } from 'vs/platform/theme/common/colorRegistry';
 import { EditorState, CodeEditorStateFlag } from 'vs/editor/common/core/editorState';
 import { DefinitionAction, DefinitionActionConfig } from './goToDeclarationCommands';
+import { ClickLinkGesture, ClickLinkMouseEvent, ClickLinkKeyboardEvent } from "vs/editor/contrib/goToDeclaration/browser/clickLinkGesture";
 
 @editorContribution
 class GotoDefinitionWithMouseEditorContribution implements editorCommon.IEditorContribution {
 
 	private static ID = 'editor.contrib.gotodefinitionwithmouse';
-	static TRIGGER_MODIFIER = platform.isMacintosh ? 'metaKey' : 'ctrlKey';
-	static TRIGGER_SIDEBYSIDE_KEY_VALUE = KeyCode.Alt;
-	static TRIGGER_KEY_VALUE = platform.isMacintosh ? KeyCode.Meta : KeyCode.Ctrl;
 	static MAX_SOURCE_PREVIEW_LINES = 8;
 
 	private editor: ICodeEditor;
@@ -44,8 +37,6 @@ class GotoDefinitionWithMouseEditorContribution implements editorCommon.IEditorC
 	private decorations: string[];
 	private currentWordUnderMouse: editorCommon.IWordAtPosition;
 	private throttler: Throttler;
-	private lastMouseMoveEvent: IEditorMouseEvent;
-	private hasTriggerKeyOnMouseDown: boolean;
 
 	constructor(
 		editor: ICodeEditor,
@@ -57,36 +48,32 @@ class GotoDefinitionWithMouseEditorContribution implements editorCommon.IEditorC
 		this.editor = editor;
 		this.throttler = new Throttler();
 
-		this.toUnhook.push(this.editor.onMouseDown((e: IEditorMouseEvent) => this.onEditorMouseDown(e)));
-		this.toUnhook.push(this.editor.onMouseUp((e: IEditorMouseEvent) => this.onEditorMouseUp(e)));
-		this.toUnhook.push(this.editor.onMouseMove((e: IEditorMouseEvent) => this.onEditorMouseMove(e)));
-		this.toUnhook.push(this.editor.onMouseDrag(() => this.resetHandler()));
-		this.toUnhook.push(this.editor.onKeyDown((e: IKeyboardEvent) => this.onEditorKeyDown(e)));
-		this.toUnhook.push(this.editor.onKeyUp((e: IKeyboardEvent) => this.onEditorKeyUp(e)));
+		let linkGesture = new ClickLinkGesture(editor);
+		this.toUnhook.push(linkGesture);
 
-		this.toUnhook.push(this.editor.onDidChangeCursorSelection((e) => this.onDidChangeCursorSelection(e)));
-		this.toUnhook.push(this.editor.onDidChangeModel((e) => this.resetHandler()));
-		this.toUnhook.push(this.editor.onDidChangeModelContent(() => this.resetHandler()));
-		this.toUnhook.push(this.editor.onDidScrollChange((e) => {
-			if (e.scrollTopChanged || e.scrollLeftChanged) {
-				this.resetHandler();
+		this.toUnhook.push(linkGesture.onMouseMoveOrRelevantKeyDown(([mouseEvent, keyboardEvent]) => {
+			this.startFindDefinition(mouseEvent, keyboardEvent);
+		}));
+
+		this.toUnhook.push(linkGesture.onExecute((mouseEvent: ClickLinkMouseEvent) => {
+			if (this.isEnabled(mouseEvent)) {
+				this.gotoDefinition(mouseEvent.target, mouseEvent.hasSideBySideModifier).done(() => {
+					this.removeDecorations();
+				}, (error: Error) => {
+					this.removeDecorations();
+					onUnexpectedError(error);
+				});
 			}
 		}));
+
+		this.toUnhook.push(linkGesture.onCancel(() => {
+			this.removeDecorations();
+			this.currentWordUnderMouse = null;
+		}));
+
 	}
 
-	private onDidChangeCursorSelection(e: ICursorSelectionChangedEvent): void {
-		if (e.selection && e.selection.startColumn !== e.selection.endColumn) {
-			this.resetHandler(); // immediately stop this feature if the user starts to select (https://github.com/Microsoft/vscode/issues/7827)
-		}
-	}
-
-	private onEditorMouseMove(mouseEvent: IEditorMouseEvent, withKey?: IKeyboardEvent): void {
-		this.lastMouseMoveEvent = mouseEvent;
-
-		this.startFindDefinition(mouseEvent, withKey);
-	}
-
-	private startFindDefinition(mouseEvent: IEditorMouseEvent, withKey?: IKeyboardEvent): void {
+	private startFindDefinition(mouseEvent: ClickLinkMouseEvent, withKey?: ClickLinkKeyboardEvent): void {
 		if (!this.isEnabled(mouseEvent, withKey)) {
 			this.currentWordUnderMouse = null;
 			this.removeDecorations();
@@ -196,56 +183,11 @@ class GotoDefinitionWithMouseEditorContribution implements editorCommon.IEditorC
 		}
 	}
 
-	private onEditorKeyDown(e: IKeyboardEvent): void {
-		if (
-			this.lastMouseMoveEvent && (
-				e.keyCode === GotoDefinitionWithMouseEditorContribution.TRIGGER_KEY_VALUE || // User just pressed Ctrl/Cmd (normal goto definition)
-				e.keyCode === GotoDefinitionWithMouseEditorContribution.TRIGGER_SIDEBYSIDE_KEY_VALUE && e[GotoDefinitionWithMouseEditorContribution.TRIGGER_MODIFIER] // User pressed Ctrl/Cmd+Alt (goto definition to the side)
-			)
-		) {
-			this.startFindDefinition(this.lastMouseMoveEvent, e);
-		} else if (e[GotoDefinitionWithMouseEditorContribution.TRIGGER_MODIFIER]) {
-			this.removeDecorations(); // remove decorations if user holds another key with ctrl/cmd to prevent accident goto declaration
-		}
-	}
-
-	private resetHandler(): void {
-		this.lastMouseMoveEvent = null;
-		this.hasTriggerKeyOnMouseDown = false;
-		this.removeDecorations();
-	}
-
-	private onEditorMouseDown(mouseEvent: IEditorMouseEvent): void {
-		// We need to record if we had the trigger key on mouse down because someone might select something in the editor
-		// holding the mouse down and then while mouse is down start to press Ctrl/Cmd to start a copy operation and then
-		// release the mouse button without wanting to do the navigation.
-		// With this flag we prevent goto definition if the mouse was down before the trigger key was pressed.
-		this.hasTriggerKeyOnMouseDown = !!mouseEvent.event[GotoDefinitionWithMouseEditorContribution.TRIGGER_MODIFIER];
-	}
-
-	private onEditorMouseUp(mouseEvent: IEditorMouseEvent): void {
-		if (this.isEnabled(mouseEvent) && this.hasTriggerKeyOnMouseDown) {
-			this.gotoDefinition(mouseEvent.target, mouseEvent.event.altKey).done(() => {
-				this.removeDecorations();
-			}, (error: Error) => {
-				this.removeDecorations();
-				onUnexpectedError(error);
-			});
-		}
-	}
-
-	private onEditorKeyUp(e: IKeyboardEvent): void {
-		if (e.keyCode === GotoDefinitionWithMouseEditorContribution.TRIGGER_KEY_VALUE) {
-			this.removeDecorations();
-			this.currentWordUnderMouse = null;
-		}
-	}
-
-	private isEnabled(mouseEvent: IEditorMouseEvent, withKey?: IKeyboardEvent): boolean {
+	private isEnabled(mouseEvent: ClickLinkMouseEvent, withKey?: ClickLinkKeyboardEvent): boolean {
 		return this.editor.getModel() &&
-			(browser.isIE || mouseEvent.event.detail <= 1) && // IE does not support event.detail properly
+			mouseEvent.isNoneOrSingleMouseDown &&
 			mouseEvent.target.type === MouseTargetType.CONTENT_TEXT &&
-			(mouseEvent.event[GotoDefinitionWithMouseEditorContribution.TRIGGER_MODIFIER] || (withKey && withKey.keyCode === GotoDefinitionWithMouseEditorContribution.TRIGGER_KEY_VALUE)) &&
+			(mouseEvent.hasTriggerModifier || (withKey && withKey.keyCodeIsTriggerKey)) &&
 			DefinitionProviderRegistry.has(this.editor.getModel());
 	}
 

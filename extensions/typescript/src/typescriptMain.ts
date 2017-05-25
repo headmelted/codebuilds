@@ -7,7 +7,6 @@
  * Includes code from typescript-sublime-plugin project, obtained from
  * https://github.com/Microsoft/TypeScript-Sublime-Plugin/blob/master/TypeScript%20Indent.tmPreferences
  * ------------------------------------------------------------------------------------------ */
-'use strict';
 
 import { env, languages, commands, workspace, window, ExtensionContext, Memento, IndentAction, Diagnostic, DiagnosticCollection, Range, Disposable, Uri, MessageItem, TextEditor, DiagnosticSeverity, TextDocument, SnippetString } from 'vscode';
 
@@ -108,6 +107,10 @@ export function activate(context: ExtensionContext): void {
 
 	context.subscriptions.push(commands.registerCommand('typescript.openTsServerLog', () => {
 		client.openTsServerLogFile();
+	}));
+
+	context.subscriptions.push(commands.registerCommand('typescript.restartTsServer', () => {
+		client.restartTsServer();
 	}));
 
 	const goToProjectConfig = (isTypeScript: boolean) => {
