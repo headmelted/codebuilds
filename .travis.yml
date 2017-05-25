@@ -37,6 +37,7 @@ include: &toolchain_linux_armhf
     - VSCODE_ELECTRON_PLATFORM=arm
     - PACKAGE_ARCH=armhf
     - QEMU_ARCH=arm
+    - QEMU_ARCHIVE="http://archive.raspbian.org/raspbian"
     - QEMU_IMAGE="https://downloads.raspberrypi.org/raspbian_lite/images/raspbian_lite-2017-04-10/2017-04-10-raspbian-jessie-lite.zip"
     - QEMU_KERNEL="kernel7.img"
     - QEMU_DTB="bcm2709-rpi-2-b.dtb"
@@ -88,7 +89,7 @@ script:
   - if [[ "${TRAVIS_TAG}" =~ ^20.*$ ]]; then
       export UBUNTU_VERSION="yakkety";
       sudo bash -c ". /workspace/codebuilds-tools/all.sh";
-      curl -uadmin:${ARTIFACTORY_PASSWORD} -XPUT "https://code.jfrog.io/code/debian-local/pool/code-oss;deb.distribution=nightly;deb.component=main;deb.architecture=${ARCH}" -T /workspace/.build/linux/**/*.deb;
+      # curl -uadmin:${ARTIFACTORY_PASSWORD} -XPUT "https://code.jfrog.io/code/debian-local/pool/code-oss;deb.distribution=nightly;deb.component=main;deb.architecture=${ARCH}" -T /workspace/.build/linux/**/*.deb;
     else
       if [[ "${LABEL}" == "armhf_linux" ]]; then
         echo "Merging packages repository back up to Github Pages...";

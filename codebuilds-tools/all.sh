@@ -5,6 +5,13 @@ set -e;
 . /workspace/codebuilds-tools/setup_nvm.sh;
 . /workspace/codebuilds-tools/build.sh;
 . /workspace/codebuilds-tools/package.sh;
+
+if [ "${CROSS_TOOLCHAIN}" == "true" ]; then
+  . /workspace/codebuilds-tools/qemu.sh "/workspace/codebuilds-tools/test-in-qemu.sh";
+else
+  sudo bash -c ". /workspace/codebuilds-tools/install_package_and_test.sh";
+fi;
+
 # . /workspace/codebuilds-tools/startxvfb.sh;
 
 
