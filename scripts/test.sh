@@ -34,13 +34,16 @@ test -d node_modules || ./scripts/npm.sh install
 
 # Unit Tests
 if [[ "$1" == "--xvfb" ]]; then
+    echo "Running tests for xvfb-run...";
 	cd $ROOT ; \
 		xvfb-run -a "$CODE" test/electron/index.js "$@"
 elif [[ "$OSTYPE" == "darwin"* ]]; then
+    echo "Running tests for Darwin...";
 	cd $ROOT ; ulimit -n 4096 ; \
 		"$CODE" \
 		test/electron/index.js "$@"
 else
+    echo "Running tests for Linux...";
 	cd $ROOT ; \
 		"$CODE" \
 		test/electron/index.js "$@"
