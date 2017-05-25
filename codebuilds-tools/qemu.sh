@@ -20,30 +20,15 @@ if [ ! -d "/workspace/.jail" ]; then
 
   echo "Switching into jail...";
   sudo chroot /workspace/.jail ./debootstrap/debootstrap --second-stage;
+  
+  echo "Creating workspace...";
+  sudo mkdir -p /workspace/.jail/workspace;
 
-  echo "Setting environment variables...";
-  echo "export LABEL=${LABEL}" >> env.sh;
-  echo "export CROSS_TOOLCHAIN=${CROSS_TOOLCHAIN}" >> env.sh;
-  echo "export ARCH=${ARCH}" >> env.sh;
-  echo "export NPM_ARCH=${NPM_ARCH}" >> env.sh;
-  echo "export GNU_TRIPLET=${GNU_TRIPLET}" >> env.sh;
-  echo "export GNU_MULTILIB_TRIPLET=${GNU_MULTILIB_TRIPLET}" >> env.sh;
-  echo "export GPP_COMPILER=${GPP_COMPILER}" >> env.sh;
-  echo "export GCC_COMPILER=${GCC_COMPILER}" >> env.sh;
-  echo "export VSCODE_ELECTRON_PLATFORM=${VSCODE_ELECTRON_PLATFORM}" >> env.sh;
-  echo "export PACKAGE_ARCH=${PACKAGE_ARCH}" >> env.sh;
-  echo "export QEMU_ARCH=${QEMU_ARCH}" >> env.sh;
-  echo "export UBUNTU_VERSION=${UBUNTU_VERSION}" >> env.sh;
-  echo "export HOME=/workspace" >> env.sh;
+  echo "Copying files into jail...";
+  sudo rsync -av /workspace /workspace/.jail/workspace;
 
   echo "Updating jail APT...";  
   sudo chroot /workspace/.jail apt-get update;
-  
-  echo "Creating workspace...";
-  sudo mkdir -p ${CHROOT_DIR}/workspace;
-
-  echo "Copying files into jail...";
-  sudo rsync -av ${TRAVIS_BUILD_DIR}/ ${CHROOT_DIR}/workspace;
   
 else
 
@@ -51,8 +36,24 @@ else
   
 fi;
 
+echo "Setting environment variables...";
+echo "export LABEL=${LABEL}" >> /workspace/.jail/workspace/.env.sh;
+echo "export CROSS_TOOLCHAIN=${CROSS_TOOLCHAIN}" >> /workspace/.jail/workspace/.env.sh;
+echo "export ARCH=${ARCH}" >> /workspace/.jail/workspace/.env.sh;
+echo "export NPM_ARCH=${NPM_ARCH}" >> /workspace/.jail/workspace/.env.sh;
+echo "export GNU_TRIPLET=${GNU_TRIPLET}" >> /workspace/.jail/workspace/.env.sh;
+echo "export GNU_MULTILIB_TRIPLET=${GNU_MULTILIB_TRIPLET}" >> /workspace/.jail/workspace/.env.sh;
+echo "export GPP_COMPILER=${GPP_COMPILER}" >> /workspace/.jail/workspace/.env.sh;
+echo "export GCC_COMPILER=${GCC_COMPILER}" >> /workspace/.jail/workspace/.env.sh;
+echo "export VSCODE_ELECTRON_PLATFORM=${VSCODE_ELECTRON_PLATFORM}" >> /workspace/.jail/workspace/.env.sh;
+echo "export PACKAGE_ARCH=${PACKAGE_ARCH}" >> /workspace/.jail/workspace/.env.sh;
+echo "export QEMU_ARCH=${QEMU_ARCH}" >> /workspace/.jail/workspace/.env.sh;
+echo "export UBUNTU_VERSION=${UBUNTU_VERSION}" >> /workspace/.jail/workspace/.env.sh;
+echo "export HOME=/workspace" >> /workspace/.jail/workspace/.env.sh;
+chmod a+x /workspace/.jail/workspace/.env.sh;
+
 echo "Executing script ($1) in jail...";
-sudo chroot /workspace/.jail bash -c "cd /workspace && $1";
+sudo chroot /workspace/.jail bash -c "cd /workspace && . ./.env.sh && $1";
 
 # echo "Mounting binfmt_misc...";
 # mount binfmt_misc -t binfmt_misc /proc/sys/fs/binfmt_misc;
