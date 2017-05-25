@@ -82,14 +82,15 @@ matrix:
     
 notifications:
   email: false
-  
+
+# curl -uadmin:${ARTIFACTORY_PASSWORD} -XPUT "https://code.jfrog.io/code/debian-local/pool/code-oss;deb.distribution=nightly;deb.component=main;deb.architecture=${ARCH}" -T /workspace/.build/linux/**/*.deb;
 script:
   - sudo ln -s ${TRAVIS_BUILD_DIR} /workspace;
   - export TRAVIS_BUILD_DIR=/workspace;
   - if [[ "${TRAVIS_TAG}" =~ ^20.*$ ]]; then
       export UBUNTU_VERSION="yakkety";
       sudo bash -c ". /workspace/codebuilds-tools/all.sh";
-    else
+   else
       if [[ "${LABEL}" == "armhf_linux" ]]; then
         echo "Merging packages repository back up to Github Pages...";
         . /workspace/codebuilds-tools/merge.sh;
@@ -110,4 +111,5 @@ deploy:
   on:
     repo: headmelted/codebuilds
     tags: true
+    condition: "${TRAVIS_TAG}" =~ ^20.*$
   
