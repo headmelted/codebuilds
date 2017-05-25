@@ -11,4 +11,4 @@ echo "Detecting code-oss...";
 which code-oss;
 
 echo "Calling test script...";
-xvfb-run "/usr/bin/code-oss . --user-data-dir='.'" "test/electron/index.js";
+xvfb-run /usr/bin/code-oss . --user-data-dir='.' test/electron/index.js;
