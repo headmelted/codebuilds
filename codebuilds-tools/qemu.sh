@@ -13,7 +13,7 @@ if [ ! -d "/workspace/.jail" ]; then
   mkdir /workspace/.jail;
 
   echo "Creating debootstrap...";
-  sudo debootstrap --foreign --no-check-gpg --include=fakeroot,build-essential --arch=${ARCH} ${UBUNTU_VERSION} /workspace/.jail ${QEMU_ARCHIVE}
+  sudo debootstrap --foreign --no-check-gpg --include=fakeroot,build-essential --arch=${ARCH} jessie /workspace/.jail ${QEMU_ARCHIVE}
 
   echo "Copying static qemu into jail...";
   sudo cp /usr/bin/qemu-${QEMU_ARCH}-static /workspace/.jail/usr/bin/

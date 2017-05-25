@@ -1,8 +1,8 @@
 #!/bin/bash
 set -e;
 
-# echo "Inserting custom xvfb into /etc/init.d...";
-# mv -f /workspace/codebuilds-tools/xvfb /etc/init.d/xvfb;
+echo "Inserting custom xvfb into /etc/init.d...";
+mv -f /workspace/codebuilds-tools/xvfb /etc/init.d/xvfb;
 
 echo "Exporting display :99.0...";
 export DISPLAY=:99.0;
