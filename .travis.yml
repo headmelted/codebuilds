@@ -110,5 +110,4 @@ deploy:
   on:
     repo: headmelted/codebuilds
     tags: true
-    condition: "${TRAVIS_TAG}" =~ ^20.*$
   
