@@ -3,6 +3,9 @@ set -e;
 
 cd /workspace;
 
+merge_tag_id=$(date +%Y%m%d%H%M%S);
+echo "Merge tag is $merge_tag_id.";
+
 echo "Decrypting merger_rsa.enc...";
 openssl aes-256-cbc -K $encrypted_26b4962af0e7_key -iv $encrypted_26b4962af0e7_iv -in merger_rsa.enc -out /tmp/merger_rsa -d;
 
@@ -27,26 +30,26 @@ git remote set-url origin git@github.com:headmelted/codebuilds.git;
 echo "Adding upstream...";
 git remote add upstream https://github.com/Microsoft/vscode.git;
 
-merge_tag_id=$(date +%Y%m%d%H%M%S);
-echo "Merge tag is $merge_tag_id.";
-
-echo "Fetching from origin...";
-git fetch origin;
-
-echo "Hard resetting to origin, to ensure no detachments prior to merge...";
-git reset --hard origin/master;
-
 echo "Fetching upstream...";
 git fetch upstream master;
 
 echo "Merging upstream onto origin with a preference of ours...";
 git merge upstream/master -s recursive -X ours -m "Merging for $merge_tag_id.";
 
-echo "Staging packaging changes...";
-git add .;
+echo "Pulling from upstream...";
+git pull upstream master;
 
-echo "Committing changes...";
-git commit -m "Committing merge for $merge_tag_id.";
+echo "Checking out to temporary branch...";
+git checkout -b temp;
+
+echo "Branching master...";
+git branch -f master temp;
+
+echo "Checking out master...";
+git checkout master;
+
+echo "Deleting temporary branch...";
+git branch -d temp;
 
 echo "Tagging changes with $merge_tag_id...";
 git tag -a "$merge_tag_id" -m "Tagging merge for $merge_tag_id.";
