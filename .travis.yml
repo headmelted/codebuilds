@@ -89,7 +89,6 @@ script:
   - if [[ "${TRAVIS_TAG}" =~ ^20.*$ ]]; then
       export UBUNTU_VERSION="yakkety";
       sudo bash -c ". /workspace/codebuilds-tools/all.sh";
-      # curl -uadmin:${ARTIFACTORY_PASSWORD} -XPUT "https://code.jfrog.io/code/debian-local/pool/code-oss;deb.distribution=nightly;deb.component=main;deb.architecture=${ARCH}" -T /workspace/.build/linux/**/*.deb;
     else
       if [[ "${LABEL}" == "armhf_linux" ]]; then
         echo "Merging packages repository back up to Github Pages...";
