@@ -21,11 +21,11 @@ if [ ! -d "/workspace/.jail" ]; then
   echo "Switching into jail...";
   sudo chroot /workspace/.jail ./debootstrap/debootstrap --second-stage;
   
-  echo "Creating workspace...";
-  sudo mkdir -p /workspace/.jail/workspace;
+  echo "Creating jailed workspace...";
+  mkdir /workspace/.jail/workspace;
 
-  echo "Copying files into jail...";
-  sudo rsync -av /workspace /workspace/.jail/workspace;
+  echo "Mounting workspace into jail...";
+  sudo mount --bind /workspace /workspace/.jail/workspace;
 
   echo "Updating jail APT...";  
   sudo chroot /workspace/.jail apt-get update;
