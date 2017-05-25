@@ -30,8 +30,11 @@ git remote add upstream https://github.com/Microsoft/vscode.git;
 merge_tag_id=$(date +%Y%m%d%H%M%S);
 echo "Merge tag is $merge_tag_id.";
 
-echo "Pulling from origin...";
-git pull origin master;
+echo "Fetching from origin...";
+git fetch origin;
+
+echo "Hard resetting to origin, to ensure no detachments prior to merge...";
+git reset --hard origin/master;
 
 echo "Fetching upstream...";
 git fetch upstream master;
