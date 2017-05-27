@@ -1,16 +1,18 @@
 #!/bin/bash
 set -e;
 
-. /workspace/codebuilds-tools/environment.sh;
-. /workspace/codebuilds-tools/setup_nvm.sh;
-. /workspace/codebuilds-tools/build.sh;
-. /workspace/codebuilds-tools/package.sh;
+. ./codebuilds-tools/environment.sh $1;
+. ./codebuilds-tools/setup_nvm.sh;
+. ./codebuilds-tools/build.sh;
+. ./codebuilds-tools/startxvfb.sh;
 
 if [ "${CROSS_TOOLCHAIN}" == "true" ]; then
-  . /workspace/codebuilds-tools/qemu.sh "/workspace/codebuilds-tools/test-in-qemu.sh";
+  ./codebuilds-tools/qemu.sh "codebuilds-tools/test-in-qemu.sh";
 else
   sudo bash -c ". /workspace/codebuilds-tools/install_package_and_test.sh";
 fi;
+
+. ./codebuilds-tools/package.sh;
 
 # . /workspace/codebuilds-tools/startxvfb.sh;
 

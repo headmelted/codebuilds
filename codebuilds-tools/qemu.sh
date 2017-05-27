@@ -1,7 +1,7 @@
 #!/bin/bash
 set -e;
 
-if [ ! -d "/workspace/.jail" ]; then
+if [ ! -d "./.jail" ]; then
 
   echo "Installing QEMU and dependencies...";
   apt-get install -y debootstrap qemu-user-static binfmt-support sbuild;
@@ -10,25 +10,25 @@ if [ ! -d "/workspace/.jail" ]; then
   ls /proc/sys/fs/;
 
   echo "Creating ${ARCH} jail...";
-  mkdir /workspace/.jail;
+  mkdir ./.jail;
 
   echo "Creating debootstrap...";
-  sudo debootstrap --foreign --no-check-gpg --include=fakeroot,build-essential --arch=${ARCH} jessie /workspace/.jail ${QEMU_ARCHIVE}
+  sudo debootstrap --foreign --no-check-gpg --include=fakeroot,build-essential --arch=${ARCH} jessie ./.jail ${QEMU_ARCHIVE}
 
   echo "Copying static qemu into jail...";
-  sudo cp /usr/bin/qemu-${QEMU_ARCH}-static /workspace/.jail/usr/bin/
+  sudo cp /usr/bin/qemu-${QEMU_ARCH}-static ./.jail/usr/bin/
 
   echo "Switching into jail...";
-  sudo chroot /workspace/.jail ./debootstrap/debootstrap --second-stage;
+  sudo chroot ./.jail ./debootstrap/debootstrap --second-stage;
   
   echo "Creating jailed workspace...";
-  mkdir /workspace/.jail/workspace;
+  mkdir ./.jail/workspace;
 
   echo "Mounting workspace into jail...";
-  sudo mount --bind /workspace /workspace/.jail/workspace;
+  sudo mount --bind /workspace ./.jail/workspace;
 
   echo "Updating jail APT...";  
-  sudo chroot /workspace/.jail apt-get update;
+  sudo chroot ./.jail apt-get update;
   
 else
 
@@ -37,23 +37,11 @@ else
 fi;
 
 echo "Setting environment variables...";
-echo "export LABEL=${LABEL}" >> /workspace/.jail/workspace/.env.sh;
-echo "export CROSS_TOOLCHAIN=${CROSS_TOOLCHAIN}" >> /workspace/.jail/workspace/.env.sh;
-echo "export ARCH=${ARCH}" >> /workspace/.jail/workspace/.env.sh;
-echo "export NPM_ARCH=${NPM_ARCH}" >> /workspace/.jail/workspace/.env.sh;
-echo "export GNU_TRIPLET=${GNU_TRIPLET}" >> /workspace/.jail/workspace/.env.sh;
-echo "export GNU_MULTILIB_TRIPLET=${GNU_MULTILIB_TRIPLET}" >> /workspace/.jail/workspace/.env.sh;
-echo "export GPP_COMPILER=${GPP_COMPILER}" >> /workspace/.jail/workspace/.env.sh;
-echo "export GCC_COMPILER=${GCC_COMPILER}" >> /workspace/.jail/workspace/.env.sh;
-echo "export VSCODE_ELECTRON_PLATFORM=${VSCODE_ELECTRON_PLATFORM}" >> /workspace/.jail/workspace/.env.sh;
-echo "export PACKAGE_ARCH=${PACKAGE_ARCH}" >> /workspace/.jail/workspace/.env.sh;
-echo "export QEMU_ARCH=${QEMU_ARCH}" >> /workspace/.jail/workspace/.env.sh;
-echo "export UBUNTU_VERSION=${UBUNTU_VERSION}" >> /workspace/.jail/workspace/.env.sh;
-echo "export HOME=/workspace" >> /workspace/.jail/workspace/.env.sh;
-chmod a+x /workspace/.jail/workspace/.env.sh;
+cp ./codebuilds-tools/environments/${LABEL}.sh ./.jail/workspace/.env.sh;
+chmod a+x ./.jail/workspace/.env.sh;
 
 echo "Executing script ($1) in jail...";
-sudo chroot /workspace/.jail bash -c "cd /workspace && . ./.env.sh && echo 'Environment: \$(uname -a)' && echo 'Listing workspace in jail...' && ls /workspace && $1";
+sudo chroot ./.jail bash -c "cd /workspace && ./.env.sh && echo 'Environment: \$(uname -a)' && echo 'Listing workspace in jail...' && ls /workspace && $1";
 
 # echo "Mounting binfmt_misc...";
 # mount binfmt_misc -t binfmt_misc /proc/sys/fs/binfmt_misc;

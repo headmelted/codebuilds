@@ -1,10 +1,10 @@
 #!/bin/bash
 set -e
 
-export CXX="${GPP_COMPILER}" CC="${GCC_COMPILER}" DEBIAN_FRONTEND="noninteractive";
+export LABEL=$1;
+./codebuilds-tools/environments/${LABEL}.sh;
 
-echo "Deleting .nvm directory if it already exists...";
-rm -rf .nvm;
+export CXX="${GPP_COMPILER}" CC="${GCC_COMPILER}" DEBIAN_FRONTEND="noninteractive";
 
 echo "Updating package repositories...";
 apt update -yq;
