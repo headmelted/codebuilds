@@ -1,20 +1,30 @@
 #!/bin/bash
 set -e;
 
-. ./codebuilds-tools/environment.sh $1;
+echo "Setting environment for $1...";
+. ./codebuilds-tools/$1/env.sh;
+
+if [ "${LABEL}" == "" ]; then
+  echo "Failed to load environment: '$1'.  Check it exists.";
+  return -1;
+else
+  echo "Environment [$1] loaded succesfully.";
+fi;
+
+. ./codebuilds-tools/environment.sh;
 . ./codebuilds-tools/setup_nvm.sh;
 . ./codebuilds-tools/build.sh;
 . ./codebuilds-tools/startxvfb.sh;
 
 if [ "${CROSS_TOOLCHAIN}" == "true" ]; then
-  ./codebuilds-tools/qemu.sh "codebuilds-tools/test-in-qemu.sh";
+  echo "Testing with emulation, using xvfb-run...";
+  . ./codebuilds-tools/qemu.sh "scripts/test.sh";
 else
-  sudo bash -c ". /workspace/codebuilds-tools/install_package_and_test.sh";
+  echo "Testing without emulation, using xvfb-run...";
+  xvfb-run -a -e xvfb_log.txt .build/electron/code-oss ./test/index.js 
 fi;
 
 . ./codebuilds-tools/package.sh;
-
-# . /workspace/codebuilds-tools/startxvfb.sh;
 
 
   # - if [ "${QEMU_ARCH}" != "" ]; then
@@ -26,7 +36,7 @@ fi;
   #     . /workspace/codebuilds-tools/install_package_and_test.sh;
   #   fi
 
-# echo "Starting integration tests...";
-# ./scripts/test-integration.sh;
+echo "Starting integration tests...";
+./scripts/test-integration.sh;
 
 # . /workspace/codebuilds-tools/flatpak/build.sh;

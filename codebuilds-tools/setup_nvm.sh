@@ -2,7 +2,7 @@
 set -e;
 
 echo "Removing old nvm if it exists...";
-rm -rf .nvm;
+sudo rm -rf .nvm;
 
 echo "Installing nvm..."
 git submodule update --init --recursive;
@@ -16,7 +16,4 @@ echo "Setting python binding...";
 npm config set python `which python`;
 
 echo "Installing npm dependencies...";
-npm install -g gulp @emmetio/node;
-
-echo "Installing local emmetio/node...";
-npm install @emmetio/node;
+npm install -g gulp;

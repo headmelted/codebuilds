@@ -1,0 +1,16 @@
+LABEL=armhf_linux;
+CROSS_TOOLCHAIN=true;
+ARCH=armhf;
+NPM_ARCH=arm;
+GNU_TRIPLET=arm-linux-gnueabihf;
+GNU_MULTILIB_TRIPLET=arm-linux-gnueabihf;
+GPP_COMPILER=arm-linux-gnueabihf-g++;
+GCC_COMPILER=arm-linux-gnueabihf-gcc;
+VSCODE_ELECTRON_PLATFORM=arm;
+PACKAGE_ARCH=armhf;
+QEMU_ARCH=arm;
+QEMU_ARCHIVE="http://archive.raspbian.org/raspbian";
+QEMU_IMAGE="https://downloads.raspberrypi.org/raspbian_lite/images/raspbian_lite-2017-04-10/2017-04-10-raspbian-jessie-lite.zip";
+QEMU_KERNEL="kernel7.img";
+QEMU_DTB="bcm2709-rpi-2-b.dtb";
+QEMU_MACHINE="raspi2";

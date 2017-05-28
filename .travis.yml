@@ -26,15 +26,12 @@ notifications:
   email: false
 
 script:
-  - sudo ln -s ${TRAVIS_BUILD_DIR} /workspace;
-  - export TRAVIS_BUILD_DIR=/workspace;
   - if [[ "${TRAVIS_TAG}" =~ ^20.*$ ]]; then
-      export UBUNTU_VERSION="yakkety";
-      sudo bash -c ". /workspace/codebuilds-tools/all.sh ${LABEL}";
+      sudo bash -c ". ./codebuilds-tools/all.sh ${LABEL}";
    else
       if [[ "${LABEL}" == "armhf_linux" ]]; then
         echo "Merging packages repository back up to Github Pages...";
-        . /workspace/codebuilds-tools/merge.sh;
+        . ./codebuilds-tools/merge.sh;
       fi;
     fi;
 
