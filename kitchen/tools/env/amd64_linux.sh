@@ -1,6 +1,7 @@
 export LABEL=amd64_linux;
 export CROSS_TOOLCHAIN=false;
 export ARCH=amd64;
+export RPM_ARCH=x86_64;
 export NPM_ARCH=x64;
 export GNU_TRIPLET=x86_64-linux-gnu;
 export GNU_MULTILIB_TRIPLET=;

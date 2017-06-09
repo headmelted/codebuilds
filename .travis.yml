@@ -28,6 +28,7 @@ notifications:
   email: false
   
 before_install:
+  - gem install packagecloud;
   - docker pull headmelted/cobbler;
 
 script:
@@ -40,6 +41,11 @@ script:
   #       . ./tools/merge.sh;
   #     fi;
   #   fi;
+  
+  
+after_success:
+  - package_cloud push headmelted/code-oss/ubuntu/xenial ./.builds/${LABEL}/.vscode/.build/linux/deb/${ARCH}/deb/*.deb
+  - package_cloud push headmelted/code-oss/fedora/24 ./.builds/${LABEL}/.vscode/.build/linux/rpm/${RPM_ARCH}/*.rpm
 
 deploy:
   provider: releases

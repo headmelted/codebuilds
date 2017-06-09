@@ -1,6 +1,7 @@
 export LABEL=armhf_linux;
 export CROSS_TOOLCHAIN=true;
 export ARCH=armhf;
+export RPM_ARCH=armhf;
 export NPM_ARCH=arm;
 export GNU_TRIPLET=arm-linux-gnueabihf;
 export GNU_MULTILIB_TRIPLET=;
