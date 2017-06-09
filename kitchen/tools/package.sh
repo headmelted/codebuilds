@@ -9,8 +9,8 @@ gulp "vscode-linux-${PACKAGE_ARCH}-build-deb";
 echo "Starting vscode-linux-${PACKAGE_ARCH}-build-rpm";
 gulp "vscode-linux-${PACKAGE_ARCH}-build-rpm";
 
-# echo "Starting vscode-linux-${PACKAGE_ARCH}-flatpak";
-# gulp --verbose "vscode-linux-${PACKAGE_ARCH}-flatpak";
+echo "Starting vscode-linux-${PACKAGE_ARCH}-flatpak";
+gulp --verbose "vscode-linux-${PACKAGE_ARCH}-flatpak";
 
 echo "Tarring build folder for release";
 tar -zcvf "../code-oss_${LABEL}.tar.gz" ../VSCode-linux-${ARCH};
