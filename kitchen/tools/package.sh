@@ -13,6 +13,6 @@ echo "Starting vscode-linux-${PACKAGE_ARCH}-flatpak";
 gulp --verbose "vscode-linux-${PACKAGE_ARCH}-flatpak";
 
 echo "Tarring build folder for release";
-tar -zcvf "../code-oss_${LABEL}.tar.gz" ../VSCode-linux-${ARCH};
+tar -zcvf "../code-oss_${LABEL}.tar.gz" ../VSCode-linux-${PACKAGE_ARCH};
 
 
