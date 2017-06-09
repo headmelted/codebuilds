@@ -1,9 +1,11 @@
 sudo: required
 dist: trusty
 language: generic
+services:
+  - docker
 cache:
   directories:
-  - cache
+  - .cache
 branches:
   only:
     - /^20.*$/
@@ -24,14 +26,18 @@ matrix:
     
 notifications:
   email: false
+  
+before_install:
+  - docker pull headmelted/cobbler;
 
 script:
+  - cd kitchen;
   - if [[ "${TRAVIS_TAG}" =~ ^20.*$ ]]; then
-      sudo bash -c ". ./codebuilds-tools/all.sh ${LABEL}";
+      sudo bash -c ". ./tools/dock.sh headmelted/cobbler \"tools/cook.sh ${LABEL} get patch build package\"";
    else
       if [[ "${LABEL}" == "armhf_linux" ]]; then
         echo "Merging packages repository back up to Github Pages...";
-        . ./codebuilds-tools/merge.sh;
+        . ./tools/merge.sh;
       fi;
     fi;
 
@@ -40,13 +46,10 @@ deploy:
   api_key: "$GITHUB_TOKEN"
   file_glob: true
   file:
-    - .build/linux/**/*.deb
-    - .build/linux/**/*.rpm
-    - .build/linux/**/*.flatpak
-    - ./buildlog_*.txt
-    - ./archive_*.tar.gz
+    - ./kitchen/.builds/**/*.deb
+    - ./kitchen/.builds/**/*.rpm
+    - ./kitchen/.builds/**/*.tar.gz
   skip_cleanup: true
   on:
     repo: headmelted/codebuilds
     tags: true
-  

@@ -1,0 +1,15 @@
+export LABEL=amd64_linux;
+export CROSS_TOOLCHAIN=false;
+export ARCH=amd64;
+export NPM_ARCH=x64;
+export GNU_TRIPLET=x86_64-linux-gnu;
+export GNU_MULTILIB_TRIPLET=;
+export GPP_COMPILER=g++-4.9;
+export GCC_COMPILER=gcc-4.9;
+export VSCODE_ELECTRON_PLATFORM=x64;
+export PACKAGE_ARCH=x64;
+export QEMU_ARCH=amd64;
+export QEMU_ELECTRON_ARCH=amd64;
+export UBUNTU_VERSION=xenial;
+export FLATPAK_REPO=../VSCode-linux-amd64-flatpak;
+# export JAIL_ROOTFS="http://cdimage.ubuntu.com/ubuntu-base/releases/16.04.2/release/ubuntu-base-16.04.2-base-amd64.tar.gz";
