@@ -14,6 +14,7 @@ branches:
 # Travis CI build matrix.  Each entry below will trigger an extra, parallel build on Travis.
 matrix:
   include:
+  - os: linux
     env:
      - LABEL="amd64_linux"
      - ARCH="amd64"
