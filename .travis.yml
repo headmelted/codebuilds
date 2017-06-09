@@ -28,7 +28,7 @@ notifications:
   email: false
   
 before_install:
-  - gem install packagecloud;
+  - gem install package_cloud;
   - docker pull headmelted/cobbler;
 
 script:

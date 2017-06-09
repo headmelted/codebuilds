@@ -11,12 +11,12 @@ echo "Architecture detected as ${ARCH}...";
 
 if [ "${REPOSITORY_NAME}" = "headmelted" ]; then
 
-  echo "Installing bintray GPG key...";
-  apt-key adv --keyserver hkp://keyserver.ubuntu.com:80 --recv-keys 379CE192D401AB61;
-  echo "Done!";
+  # echo "Installing bintray GPG key...";
+  # apt-key adv --keyserver hkp://keyserver.ubuntu.com:80 --recv-keys 379CE192D401AB61;
+  # echo "Done!";
 
   echo "Installing headmelted GPG key...";
-  wget -qO - https://bintray.com/user/downloadSubjectPublicKey?username=headmelted | apt-key add -;
+  wget -qO - https://packagecloud.io/headmelted/code-oss/gpgkey | apt-key add -;
   echo "Done!";
   
 else
@@ -32,7 +32,7 @@ fi;
 echo "Installing ${REPOSITORY_NAME} repository...";
 
 if [ "${REPOSITORY_NAME}" = "headmelted" ]; then
-  echo "deb https://dl.bintray.com/headmelted/deb-code-oss" | sudo tee -a /etc/apt/sources.list
+  echo "deb https://packagecloud.io/headmelted/code-oss/ubuntu/ xenial main" | sudo tee -a /etc/apt/sources.list.d/headmelted.list;
 else
   echo "deb https://packages.microsoft.com/repos/vscode stable main" > /etc/apt/sources.list.d/vscode.list;
 fi;
