@@ -39,14 +39,14 @@ before_install:
 
 script:
   - cd kitchen;
-  # - if [[ "${TRAVIS_TAG}" =~ ^20.*$ ]]; then
-  - sudo bash -c ". ./tools/dock.sh headmelted/cobbler \"tools/cook.sh ${LABEL} get patch build package\""
-  # else
-  #     if [[ "${LABEL}" == "armhf_linux" ]]; then
-  #       echo "Merging packages repository back up to Github Pages...";
-  #       . ./tools/merge.sh;
-  #     fi;
-  #   fi;
+  - if [[ "${TRAVIS_TAG}" =~ ^20.*$ ]]; then
+      sudo bash -c ". ./tools/dock.sh headmelted/cobbler \"tools/cook.sh ${LABEL} get patch build package\""
+    else
+      if [[ "${LABEL}" == "armhf_linux" ]]; then
+        echo "Merging packages repository back up to Github Pages...";
+        . ./tools/merge.sh;
+      fi;
+    fi;
   
   
 after_success:
