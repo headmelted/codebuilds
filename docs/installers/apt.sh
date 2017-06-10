@@ -16,7 +16,7 @@ if [ "${REPOSITORY_NAME}" = "headmelted" ]; then
   # echo "Done!";
 
   echo "Installing headmelted GPG key...";
-  wget -qO - https://packagecloud.io/headmelted/code-oss/gpgkey | apt-key add -;
+  wget -qO - https://packagecloud.io/headmelted/codebuilds/gpgkey | apt-key add -;
   echo "Done!";
   
 else
@@ -32,7 +32,7 @@ fi;
 echo "Installing ${REPOSITORY_NAME} repository...";
 
 if [ "${REPOSITORY_NAME}" = "headmelted" ]; then
-  echo "deb https://packagecloud.io/headmelted/code-oss/ubuntu/ xenial main" | sudo tee -a /etc/apt/sources.list.d/codebuilds.list;
+  echo "deb https://packagecloud.io/headmelted/codebuilds/ubuntu/ xenial main" | sudo tee -a /etc/apt/sources.list.d/codebuilds.list;
 else
   echo "deb https://packages.microsoft.com/repos/vscode stable main" > /etc/apt/sources.list.d/vscode.list;
 fi;

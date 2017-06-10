@@ -114,6 +114,6 @@ xU3IhnX/X+sk33TqmK1J99U478ciIOSt/ldzgwH/8GPcyQZOb+gpSl9uwXR3eQ==
 	if [ "$WRITE_SOURCE" -eq "1" ]; then
 		echo "### THIS FILE IS AUTOMATICALLY CONFIGURED ###
 # You may comment out this entry, but any other modifications may be lost.
-deb https://packagecloud.io/headmelted/code-oss/ubuntu/ xenial main" > $CODE_SOURCE_PART
+deb https://packagecloud.io/headmelted/codebuilds/ubuntu/ xenial main" > $CODE_SOURCE_PART
 	fi
 fi

@@ -41,7 +41,7 @@ if [ $install_now != "y" ]; then
 fi;
 
 echo "Installing headmelted repository..."
-. <( wget -O - "https://packagecloud.io/install/repositories/headmelted/code-oss/script.rpm.sh" );
+. <( wget -O - "https://packagecloud.io/install/repositories/headmelted/codebuilds/script.rpm.sh" );
 if (($? == 0)); then
   echo "Repository install complete.";
 else

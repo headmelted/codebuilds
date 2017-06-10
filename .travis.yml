@@ -50,8 +50,8 @@ script:
   
   
 after_success:
-  - package_cloud push headmelted/code-oss/ubuntu/xenial ./.builds/${LABEL}/.vscode/.build/linux/deb/${ARCH}/deb/*.deb
-  - package_cloud push headmelted/code-oss/fedora/24 ./.builds/${LABEL}/.vscode/.build/linux/rpm/${RPM_ARCH}/*.rpm
+  - package_cloud push headmelted/codebuilds/ubuntu/xenial ./.builds/${LABEL}/.vscode/.build/linux/deb/${ARCH}/deb/*.deb
+  - package_cloud push headmelted/codebuilds/fedora/24 ./.builds/${LABEL}/.vscode/.build/linux/rpm/${RPM_ARCH}/*.rpm
 
 deploy:
   provider: releases
