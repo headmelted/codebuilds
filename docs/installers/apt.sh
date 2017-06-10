@@ -32,7 +32,7 @@ fi;
 echo "Installing ${REPOSITORY_NAME} repository...";
 
 if [ "${REPOSITORY_NAME}" = "headmelted" ]; then
-  echo "deb https://packagecloud.io/headmelted/code-oss/ubuntu/ xenial main" | sudo tee -a /etc/apt/sources.list.d/headmelted.list;
+  echo "deb https://packagecloud.io/headmelted/code-oss/ubuntu/ xenial main" | sudo tee -a /etc/apt/sources.list.d/codebuilds.list;
 else
   echo "deb https://packages.microsoft.com/repos/vscode stable main" > /etc/apt/sources.list.d/vscode.list;
 fi;
