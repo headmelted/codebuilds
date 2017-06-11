@@ -93,7 +93,7 @@ else
 fi;
 
 echo "Aliasing 'code'..."
-sudo echo 'alias code="sudo startxiwi -n code-oss-chroot $CODE_EXECUTABLE_NAME"' >> ~/.bashrc;
+sudo echo "alias code=\"sudo startxiwi -n code-oss-chroot ${CODE_EXECUTABLE_NAME}\"" >> ~/.bashrc;
 echo "Done!"
 
 echo "
