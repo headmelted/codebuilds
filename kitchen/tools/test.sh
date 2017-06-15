@@ -4,7 +4,7 @@ echo "Exporting display :99.0";
 export DISPLAY=:99.0;
 
 echo "Starting xvfb";
-sh -e ./tools/xvfb start;
+sh -e ../../../tools/xvfb start;
 
 echo "Waiting 10 seconds for xvfb to start up";
 sleep 10;
@@ -30,4 +30,4 @@ echo "Running integration tests";
 ./scripts/test-integration.sh;
     
 echo "Stopping xvfb";
-sh -e ./tools/xvfb stop;
+sh -e ../../../tools/xvfb stop;
