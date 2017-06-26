@@ -24,11 +24,11 @@ matrix:
      - LABEL="armhf_linux"
      - ARCH="armhf"
      - RPM_ARCH="armhf"
-  - os: linux
-    env:
-     - LABEL="arm64_linux"
-     - ARCH="arm64"
-     - RPM_ARCH="aarch64"
+  # - os: linux
+  #   env:
+  #   - LABEL="arm64_linux"
+  #   - ARCH="arm64"
+  #   - RPM_ARCH="aarch64"
     
 notifications:
   email: false

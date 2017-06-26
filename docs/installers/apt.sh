@@ -57,7 +57,15 @@ else
   CODE_EXECUTABLE_NAME="code-insiders";
 fi;
 
-apt-get install -y ${CODE_EXECUTABLE_NAME};
+if [ "${ARCH}" = "aarch64" ]; then
+  echo "Adding armhf architecture to dpkg";
+  sudo dpkg --add-architecture armhf;
+  echo "Updating sources";
+  sudo apt-get update;
+  apt-get install -y ${CODE_EXECUTABLE_NAME}:armhf;
+else
+  apt-get install -y ${CODE_EXECUTABLE_NAME};
+fi
 
 if [ $? -eq 0 ]; then
   echo "Visual Studio Code install complete.";
