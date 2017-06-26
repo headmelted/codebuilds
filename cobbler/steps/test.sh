@@ -1,6 +1,6 @@
 #!/bin/bash
     
-echo "code-oss header: [$(file -h .vscode/.build/electron/code-oss)]";
+echo "code-oss header: [$(file -h .code/.build/electron/code-oss)]";
     
 echo "Running tests";
 ./scripts/test.sh;
