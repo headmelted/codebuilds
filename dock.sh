@@ -19,4 +19,4 @@ docker images;
 echo "Current directory is [$(pwd)]"
 
 echo "Binding workspace and executing script";
-docker run -it --security-opt apparmor:unconfined --cap-add SYS_ADMIN -v $(pwd):/kitchen $1 /bin/bash -c "cd /kitchen && apt-get update && ${2}";
+docker run -it --security-opt apparmor:unconfined --cap-add SYS_ADMIN -v $(pwd)/cobbler:/cobbler $1 /bin/bash -c "cd /kitchen && ${2}";

@@ -40,7 +40,7 @@ before_install:
 script:
   - cd kitchen;
   # - if [[ "${TRAVIS_TAG}" =~ ^20.*$ ]]; then
-  - sudo bash -c ". ./tools/dock.sh headmelted/cobbler \"tools/cook.sh ${LABEL} get patch build package\""
+  - sudo bash -c ". ./dock.sh headmelted/cobbler \"tools/cook.sh ${LABEL} get patch build package\""
   - file -h ./.builds/${LABEL}/.vscode/.build/electron/code-oss;
     # else
     #   if [[ "${LABEL}" == "armhf_linux" ]]; then
