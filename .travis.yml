@@ -41,7 +41,7 @@ script:
   - cd kitchen;
   # - if [[ "${TRAVIS_TAG}" =~ ^20.*$ ]]; then
   - sudo bash -c '. ./dock.sh headmelted/cobbler "export COBBLER_GIT_ENDPOINT=\"https://github.com/Microsoft/vscode.git\"; steps/cook.sh ${ARCH} get patch build package";'
-  - file -h ./.builds/${LABEL}/.vscode/.build/electron/code-oss;
+  - file -h ./.builds/${ARCH}/.code/.build/electron/code-oss;
     # else
     #   if [[ "${LABEL}" == "armhf_linux" ]]; then
     #     echo "Merging packages repository back up to Github Pages...";
