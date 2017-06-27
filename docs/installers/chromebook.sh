@@ -78,10 +78,10 @@ echo "Done!"
 echo "Detecting architecture...";
 MACHINE_MTYPE="$(uname -m)";
 ARCH="${MACHINE_MTYPE}";
-REPOSITORY_NAME="Microsoft";
+REPOSITORY_NAME="headmelted";
 
 if [ "$ARCH" = "armv7l" ]; then ARCH="armhf"; fi;
-if [ "$ARCH" = "armhf" ]; then REPOSITORY_NAME="headmelted"; fi;
+if [ "$ARCH" = "amd64" ] || [ "$ARCH" = "i386"]; then REPOSITORY_NAME="Microsoft"; fi;
 
 echo "Architecture detected as ${ARCH}...";
 
@@ -92,9 +92,17 @@ else
   CODE_EXECUTABLE_NAME="code-insiders";
 fi;
 
+echo "Removing existing 'code' aliases...";
+sudo sed -i '/^alias code/d' ~/.bashrc;
+echo "Done!";
+
 echo "Aliasing 'code'..."
 sudo echo "alias code=\"sudo startxiwi -n code-oss-chroot ${CODE_EXECUTABLE_NAME}\"" >> ~/.bashrc;
 echo "Done!"
+
+echo "Reloading .bashrc...";
+. ~/.bashrc;
+echo "Done!";
 
 echo "
 
