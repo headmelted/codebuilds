@@ -1,4 +1,5 @@
 #!/bin/bash
+set -e;
 
 echo "Running npm install for ${NPM_ARCH}";
 ./scripts/npm.sh install --arch=${NPM_ARCH} --unsafe-perm;

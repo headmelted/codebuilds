@@ -1,4 +1,5 @@
 #!/bin/bash
+set -e;
 
 echo "Starting vscode-linux-${PACKAGE_ARCH}";
 gulp "vscode-linux-${PACKAGE_ARCH}";

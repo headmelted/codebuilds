@@ -1,6 +1,5 @@
 #!/bin/bash
-    
-echo "code-oss header: [$(file -h .code/.build/electron/code-oss)]";
+set -e;
     
 echo "Running tests";
 ./scripts/test.sh;
