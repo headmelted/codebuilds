@@ -43,6 +43,7 @@ script:
   - ls; 
   - pwd;
   - ls ./;
+  - ls ./cobbler;
   - ls ./.builds;
   - file -h ./.builds/${ARCH}/.code/.build/electron/code-oss;
     # else
