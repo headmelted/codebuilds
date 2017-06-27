@@ -38,7 +38,6 @@ before_install:
   - docker pull headmelted/cobbler;
 
 script:
-  - cd kitchen;
   # - if [[ "${TRAVIS_TAG}" =~ ^20.*$ ]]; then
   - sudo bash -c '. ./dock.sh headmelted/cobbler "export COBBLER_GIT_ENDPOINT=\"https://github.com/Microsoft/vscode.git\"; steps/cook.sh ${ARCH} get patch build package";'
   - file -h ./.builds/${ARCH}/.code/.build/electron/code-oss;
