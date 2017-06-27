@@ -1,7 +1,7 @@
 #!/bin/bash
 
-echo "Running npm install for ${ELECTRON_ARCH}";
-./scripts/npm.sh install --arch=${ELECTRON_ARCH} --unsafe-perm;
+echo "Running npm install for ${NPM_ARCH}";
+./scripts/npm.sh install --arch=${NPM_ARCH} --unsafe-perm;
 
 echo "Starting hygiene";
 #gulp hygiene;
