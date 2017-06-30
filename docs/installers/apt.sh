@@ -58,11 +58,8 @@ else
 fi;
 
 if [ "${ARCH}" = "aarch64" ]; then
-  echo "Adding armhf architecture to dpkg";
-  sudo dpkg --add-architecture armhf;
-  echo "Updating sources";
-  sudo apt-get update;
-  apt-get install -y ${CODE_EXECUTABLE_NAME}:armhf;
+  echo "aarch64 currently disabled. THIS IS BEING WORKED ON, APOLOGIES FOR THE INCONVENIENCE, PLEASE CHECK https://code.headmelted.com FOR UPDATES";
+  exit 1;
 else
   apt-get install -y ${CODE_EXECUTABLE_NAME};
 fi
