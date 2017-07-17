@@ -13,5 +13,5 @@ gulp electron-${NPM_ARCH};
 echo "Starting compile";
 gulp compile --max_old_space_size=4096;
 
-echo "Starting optimize";
-gulp optimize-vscode --max_old_space_size=4096;
+#echo "Starting optimize";
+#gulp optimize-vscode --max_old_space_size=4096;
