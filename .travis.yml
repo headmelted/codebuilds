@@ -28,7 +28,7 @@ matrix:
   #   env:
   #   - LABEL="arm64_linux"
   #   - ARCH="arm64"
-  #   - RPM_ARCH="aarch64"
+  #    - RPM_ARCH="aarch64"
     
 notifications:
   email: false
