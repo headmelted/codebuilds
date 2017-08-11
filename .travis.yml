@@ -24,6 +24,7 @@ matrix:
      - LABEL="armhf_linux"
      - ARCH="armhf"
      - RPM_ARCH="armhf"
+     - VSCODE_ELECTRON_PLATFORM="arm"
   # - os: linux
   #   env:
   #   - LABEL="arm64_linux"
