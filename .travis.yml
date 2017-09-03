@@ -36,6 +36,7 @@ notifications:
   
 before_install:
   - gem install package_cloud;
+  - sudo apt-get install -y tree;
   - docker pull headmelted/cobbler;
 
 script:
@@ -50,6 +51,7 @@ script:
   
   
 after_success:
+  - tree;
   - package_cloud push headmelted/codebuilds/ubuntu/xenial ./.builds/${LABEL}/.vscode/.build/linux/deb/${ARCH}/deb/*.deb
   - package_cloud push headmelted/codebuilds/fedora/24 ./.builds/${LABEL}/.vscode/.build/linux/rpm/${RPM_ARCH}/*.rpm
 
