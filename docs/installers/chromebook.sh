@@ -52,9 +52,25 @@ echo "Downloading crouton...";
 wget https://goo.gl/fd3zc -O crouton;
 echo "crouton downloaded.";
 
+echo "Detecting architecture...";
+MACHINE_MTYPE="$(uname -m)";
+ARCH="${MACHINE_MTYPE}";
+REPOSITORY_NAME="headmelted";
+
+if [ "$ARCH" = "armv7l" ]; then ARCH="armhf"; fi;
+if [ "$ARCH" = "amd64" ] || [ "$ARCH" = "i386"]; then REPOSITORY_NAME="Microsoft"; fi;
+
+echo "Architecture detected as ${ARCH}...";
+
 echo "Preparing xenial chroot with XIWI (you will be prompted for a root password.  You can use crouton to encrypt the chroot later if you wish.)..."
 chmod +x ./crouton;
-sudo sh ./crouton -t xiwi -n code-oss-chroot;
+if [ "$ARCH" = "arm64" ]; then
+  sudo sh ./crouton -t xiwi -n code-oss-chroot;
+else
+  echo "Chroot will be created as armhf. This will be changed later when Electron introduces 64-bit ARM support...";
+  sudo sh ./crouton -t xiwi -a armhf -n code-oss-chroot;
+fi;
+
 if [ $? -eq 0 ]; then
   echo "Crouton install script complete.";
 else
@@ -74,16 +90,6 @@ fi;
 echo "Removing any existing 'code' alias from ~/.bashrc...";
 if [ -e ~/.bashrc ]; then sudo sed -i.bak '/alias code=/d' ~/.bashrc; fi;
 echo "Done!"
-
-echo "Detecting architecture...";
-MACHINE_MTYPE="$(uname -m)";
-ARCH="${MACHINE_MTYPE}";
-REPOSITORY_NAME="headmelted";
-
-if [ "$ARCH" = "armv7l" ]; then ARCH="armhf"; fi;
-if [ "$ARCH" = "amd64" ] || [ "$ARCH" = "i386"]; then REPOSITORY_NAME="Microsoft"; fi;
-
-echo "Architecture detected as ${ARCH}...";
 
 CODE_EXECUTABLE_NAME="";
 if [ "${REPOSITORY_NAME}" = "headmelted" ]; then
