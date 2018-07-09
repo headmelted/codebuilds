@@ -14,7 +14,7 @@ if [[ "$(docker images -q $1 2> /dev/null)" != "" ]]; then
   docker pull "$1";
 fi
 
-docker images;
+docker images; 
 
 echo "Current directory is [$(pwd)]"
 
