@@ -18,16 +18,10 @@ matrix:
     env:
      - LABEL="arm64_linux"
      - ARCH="arm64"
-     - RPM_ARCH="aarch64"
-     - TRIPLET="aarch64-linux-gnu"
-     - VSCODE_ELECTRON_PLATFORM="arm64"
   - os: linux
     env:
      - LABEL="armhf_linux"
      - ARCH="armhf"
-     - RPM_ARCH="armhf"
-     - TRIPLET="arm-linux-gnueabihf"
-     - VSCODE_ELECTRON_PLATFORM="armv7l"
   # - os: linux
   #   env:
   #   - LABEL="arm64_linux"
