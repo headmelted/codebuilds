@@ -53,10 +53,7 @@ script:
   
   
 after_success:
-  - tree ./.builds/;
-  - tree ./kitchen/.builds/;
-  - ls ./.builds/armhf_linux/.vscode/.build/linux/deb/${ARCH}/deb/;
-  - ls ./kitchen/.builds/armhf_linux/.vscode/.build/linux/deb/${ARCH}/deb/;
+  - tree;
   - package_cloud push headmelted/codebuilds/ubuntu/xenial ./.builds/${LABEL}/.vscode/.build/linux/deb/${ARCH}/deb/*.deb
   - package_cloud push headmelted/codebuilds/fedora/24 ./.builds/${LABEL}/.vscode/.build/linux/rpm/${RPM_ARCH}/*.rpm
 
