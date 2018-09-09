@@ -11,13 +11,13 @@ echo "Starting vscode-linux-${NPM_ARCH}-build-deb";
 yarn run gulp vscode-linux-${NPM_ARCH}-build-deb;
 
 echo "Moving deb packages for release";
-copy "/kitchen/.builds/${ARCH}/.code/.build/linux/deb/${ARCH}/deb/*.deb" /cobbler/.output;
+mv "/kitchen/.builds/${ARCH}/.code/.build/linux/deb/${ARCH}/deb/*.deb" /cobbler/.output/;
 
 echo "Starting vscode-linux-${NPM_ARCH}-build-rpm";
 yarn run gulp "vscode-linux-${NPM_ARCH}-build-rpm";
 
 echo "Moving rpm packages for release";
-copy "/kitchen/.builds/${ARCH}/.code/.build/linux/rpm/${ARCH}/rpmbuild/RPMS/${ARCH}/*.rpm" /cobbler/.output;
+mv "/kitchen/.builds/${ARCH}/.code/.build/linux/rpm/${ARCH}/rpmbuild/RPMS/${ARCH}/*.rpm" /cobbler/.output/;
 
 echo "Starting vscode-linux-${NPM_ARCH}-flatpak";
 yarn run gulp --verbose "vscode-linux-${NPM_ARCH}-flatpak";
