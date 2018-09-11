@@ -20,7 +20,7 @@ echo "Moving deb packages for release";
 mv /kitchen/.builds/${ARCH}/.code/.build/linux/deb/${ARCH}/deb/*.deb /cobbler/.output/;
 
 echo "Moving rpm packages for release";
-mv /kitchen/.builds/${ARCH}/.code/.build/linux/rpm/${ARCH}/rpmbuild/RPMS/${ARCH}/*.rpm /cobbler/.output/;
+mv /kitchen/.builds/${ARCH}/.code/.build/linux/rpm/${RPM_ARCH}/rpmbuild/RPMS/${RPM_ARCH}/*.rpm /cobbler/.output/;
 
 #echo "Starting vscode-linux-${NPM_ARCH}-flatpak";
 #yarn run gulp --verbose "vscode-linux-${NPM_ARCH}-flatpak";
