@@ -22,8 +22,11 @@ mv /kitchen/.builds/${ARCH}/.code/.build/linux/deb/${ARCH}/deb/*.deb /cobbler/.o
 echo "Moving rpm packages for release";
 mv /kitchen/.builds/${ARCH}/.code/.build/linux/rpm/${RPM_ARCH}/rpmbuild/RPMS/${RPM_ARCH}/*.rpm /cobbler/.output/;
 
-echo "Starting vscode-linux-${NPM_ARCH}-flatpak";
-yarn run gulp --verbose "vscode-linux-${NPM_ARCH}-flatpak";
+# echo "Starting vscode-linux-${NPM_ARCH}-flatpak";
+# yarn run gulp --verbose "vscode-linux-${NPM_ARCH}-flatpak";
+
+# echo "Starting vscode-linux-${NPM_ARCH}-snap";
+# yarn run gulp --verbose "vscode-linux-${NPM_ARCH}-snap";
 
 # echo "Tarring build folder for release";
 # tar -zcvf "/cobbler/.output/code-oss_${LABEL}.tar.gz" /kitchen/.builds/VSCode-linux-${NPM_ARCH};
