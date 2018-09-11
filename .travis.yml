@@ -48,18 +48,17 @@ script:
   
   
 after_success:
-  - tree;
-  - package_cloud push headmelted/codebuilds/ubuntu/xenial ./.builds/${LABEL}/.vscode/.build/linux/deb/${ARCH}/deb/*.deb
-  - package_cloud push headmelted/codebuilds/fedora/24 ./.builds/${LABEL}/.vscode/.build/linux/rpm/${RPM_ARCH}/*.rpm
+  - tree .;
+  - tree $(pwd)/cobbler/.output;
+  - package_cloud push headmelted/codebuilds/ubuntu/xenial $(pwd)/cobbler/.output/*.deb
+  - package_cloud push headmelted/codebuilds/fedora/24 $(pwd)/cobbler/*.rpm
 
 deploy:
   provider: releases
   api_key: "$GITHUB_TOKEN"
   file_glob: true
   file:
-    - ./kitchen/.builds/**/*.deb
-    - ./kitchen/.builds/**/*.rpm
-    - ./kitchen/.builds/**/*.tar.gz
+    - $(pwd)/cobbler/.output/*.*
   skip_cleanup: true
   on:
     repo: headmelted/codebuilds
