@@ -18,10 +18,10 @@ matrix:
     env:
      - LABEL="arm64_linux"
      - ARCH="arm64"
-  #- os: linux
-  #  env:
-  #   - LABEL="armhf_linux"
-  #   - ARCH="armhf"
+  - os: linux
+    env:
+     - LABEL="armhf_linux"
+     - ARCH="armhf"
     
 notifications:
   email: false
