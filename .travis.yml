@@ -51,7 +51,7 @@ after_success:
   - tree .;
   - tree $(pwd)/cobbler/.output;
   - package_cloud push headmelted/codebuilds/ubuntu/xenial $(pwd)/cobbler/.output/*.deb
-  - package_cloud push headmelted/codebuilds/fedora/24 $(pwd)/cobbler/*.rpm
+  - package_cloud push headmelted/codebuilds/fedora/24 $(pwd)/cobbler/.output/*.rpm
 
 deploy:
   provider: releases
