@@ -14,7 +14,6 @@ echo "Starting vscode-linux-${NPM_ARCH}-build-rpm";
 yarn run gulp "vscode-linux-${NPM_ARCH}-build-rpm";
 
 echo "Looking for release debs";
-tree /kitchen/.build/;
 tree /kitchen/.builds/;
 tree /kitchen/.builds/${ARCH}/.code/.build/;
 
