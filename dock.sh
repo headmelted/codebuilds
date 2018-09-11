@@ -18,5 +18,7 @@ docker images;
 
 echo "Current directory is [$(pwd)]"
 
+echo "GITHUB_TOKEN is: $3";
+
 echo "Binding workspace and executing script";
-docker run -it --security-opt apparmor:unconfined --cap-add SYS_ADMIN -e GITHUB_TOKEN='$GITHUB_TOKEN' -v $(pwd)/cobbler:/cobbler $1 /bin/bash -c "cd /kitchen && ${2}";
+docker run -it --security-opt apparmor:unconfined --cap-add SYS_ADMIN -e GITHUB_TOKEN=$3 -v $(pwd)/cobbler:/cobbler $1 /bin/bash -c "cd /kitchen && ${2}";
