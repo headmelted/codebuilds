@@ -1,6 +1,8 @@
 #!/bin/bash
 set -e;
 
+export GITHUB_TOKEN=$GITHUB_TOKEN;
+
 echo "VS Code electron platform: $VSCODE_ELECTRON_PLATFORM";
 
 echo "Running npm install for ${NPM_ARCH}";
