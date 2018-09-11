@@ -14,7 +14,8 @@ echo "Starting vscode-linux-${NPM_ARCH}-build-rpm";
 yarn run gulp "vscode-linux-${NPM_ARCH}-build-rpm";
 
 echo "Looking for release debs";
-tree /kitchen;
+tree /kitchen/.build/;
+tree /kitchen/.builds/;
 
 echo "Moving deb packages for release";
 mv "/kitchen/.builds/${ARCH}/.code/.build/linux/deb/${ARCH}/deb/*.deb" /cobbler/.output/;
