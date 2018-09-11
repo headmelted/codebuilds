@@ -14,17 +14,19 @@ echo "Starting vscode-linux-${NPM_ARCH}-build-rpm";
 yarn run gulp "vscode-linux-${NPM_ARCH}-build-rpm";
 
 echo "Looking for release debs";
-tree /kitchen/.builds/;
 tree /kitchen/.builds/${ARCH}/.code/.build/;
 
 echo "Moving deb packages for release";
-mv "/kitchen/.builds/${ARCH}/.code/.build/linux/deb/${ARCH}/deb/*.deb" /cobbler/.output/;
+mv /kitchen/.builds/${ARCH}/.code/.build/linux/deb/${ARCH}/deb/*.deb /cobbler/.output/;
 
 echo "Moving rpm packages for release";
-mv "/kitchen/.builds/${ARCH}/.code/.build/linux/rpm/${ARCH}/rpmbuild/RPMS/${ARCH}/*.rpm" /cobbler/.output/;
+mv /kitchen/.builds/${ARCH}/.code/.build/linux/rpm/${ARCH}/rpmbuild/RPMS/${ARCH}/*.rpm /cobbler/.output/;
 
 #echo "Starting vscode-linux-${NPM_ARCH}-flatpak";
 #yarn run gulp --verbose "vscode-linux-${NPM_ARCH}-flatpak";
+
+echo "Listing output packages";
+ls /cobbler/.output;
 
 echo "Tarring build folder for release";
 tar -zcvf "/cobbler/.output/code-oss_${LABEL}.tar.gz" /kitchen/.builds/VSCode-linux-${NPM_ARCH};
