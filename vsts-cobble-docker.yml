@@ -3,7 +3,7 @@ steps:
 - task: docker@0
   displayName: Cobbler
   inputs:
-    action: 'Run an image'
+    action: 'Use Cobbler to compile'
     imageName: 'headmelted/cobbler'
     volumes: |
      $(Build.SourcesDirectory)/cobbler:/cobbler
