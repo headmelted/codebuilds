@@ -18,5 +18,8 @@ docker images;
 
 echo "Current directory is [$(pwd)]"
 
+echo "Creating output directory (./cooked)";
+mkdir cooked;
+
 echo "Binding workspace and executing script";
-docker run -it --security-opt apparmor:unconfined --cap-add SYS_ADMIN -e GITHUB_TOKEN=$3 -v $(pwd)/cobbler:/cobbler $1 /bin/bash -c "cd /kitchen && ${2}";
+docker run -it --security-opt apparmor:unconfined --cap-add SYS_ADMIN -e GITHUB_TOKEN=$3 -v $(pwd)/cobbler:/cobbler -v $(pwd)/cooked:/cooked $1 /bin/bash -c "cd /kitchen && ${2}";
