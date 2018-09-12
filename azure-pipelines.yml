@@ -1,3 +1,9 @@
+resources:
+- repo: self
+
+trigger:
+- master
+
 jobs:
 - job: linux_xenial_arm32
   displayName: 'Linux (Xenial; arm32)'
