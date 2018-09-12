@@ -10,4 +10,8 @@ jobs:
   pool:
     vmImage: 'Ubuntu 16.04'
   steps:
-  - template: vsts-cobble-docker.yml    
+  - template: vsts-cobble-docker.yml
+  environmentVariables: |
+    COBBLER_GIT_ENDPOINT=https://github.com/Microsoft/vscode
+    GITHUB_TOKEN=$GITHUB_TOKEN
+    
