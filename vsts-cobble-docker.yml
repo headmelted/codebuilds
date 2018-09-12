@@ -10,5 +10,7 @@ steps:
      $(Build.BinariesDirectory):/build
     workDir: '/kitchen'
     containerCommand: '/steps/cook.sh armhf get build package'
-    envVars: ${{ parameters.environmentVariables }}
+    envVars:
+      COBBLER_GIT_ENDPOINT: https://github.com/Microsoft/vscode
+      GITHUB_TOKEN: $GITHUB_TOKEN
     detached: false
