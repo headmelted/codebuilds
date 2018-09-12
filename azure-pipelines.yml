@@ -1,23 +1,7 @@
-resources:
-- repo: self
-
-trigger:
-- master
-
 jobs:
-- job: linux_arm32
-  displayName: 'Linux ARM (32-bit)'
+- job: linux_xenial_arm32
+  displayName: 'Linux (Xenial; arm32)'
   pool:
     vmImage: 'Ubuntu 16.04'
   steps:
-  - task: cobble@0
-    displayName: Cobble
-    action: 'Run Cobbler to build the packages for a given architecture'
-    imageName: 'headmelted/cobbler'
-    volumes: |
-      $(Build.SourcesDirectory)/cobbler:/cobbler
-    envVars: |
-      ARCH=armhf
-    workDir: '/kitchen'
-    containerCommand: 'cook.sh'
-    
+    template: ci/vsts-docker.yml    
