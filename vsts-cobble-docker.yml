@@ -8,5 +8,7 @@ steps:
     volumes: |
      $(Build.SourcesDirectory)/cobbler:/cobbler
      $(Build.BinariesDirectory):/build
+    workDir: '/kitchen'
+    containerCommand: '/steps/cook.sh armhf get build package'
     envVars: ${{ parameters.environmentVariables }}
     detached: false
