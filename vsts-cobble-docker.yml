@@ -3,14 +3,13 @@ steps:
 - script: docker run -it --security-opt apparmor:unconfined --cap-add SYS_ADMIN
   displayName: 'Register Cobbler'
 
-- task: cobbler@0
+- task: docker@0
   displayName: Cobble
   inputs:
     action: 'Run an image'
-    imageName: ${{ parameters.imageName }}
+    imageName: 'headmelted/cobbler'
     volumes: |
      $(Build.SourcesDirectory)/cobbler:/cobbler
      $(Build.BinariesDirectory):/build
     envVars: ${{ parameters.environmentVariables }}
     detached: false
-    
