@@ -1,10 +1,7 @@
 # These are the steps used in a container-based build in VSTS.
 steps:
-- script: docker run -it --security-opt apparmor:unconfined --cap-add SYS_ADMIN
-  displayName: 'Register Cobbler'
-
 - task: docker@0
-  displayName: Cobble
+  displayName: Cobbler
   inputs:
     action: 'Run an image'
     imageName: 'headmelted/cobbler'
