@@ -1,5 +1,5 @@
 resources:
-- repo: https://github.com/headmelted/codebuilds.git
+- repo: self
 
 trigger:
 - master
@@ -20,4 +20,4 @@ jobs:
       ARCH=armhf
     workDir: '/kitchen'
     containerCommand: 'cook.sh'
-
+    
