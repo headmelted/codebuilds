@@ -10,4 +10,4 @@ jobs:
   pool:
     vmImage: 'Ubuntu 16.04'
   steps:
-    template: ci/vsts-docker.yml    
+    template: ci/vsts-cobble-docker.yml    
