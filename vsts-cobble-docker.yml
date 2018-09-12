@@ -7,7 +7,7 @@ steps:
     imageName: 'headmelted/cobbler'
     volumes: |
      $(Build.SourcesDirectory)/cobbler:/cobbler
-     $(Build.BinariesDirectory):/build
+     $(Build.BinariesDirectory):/cooked
     envVars: |
       COBBLER_GIT_ENDPOINT=https://github.com/Microsoft/vscode
       GITHUB_TOKEN=$GITHUB_TOKEN
