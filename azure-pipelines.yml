@@ -10,5 +10,5 @@ jobs:
   pool:
     vmImage: 'Ubuntu 16.04'
   steps:
-  - template: vsts-cobble-docker.yml
+  - template: devops-cobbler.yml
         
