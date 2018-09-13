@@ -43,15 +43,15 @@ script:
   
   
 after_success:
-  - package_cloud push headmelted/codebuilds/ubuntu/xenial $(pwd)/cobbler/.output/*.deb
-  - package_cloud push headmelted/codebuilds/fedora/24 $(pwd)/cobbler/.output/*.rpm
+  - package_cloud push headmelted/codebuilds/ubuntu/xenial $(pwd)/cooked/*.deb
+  - package_cloud push headmelted/codebuilds/fedora/24 $(pwd)/cooked/*.rpm
 
 deploy:
   provider: releases
   api_key: "$GITHUB_TOKEN"
   file_glob: true
   file:
-    - $(pwd)/cobbler/.output/*.*
+    - $(pwd)/cooked/*.*
   skip_cleanup: true
   on:
     repo: headmelted/codebuilds
