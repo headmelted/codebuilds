@@ -22,4 +22,4 @@ echo "Creating output directory (./cooked)";
 mkdir cooked;
 
 echo "Binding workspace and executing script";
-docker run -it --security-opt apparmor:unconfined --cap-add SYS_ADMIN -e GITHUB_TOKEN=$GITHUB_TOKEN -e COBBLER_GIT_ENDPOINT="https://github.com/Microsoft/vscode.git" -e ARCH=$ARCH -v $(pwd)/cobbler:/cobbler -v $(pwd)/cooked:/cooked headmelted/cobbler /bin/bash -c "cd /kitchen && . ./steps/cook-all.sh";
+docker run -it --security-opt apparmor:unconfined --cap-add SYS_ADMIN -e GITHUB_TOKEN=$GITHUB_TOKEN -e COBBLER_GIT_ENDPOINT="https://github.com/Microsoft/vscode.git" -e ARCH=$ARCH -v $(pwd)/cobbler:/cobbler -v $(pwd)/cooked:/cooked headmelted/cobbler /bin/bash -c "cd /kitchen && . ./cook-all.sh";
