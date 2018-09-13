@@ -33,7 +33,7 @@ before_install:
 
 script:
   # - if [[ "${TRAVIS_TAG}" =~ ^20.*$ ]]; then
-  - sudo bash -c '. ./dock.sh headmelted/cobbler "export COBBLER_GIT_ENDPOINT=\"https://github.com/Microsoft/vscode.git\"; steps/cook.sh ${ARCH} get patch build package" $GITHUB_TOKEN;'
+  - sudo bash -c '. ./dock.sh headmelted/cobbler "./steps/cook-all.sh";'
     # else
     #   if [[ "${LABEL}" == "armhf_linux" ]]; then
     #     echo "Merging packages repository back up to Github Pages...";
