@@ -33,7 +33,7 @@ before_install:
 
 script:
   # - if [[ "${TRAVIS_TAG}" =~ ^20.*$ ]]; then
-  - sudo bash -c '. ./dock.sh headmelted/cobbler "./steps/cook-all.sh";'
+  - sudo bash -c '. ./dock.sh';
     # else
     #   if [[ "${LABEL}" == "armhf_linux" ]]; then
     #     echo "Merging packages repository back up to Github Pages...";
