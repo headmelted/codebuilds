@@ -16,12 +16,10 @@ matrix:
   include:
   - os: linux
     env:
-     - LABEL="arm64_linux"
-     - ARCH="arm64"
+     - arch="arm64"
   - os: linux
     env:
-     - LABEL="armhf_linux"
-     - ARCH="armhf"
+     - arch="armhf"
     
 notifications:
   email: false
