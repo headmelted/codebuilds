@@ -5,7 +5,7 @@ echo "Creating images directory [/kitchen/.images]"
 mkdir /kitchen/.images;
 
 echo "Downloading Ubuntu cloud image for $ARCH";
-wget "https://cloud-images.ubuntu.com/cosmic/20180913/cosmic-server-cloudimg-$ARCH.img" -O /kitchen/.images/;
+wget "https://cloud-images.ubuntu.com/cosmic/20180913/cosmic-server-cloudimg-$ARCH.img" -O /kitchen/.images/cosmic-server-cloudimg-$ARCH.img;
 
 echo "Downloaded cosmic-server-cloudimg-$ARCH.img successfully."
 
