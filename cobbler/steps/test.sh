@@ -1,7 +1,7 @@
 #!/bin/bash
 set -e;
 
-apt-get install -y qemu-system;
+apt-get install -y qemu;
 
 which qemu-system-$QEMU_ARCH;
 
