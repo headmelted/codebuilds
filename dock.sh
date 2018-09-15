@@ -8,10 +8,12 @@
 #
 # usage: dock.sh <docker_hub_image> <bash_script_to_run_in_container>
 
-echo "Checking if $1 exists locally"
-if [[ "$(docker images -q $1 2> /dev/null)" != "" ]]; then
-  echo "$1 does not exist locally, retrieving from hub"
-  docker pull "$1";
+docker_image="headmelted/cobbler:$arch"
+
+echo "Checking if $docker_image exists locally"
+if [[ "$(docker images -q $docker_image 2> /dev/null)" != "" ]]; then
+  echo "$docker_image does not exist locally, retrieving from hub"
+  docker pull $docker_image;
 fi
 
 docker images; 
