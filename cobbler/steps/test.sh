@@ -2,7 +2,7 @@
 set -e;
 
 echo "Installed packages list:"
-apt-get list installed
+apt list --installed;
 
 echo "Booting QEMU image"
 /usr/bin/qemu-system-$QEMU_ARCH -m 4096 -M virt -nographic -drive if=none,file=/kitchen/.images/cosmic-server-cloudimg-$ARCH.img,id=hd0 \
