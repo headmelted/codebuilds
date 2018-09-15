@@ -12,6 +12,8 @@ set -e;
 echo "Downloading Ubuntu cloud images (used for testing later)";
 wget "https://cloud-images.ubuntu.com/cosmic/current/cosmic-server-cloudimg-$arch.img" -O /kitchen/.images/cosmic-server-cloudimg-$arch.img;
 
+apt-get install uml-utilities -y
+
 echo "Creating TUN device for the session"
 tunctl -t tap0 -u me
 
