@@ -15,7 +15,7 @@ wget "https://cloud-images.ubuntu.com/cosmic/current/cosmic-server-cloudimg-$arc
 apt-get install uml-utilities -y
 
 echo "Creating TUN device for the session"
-tunctl -t tap0 -u me
+tunctl -t tap0 -u $(whoami)
 
 echo "Booting QEMU image"
 /usr/bin/qemu-system-$QEMU_ARCH -m 4096 -M virt -nographic -drive if=none,file=/kitchen/.images/cosmic-server-cloudimg-$arch,id=hd0 -device virtio-blk-device,drive=hd0 -netdev tap,ifname=tap0,id=mynet0,script=no;
