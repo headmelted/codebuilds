@@ -6,8 +6,8 @@ echo "Cobbler is $(lsb_release -a)";
 echo "Installed packages list:"
 apt list --installed;
 
-echo "Creating images directory [/kitchen/.images]"
-mkdir /kitchen/.images;
+# echo "Creating images directory [/kitchen/.images]"
+# mkdir /kitchen/.images;
 
 echo "Downloading Ubuntu cloud images (used for testing later)";
 wget "https://cloud-images.ubuntu.com/cosmic/current/cosmic-server-cloudimg-$arch.img" -O ./kitchen/.images/cosmic-server-cloudimg-$arch.img;
