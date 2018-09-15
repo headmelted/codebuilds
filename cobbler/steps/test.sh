@@ -1,6 +1,8 @@
 #!/bin/bash
 set -e;
 
+echo "Cobbler is $(lsb_release -a)";
+
 echo "Installed packages list:"
 apt list --installed;
 
