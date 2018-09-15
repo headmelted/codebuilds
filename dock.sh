@@ -18,6 +18,9 @@ docker images;
 
 echo "Current directory is [$(pwd)]"
 
+echo "Directory list:"
+ls;
+
 echo "Creating output directory (./cooked)";
 mkdir cooked;
 
