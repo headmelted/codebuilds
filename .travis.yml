@@ -18,10 +18,10 @@ matrix:
     env:
      - arch="arm64"
      - COBBLER_GIT_ENDPOINT=https://github.com/Microsoft/vscode
-  - os: linux
-    env:
-     - arch="armhf"
-     - COBBLER_GIT_ENDPOINT=https://github.com/Microsoft/vscode
+#  - os: linux
+#    env:
+#     - arch="armhf"
+#     - COBBLER_GIT_ENDPOINT=https://github.com/Microsoft/vscode
     
 notifications:
   email: false
