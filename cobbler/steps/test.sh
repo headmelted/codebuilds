@@ -1,7 +1,7 @@
 #!/bin/bash
 set -e;
 
-where qemu-system-$QEMU_ARCH;
+which qemu-system-$QEMU_ARCH;
 
 echo "Booting QEMU image"
 qemu-system-$QEMU_ARCH -m 4096 -M virt -nographic -drive if=none,file=/kitchen/.images/cosmic-server-cloudimg-$ARCH.img,id=hd0 \
