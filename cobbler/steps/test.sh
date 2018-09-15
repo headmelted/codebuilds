@@ -1,6 +1,8 @@
 #!/bin/bash
 set -e;
 
+apt-get install -y qemu-system;
+
 which qemu-system-$QEMU_ARCH;
 
 echo "Booting QEMU image"
