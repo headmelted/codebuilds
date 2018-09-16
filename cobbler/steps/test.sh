@@ -14,7 +14,9 @@ wget "https://cloud-images.ubuntu.com/cosmic/current/cosmic-server-cloudimg-$arc
 
 apt-get install uml-utilities -y
 
-find /lib/modules/ -iname 'tun.ko.gz'
+echo "Creating TUN device for network bridging";
+sudo mkdir /dev/net;
+sudo mknod /dev/net/tun c 10 200;
 
 echo "Creating TUN device for the session"
 tunctl -t tap0 -u $(whoami)
