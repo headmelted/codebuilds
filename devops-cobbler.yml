@@ -11,6 +11,6 @@ steps:
     envVars: |
       COBBLER_GIT_ENDPOINT=https://github.com/Microsoft/vscode
       GITHUB_TOKEN=$GITHUB_TOKEN
-      ARCH=$ARCH
+      ARCH=$COBBLER_ARCH
     containerCommand: '/kitchen/cook-all.sh'
     detached: false

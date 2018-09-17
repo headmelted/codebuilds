@@ -8,7 +8,7 @@
 #
 # usage: dock.sh <docker_hub_image> <bash_script_to_run_in_container>
 
-docker_image="headmelted/cobbler:$arch"
+docker_image="headmelted/cobbler:$COBBLER_ARCH"
 
 echo "Checking if $docker_image exists locally"
 if [[ "$(docker images -q $docker_image 2> /dev/null)" != "" ]]; then
@@ -29,4 +29,11 @@ mkdir cooked;
 echo "Host is $(lsb_release -a)";
 
 echo "Binding workspace and executing script";
-docker run -it --security-opt apparmor:unconfined --cap-add SYS_ADMIN -e arch=$arch -e COBBLER_PACKAGES=$COBBLER_PACKAGES -e GITHUB_TOKEN=$GITHUB_TOKEN -e COBBLER_GIT_ENDPOINT=$COBBLER_GIT_ENDPOINT -v $(pwd)/cobbler:/cobbler -v $(pwd)/cooked:/cooked headmelted/cobbler:$arch /bin/bash -c "ls / && cd /kitchen && . ./steps/cook.sh test";
+docker run -it --security-opt apparmor:unconfined --cap-add SYS_ADMIN \
+-e COBBLER_ARCH=$COBBLER_ARCH \
+-e COBBLER_PACKAGES=$COBBLER_PACKAGES \
+-e GITHUB_TOKEN=$GITHUB_TOKEN \
+-e COBBLER_GIT_ENDPOINT=$COBBLER_GIT_ENDPOINT \
+-v $(pwd)/cobbler:/root/kitchen/cobbler \
+-v $(pwd)/cooked:/root/kitchen/cooked \
+headmelted/cobbler:$COBBLER_ARCH;

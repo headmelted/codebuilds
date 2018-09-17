@@ -5,9 +5,9 @@ MACHINE_MTYPE="$(uname -m)";
 ARCH="${MACHINE_MTYPE}";
 REPOSITORY_NAME="headmelted";
 
-if [ "$ARCH" = "amd64" ]; then REPOSITORY_NAME="Microsoft"; fi;
+if [ "$COBBLER_ARCH" = "amd64" ]; then REPOSITORY_NAME="Microsoft"; fi;
 
-echo "Architecture detected as ${ARCH}...";
+echo "Architecture detected as $COBBLER_ARCH...";
 
 if [ "${REPOSITORY_NAME}" = "headmelted" ]; then
 
@@ -57,7 +57,7 @@ else
   CODE_EXECUTABLE_NAME="code-insiders";
 fi;
 
-if [ "${ARCH}" = "aarch64" ]; then
+if [ "$COBBLER_ARCH" = "aarch64" ]; then
   echo "aarch64 currently disabled. THIS IS BEING WORKED ON, APOLOGIES FOR THE INCONVENIENCE, PLEASE CHECK https://code.headmelted.com FOR UPDATES";
   exit 1;
 else

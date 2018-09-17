@@ -29,7 +29,7 @@ notifications:
 before_install:
   - gem install package_cloud;
   - sudo apt-get install -y tree;
-  - docker pull headmelted/cobbler:$arch;
+  - docker pull headmelted/cobbler:$COBBLER_ARCH;
 
 script:
   # - if [[ "${TRAVIS_TAG}" =~ ^20.*$ ]]; then
