@@ -26,7 +26,9 @@ ls;
 echo "Creating output directory (./output)";
 mkdir output;
 
-echo "Host is $(lsb_release -a)";
+echo "------ HOST DETAILS ------";
+lsb_release -a;
+echo "--------------------------";
 
 echo "Binding workspace and executing script";
 docker run -it --security-opt apparmor:unconfined --cap-add SYS_ADMIN \
