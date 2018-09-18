@@ -34,6 +34,7 @@ docker run -it --security-opt apparmor:unconfined --cap-add SYS_ADMIN \
 -e COBBLER_PACKAGES=$COBBLER_PACKAGES \
 -e GITHUB_TOKEN=$GITHUB_TOKEN \
 -e COBBLER_GIT_ENDPOINT=$COBBLER_GIT_ENDPOINT \
+-e COBBLER_DEPENDENCY_PACKAGES="libgtk2.0-0 libxkbfile-dev libx11-dev libxdmcp-dev libdbus-1-3 libpcre3 libselinux1 libp11-kit0 libcomerr2 libk5crypto3 libkrb5-3 libpango-1.0-0 libpangocairo-1.0-0 libpangoft2-1.0-0 libxcursor1 libxfixes3 libfreetype6 libavahi-client3 libgssapi-krb5-2 libtiff5 fontconfig-config libgdk-pixbuf2.0-common libgdk-pixbuf2.0-0 libfontconfig1 libcups2 libcairo2 libc6-dev linux-libc-dev libatk1.0-0 libx11-xcb-dev libxtst6 libxss-dev libxss1 libgconf-2-4 libasound2 libnss3 zlib1g"
 -v $(pwd)/cobbler:/root/kitchen/cobbler \
 -v $(pwd)/output:/root/kitchen/output \
 headmelted/cobbler:$COBBLER_ARCH;
