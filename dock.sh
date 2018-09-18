@@ -23,8 +23,8 @@ echo "Current directory is [$(pwd)]"
 echo "Directory list:"
 ls;
 
-echo "Creating output directory (./cooked)";
-mkdir cooked;
+echo "Creating output directory (./output)";
+mkdir output;
 
 echo "Host is $(lsb_release -a)";
 
@@ -35,5 +35,5 @@ docker run -it --security-opt apparmor:unconfined --cap-add SYS_ADMIN \
 -e GITHUB_TOKEN=$GITHUB_TOKEN \
 -e COBBLER_GIT_ENDPOINT=$COBBLER_GIT_ENDPOINT \
 -v $(pwd)/cobbler:/root/kitchen/cobbler \
--v $(pwd)/cooked:/root/kitchen/cooked \
+-v $(pwd)/output:/root/kitchen/output \
 headmelted/cobbler:$COBBLER_ARCH;
