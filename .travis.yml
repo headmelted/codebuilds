@@ -16,7 +16,7 @@ matrix:
   include:
   - os: linux
     env:
-     - arch="arm64"
+     - COBBLER_ARCH="arm64"
      - COBBLER_GIT_ENDPOINT=https://github.com/Microsoft/vscode
 #  - os: linux
 #    env:
