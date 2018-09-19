@@ -4,13 +4,11 @@ steps:
   displayName: Cobbler
   inputs:
     action: 'Use Cobbler to compile'
-    imageName: 'headmelted/cobbler'
+    imageName: 'headmelted/cobbler:$COBBLER_ARCH'
     volumes: |
      $(Build.SourcesDirectory)/cobbler:/cobbler
-     $(Build.BinariesDirectory):/cooked
+     $(Build.BinariesDirectory):/output
     envVars: |
       COBBLER_GIT_ENDPOINT=https://github.com/Microsoft/vscode
       GITHUB_TOKEN=$GITHUB_TOKEN
-      ARCH=$COBBLER_ARCH
-    containerCommand: '/kitchen/cook-all.sh'
     detached: false
