@@ -10,10 +10,7 @@ steps:
     volumes: |
      $(Build.SourcesDirectory)/cobbler:/cobbler
      $(Build.BinariesDirectory):/output
-    envVars: |
-      COBBLER_GIT_ENDPOINT=https://github.com/Microsoft/vscode
-      GITHUB_TOKEN=$GITHUB_TOKEN
-      COBBLER_ARCH=$COBBLER_ARCH
+    envVars: ${{ parameters.envVars }}
     workDir: /root
     detached: false
     containerCommand: /bin/bash -c '. ./steps/bootstrap.sh'
