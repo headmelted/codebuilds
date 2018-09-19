@@ -12,12 +12,8 @@ jobs:
   displayName: 'Linux ARM 32-bit, hardware floating-point'
   steps:
   - template: devops-cobbler.yml
-    parameters:
-      arch: armhf
 - job: linux_arm64
   displayName: 'Linux ARM 64-bit'
   steps:
   - template: devops-cobbler.yml
-    parameters:
-      arch: arm64
-        
+  
