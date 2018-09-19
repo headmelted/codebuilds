@@ -3,7 +3,7 @@ steps:
 - task: Docker@0
   displayName: Cobbler
   inputs:
-    action: 'Use Cobbler to compile'
+    action: 'Run an image'
     command: 'run'
     imageName: 'headmelted/cobbler:arm64'
     ports: 8084
@@ -13,6 +13,7 @@ steps:
     envVars: |
       COBBLER_GIT_ENDPOINT=https://github.com/Microsoft/vscode
       GITHUB_TOKEN=$GITHUB_TOKEN
+      COBBLER_ARCH=$COBBLER_ARCH
     workDir: /root
     detached: false
     containerCommand: /bin/bash -c '. ./steps/bootstrap.sh'
