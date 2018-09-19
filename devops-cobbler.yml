@@ -1,14 +1,16 @@
 # These are the steps used in a container-based build in VSTS.
-steps:
-- task: docker@0
+steps:    
+- task: Docker@0
   displayName: Cobbler
   inputs:
     action: 'Use Cobbler to compile'
+    command: 'run'
     imageName: 'headmelted/cobbler:$COBBLER_ARCH'
+    ports: 8084
     volumes: |
      $(Build.SourcesDirectory)/cobbler:/cobbler
      $(Build.BinariesDirectory):/output
     envVars: |
       COBBLER_GIT_ENDPOINT=https://github.com/Microsoft/vscode
       GITHUB_TOKEN=$GITHUB_TOKEN
-    detached: false
+      
