@@ -52,7 +52,7 @@ deploy:
   api_key: "$GITHUB_TOKEN"
   file_glob: true
   file:
-    - $(pwd)/cooked/*.*
+    - $(pwd)/output/*.*
   skip_cleanup: true
   on:
     repo: headmelted/codebuilds
