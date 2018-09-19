@@ -4,9 +4,6 @@ resources:
 trigger:
 - master
 
-pool:
-- vmImage: 'Ubuntu 16.04'
-
 jobs:
 - job: linux_armhf
   displayName: 'Linux ARM 32-bit, hardware floating-point'
