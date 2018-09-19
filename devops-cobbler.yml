@@ -5,7 +5,7 @@ steps:
   inputs:
     action: 'Use Cobbler to compile'
     command: 'run'
-    imageName: 'headmelted/cobbler:$COBBLER_ARCH'
+    imageName: 'headmelted/cobbler:arm64'
     ports: 8084
     volumes: |
      $(Build.SourcesDirectory)/cobbler:/cobbler
@@ -13,4 +13,7 @@ steps:
     envVars: |
       COBBLER_GIT_ENDPOINT=https://github.com/Microsoft/vscode
       GITHUB_TOKEN=$GITHUB_TOKEN
-      
+    workDir: /root
+    detached: false
+    containerCommand: /bin/bash -c '. ./steps/bootstrap.sh'
+    
