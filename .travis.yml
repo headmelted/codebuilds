@@ -19,7 +19,7 @@ matrix:
      - COBBLER_SCRIPT=build
      - COBBLER_STRATEGY=cross
      - COBBLER_ARCH=arm64
-     - COBBLER_GIT_ENDPOINT=https://github.com/Microsoft/vscode
+     - COBBLER_GIT_ENDPOINT=https://github.com/Microsoft/vscode.git
 #  - os: linux
 #    env:
 #     - arch="armhf"
