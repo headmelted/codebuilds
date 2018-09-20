@@ -7,6 +7,8 @@ trigger:
 jobs:
 - job: linux_arm64
   displayName: 'Linux ARM 64-bit'
+  envVars: |
+    COBBLER_GIT_ENDPOINT="https://github.com/Microsoft/vscode";
   steps:
   - template: devops-cobbler.yml
 #- job: linux_arm32hf
