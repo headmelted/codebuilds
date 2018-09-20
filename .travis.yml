@@ -30,15 +30,7 @@ before_install:
   - sudo apt-get install -y tree;
 
 script:
-  # - if [[ "${TRAVIS_TAG}" =~ ^20.*$ ]]; then
-  - sudo bash -c '. ./dock.sh';
-    # else
-    #   if [[ "${LABEL}" == "armhf_linux" ]]; then
-    #     echo "Merging packages repository back up to Github Pages...";
-    #     . ./tools/merge.sh;
-    #   fi;
-    # fi;
-  
+  - sudo bash -c '. ./dock.sh build.sh';
   
 after_success:
   - package_cloud push headmelted/codebuilds/ubuntu/xenial $(pwd)/cooked/*.deb
