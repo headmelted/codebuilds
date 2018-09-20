@@ -8,10 +8,15 @@ steps:
     imageName: 'headmelted/cobbler:cross-arm64'
     ports: 8084
     volumes: |
-    # $(Build.SourcesDirectory):/root/code # Restore this when repo:self bindings are figured out, and prevent pulling COBBLER_GIT_ENDPOINT.
-     $(Build.BinariesDirectory):/root/output
+      $(Build.BinariesDirectory):/root/output
     envVars: |
       COBBLER_GIT_ENDPOINT=https://github.com/Microsoft/vscode
       COBBLER_SCRIPT='echo "Running npm install for [$npm_config_target_arch]";        npm install --unsafe-perm;      echo "Compiling VS Code for [$npm_config_target_arch]"; yarn run gulp vscode-linux-$npm_config_target_arch-min;'
     workDir: /root
     detached: false
+
+
+# Restore this when repo:self bindings are figured out, and prevent pulling COBBLER_GIT_ENDPOINT.
+# volumes: |
+# ...
+# $(Build.SourcesDirectory):/root/code 
