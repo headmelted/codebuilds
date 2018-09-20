@@ -13,7 +13,7 @@ jobs:
       strategy: cross
       arch: arm64
       git: https://github.com/Microsoft/vscode
-      script: |
+      bash: |
         echo "Running npm install for [$npm_config_target_arch]";
         npm install --unsafe-perm;
         
