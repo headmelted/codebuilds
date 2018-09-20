@@ -10,8 +10,11 @@ git clone --depth 1 https://github.com/creationix/nvm.git ~/.nvm;
 echo "Setting current owner as owner of ~/.nvm";
 chown ${USER:=$(/usr/bin/id -run)}:$USER -R ~/.nvm;
 
+echo "NVM Script:"
+cat ~/.nvm/nvm.sh;
+
 echo "Running NVM script";
-source ~/.nvm/nvm.sh;
+. ~/.nvm/nvm.sh;
 
 echo "Setting up NVM";
 nvm install $1;
