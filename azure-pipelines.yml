@@ -1,5 +1,5 @@
 resources:
-- repo: self
+- repo: none
 
 trigger:
 - master
