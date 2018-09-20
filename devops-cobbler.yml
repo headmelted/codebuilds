@@ -10,7 +10,8 @@ steps:
     volumes: |
      $(Build.SourcesDirectory):/root/code
      $(Build.BinariesDirectory):/root/output
-    envVars:
+    envVars: |
       COBBLER_GIT_ENDPOINT=${{ parameters.git }}
+      COBBLER_SCRIPT='${{ parameters.script }}'
     workDir: /root
     detached: false
