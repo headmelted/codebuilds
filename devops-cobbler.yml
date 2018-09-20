@@ -5,12 +5,12 @@ steps:
   inputs:
     action: 'Run an image'
     command: 'run'
-    imageName: 'headmelted/cobbler:cross-arm64'
+    imageName: 'headmelted/cobbler:${{ parameters.strategy }}-${{ parameters.arch }}'
     ports: 8084
     volumes: |
      $(Build.SourcesDirectory):/root/code
      $(Build.BinariesDirectory):/root/output
-    envVars: ${{ parameters.envVars }}
+    envVars:
+      COBBLER_GIT_ENDPOINT=${{ parameters.git }}
     workDir: /root
     detached: false
-    
