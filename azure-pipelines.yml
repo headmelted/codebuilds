@@ -16,6 +16,8 @@ jobs:
         COBBLER_GIT_ENDPOINT=https://github.com/Microsoft/vscode;
         COBBLER_SCRIPT='
         
+        set -e;
+        
         echo "Removing old nvm for user if it exists";
         rm -rf ~/.nvm;
 
