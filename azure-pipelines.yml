@@ -13,7 +13,12 @@ jobs:
       strategy: cross
       arch: arm64
       git: https://github.com/Microsoft/vscode
-      script: 'echo "Running npm install for [$npm_config_target_arch]"; npm install --unsafe-perm; echo "Compiling VS Code for [$npm_config_target_arch]"; yarn run gulp vscode-linux-$npm_config_target_arch-min;'
+      script: |
+        echo "Running npm install for [$npm_config_target_arch]";
+        npm install --unsafe-perm;
+        
+        echo "Compiling VS Code for [$npm_config_target_arch]";
+        yarn run gulp vscode-linux-$npm_config_target_arch-min;'
       
 #- job: linux_arm32hf
 #  displayName: 'Linux ARM 32-bit, hardware floating-point'
