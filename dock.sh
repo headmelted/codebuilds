@@ -21,6 +21,6 @@ docker run -it --security-opt apparmor:unconfined --cap-add SYS_ADMIN \
 -e GITHUB_TOKEN=$GITHUB_TOKEN \
 -e COBBLER_GIT_ENDPOINT=$COBBLER_GIT_ENDPOINT \
 -e COBBLER_SCRIPT=$COBBLER_SCRIPT \
--v $(pwd)/cobbler:/root/cobbler \
+-v ./cobbler:/root/cobbler \
 -v $1:/root/output \
 $docker_image;
