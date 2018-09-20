@@ -1,6 +1,8 @@
 #!/bin/bash
 set -e;
 
+cd $COBBLER_CODE_DIRECTORY;
+
 echo "Running NVM setup";
 . ~/cobbler/steps/setup_nvm.sh 8.9.4;
 
