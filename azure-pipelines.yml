@@ -18,7 +18,7 @@ jobs:
         npm install --unsafe-perm;
         
         echo "Compiling VS Code for [$npm_config_target_arch]";
-        yarn run gulp vscode-linux-$npm_config_target_arch-min;'
+        yarn run gulp vscode-linux-$npm_config_target_arch-min;
       
 #- job: linux_arm32hf
 #  displayName: 'Linux ARM 32-bit, hardware floating-point'
