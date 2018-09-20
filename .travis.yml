@@ -34,7 +34,7 @@ before_install:
 
 script:
   - mkdir $TRAVIS_OUTPUT_DIRECTORY;
-  - sudo bash -c 'eval ". ./dock.sh build $TRAVIS_OUTPUT_DIRECTORY"';
+  - sudo bash -c '. ./dock.sh $TRAVIS_OUTPUT_DIRECTORY';
   
 after_success:
   - package_cloud push headmelted/codebuilds/ubuntu/xenial $TRAVIS_OUTPUT_DIRECTORY/*.deb
