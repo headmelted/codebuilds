@@ -10,7 +10,8 @@ jobs:
   steps:
   - template: devops-cobbler.yml
     parameters:
-      image: 'headmelted/cobbler:cross-arm64'
+      displayName: 'Build'
+      imageName: 'headmelted/cobbler:cross-arm64'
       envVars: >
         COBBLER_GIT_ENDPOINT=https://github.com/Microsoft/vscode;
         COBBLER_SCRIPT='
