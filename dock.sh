@@ -19,7 +19,7 @@ echo "Binding workspace and executing script";
 docker run -it --security-opt apparmor:unconfined --cap-add SYS_ADMIN \
 -e GITHUB_TOKEN=$GITHUB_TOKEN \
 -e COBBLER_GIT_ENDPOINT=$COBBLER_GIT_ENDPOINT \
--e COBBLER_SCRIPT='$2' \
+-e COBBLER_SCRIPT='$1' \
 -v $(pwd)/cobbler:/root/cobbler \
 -v $(pwd)/output:/root/output \
 $docker_image;
