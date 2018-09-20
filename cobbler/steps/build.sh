@@ -3,6 +3,8 @@ set -e;
 
 cd $COBBLER_CODE_DIRECTORY;
 
+ls ~/cobbler/steps;
+
 echo "Running [~/cobbler/steps/setup_nvm.sh]";
 ~/cobbler/steps/setup_nvm.sh 8.9.4;
 
