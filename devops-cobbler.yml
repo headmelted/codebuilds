@@ -9,9 +9,9 @@ steps:
     ports: 8084
     volumes: |
       $(Build.BinariesDirectory):/root/output
-    envVars: |
-      COBBLER_GIT_ENDPOINT=https://github.com/Microsoft/vscode
-      COBBLER_SCRIPT='{{ parameters.bash }}';
+    envVars:
+      COBBLER_GIT_ENDPOINT: https://github.com/Microsoft/vscode
+      COBBLER_SCRIPT: {{ parameters.bash }}
     workDir: /root
     detached: false
 
