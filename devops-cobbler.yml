@@ -1,7 +1,7 @@
 # These are the steps used in a container-based build in VSTS.
 steps:    
 - task: Docker@0
-  displayName: Cobbler
+  displayName: {{ parameters.displayName }}
   inputs:
     action: 'Run an image'
     command: 'run'
