@@ -3,9 +3,10 @@
 # dock.sh
 #
 # Run the given script in the loaded container, passing in our
-# environment variables.  THE BASH SCRIPT MUST BE IN THE /cobbler PATH.
+# environment variables, and send any output from the step to the specified output
+# directory.  THE BASH SCRIPT MUST BE IN THE /cobbler PATH.
 #
-# usage: dock.sh <docker_hub_image> <bash_script_to_run_in_container>
+# usage: dock.sh <docker_hub_image> <bash_script_to_run_in_container> <output_artifacts_directory>
 
 docker_image="headmelted/cobbler:$COBBLER_STRATEGY-$COBBLER_ARCH"
 
@@ -21,5 +22,5 @@ docker run -it --security-opt apparmor:unconfined --cap-add SYS_ADMIN \
 -e COBBLER_GIT_ENDPOINT=$COBBLER_GIT_ENDPOINT \
 -e COBBLER_SCRIPT='$1' \
 -v $(pwd)/cobbler:/root/cobbler \
--v $(pwd)/output:/root/output \
+-v $2:/root/output \
 $docker_image;
