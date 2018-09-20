@@ -16,6 +16,7 @@ matrix:
   include:
   - os: linux
     env:
+     - COBBLER_ARCH=arm64
      - COBBLER_GIT_ENDPOINT=https://github.com/Microsoft/vscode
 #  - os: linux
 #    env:
@@ -28,13 +29,15 @@ notifications:
 before_install:
   - gem install package_cloud;
   - sudo apt-get install -y tree;
+  - export TRAVIS_OUTPUT_DIRECTORY=$(pwd)/output; # Travis does not specify an output artifact directory, so we'll create our own.
 
 script:
-  - sudo bash -c '. ./dock.sh build.sh';
+  - mkdir $TRAVIS_OUTPUT_DIRECTORY;
+  - sudo bash -c '. ./dock.sh build $TRAVIS_OUTPUT_DIRECTORY';
   
 after_success:
-  - package_cloud push headmelted/codebuilds/ubuntu/xenial $(pwd)/cooked/*.deb
-  - package_cloud push headmelted/codebuilds/fedora/24 $(pwd)/cooked/*.rpm
+  - package_cloud push headmelted/codebuilds/ubuntu/xenial $TRAVIS_OUTPUT_DIRECTORY/*.deb
+  - package_cloud push headmelted/codebuilds/fedora/24 $TRAVIS_OUTPUT_DIRECTORY/*.rpm
 
 deploy:
   provider: releases
