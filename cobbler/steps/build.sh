@@ -5,8 +5,8 @@ cd $COBBLER_CODE_DIRECTORY;
 
 chmod +x ~/cobbler/steps/*.sh;
 
-echo "Running [~/cobbler/steps/setup_nvm.sh]";
-~/cobbler/steps/setup_nvm.sh 8.9.4;
+echo "Running NVM installer";
+curl -o- https://raw.githubusercontent.com/creationix/nvm/v0.33.11/install.sh | bash
 
 echo "Running npm install for $npm_config_target_arch";
 npm install --target-arch=$npm_config_target_arch --unsafe-perm;
