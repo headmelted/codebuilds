@@ -5,7 +5,7 @@ trigger:
 - master
 
 parameters:
-  build: |
+  build_script: |
       echo "Running npm install for [$npm_config_target_arch]";
       npm install --unsafe-perm;
       echo "Compiling VS Code for [$npm_config_target_arch]";
@@ -17,7 +17,10 @@ jobs:
   steps:
   - template: devops-cobbler.yml
     parameters:
-      build: ${{parameters.build}}
+      envVars:
+        COBBLER_SCRIPT: ${{parameters.build_script}}
+        COBBLER_GIT_ENDPOINT: https://github.com/Microsoft/vscode
+        COBBLER_ARCH: arm64
       
 #- job: linux_arm32hf
 #  displayName: 'Linux ARM 32-bit, hardware floating-point'
