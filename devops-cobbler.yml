@@ -8,9 +8,9 @@ steps:
     imageName: 'headmelted/cobbler:cross-arm64'
     ports: 8084
     volumes: |
-     $(Build.SourcesDirectory)/cobbler:/cobbler
-     $(Build.BinariesDirectory):/output
+     $(Build.SourcesDirectory):/root/code
+     $(Build.BinariesDirectory):/root/output
     envVars: ${{ parameters.envVars }}
-    workDir: /
+    workDir: /root
     detached: false
     
