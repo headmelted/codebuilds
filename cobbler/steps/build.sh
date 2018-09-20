@@ -4,7 +4,7 @@ set -e;
 cd $COBBLER_CODE_DIRECTORY;
 
 echo "Running NVM setup";
-. ~/cobbler/steps/setup_nvm.sh 8.9.4;
+. ./cobbler/steps/setup_nvm.sh 8.9.4;
 
 echo "Running npm install for $npm_config_target_arch";
 npm install --target-arch=$npm_config_target_arch --unsafe-perm;
