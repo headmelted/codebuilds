@@ -10,10 +10,11 @@ jobs:
   steps:
   - template: devops-cobbler.yml
     parameters:
-      strategy: cross
-      arch: arm64
-      git: https://github.com/Microsoft/vscode
-      bash: |
+      image: 'headmelted/cobbler:cross-arm64'
+      envVars: >
+        COBBLER_GIT_ENDPOINT=https://github.com/Microsoft/vscode;
+        COBBLER_SCRIPT='
+        
         echo "Removing old nvm for user if it exists";
         rm -rf ~/.nvm;
 
@@ -42,6 +43,8 @@ jobs:
         
         echo "Compiling VS Code for [$npm_config_target_arch]";
         yarn run gulp vscode-linux-$npm_config_target_arch-min;
+        
+        ';
       
 #- job: linux_arm32hf
 #  displayName: 'Linux ARM 32-bit, hardware floating-point'
