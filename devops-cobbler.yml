@@ -5,13 +5,11 @@ steps:
   inputs:
     action: 'Run an image'
     command: 'run'
-    imageName: 'headmelted/cobbler:cross-arm64'
+    imageName: {{ parameters.imageName }}
     ports: 8084
     volumes: |
       $(Build.BinariesDirectory):/root/output
-    envVars:
-      COBBLER_GIT_ENDPOINT: 'https://github.com/Microsoft/vscode'
-      COBBLER_SCRIPT: ${{ parameters.bash }}
+    envVars: {{ parameters.envVars }}
     workDir: /root
     detached: false
 
