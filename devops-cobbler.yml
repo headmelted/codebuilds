@@ -8,7 +8,7 @@ steps:
     imageName: 'headmelted/cobbler:cross-arm64'
     ports: 8084
     volumes: |
-     $(Build.SourcesDirectory):/root/code
+    # $(Build.SourcesDirectory):/root/code # Restore this when repo:self bindings are figured out, and prevent pulling COBBLER_GIT_ENDPOINT.
      $(Build.BinariesDirectory):/root/output
     envVars: |
       COBBLER_GIT_ENDPOINT=https://github.com/Microsoft/vscode
