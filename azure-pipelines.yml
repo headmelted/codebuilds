@@ -10,10 +10,10 @@ jobs:
   steps:
   - template: devops-cobbler.yml
     parameters:
-      envVars: |
-        COBBLER_SCRIPT='echo "Running npm install for [$npm_config_target_arch]"; npm install --unsafe-perm; echo "Compiling VS Code for [$npm_config_target_arch]"; yarn run gulp vscode-linux-$npm_config_target_arch-min;'
-        COBBLER_GIT_ENDPOINT: https://github.com/Microsoft/vscode
-        COBBLER_ARCH: arm64
+    - strategy: cross
+      arch: arm64
+      git: https://github.com/Microsoft/vscode
+      script: 'echo "Running npm install for [$npm_config_target_arch]"; npm install --unsafe-perm; echo "Compiling VS Code for [$npm_config_target_arch]"; yarn run gulp vscode-linux-$npm_config_target_arch-min;'
       
 #- job: linux_arm32hf
 #  displayName: 'Linux ARM 32-bit, hardware floating-point'
