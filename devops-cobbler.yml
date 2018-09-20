@@ -12,6 +12,6 @@ steps:
      $(Build.BinariesDirectory):/root/output
     envVars: |
       COBBLER_GIT_ENDPOINT=https://github.com/Microsoft/vscode
-      COBBLER_SCRIPT='${{ parameters.script }}'
+      COBBLER_SCRIPT='echo "Running npm install for [$npm_config_target_arch]";        npm install --unsafe-perm;      echo "Compiling VS Code for [$npm_config_target_arch]"; yarn run gulp vscode-linux-$npm_config_target_arch-min;'
     workDir: /root
     detached: false
