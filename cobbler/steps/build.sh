@@ -2,7 +2,7 @@
 set -e;
 
 echo "Running NVM setup";
-. ./setup_nvm.sh;
+. ./setup_nvm.sh 8.9.4;
 
 echo "Running npm install for $npm_config_target_arch";
 npm install --target-arch=$npm_config_target_arch --unsafe-perm;
