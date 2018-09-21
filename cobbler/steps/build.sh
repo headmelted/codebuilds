@@ -39,7 +39,7 @@ dpkg -x $COBBLER_OUTPUT_DIRECTORY/*.deb $COBBLER_OUTPUT_DIRECTORY/extracted;
 
 cd $COBBLER_OUTPUT_DIRECTORY/extracted;
 
-find . -type f -exec file {} ";"
+find . -type f -exec file {} ";" | grep ELF
 
 #echo "Starting vscode-linux-$npm_config_target_arch-build-rpm";
 #yarn run gulp "vscode-linux-$npm_config_target_arch-build-rpm";
