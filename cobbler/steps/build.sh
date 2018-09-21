@@ -1,21 +1,21 @@
 #!/bin/bash
 set -e;
 
-echo "/lib -------------------------------"
-ls /lib;
-echo "/usr/lib -------------------------------"
-ls /usr/lib;
-echo "/usr/include ---------------------------"
-ls /usr/include;
-echo "/usr/include/libsecret-1 ---------------------------"
-ls /usr/include/libsecret-1;
-echo "/usr/include/libsecret-1/libsecret --------------------------"
-ls /usr/include/libsecret-1/libsecret;
-echo "/usr/lib/$COBBLER_GNU_TRIPLET -----------------------"
-ls /usr/lib/$COBBLER_GNU_TRIPLET;
-echo "/usr/include/$COBBLER_GNU_TRIPLET --------------------"
-tree /usr/include/$COBBLER_GNU_TRIPLET
-echo "------------------------------------------------------------"
+#echo "/lib -------------------------------"
+#ls /lib;
+#echo "/usr/lib -------------------------------"
+#ls /usr/lib;
+#echo "/usr/include ---------------------------"
+#ls /usr/include;
+#echo "/usr/include/libsecret-1 ---------------------------"
+#ls /usr/include/libsecret-1;
+#echo "/usr/include/libsecret-1/libsecret --------------------------"
+#ls /usr/include/libsecret-1/libsecret;
+#echo "/usr/lib/$COBBLER_GNU_TRIPLET -----------------------"
+#ls /usr/lib/$COBBLER_GNU_TRIPLET;
+#echo "/usr/include/$COBBLER_GNU_TRIPLET --------------------"
+#tree /usr/include/$COBBLER_GNU_TRIPLET
+#echo "------------------------------------------------------------"
 
 . ~/cobbler/steps/setup_nvm.sh;
 
