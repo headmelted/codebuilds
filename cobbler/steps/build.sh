@@ -34,11 +34,13 @@ echo $COBBLER_CODE_DIRECTORY/.build/linux/.code;
 echo "Moving deb packages for release";
 mv $COBBLER_CODE_DIRECTORY/.build/linux/deb/$COBBLER_ARCH/deb/*.deb $COBBLER_OUTPUT_DIRECTORY;
 
-#echo "Extracting deb archive";
-#dpkg -x $COBBLER_OUTPUT_DIRECTORY/*.deb $COBBLER_OUTPUT_DIRECTORY/extracted;
+echo "Extracting deb archive";
+dpkg -x $COBBLER_OUTPUT_DIRECTORY/*.deb $COBBLER_OUTPUT_DIRECTORY/extracted;
+
+echo "Reading ELF dependencies";
+readelf -d $COBBLER_OUTPUT_DIRECTORY/extracted/usr/share/code-oss/code-oss;
 
 #cd $COBBLER_OUTPUT_DIRECTORY/extracted;
-
 #find . -type f -exec file {} ";" | grep ELF
 
 #echo "Starting vscode-linux-$npm_config_target_arch-build-rpm";
