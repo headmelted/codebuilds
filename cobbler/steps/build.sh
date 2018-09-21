@@ -37,11 +37,13 @@ mv $COBBLER_CODE_DIRECTORY/.build/linux/deb/$COBBLER_ARCH/deb/*.deb $COBBLER_OUT
 echo "Extracting deb archive";
 dpkg -x $COBBLER_OUTPUT_DIRECTORY/*.deb $COBBLER_OUTPUT_DIRECTORY/extracted;
 
-echo "Reading ELF dependencies";
-readelf -d $COBBLER_OUTPUT_DIRECTORY/extracted/usr/share/code-oss/code-oss;
+#echo "Reading ELF dependencies";
+#readelf -d $COBBLER_OUTPUT_DIRECTORY/extracted/usr/share/code-oss/code-oss;
 
-#cd $COBBLER_OUTPUT_DIRECTORY/extracted;
-#find . -type f -exec file {} ";" | grep ELF
+cd $COBBLER_OUTPUT_DIRECTORY/extracted;
+echo "Binary components of output --------------------------------------------------"
+find . -type f -exec file {} ";" | grep ELF
+echo "------------------------------------------------------------------------------"
 
 #echo "Starting vscode-linux-$npm_config_target_arch-build-rpm";
 #yarn run gulp "vscode-linux-$npm_config_target_arch-build-rpm";
