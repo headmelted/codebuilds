@@ -10,7 +10,7 @@ ls /usr/include;
 echo "/usr/include/libsecret-1 ---------------------------"
 ls /usr/include/libsecret-1;
 echo "/usr/include/libsecret-1/libsecret --------------------------"
-cat /usr/include/libsecret-1/libsecret;
+ls /usr/include/libsecret-1/libsecret;
 echo "/usr/lib/$COBBLER_GNU_TRIPLET -----------------------"
 ls /usr/lib/$COBBLER_GNU_TRIPLET;
 echo "/usr/include/$COBBLER_GNU_TRIPLET --------------------"
