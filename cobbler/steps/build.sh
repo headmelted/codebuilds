@@ -3,6 +3,8 @@ set -e;
 
 echo "/lib -------------------------------"
 ls /lib;
+echo "usr/lib -------------------------------"
+ls usr/lib;
 echo "/usr/include ---------------------------"
 ls /usr/include;
 echo "/usr/lib/$COBBLER_GNU_TRIPLET -----------------------"
