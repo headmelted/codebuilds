@@ -28,6 +28,9 @@ yarn run gulp vscode-linux-$npm_config_target_arch-min;
 echo "Starting vscode-linux-$npm_config_target_arch-build-deb";
 yarn run gulp vscode-linux-$npm_config_target_arch-build-deb;
 
+echo "Listing code folder";
+echo $COBBLER_CODE_DIRECTORY/.build/linux/.code;
+
 echo "Moving deb packages for release";
 mv $COBBLER_CODE_DIRECTORY/.build/linux/deb/$COBBLER_ARCH/deb/*.deb $COBBLER_OUTPUT_DIRECTORY;
 
