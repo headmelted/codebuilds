@@ -1,6 +1,16 @@
 #!/bin/bash
 set -e;
 
+echo "/lib -------------------------------"
+ls /lib;
+echo "/usr/include ---------------------------"
+ls /usr/include;
+echo "/usr/lib/$COBBLER_GNU_TRIPLET -----------------------"
+ls /usr/lib/$COBBLER_GNU_TRIPLET;
+echo "/usr/include/$COBBLER_GNU_TRIPLET --------------------"
+ls /usr/include/$COBBLER_GNU_TRIPLET
+echo "------------------------------------------------------------"
+
 . ~/cobbler/steps/setup_nvm.sh;
 
 echo "Running npm install for $npm_config_target_arch";
