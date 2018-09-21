@@ -8,7 +8,7 @@ ls /usr/include;
 echo "/usr/lib/$COBBLER_GNU_TRIPLET -----------------------"
 ls /usr/lib/$COBBLER_GNU_TRIPLET;
 echo "/usr/include/$COBBLER_GNU_TRIPLET --------------------"
-ls /usr/include/$COBBLER_GNU_TRIPLET
+tree /usr/include/$COBBLER_GNU_TRIPLET
 echo "------------------------------------------------------------"
 
 . ~/cobbler/steps/setup_nvm.sh;
