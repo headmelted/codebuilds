@@ -7,6 +7,8 @@ echo "usr/lib -------------------------------"
 ls usr/lib;
 echo "/usr/include ---------------------------"
 ls /usr/include;
+echo "/usr/include/libsecret-1 ---------------------------"
+ls /usr/include/libsecret-1;
 echo "/usr/lib/$COBBLER_GNU_TRIPLET -----------------------"
 ls /usr/lib/$COBBLER_GNU_TRIPLET;
 echo "/usr/include/$COBBLER_GNU_TRIPLET --------------------"
