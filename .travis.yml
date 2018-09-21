@@ -16,14 +16,16 @@ matrix:
   include:
   - os: linux
     env:
+     - COBBLER_ARCH=arm64
      - COBBLER_SCRIPT=build
      - COBBLER_STRATEGY=cross
-     - COBBLER_ARCH=arm64
      - COBBLER_GIT_ENDPOINT=https://github.com/Microsoft/vscode.git
-#  - os: linux
-#    env:
-#     - arch="armhf"
-#     - COBBLER_GIT_ENDPOINT=https://github.com/Microsoft/vscode
+  - os: linux
+    env:
+     - COBBLER_ARCH=armhf
+     - COBBLER_SCRIPT=build
+     - COBBLER_STRATEGY=cross
+     - COBBLER_GIT_ENDPOINT=https://github.com/Microsoft/vscode
     
 notifications:
   email: false
@@ -39,7 +41,7 @@ script:
   
 after_success:
   - package_cloud push headmelted/codebuilds/ubuntu/xenial $TRAVIS_OUTPUT_DIRECTORY/*.deb
-  - package_cloud push headmelted/codebuilds/fedora/24 $TRAVIS_OUTPUT_DIRECTORY/*.rpm
+  #- package_cloud push headmelted/codebuilds/fedora/24 $TRAVIS_OUTPUT_DIRECTORY/*.rpm
 
 deploy:
   provider: releases
