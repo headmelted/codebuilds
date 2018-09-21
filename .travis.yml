@@ -16,6 +16,18 @@ matrix:
   include:
   - os: linux
     env:
+     - COBBLER_ARCH=amd64
+     - COBBLER_SCRIPT=build
+     - COBBLER_STRATEGY=cross
+     - COBBLER_GIT_ENDPOINT=https://github.com/Microsoft/vscode.git
+  - os: linux
+    env:
+     - COBBLER_ARCH=i386
+     - COBBLER_SCRIPT=build
+     - COBBLER_STRATEGY=cross
+     - COBBLER_GIT_ENDPOINT=https://github.com/Microsoft/vscode.git
+  - os: linux
+    env:
      - COBBLER_ARCH=arm64
      - COBBLER_SCRIPT=build
      - COBBLER_STRATEGY=cross
@@ -25,7 +37,7 @@ matrix:
      - COBBLER_ARCH=armhf
      - COBBLER_SCRIPT=build
      - COBBLER_STRATEGY=cross
-     - COBBLER_GIT_ENDPOINT=https://github.com/Microsoft/vscode
+     - COBBLER_GIT_ENDPOINT=https://github.com/Microsoft/vscode.git
     
 notifications:
   email: false
@@ -40,7 +52,7 @@ script:
   - sudo bash -c '. ./dock.sh $TRAVIS_OUTPUT_DIRECTORY';
   
 after_success:
-  - package_cloud push headmelted/codebuilds/ubuntu/xenial $TRAVIS_OUTPUT_DIRECTORY/*.deb
+  - package_cloud push headmelted/codebuilds/ubuntu/xenial $TRAVIS_OUTPUT_DIRECTORY/*_arm*.deb # Only push ARM to package repository, the Intel builds are provided directly by Microsoft (kept here as a test of Cobbler).
   #- package_cloud push headmelted/codebuilds/fedora/24 $TRAVIS_OUTPUT_DIRECTORY/*.rpm
 
 deploy:
