@@ -16,7 +16,7 @@ if [ "${REPOSITORY_NAME}" = "headmelted" ]; then
   # echo "Done!";
 
   echo "Installing headmelted GPG key...";
-  wget -qO - https://packagecloud.io/headmelted/codebuilds/gpgkey | apt-key add -;
+  curl https://packagecloud.io/headmelted/codebuilds/gpgkey | apt-key add -;
   echo "Done!";
   
 else
