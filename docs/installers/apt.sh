@@ -8,29 +8,25 @@ REPOSITORY_NAME="headmelted";
 echo "Ensuring curl is installed";
 apt-get install -y curl;
 
-if [ "$COBBLER_ARCH" = "amd64" ]; then REPOSITORY_NAME="Microsoft"; fi;
+if [ "$COBBLER_ARCH" = "amd64" ]; then REPOSITORY_NAME="microsoft"; fi;
 
 echo "Architecture detected as $COBBLER_ARCH...";
 
 if [ "${REPOSITORY_NAME}" = "headmelted" ]; then
 
-  # echo "Installing bintray GPG key...";
-  # apt-key adv --keyserver hkp://keyserver.ubuntu.com:80 --recv-keys 379CE192D401AB61;
-  # echo "Done!";
-
-  echo "Installing headmelted GPG key...";
-  curl https://packagecloud.io/headmelted/codebuilds/gpgkey | apt-key add -;
-  echo "Done!";
+  gpg_key=https://packagecloud.io/headmelted/codebuilds/gpgkey;
   
 else
 
-  echo "Retrieving Microsoft GPG key...";
-  curl https://packages.microsoft.com/keys/microsoft.asc | gpg --dearmor > microsoft.gpg;
-  
-  echo "Installing Microsoft GPG key...";
-  mv microsoft.gpg /etc/apt/trusted.gpg.d/microsoft.gpg;
+  gpg_key=https://packages.microsoft.com/keys/microsoft.asc;
   
 fi;
+
+echo "Retrieving GPG key [${REPOSITORY_NAME}] ($gpg_key)...";
+curl $gpg_key | gpg --dearmor > ${REPOSITORY_NAME}.gpg;
+  
+echo "Installing Microsoft GPG key...";
+mv ${REPOSITORY_NAME}.gpg /etc/apt/trusted.gpg.d/${REPOSITORY_NAME}.gpg;
 
 echo "Installing ${REPOSITORY_NAME} repository...";
 
