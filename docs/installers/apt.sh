@@ -25,7 +25,7 @@ fi;
 echo "Retrieving GPG key [${REPOSITORY_NAME}] ($gpg_key)...";
 curl $gpg_key | gpg --dearmor > ${REPOSITORY_NAME}.gpg;
   
-echo "Installing Microsoft GPG key...";
+echo "Installing $REPOSITORY_NAME GPG key...";
 mv ${REPOSITORY_NAME}.gpg /etc/apt/trusted.gpg.d/${REPOSITORY_NAME}.gpg;
 
 echo "Installing ${REPOSITORY_NAME} repository...";
