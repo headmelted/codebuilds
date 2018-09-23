@@ -5,6 +5,9 @@ MACHINE_MTYPE="$(uname -m)";
 ARCH="${MACHINE_MTYPE}";
 REPOSITORY_NAME="headmelted";
 
+echo "Ensuring curl is installed";
+apt-get install -y curl;
+
 if [ "$COBBLER_ARCH" = "amd64" ]; then REPOSITORY_NAME="Microsoft"; fi;
 
 echo "Architecture detected as $COBBLER_ARCH...";
