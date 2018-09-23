@@ -14,26 +14,25 @@ echo "Architecture detected as $COBBLER_ARCH...";
 
 if [ "${REPOSITORY_NAME}" = "headmelted" ]; then
 
-  gpg_key=https://packagecloud.io/headmelted/codebuilds/gpgkey;
+  curl -s https://packagecloud.io/install/repositories/headmelted/codebuilds/script.deb.sh | sudo bash;
   
 else
 
   gpg_key=https://packages.microsoft.com/keys/microsoft.asc;
   
-fi;
-
-echo "Retrieving GPG key [${REPOSITORY_NAME}] ($gpg_key)...";
-curl $gpg_key | gpg --dearmor > ${REPOSITORY_NAME}.gpg;
+  echo "Retrieving GPG key [${REPOSITORY_NAME}] ($gpg_key)...";
+  curl $gpg_key | gpg --dearmor > ${REPOSITORY_NAME}.gpg;
   
-echo "Installing $REPOSITORY_NAME GPG key...";
-mv ${REPOSITORY_NAME}.gpg /etc/apt/trusted.gpg.d/${REPOSITORY_NAME}.gpg;
-
-echo "Installing ${REPOSITORY_NAME} repository...";
-
-if [ "${REPOSITORY_NAME}" = "headmelted" ]; then
-  echo "deb https://packagecloud.io/headmelted/codebuilds/ubuntu/ xenial main" > /etc/apt/sources.list.d/codebuilds.list;
-else
+  echo "Installing $REPOSITORY_NAME GPG key...";
+  mv ${REPOSITORY_NAME}.gpg /etc/apt/trusted.gpg.d/${REPOSITORY_NAME}.gpg;
+  
+  echo "Installing ${REPOSITORY_NAME} repository...";
   echo "deb https://packages.microsoft.com/repos/vscode stable main" > /etc/apt/sources.list.d/vscode.list;
+  
+  echo "Updating APT cache..."
+  apt-get update -yq;
+  echo "Done!"
+
 fi;
 
 if [ $? -eq 0 ]; then
@@ -42,10 +41,6 @@ else
   echo "Repository install failed.";
   exit 1;
 fi;
-
-echo "Updating APT cache..."
-apt-get update;
-echo "Done!"
 
 echo "Installing Visual Studio Code...";
 
