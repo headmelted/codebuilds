@@ -1,6 +1,5 @@
 #!/bin/sh
 
-clear;
 echo "
 -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
                           _   __ _             _             ___          _
@@ -115,6 +114,4 @@ To run Visual Studio Code from now on perform the following steps:
 3) Type (without the quotes!) \"code\" and press return.
 
 ";
-
-exit;
 
