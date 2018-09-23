@@ -31,7 +31,7 @@ mv ${REPOSITORY_NAME}.gpg /etc/apt/trusted.gpg.d/${REPOSITORY_NAME}.gpg;
 echo "Installing ${REPOSITORY_NAME} repository...";
 
 if [ "${REPOSITORY_NAME}" = "headmelted" ]; then
-  echo "deb https://packagecloud.io/headmelted/codebuilds/ubuntu/ xenial main" | sudo tee -a /etc/apt/sources.list.d/codebuilds.list;
+  echo "deb https://packagecloud.io/headmelted/codebuilds/ubuntu/ xenial main" > /etc/apt/sources.list.d/codebuilds.list;
 else
   echo "deb https://packages.microsoft.com/repos/vscode stable main" > /etc/apt/sources.list.d/vscode.list;
 fi;
@@ -56,12 +56,7 @@ else
   CODE_EXECUTABLE_NAME="code-insiders";
 fi;
 
-if [ "$COBBLER_ARCH" = "aarch64" ]; then
-  echo "aarch64 currently disabled. THIS IS BEING WORKED ON, APOLOGIES FOR THE INCONVENIENCE, PLEASE CHECK https://code.headmelted.com FOR UPDATES";
-  exit 1;
-else
-  apt-get install -y ${CODE_EXECUTABLE_NAME};
-fi
+apt-get install -y ${CODE_EXECUTABLE_NAME};
 
 if [ $? -eq 0 ]; then
   echo "Visual Studio Code install complete.";
