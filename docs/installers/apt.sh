@@ -51,7 +51,7 @@ else
   CODE_EXECUTABLE_NAME="code-insiders";
 fi;
 
-apt-get install -y ${CODE_EXECUTABLE_NAME};
+apt-get install -y libxss1 ${CODE_EXECUTABLE_NAME};
 
 if [ $? -eq 0 ]; then
   echo "Visual Studio Code install complete.";
