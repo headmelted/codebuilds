@@ -29,6 +29,10 @@ echo "Binary components of output ----------------------------------------------
 find . -type f -exec file {} ";" | grep ELF
 echo "------------------------------------------------------------------------------"
 
+echo "Dependency tree for code-oss -------------------------------------------------"
+ldd -v $COBBLER_OUTPUT_DIRECTORY/extracted/usr/share/code-oss/code-oss;
+echo "------------------------------------------------------------------------------"
+
 #echo "Starting vscode-linux-$npm_config_target_arch-build-rpm";
 #yarn run gulp "vscode-linux-$npm_config_target_arch-build-rpm";
 
