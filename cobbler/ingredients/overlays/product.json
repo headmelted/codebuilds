@@ -1,5 +1,5 @@
 {
-	"nameShort": "Code - OSS (headmelted build)",
+	"nameShort": "Code - OSS (headmelted)",
 	"nameLong": "Code - OSS (headmelted)",
 	"applicationName": "code-oss",
 	"dataFolderName": ".vscode-oss",
@@ -567,7 +567,7 @@
 		"linux-x64": "https://rink.hockeyapp.net/api/2/apps/df720085b30c42c09326b68b40f13a35/crashes/upload",
 		"darwin": "https://rink.hockeyapp.net/api/2/apps/21a48a66799e47fea4f52c0ff81e803d/crashes/upload"
 	},
-	"enableTelemetry": true,
+	"enableTelemetry": false,
 	"aiConfig": {
 		"asimovKey": "AIF-444c3af9-8e69-4462-ab49-4191e6ad1916"
 	},
