@@ -8,9 +8,7 @@
 	"licenseUrl": "https://go.microsoft.com/fwlink/?LinkID=761088",
 	"reportIssueUrl": "https://github.com/headmelted/codebuilds/issues/new",
 	"urlProtocol": "code-oss",
-	"downloadUrl": "https://code.headmelted.com/",
 	"welcomePage": "https://go.microsoft.com/fwlink/?LinkId=723048",
-	"quality": "insider",
 	"extensionsGallery": {
 		"serviceUrl": "https://marketplace.visualstudio.com/_apis/public/gallery",
 		"cacheUrl": "https://vscode.blob.core.windows.net/gallery/index",
