@@ -1,23 +1,10 @@
 #!/bin/bash
 set -e;
 
-#echo "/lib -------------------------------"
-#ls /lib;
-#echo "/usr/lib -------------------------------"
-#ls /usr/lib;
-#echo "/usr/include ---------------------------"
-#ls /usr/include;
-#echo "/usr/include/libsecret-1 ---------------------------"
-#ls /usr/include/libsecret-1;
-#echo "/usr/include/libsecret-1/libsecret --------------------------"
-#ls /usr/include/libsecret-1/libsecret;
-#echo "/usr/lib/$COBBLER_GNU_TRIPLET -----------------------"
-#ls /usr/lib/$COBBLER_GNU_TRIPLET;
-#echo "/usr/include/$COBBLER_GNU_TRIPLET --------------------"
-#tree /usr/include/$COBBLER_GNU_TRIPLET
-#echo "------------------------------------------------------------"
-
 . ~/cobbler/steps/setup_nvm.sh;
+
+echo "Synchronizing overlays folder";
+rsync -avh ~/cobbler/ingredients/overlays/ $COBBLER_CODE_DIRECTORY/;
 
 echo "Running npm install for $npm_config_target_arch";
 yarn install;
@@ -27,9 +14,6 @@ yarn run gulp vscode-linux-$npm_config_target_arch-min;
 
 echo "Starting vscode-linux-$npm_config_target_arch-build-deb";
 yarn run gulp vscode-linux-$npm_config_target_arch-build-deb;
-
-echo "Listing code folder";
-echo $COBBLER_CODE_DIRECTORY/.build/linux/.code;
 
 echo "Moving deb packages for release";
 mv $COBBLER_CODE_DIRECTORY/.build/linux/deb/$COBBLER_ARCH/deb/*.deb $COBBLER_OUTPUT_DIRECTORY;
