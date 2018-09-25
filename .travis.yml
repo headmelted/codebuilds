@@ -15,28 +15,28 @@ branches:
 matrix:
   include:
   - os: linux
-    env:
-     - COBBLER_ARCH=amd64
-     - COBBLER_SCRIPT=build
-     - COBBLER_STRATEGY=cross
-     - COBBLER_GIT_ENDPOINT=https://github.com/Microsoft/vscode.git
-  - os: linux
-    env:
-     - COBBLER_ARCH=i386
-     - COBBLER_SCRIPT=build
-     - COBBLER_STRATEGY=cross
-     - COBBLER_GIT_ENDPOINT=https://github.com/Microsoft/vscode.git
-  - os: linux
-    env:
-     - COBBLER_ARCH=arm64
-     - COBBLER_SCRIPT=build
-     - COBBLER_STRATEGY=cross
-     - COBBLER_GIT_ENDPOINT=https://github.com/Microsoft/vscode.git
+#    env:
+#     - COBBLER_ARCH=amd64
+#     - COBBLER_SCRIPT=build
+#     - COBBLER_STRATEGY=cross
+#     - COBBLER_GIT_ENDPOINT=https://github.com/Microsoft/vscode.git
+#  - os: linux
+#    env:
+#     - COBBLER_ARCH=i386
+#     - COBBLER_SCRIPT=build
+#     - COBBLER_STRATEGY=cross
+#     - COBBLER_GIT_ENDPOINT=https://github.com/Microsoft/vscode.git
+#  - os: linux
+#    env:
+#     - COBBLER_ARCH=arm64
+#     - COBBLER_SCRIPT=build
+#     - COBBLER_STRATEGY=cross
+#     - COBBLER_GIT_ENDPOINT=https://github.com/Microsoft/vscode.git
   - os: linux
     env:
      - COBBLER_ARCH=armhf
      - COBBLER_SCRIPT=build
-     - COBBLER_STRATEGY=cross
+     - COBBLER_STRATEGY=hybrid
      - COBBLER_GIT_ENDPOINT=https://github.com/Microsoft/vscode.git
     
 notifications:
