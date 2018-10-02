@@ -9,7 +9,7 @@ steps:
     ports: 8084
     volumes: |
       $(Build.BinariesDirectory):/root/output
-      $(Build.SourcesDirectory)/cobbler:/root/cobbler
+      $(Build.SourcesDirectory)\cobbler:/root/cobbler
     envVars: ${{ parameters.envVars }}
     workDir: /root
     detached: false
