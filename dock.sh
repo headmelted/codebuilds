@@ -20,7 +20,8 @@ echo $(pwd);
 tree $(pwd);
 
 echo "Binding workspace and executing script";
-docker run -it --security-opt apparmor:unconfined --cap-add SYS_ADMIN \
+docker run -it \
+--security-opt apparmor:unconfined --cap-add SYS_ADMIN \ # Run the container unconfined and with CAP_SYS_ADMIN, for bind mounts
 -e GITHUB_TOKEN=$GITHUB_TOKEN \
 -e COBBLER_GIT_ENDPOINT=$COBBLER_GIT_ENDPOINT \
 -e COBBLER_SCRIPT=$COBBLER_SCRIPT \
