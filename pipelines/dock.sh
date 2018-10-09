@@ -14,9 +14,10 @@ if [[ "$(docker images -q $docker_image 2> /dev/null)" != "" ]]; then
   docker pull $docker_image;
 fi;
 
+# Run the container unconfined and with CAP_SYS_ADMIN, for bind mounts
 echo "Binding workspace and executing script";
 docker run -it \
---security-opt apparmor:unconfined --cap-add SYS_ADMIN \ # Run the container unconfined and with CAP_SYS_ADMIN, for bind mounts
+--security-opt apparmor:unconfined --cap-add SYS_ADMIN \
 -e GITHUB_TOKEN=$GITHUB_TOKEN \
 -e COBBLER_GIT_ENDPOINT=$COBBLER_GIT_ENDPOINT \
 -v $(pwd)/cobbler:/root/cobbler \
