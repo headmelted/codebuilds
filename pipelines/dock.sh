@@ -20,6 +20,6 @@ docker run -it \
 --security-opt apparmor:unconfined --cap-add SYS_ADMIN \
 -e GITHUB_TOKEN=${ACCESS_RATE_GITHUB_TOKEN} \
 -e COBBLER_GIT_ENDPOINT=${COBBLER_GIT_ENDPOINT} \
--v $(pwd)/cobbler_build.sh:/cobbler_build.sh
+-v $(pwd)/build.sh:/build.sh
 -v $1:/root/output \
-$docker_image /bin/bash -c ". /cobbler-build.sh";
+$docker_image;
