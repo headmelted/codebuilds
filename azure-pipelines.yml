@@ -6,6 +6,8 @@ trigger:
 
 jobs:
 - job: linux_arm64
+  pool:
+    vmImage: 'Ubuntu 16.04'
   displayName: 'Linux ARM 64-bit'
   steps:
   - template: devops-cobbler.yml
