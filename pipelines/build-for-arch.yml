@@ -1,0 +1,18 @@
+# These are the steps used in a container-based build in VSTS.
+jobs:
+- job: ${{ parameters.job }}
+  pool:
+    vmImage: 'Ubuntu 16.04'
+  displayName: ${{ parameters.displayName }}
+  variables:
+    COBBLER_GIT_ENDPOINT: https://github.com/Microsoft/vscode
+    GITHUB_TOKEN: $(GITHUB_TOKEN)
+    COBBLER_ARCH: ${{ parameters.arch }}
+    COBBLER_STRATEGY: ${{ parameters.strategy }}
+  steps:
+    script: sudo bash -c '. ./pipelines/dock.sh';
+      
+# Restore this when repo:self bindings are figured out, and prevent pulling COBBLER_GIT_ENDPOINT.
+# volumes: |
+# ...
+# $(Build.SourcesDirectory):/root/code 
