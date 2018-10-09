@@ -14,6 +14,9 @@ if [[ "$(docker images -q $docker_image 2> /dev/null)" != "" ]]; then
   docker pull $docker_image;
 fi;
 
+echo "$(pwd)/build.sh";
+ls $(pwd);
+
 # Run the container unconfined and with CAP_SYS_ADMIN, for bind mounts
 echo "Binding workspace and executing script";
 docker run -it \
