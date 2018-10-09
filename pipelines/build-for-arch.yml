@@ -6,7 +6,6 @@ jobs:
   displayName: ${{ parameters.displayName }}
   variables:
     COBBLER_GIT_ENDPOINT: https://github.com/Microsoft/vscode
-    GITHUB_TOKEN: $(GITHUB_TOKEN)
     COBBLER_ARCH: ${{ parameters.arch }}
     COBBLER_STRATEGY: ${{ parameters.strategy }}
   steps:
