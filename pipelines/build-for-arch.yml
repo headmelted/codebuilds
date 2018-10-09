@@ -4,12 +4,13 @@ jobs:
   pool:
     vmImage: 'Ubuntu 16.04'
   displayName: ${{ parameters.displayName }}
-  variables:
-    COBBLER_GIT_ENDPOINT: https://github.com/Microsoft/vscode
-    COBBLER_ARCH: ${{ parameters.arch }}
-    COBBLER_STRATEGY: ${{ parameters.strategy }}
   steps:
   - script: sudo ./pipelines/dock.sh;
+    env:
+      COBBLER_GIT_ENDPOINT: https://github.com/Microsoft/vscode
+      COBBLER_ARCH: ${{ parameters.arch }}
+      COBBLER_STRATEGY: ${{ parameters.strategy }}
+      
       
 # Restore this when repo:self bindings are figured out, and prevent pulling COBBLER_GIT_ENDPOINT.
 # volumes: |
