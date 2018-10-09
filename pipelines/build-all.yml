@@ -5,11 +5,11 @@ trigger:
 - master
 
 jobs:
-- template: devops-cobbler.yml
+- template: build-for-arch.yml
   parameters:
     job: linux_arm64
     displayname: 'Linux ARM 64-bit (aarch64)'
-- template: devops-cobbler.yml
+- template: build-for-arch.yml
   parameters:
     job: linux_armhf
     displayname: 'Linux ARM 32-bit (armhf)'
