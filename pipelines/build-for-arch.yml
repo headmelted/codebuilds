@@ -20,9 +20,11 @@ jobs:
       # Run the container unconfined and with CAP_SYS_ADMIN, for bind mounts
       echo "Binding workspace and executing script";
       
-      docker_command_line="docker run -it --security-opt apparmor:unconfined --cap-add SYS_ADMIN -e COBBLER_GIT_ENDPOINT=${COBBLER_GIT_ENDPOINT} $docker_image ./cobbler-build.sh";
-      echo docker_command_line
-      $(docker_command_line)
+      docker_command_line="docker run -it 
+        --security-opt apparmor:unconfined --cap-add SYS_ADMIN \
+        -e COBBLER_GIT_ENDPOINT=${COBBLER_GIT_ENDPOINT} \
+        -v $1:/root/output \
+        $docker_image ./cobbler-build.sh;
       
       
 # Restore this when repo:self bindings are figured out, and prevent pulling COBBLER_GIT_ENDPOINT.
