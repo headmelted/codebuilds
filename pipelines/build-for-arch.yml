@@ -3,9 +3,8 @@ jobs:
 - job: ${{ parameters.job }}
   pool:
     vmImage: 'Ubuntu 16.04'
-  displayName: ${{ parameters.displayName }}
   steps:
-  - script: sudo ./pipelines/dock.sh;
+  - bash: sudo ./pipelines/dock.sh;
     env:
       COBBLER_GIT_ENDPOINT: https://github.com/Microsoft/vscode
       COBBLER_ARCH: ${{ parameters.arch }}
