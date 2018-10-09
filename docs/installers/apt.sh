@@ -14,7 +14,11 @@ echo "Architecture detected as $COBBLER_ARCH...";
 
 if [ "${REPOSITORY_NAME}" = "headmelted" ]; then
 
-  curl -s https://packagecloud.io/install/repositories/headmelted/codebuilds/script.deb.sh | sudo bash;
+  curl -s https://raw.githubusercontent.com/headmelted/codebuilds/master/docs/installers/headmelted_codebuilds.list | sudo bash;
+  
+  # Due to a bug with how Packagecloud handles distros in their index, we need to overwrite the sources.
+  echo "Updating ${REPOSITORY_NAME} repository";
+  echo "deb https://packagecloud.io/headmelted/codebuilds/ubuntu/ xenial main" > /etc/apt/sources.list.d/headmelted_codebuilds.list;
   
 else
 
