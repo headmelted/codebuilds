@@ -13,7 +13,7 @@ jobs:
       docker_image="headmelted/cobbler:base"
     
       # Run the container unconfined and with CAP_SYS_ADMIN, for bind mounts
-      echo "Binding workspace and executing script";
+      echo "Binding workspace and executing script for [${COBBLER_STRATEGY}/${COBBLER_ARCH}]";
       
       docker run \
         --security-opt apparmor:unconfined --cap-add SYS_ADMIN \

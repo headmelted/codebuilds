@@ -9,7 +9,6 @@ jobs:
   parameters:
     job: linux_arm64
     arch: arm64
-    strategy: cross
 #- template: build-for-arch.yml
 #  parameters:
 #    job: linux_armhf
