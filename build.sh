@@ -1,6 +1,9 @@
 #!/bin/bash
 set -e;
 
+echo "Installing python"
+apt-get install -y python;
+
 echo "Contents of [$(pwd)]"
 ls
 
