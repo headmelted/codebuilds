@@ -18,6 +18,9 @@ rsync -avh ./overlays/ code/;
 echo "Installing NVM and dependencies";
 . /root/kitchen/tools/setup_nvm.sh;
 
+echo "Entering code directory";
+cd code;
+
 echo "Running yarn install";
 yarn install;
 
