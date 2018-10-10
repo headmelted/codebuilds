@@ -1,8 +1,6 @@
 #!/bin/bash
 set -e;
 
-. ~/cobbler/steps/setup_nvm.sh;
-
 echo "Synchronizing overlays folder";
 rsync -avh ~/cobbler/ingredients/overlays/ $COBBLER_CODE_DIRECTORY/;
 
