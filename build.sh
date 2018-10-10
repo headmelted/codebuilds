@@ -24,8 +24,8 @@ echo "Installing NVM and dependencies";
 echo "Entering code directory";
 cd code;
 
-echo "Running yarn install";
-yarn install;
+echo "Running npm install";
+npm install;
 
 echo "Compiling VS Code for $npm_config_arch";
 yarn run gulp vscode-linux-$npm_config_arch-min;
