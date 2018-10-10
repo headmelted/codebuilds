@@ -1,17 +1,25 @@
 #!/bin/bash
 set -e;
 
-echo "Synchronizing overlays folder";
-rsync -avh ~/cobbler/ingredients/overlays/ $COBBLER_CODE_DIRECTORY/;
+vscode_git="https://github.com/Microsoft/vscode.git"
 
-echo "Running npm install for $npm_config_target_arch";
+echo "Retrieving code from git endpoint [$vscode_git] into [$COBBLER_CODE_DIRECTORY]";
+git clone $vscode_git $COBBLER_CODE_DIRECTORY;
+  
+echo "Setting current owner as owner of code folder";
+chown ${USER:=$(/usr/bin/id -run)}:$USER -R $COBBLER_CODE_DIRECTORY;
+
+echo "Synchronizing overlays folder";
+rsync -avh ./overlays/ $COBBLER_CODE_DIRECTORY/;
+
+echo "Running yarn install";
 yarn install;
 
-echo "Compiling VS Code for $npm_config_target_arch";
-yarn run gulp vscode-linux-$npm_config_target_arch-min;
+echo "Compiling VS Code for $npm_config_arch";
+yarn run gulp vscode-linux-$npm_config_arch-min;
 
-echo "Starting vscode-linux-$npm_config_target_arch-build-deb";
-yarn run gulp vscode-linux-$npm_config_target_arch-build-deb;
+echo "Starting vscode-linux-$npm_config_arch-build-deb";
+yarn run gulp vscode-linux-$npm_config_arch-build-deb;
 
 echo "Moving deb packages for release";
 mv $COBBLER_CODE_DIRECTORY/.build/linux/deb/$COBBLER_ARCH/deb/*.deb $COBBLER_OUTPUT_DIRECTORY;
