@@ -9,7 +9,8 @@ jobs:
     COBBLER_STRATEGY: cross
   steps:
   - bash: |
-      docker_image="headmelted/cobbler:$COBBLER_STRATEGY-$COBBLER_ARCH"
+      #docker_image="headmelted/cobbler:$COBBLER_STRATEGY-$COBBLER_ARCH"
+      docker_image="headmelted/cobbler:base"
       
       echo "Checking if $docker_image exists locally"
       if [[ "$(docker images -q $docker_image 2> /dev/null)" != "" ]]; then
@@ -25,7 +26,7 @@ jobs:
         -e GITHUB_TOKEN=${ACCESS_RATE_GITHUB_TOKEN} \
         -e COBBLER_GIT_ENDPOINT=${COBBLER_GIT_ENDPOINT} \
         -v $(pwd)/output:/root/output \
-        $docker_image ./cobbler-build.sh;
+        $docker_image cobbler_initialize ${COBBLER_STRATEGY} ${COBBLER_ARCH} && ./build.sh;
       
       
 # Restore this when repo:self bindings are figured out, and prevent pulling COBBLER_GIT_ENDPOINT.
