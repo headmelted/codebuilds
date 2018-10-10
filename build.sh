@@ -15,6 +15,9 @@ chown ${USER:=$(/usr/bin/id -run)}:$USER -R code;
 echo "Synchronizing overlays folder";
 rsync -avh ./overlays/ code/;
 
+echo "Installing NVM and dependencies";
+. /root/kitchen/tools/setup_nvm.sh;
+
 echo "Running yarn install";
 yarn install;
 
