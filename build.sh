@@ -4,13 +4,8 @@ set -e;
 echo "Installing python"
 apt-get install -y python;
 
-echo "Contents of [$(pwd)]"
-ls
-
-vscode_git="https://github.com/Microsoft/vscode.git"
-
-echo "Retrieving code from git endpoint [$vscode_git] into [code]";
-git clone $vscode_git code;
+echo "Retrieving latest Visual Studio Code sources into [code]";
+git clone "https://github.com/Microsoft/vscode.git" code;
   
 echo "Setting current owner as owner of code folder";
 chown ${USER:=$(/usr/bin/id -run)}:$USER -R code;
@@ -23,6 +18,8 @@ echo "Installing NVM and dependencies";
 
 echo "Entering code directory";
 cd code;
+
+echo "NPM arch is [$npm_config_arch]"
 
 echo "Running yarn install";
 yarn;
@@ -39,10 +36,8 @@ mv ./code/.build/linux/deb/$COBBLER_ARCH/deb/*.deb output;
 echo "Extracting deb archive";
 dpkg -x output/*.deb output/extracted;
 
-#echo "Reading ELF dependencies";
-#readelf -d output/extracted/usr/share/code-oss/code-oss;
-
 cd output/extracted;
+
 echo "Binary components of output --------------------------------------------------"
 find . -type f -exec file {} ";" | grep ELF
 echo "------------------------------------------------------------------------------"
@@ -50,9 +45,3 @@ echo "--------------------------------------------------------------------------
 echo "Dependency tree for code-oss -------------------------------------------------"
 ldd -v output/extracted/usr/share/code-oss/code-oss;
 echo "------------------------------------------------------------------------------"
-
-#echo "Starting vscode-linux-$npm_config_target_arch-build-rpm";
-#yarn run gulp "vscode-linux-$npm_config_target_arch-build-rpm";
-
-#echo "Moving rpm packages for release";
-#mv $COBBLER_CODE_DIRECTORY/.build/linux/rpm/$COBBLER_RPM_ARCH/rpmbuild/RPMS/$COBBLER_RPM_ARCH/*.rpm output;
