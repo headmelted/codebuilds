@@ -1,6 +1,9 @@
 #!/bin/bash
 set -e;
 
+echo "Contents of [$(pwd)]"
+ls
+
 vscode_git="https://github.com/Microsoft/vscode.git"
 
 echo "Retrieving code from git endpoint [$vscode_git] into [code]";

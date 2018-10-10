@@ -21,7 +21,7 @@ jobs:
         -e COBBLER_STRATEGY=${COBBLER_STRATEGY} \
         -e COBBLER_ARCH=${COBBLER_ARCH} \
         -v $(pwd):/root/build \
-        $docker_image /bin/bash -c ". /root/kitchen/tools/cobbler_initialize.sh && . /root/kitchen/tools/cobbler_start_build.sh";
+        $docker_image /bin/bash -c "cd /root/build && . /root/kitchen/tools/cobbler_initialize.sh && . /root/kitchen/tools/cobbler_start_build.sh";
       
       
 # Restore this when repo:self bindings are figured out, and prevent pulling COBBLER_GIT_ENDPOINT.
