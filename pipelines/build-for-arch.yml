@@ -19,8 +19,8 @@ jobs:
         --security-opt apparmor:unconfined --cap-add SYS_ADMIN \
         -e GITHUB_TOKEN=${ACCESS_RATE_GITHUB_TOKEN} \
         -e COBBLER_GIT_ENDPOINT=${COBBLER_GIT_ENDPOINT} \
-        -e COBBLER_STRATEGY=${COBBLER_STRATEGY} \
-        -e COBBLER_ARCH=${COBBLER_ARCH} \
+        -e COBBLER_STRATEGY=cross \
+        -e COBBLER_ARCH=arm64 \
         -v $(pwd)/output:/root/output \
         $docker_image /bin/bash -c ". /root/kitchen/tools/cobbler_initialize.sh" && ./build.sh;
       
