@@ -27,7 +27,7 @@ jobs:
       
       docker run \
         --security-opt apparmor:unconfined --cap-add SYS_ADMIN \
-        -e GITHUB_TOKEN=${ACCESS_RATE_GITHUB_TOKEN} \
+        -e GITHUB_TOKEN=${GITHUB_TOKEN} \
         -e COBBLER_STRATEGY=${COBBLER_STRATEGY} \
         -e COBBLER_ARCH=${COBBLER_ARCH} \
         -e COBBLER_HOST_DEPENDENCIES="${COBBLER_HOST_DEPENDENCIES}" \
