@@ -7,7 +7,7 @@ trigger:
 jobs:
 - template: build-for-arch.yml
   parameters:
-    arch: armhf
+    arch: amd64
 # - template: build-for-arch.yml
 #   parameters:
 #     arch: i386
