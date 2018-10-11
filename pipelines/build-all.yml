@@ -8,9 +8,9 @@ jobs:
 - template: build-for-arch.yml
   parameters:
     arch: amd64
-- template: build-for-arch.yml
-  parameters:
-    arch: i386
+# - template: build-for-arch.yml
+#   parameters:
+#     arch: i386
 - template: build-for-arch.yml
   parameters:
     arch: arm64
