@@ -7,7 +7,6 @@ trigger:
 jobs:
 - template: build-for-arch.yml
   parameters:
-    job: linux_armhf
     arch: armhf
     strategy: cross
 #- template: build-for-arch.yml
