@@ -1,6 +1,7 @@
 # These are the steps used in a container-based build in VSTS.
 jobs:
 - job: ${{ parameters.job }}
+  displayName: ${{ parameters.arch }}
   pool:
     vmImage: 'Ubuntu 16.04'
   variables:
