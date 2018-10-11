@@ -1,9 +1,6 @@
 #!/bin/bash
 set -e;
 
-echo "Installing python"
-apt-get install -y python;
-
 echo "Retrieving latest Visual Studio Code sources into [code]";
 git clone "https://github.com/Microsoft/vscode.git" code;
   
