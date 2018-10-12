@@ -21,8 +21,8 @@ cd code;
 
 echo "NPM arch is [$npm_config_arch]"
 
-echo "Running yarn install";
-CHILD_CONCURRENCY=1 yarn;
+#echo "Running yarn install";
+#CHILD_CONCURRENCY=1 yarn;
 
 #echo "Running gulp hygiene";
 #npm run gulp -- hygiene;
@@ -42,11 +42,32 @@ CHILD_CONCURRENCY=1 yarn;
 #echo "Running builtInExtensions.jsyarn";
 #node build/lib/builtInExtensions.jsyarn;
 
-echo "Compiling VS Code for $npm_config_arch";
-yarn run gulp vscode-linux-$npm_config_arch-min;
+#echo "Compiling VS Code for $npm_config_arch";
+#yarn run gulp vscode-linux-$npm_config_arch-min;
 
-echo "Starting vscode-linux-$npm_config_arch-build-deb";
-yarn run gulp vscode-linux-$npm_config_arch-build-deb;
+#echo "Starting vscode-linux-$npm_config_arch-build-deb";
+#yarn run gulp vscode-linux-$npm_config_arch-build-deb;
+
+echo "Executing yarn"
+yarn
+
+echo "Executing electron-$COBBLER_ELECTRON_ARCH"
+yarn gulp electron-${COBBLER_ELECTRON_ARCH}
+
+echo "Executing gulp hygiene"
+yarn gulp hygiene
+
+echo "Executing monaco-compile-check"
+yarn monaco-compile-check
+
+echo "Executing strict-null-check"
+yarn strict-null-check
+
+echo "Executing compile"
+yarn compile
+
+echo "Executing download-builtin-extensions"
+yarn download-builtin-extensions
 
 echo "Moving deb packages for release";
 mv ./code/.build/linux/deb/$COBBLER_ARCH/deb/*.deb output;
