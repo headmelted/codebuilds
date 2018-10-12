@@ -52,22 +52,22 @@ echo "Executing yarn"
 yarn
 
 echo "Executing electron-$COBBLER_ELECTRON_ARCH"
-yarn gulp electron-${COBBLER_ELECTRON_ARCH}
+yarn --verbose gulp electron-${COBBLER_ELECTRON_ARCH}
 
 echo "Executing gulp hygiene"
-yarn gulp hygiene
+yarn --verbose gulp hygiene
 
 echo "Executing monaco-compile-check"
-yarn monaco-compile-check
+yarn --verbose monaco-compile-check
 
 echo "Executing strict-null-check"
-yarn strict-null-check
+yarn --verbose strict-null-check
 
 echo "Executing compile"
-yarn compile
+yarn --verbose compile
 
 echo "Executing download-builtin-extensions"
-yarn download-builtin-extensions
+yarn --verbose download-builtin-extensions
 
 echo "Moving deb packages for release";
 mv ./code/.build/linux/deb/$COBBLER_ARCH/deb/*.deb output;
