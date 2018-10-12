@@ -21,8 +21,8 @@ echo "NPM arch is [$npm_config_arch]"
 echo "Running yarn install";
 CHILD_CONCURRENCY=1 yarn;
 
-echo "Running gulp hygiene";
-npm run gulp -- hygiene;
+#echo "Running gulp hygiene";
+#npm run gulp -- hygiene;
 
 echo "Running monaco-compile-check";
 npm run monaco-compile-check;
