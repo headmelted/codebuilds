@@ -27,13 +27,13 @@ jobs:
       
       docker run \
         --security-opt apparmor:unconfined --cap-add SYS_ADMIN \
-        -e GITHUB_TOKEN=aff865b3a8e9a6f59753e16348b3ec4faa5549d2 \
+        -e GITHUB_TOKEN \
         -e COBBLER_STRATEGY \
         -e COBBLER_ARCH \
         -e COBBLER_HOST_DEPENDENCIES \
         -e COBBLER_TARGET_DEPENDENCIES \
         -v $(pwd):/root/build \
-        $docker_image /bin/bash -c "echo \"Github token length: ${#GITHUB_TOKEN}\" && echo \"Github token: ${GITHUB_TOKEN}\" && cd /root/build && . /root/kitchen/tools/cobbler_initialize.sh && . /root/kitchen/tools/cobbler_start_build.sh";
+        $docker_image /bin/bash -c "cd /root/build && . /root/kitchen/tools/cobbler_initialize.sh && . /root/kitchen/tools/cobbler_start_build.sh";
       
       
 # Restore this when repo:self bindings are figured out, and prevent pulling COBBLER_GIT_ENDPOINT.
