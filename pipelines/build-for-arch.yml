@@ -25,18 +25,18 @@ jobs:
       # Run the container unconfined and with CAP_SYS_ADMIN, for bind mounts
       echo "Binding workspace and executing script for [${COBBLER_STRATEGY}/${COBBLER_ARCH}]";
       
-      echo "Github token length: ${#PASSED_GITHUB_TOKEN}";
-      echo "Github token: ${PASSED_GITHUB_TOKEN}";
+      echo "Github token length: ${#GITHUB_TOKEN}";
+      echo "Github token: ${GITHUB_TOKEN}";
       
-      echo "Github token: $(PASSED_GITHUB_TOKEN)";
+      echo "Github token: $(GITHUB_TOKEN)";
       
       docker run \
         --security-opt apparmor:unconfined --cap-add SYS_ADMIN \
-        -e GITHUB_TOKEN="$(PASSED_GITHUB_TOKEN)" \
-        -e COBBLER_STRATEGY=${COBBLER_STRATEGY} \
-        -e COBBLER_ARCH=${COBBLER_ARCH} \
-        -e COBBLER_HOST_DEPENDENCIES="${COBBLER_HOST_DEPENDENCIES}" \
-        -e COBBLER_TARGET_DEPENDENCIES="${COBBLER_TARGET_DEPENDENCIES}" \
+        -e GITHUB_TOKEN \
+        -e COBBLER_STRATEGY \
+        -e COBBLER_ARCH \
+        -e COBBLER_HOST_DEPENDENCIES \
+        -e COBBLER_TARGET_DEPENDENCIES \
         -v $(pwd):/root/build \
         $docker_image /bin/bash -c "echo \"Github token length: ${#GITHUB_TOKEN}\" && echo \"Github token: ${GITHUB_TOKEN}\" && cd /root/build && . /root/kitchen/tools/cobbler_initialize.sh && . /root/kitchen/tools/cobbler_start_build.sh";
       
