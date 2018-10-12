@@ -25,11 +25,6 @@ jobs:
       # Run the container unconfined and with CAP_SYS_ADMIN, for bind mounts
       echo "Binding workspace and executing script for [${COBBLER_STRATEGY}/${COBBLER_ARCH}]";
       
-      echo "Github token length: ${#GITHUB_TOKEN}";
-      echo "Github token: ${GITHUB_TOKEN}";
-      
-      echo "Github token: $(GITHUB_TOKEN)";
-      
       docker run \
         --security-opt apparmor:unconfined --cap-add SYS_ADMIN \
         -e GITHUB_TOKEN \
