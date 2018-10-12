@@ -19,7 +19,25 @@ cd code;
 echo "NPM arch is [$npm_config_arch]"
 
 echo "Running yarn install";
-yarn;
+CHILD_CONCURRENCY=1 yarn;
+
+echo "Running gulp hygiene";
+npm run gulp -- hygiene;
+
+echo "Running monaco-compile-check";
+npm run monaco-compile-check;
+
+echo "Running strict-null-check";
+npm run strict-null-check;
+
+echo "Running gulp mixin"
+npm run gulp -- mixin
+
+echo "Running installDistro.js";
+node build/tfs/common/installDistro.js;
+
+echo "Running builtInExtensions.jsyarn";
+node build/lib/builtInExtensions.jsyarn;
 
 echo "Compiling VS Code for $npm_config_arch";
 yarn run gulp vscode-linux-$npm_config_arch-min;
