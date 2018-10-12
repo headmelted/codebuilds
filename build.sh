@@ -10,6 +10,8 @@ echo "CXX -----------------------"
 eval "$cxx_compiler -v";
 echo "---------------------------"
 
+exit;
+
 echo "Retrieving latest Visual Studio Code sources into [code]";
 git clone "https://github.com/Microsoft/vscode.git" code;
   
