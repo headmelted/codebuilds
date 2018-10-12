@@ -4,6 +4,12 @@ set -e;
 echo "Github token length: ${#GITHUB_TOKEN}"
 echo "Github token: ${GITHUB_TOKEN}"
 
+echo "CC -----------------------"
+eval "$cc_compiler -v";
+echo "CXX -----------------------"
+eval "$cxx_compiler -v";
+echo "---------------------------"
+
 echo "Retrieving latest Visual Studio Code sources into [code]";
 git clone "https://github.com/Microsoft/vscode.git" code;
   
