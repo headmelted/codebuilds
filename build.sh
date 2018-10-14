@@ -48,6 +48,9 @@ echo "NPM arch is [$npm_config_arch]"
 #echo "Starting vscode-linux-$npm_config_arch-build-deb";
 #yarn run gulp vscode-linux-$npm_config_arch-build-deb;
 
+echo "Installing gulp-debug";
+npm install --save-dev gulp-debug;
+
 echo "Executing yarn"
 yarn
 

@@ -32,6 +32,7 @@ const i18n = require('./lib/i18n');
 const deps = require('./dependencies');
 const getElectronVersion = require('./lib/electron').getElectronVersion;
 const createAsar = require('./lib/asar').createAsar;
+const debug = require('gulp-debug');
 
 const productionDependencies = deps.getProductionDependencies(path.dirname(__dirname));
 // @ts-ignore
@@ -192,6 +193,7 @@ function getElectron(arch) {
 
         return gulp.src('package.json')
             .pipe(json({ name: product.nameShort }))
+            .pipe(debug({ title: 'getElectron' }))
             .pipe(electron(electronOpts))
             .pipe(filter(['**', '!**/app/package.json']))
             .pipe(vfs.dest('.build/electron'));
