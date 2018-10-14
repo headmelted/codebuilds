@@ -76,7 +76,7 @@ echo "Starting vscode-linux-$npm_config_arch-build-deb";
 yarn run gulp vscode-linux-$npm_config_arch-build-deb;
 
 echo "Moving deb packages for release";
-mv ./code/.build/linux/deb/$COBBLER_ARCH/deb/*.deb output;
+mv ./.build/linux/deb/$COBBLER_ARCH/deb/*.deb output;
 
 echo "Extracting deb archive";
 dpkg -x output/*.deb output/extracted;
