@@ -586,7 +586,6 @@
 	"telemetryOptOutUrl": "https://go.microsoft.com/fwlink/?linkid=870136",
 	"npsSurveyUrl": "https://www.research.net/r/Z2RMYRJ",
 	"checksumFailMoreInfoUrl": "https://go.microsoft.com/fwlink/?LinkId=828886",
-	"electronRepository": "Microsoft/vscode-electron-prebuilt",
 	"dependencies": {
 		"vsda": "git+https://monacotools.visualstudio.com/DefaultCollection/_git/vscode-debug-handshake#53e188cf4d64941c36bccaffdf06415b33b3d8ea"
 	},
