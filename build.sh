@@ -84,6 +84,11 @@ mkdir output;
 echo "Moving deb packages for release";
 mv ./code/.build/linux/deb/$COBBLER_ARCH/deb/*.deb output;
 
+echo "Publishing deb file to packagecloud (MOVE THIS TO A RELEASE CONFIGURATION LATER!)"
+package_cloud push headmelted/codebuilds output/*.deb
+
+#package_cloud push headmelted/codebuilds/fedora/24 $TRAVIS_OUTPUT_DIRECTORY/*.rpm
+
 echo "Extracting deb archive";
 dpkg -x output/*.deb output/extracted;
 
