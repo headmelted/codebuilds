@@ -54,8 +54,8 @@ yarn
 echo "Executing electron-$COBBLER_ELECTRON_ARCH"
 yarn --verbose gulp electron-${COBBLER_ELECTRON_ARCH}
 
-echo "Executing gulp hygiene"
-yarn --verbose gulp hygiene
+#echo "Executing gulp hygiene"
+#yarn --verbose gulp hygiene
 
 echo "Executing monaco-compile-check"
 yarn --verbose monaco-compile-check
@@ -68,6 +68,12 @@ yarn --verbose compile
 
 echo "Executing download-builtin-extensions"
 yarn --verbose download-builtin-extensions
+
+echo "Compiling VS Code for $npm_config_arch";
+yarn run gulp vscode-linux-$npm_config_arch-min;
+
+echo "Starting vscode-linux-$npm_config_arch-build-deb";
+yarn run gulp vscode-linux-$npm_config_arch-build-deb;
 
 echo "Moving deb packages for release";
 mv ./code/.build/linux/deb/$COBBLER_ARCH/deb/*.deb output;
