@@ -94,5 +94,5 @@ find . -type f -exec file {} ";" | grep ELF
 echo "------------------------------------------------------------------------------"
 
 echo "Dependency tree for code-oss -------------------------------------------------"
-ldd -v output/extracted/usr/share/code-oss/code-oss;
+ldd -v usr/share/code-oss/code-oss;
 echo "------------------------------------------------------------------------------"
