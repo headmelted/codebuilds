@@ -109,154 +109,6 @@
 		"alphabotsec.vscode-eclipse-keybindings",
 		"alefragnani.delphi-keybindings"
 	],
-	"exeBasedExtensionTips": {
-		"az": {
-			"friendlyName": "Azure CLI",
-			"windowsPath": "%ProgramFiles(x86)%\\Microsoft SDKs\\Azure\\CLI2\\wbin\\az.cmd",
-			"recommendations": [
-				"ms-vscode.azurecli"
-			]
-		},
-		"heroku": {
-			"friendlyName": "Heroku CLI",
-			"windowsPath": "%ProgramFiles%\\Heroku\\bin\\heroku.cmd",
-			"recommendations": [
-				"ms-azuretools.vscode-azureappservice",
-				"pkosta2005.heroku-command"
-			]
-		},
-		"mongo": {
-			"friendlyName": "Mongo",
-			"windowsPath": "%ProgramFiles%\\MongoDB\\Server\\3.6\\bin\\mongod.exe",
-			"recommendations": [
-				"ms-azuretools.vscode-cosmosdb"
-			]
-		},
-		"serverless": {
-			"friendlyName": "Serverless framework",
-			"windowsPath": "%APPDATA%\\npm\\serverless.cmd",
-			"recommendations": [
-				"ms-azuretools.vscode-azurefunctions"
-			]
-		},
-		"func": {
-			"friendlyName": "Azure Function SDK",
-			"windowsPath": "%APPDATA%\\npm\\func.cmd",
-			"recommendations": [
-				"ms-azuretools.vscode-azurefunctions"
-			]
-		},
-		"mysql": {
-			"friendlyName": "MySQL",
-			"windowsPath": "%ProgramFiles%\\MySQL\\MySQL Server 5.7\\bin\\mysqld.exe",
-			"recommendations": [
-				"ms-mssql.mssql",
-				"bajdzis.vscode-database"
-			]
-		},
-		"postgres": {
-			"friendlyName": "PostgreSQL",
-			"windowsPath": "%ProgramFiles%\\PostgreSQL\\9.6\\bin\\psql.exe",
-			"recommendations": [
-				"ms-mssql.mssql",
-				"bajdzis.vscode-database"
-			]
-		},
-		"sqlcmd": {
-			"friendlyName": "SQL CLI",
-			"recommendations": [
-				"ms-mssql.mssql"
-			]
-		},
-		"now": {
-			"friendlyName": "Now CLI",
-			"windowsPath": "%APPDATA%\\npm\\now.cmd",
-			"recommendations": [
-				"ms-azuretools.vscode-azureappservice",
-				"PeterJausovec.vscode-docker"
-			]
-		},
-		"docker": {
-			"friendlyName": "Docker",
-			"windowsPath": "%ProgramFiles%\\Docker\\Docker\\Resources\\bin\\docker.exe",
-			"recommendations": [
-				"PeterJausovec.vscode-docker"
-			]
-		},
-		"ng": {
-			"friendlyName": "Angular CLI",
-			"windowsPath": "%APPDATA%\\npmexit\\ng.cmd",
-			"recommendations": [
-				"johnpapa.Angular2"
-			]
-		},
-		"create-react-app": {
-			"friendlyName": "Create React App",
-			"windowsPath": "%APPDATA%\\npm\\create-react-app.cmd",
-			"recommendations": [
-				"vsmobile.vscode-react-native"
-			]
-		},
-		"git": {
-			"friendlyName": "Git",
-			"windowsPath": "%ProgramFiles%\\Git\\cmd\\git.exe",
-			"recommendations": [
-				"ms-vsts.team"
-			]
-		},
-		"tfx": {
-			"friendlyName": "Team Foundation Server",
-			"recommendations": [
-				"ms-vsts.team"
-			]
-		},
-		"p4": {
-			"friendlyName": "Perforce",
-			"recommendations": [
-				"slevesque.perforce"
-			]
-		},
-		"hg": {
-			"friendlyName": "Mercurial",
-			"recommendations": [
-				"mrcrowl.hg"
-			]
-		},
-		"subl": {
-			"friendlyName": "Sublime",
-			"windowsPath": "%ProgramFiles%\\Sublime Text3\\sublime_text.exe",
-			"recommendations": [
-				"ms-vscode.sublime-keybindings"
-			]
-		},
-		"atom": {
-			"friendlyName": "Atom",
-			"windowsPath": "%USERPROFILE%\\AppData\\Local\\atom\\bin\\atom.cmd",
-			"recommendations": [
-				"ms-vscode.atom-keybindings"
-			]
-		},
-		"notepadplusplus": {
-			"friendlyName": "Notepad++",
-			"windowsPath": "%ProgramFiles%\\Notepad++\\Notepad++.exe",
-			"recommendations": [
-				"ms-vscode.notepadplusplus-keybindings"
-			]
-		},
-		"vi": {
-			"friendlyName": "VIM",
-			"windowsPath": "%ProgramFiles(x86)\\Vim\\vim80\\gvim.exe",
-			"recommendations": [
-				"vscodevim.vim"
-			]
-		},
-		"mvn": {
-			"friendlyName": "Maven",
-			"recommendations": [
-				"vscjava.vscode-maven"
-			]
-		}
-	},
 	"extensionKeywords": {
 		"md": [
 			"Markdown"
@@ -446,7 +298,7 @@
 		],
 		"cljc": [
 			"clojure"
-		],
+		]
 		"edn": [
 			"clojure"
 		],
@@ -554,17 +406,6 @@
 		"badgen.net",
 		"flat.badgen.net"
 	],
-	"crashReporter": {
-		"productName": "VSCode",
-		"companyName": "Microsoft"
-	},
-	"hockeyApp": {
-		"win32-ia32": "https://rink.hockeyapp.net/api/2/apps/9dca90f9ee8449a2b45bb36238fb0879/crashes/upload",
-		"win32-x64": "https://rink.hockeyapp.net/api/2/apps/0ac07349c6e34e978fdfb42074932f22/crashes/upload",
-		"linux-ia32": "https://rink.hockeyapp.net/api/2/apps/8e97e4a9cf584086af017722dc9a2c38/crashes/upload",
-		"linux-x64": "https://rink.hockeyapp.net/api/2/apps/df720085b30c42c09326b68b40f13a35/crashes/upload",
-		"darwin": "https://rink.hockeyapp.net/api/2/apps/21a48a66799e47fea4f52c0ff81e803d/crashes/upload"
-	},
 	"enableTelemetry": false,
 	"aiConfig": {
 		"asimovKey": "AIF-444c3af9-8e69-4462-ab49-4191e6ad1916"
@@ -590,56 +431,9 @@
 		"vsda": "git+https://monacotools.visualstudio.com/DefaultCollection/_git/vscode-debug-handshake#53e188cf4d64941c36bccaffdf06415b33b3d8ea"
 	},
 	"settingsSearchUrl": "https://bingsettingssearch.trafficmanager.net/api/Search",
-	"surveys": [
-		{
-			"surveyId": "cpp.1",
-			"surveyUrl": "https://www.research.net/r/VBVV6C6",
-			"languageId": "cpp",
-			"editCount": 10,
-			"userProbability": 0.15
-		},
-		{
-			"surveyId": "python.1",
-			"surveyUrl": "https://www.research.net/r/G7ZBPW7",
-			"languageId": "python",
-			"editCount": 10,
-			"userProbability": 0.15
-		},
-		{
-			"surveyId": "java.2",
-			"surveyUrl": "https://www.research.net/r/vscodejava",
-			"languageId": "java",
-			"editCount": 10,
-			"userProbability": 0.15
-		},
-		{
-			"surveyId": "javascript.1",
-			"surveyUrl": "https://www.research.net/r/vscode-js",
-			"languageId": "javascript",
-			"editCount": 10,
-			"userProbability": 0.05
-		},
-		{
-			"surveyId": "typescript.1",
-			"surveyUrl": "https://www.research.net/r/vscode-ts",
-			"languageId": "typescript",
-			"editCount": 10,
-			"userProbability": 0.05
-		}
-	],
 	"extensionAllowedProposedApi": [
 		"ms-vsliveshare.vsliveshare",
 		"GitHub.vscode-pull-request-github"
 	],
-	"experimentsUrl": "https://az764295.vo.msecnd.net/experiments/experiments.json",
-	"commit": "d59d9f5aa5708c006e409c1a7b197c27fecb54a4",
-	"date": "2018-09-18T09:05:17.777Z",
-	"checksums": {
-		"vs/workbench/workbench.main.js": "GYQ0T7zLw+xBD5V7sEUKGg",
-		"vs/workbench/workbench.main.css": "MxmtNMSpuqPUOwyBFsJxow",
-		"vs/code/electron-browser/workbench/workbench.html": "FuRXizZd7UNmpEo4wwCrmw",
-		"vs/code/electron-browser/workbench/workbench.js": "qIznqrpEcKfHNTFZPFplFg"
-	},
-	"settingsSearchBuildId": 1280000397941,
 	"target": "user"
 }
