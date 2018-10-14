@@ -188,10 +188,12 @@ function getElectron(arch) {
             ffmpegChromium: true,
             keepDefaultApp: true
         });
+        
+        console.log(electronOpts);
 
         return gulp.src('package.json')
             .pipe(json({ name: product.nameShort }))
-            .pipe(debug(electronOpts))
+            .pipe(debug({title: 'getElectron'}))
             .pipe(electron(electronOpts))
             .pipe(filter(['**', '!**/app/package.json']))
             .pipe(vfs.dest('.build/electron'));
