@@ -22,6 +22,7 @@ echo "Binding workspace and executing script";
 docker run -it \
 --security-opt apparmor:unconfined --cap-add SYS_ADMIN \
 -e GITHUB_TOKEN=${ACCESS_RATE_GITHUB_TOKEN} \
+-e PACKAGECLOUD_TOKEN \
 -e ARCHIE_GIT_ENDPOINT=${ARCHIE_GIT_ENDPOINT} \
 -v $(pwd)/build.sh:/build.sh
 -v $1:/root/output \

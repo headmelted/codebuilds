@@ -1,8 +1,8 @@
 #!/bin/bash
 set -e;
 
-echo "Installing rake and package_cloud"
-gem install rake package_cloud
+echo "Installing rake and package_cloud";
+gem install rake package_cloud;
 
 echo "Github token length: ${#GITHUB_TOKEN}"
 echo "Github token: ${GITHUB_TOKEN}"
