@@ -27,6 +27,7 @@ jobs:
       
       docker run \
         --security-opt apparmor:unconfined --cap-add SYS_ADMIN \
+        -e PACKAGECLOUD_TOKEN=$(PACKAGECLOUD_TOKEN) \
         -e GITHUB_TOKEN=$(GITHUB_TOKEN) \
         -e ARCHIE_STRATEGY \
         -e ARCHIE_ARCH \
