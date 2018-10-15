@@ -84,9 +84,6 @@ mkdir output;
 echo "Moving deb packages for release";
 mv ./code/.build/linux/deb/$COBBLER_ARCH/deb/*.deb output;
 
-echo "Installing ruby (for package_cloud)"
-apt-get install -y ruby;
-
 echo "Installing package_cloud"
 gem install package_cloud
 
