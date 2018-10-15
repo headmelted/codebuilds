@@ -8,9 +8,9 @@ REPOSITORY_NAME="headmelted";
 echo "Ensuring curl is installed";
 apt-get install -y curl;
 
-if [ "$COBBLER_ARCH" = "amd64" ]; then REPOSITORY_NAME="microsoft"; fi;
+if [ "$ARCHIE_ARCH" = "amd64" ]; then REPOSITORY_NAME="microsoft"; fi;
 
-echo "Architecture detected as $COBBLER_ARCH...";
+echo "Architecture detected as $ARCHIE_ARCH...";
 
 if [ "${REPOSITORY_NAME}" = "headmelted" ]; then
 

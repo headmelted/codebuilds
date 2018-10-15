@@ -56,10 +56,10 @@ MACHINE_MTYPE="$(uname -m)";
 ARCH="${MACHINE_MTYPE}";
 REPOSITORY_NAME="headmelted";
 
-if [ "$COBBLER_ARCH" = "armv7l" ]; then ARCH="armhf"; fi;
-if [ "$COBBLER_ARCH" = "amd64" ] || [ "$COBBLER_ARCH" = "i386"]; then REPOSITORY_NAME="Microsoft"; fi;
+if [ "$ARCHIE_ARCH" = "armv7l" ]; then ARCH="armhf"; fi;
+if [ "$ARCHIE_ARCH" = "amd64" ] || [ "$ARCHIE_ARCH" = "i386"]; then REPOSITORY_NAME="Microsoft"; fi;
 
-echo "Architecture detected as $COBBLER_ARCH...";
+echo "Architecture detected as $ARCHIE_ARCH...";
 
 echo "Preparing xenial chroot with XIWI (you will be prompted for a root password.  You can use crouton to encrypt the chroot later if you wish.)..."
 chmod +x ./crouton;

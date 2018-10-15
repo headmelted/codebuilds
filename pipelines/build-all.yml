@@ -23,4 +23,4 @@ jobs:
 #- job: linux_arm32hf
 #  displayName: 'Linux ARM 32-bit, hardware floating-point'
 #  steps:
-#  - template: devops-cobbler.yml
+#  - template: devops-archie.yml

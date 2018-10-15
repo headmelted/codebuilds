@@ -5,38 +5,38 @@ jobs:
   pool:
     vmImage: 'Ubuntu 16.04'
   variables:
-    COBBLER_ARCH: ${{ parameters.arch }}
-    COBBLER_STRATEGY: cross
-    COBBLER_HOST_DEPENDENCIES: >
+    ARCHIE_ARCH: ${{ parameters.arch }}
+    ARCHIE_STRATEGY: cross
+    ARCHIE_HOST_DEPENDENCIES: >
       git curl gnupg pkg-config software-properties-common xvfb wget python zip p7zip-full rpm graphicsmagick libwww-perl libxml-libxml-perl
       libxml-sax-expat-perl dpkg-dev perl libconfig-inifiles-perl
       libxml-simple-perl liblocale-gettext-perl libdpkg-perl libconfig-auto-perl
       libdebian-dpkgcross-perl ucf debconf dpkg-cross tree libx11-dev libxkbfile-dev libc6-dev ruby
-    COBBLER_TARGET_DEPENDENCIES: >
+    ARCHIE_TARGET_DEPENDENCIES: >
       libgtk2.0-0 libglib2.0-dev libsecret-1-dev libxkbfile-dev libx11-dev libxdmcp-dev libdbus-1-3 libpcre3 libcomerr2 libk5crypto3 libselinux1 libp11-kit0
       libxcursor1 libxfixes3 libfreetype6 libkrb5-3 libpango-1.0-0 libpangocairo-1.0-0 libpangoft2-1.0-0 libavahi-client3 libtiff5 fontconfig-config 
       libgssapi-krb5-2 libgdk-pixbuf2.0-common libgdk-pixbuf2.0-0 libfontconfig1 libcups2 libcairo2 linux-libc-dev libatk1.0-0 libc6-dev libx11-xcb-dev
       libxtst6 libxss-dev libxss1 libgconf-2-4 libasound2 libnss3
   steps:
   - bash: |
-      #docker_image="headmelted/cobbler:$COBBLER_STRATEGY-$COBBLER_ARCH"
-      docker_image="headmelted/cobbler:base"
+      #docker_image="headmelted/archie:$ARCHIE_STRATEGY-$ARCHIE_ARCH"
+      docker_image="headmelted/archie:base"
     
       # Run the container unconfined and with CAP_SYS_ADMIN, for bind mounts
-      echo "Binding workspace and executing script for [${COBBLER_STRATEGY}/${COBBLER_ARCH}]";
+      echo "Binding workspace and executing script for [${ARCHIE_STRATEGY}/${ARCHIE_ARCH}]";
       
       docker run \
         --security-opt apparmor:unconfined --cap-add SYS_ADMIN \
         -e GITHUB_TOKEN=$(GITHUB_TOKEN) \
-        -e COBBLER_STRATEGY \
-        -e COBBLER_ARCH \
-        -e COBBLER_HOST_DEPENDENCIES \
-        -e COBBLER_TARGET_DEPENDENCIES \
+        -e ARCHIE_STRATEGY \
+        -e ARCHIE_ARCH \
+        -e ARCHIE_HOST_DEPENDENCIES \
+        -e ARCHIE_TARGET_DEPENDENCIES \
         -v $(pwd):/root/build \
-        $docker_image /bin/bash -c "cd /root/build && . /root/kitchen/tools/cobbler_initialize.sh && . /root/kitchen/tools/cobbler_start_build.sh";
+        $docker_image /bin/bash -c "cd /root/build && . /root/kitchen/tools/archie_initialize.sh && . /root/kitchen/tools/archie_start_build.sh";
       
       
-# Restore this when repo:self bindings are figured out, and prevent pulling COBBLER_GIT_ENDPOINT.
+# Restore this when repo:self bindings are figured out, and prevent pulling ARCHIE_GIT_ENDPOINT.
 # volumes: |
 # ...
 # $(Build.SourcesDirectory):/root/code 

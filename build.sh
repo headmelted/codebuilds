@@ -51,8 +51,8 @@ echo "NPM arch is [$npm_config_arch]"
 echo "Executing yarn"
 yarn
 
-echo "Executing electron-$COBBLER_ELECTRON_ARCH"
-yarn --verbose gulp electron-${COBBLER_ELECTRON_ARCH}
+echo "Executing electron-$ARCHIE_ELECTRON_ARCH"
+yarn --verbose gulp electron-${ARCHIE_ELECTRON_ARCH}
 
 #echo "Executing gulp hygiene"
 #yarn --verbose gulp hygiene
@@ -82,7 +82,7 @@ echo "Creating output directory";
 mkdir output;
 
 echo "Moving deb packages for release";
-mv ./code/.build/linux/deb/$COBBLER_ARCH/deb/*.deb output;
+mv ./code/.build/linux/deb/$ARCHIE_ARCH/deb/*.deb output;
 
 echo "Installing package_cloud"
 gem install package_cloud
