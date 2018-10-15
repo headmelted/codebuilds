@@ -101,6 +101,6 @@ echo "--------------------------------------------------------------------------
 #echo "------------------------------------------------------------------------------"
 
 echo "Publishing deb file to packagecloud (MOVE THIS TO A RELEASE CONFIGURATION LATER!)"
-package_cloud push headmelted/codebuilds/ubuntu/xenial ./output/*.deb;
+package_cloud push --verbose headmelted/codebuilds/ubuntu/xenial ./output/*.deb;
 
 #package_cloud push headmelted/codebuilds/fedora/24 $TRAVIS_OUTPUT_DIRECTORY/*.rpm
