@@ -84,6 +84,9 @@ mkdir output;
 echo "Moving deb packages for release";
 mv ./code/.build/linux/deb/$COBBLER_ARCH/deb/*.deb output;
 
+echo "Installing package_cloud"
+gem install package_cloud
+
 echo "Publishing deb file to packagecloud (MOVE THIS TO A RELEASE CONFIGURATION LATER!)"
 package_cloud push headmelted/codebuilds/ubuntu/xenial output/*.deb
 
