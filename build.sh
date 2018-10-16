@@ -85,7 +85,7 @@ echo "Creating output directory";
 mkdir output;
 
 echo "Moving deb packages for release";
-mv ./code/.build/linux/deb/$ARCHIE_ARCH/deb/*.deb output/;
+mv ./code/.build/linux/deb/$ARCHIE_ARCH/deb/*.deb /root/output;
 
 echo "Extracting deb archive";
 dpkg -x output/*.deb output/extracted;
@@ -100,7 +100,7 @@ echo "--------------------------------------------------------------------------
 #ldd -v usr/share/code-oss/code-oss;
 #echo "------------------------------------------------------------------------------"
 
-echo "Publishing deb file to packagecloud (MOVE THIS TO A RELEASE CONFIGURATION LATER!)"
-package_cloud push --verbose headmelted/codebuilds/ubuntu/xenial ./output/*.deb;
+#echo "Publishing deb file to packagecloud (MOVE THIS TO A RELEASE CONFIGURATION LATER!)"
+#package_cloud push --verbose headmelted/codebuilds/ubuntu/xenial /root/output/*.deb;
 
 #package_cloud push headmelted/codebuilds/fedora/24 $TRAVIS_OUTPUT_DIRECTORY/*.rpm
