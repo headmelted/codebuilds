@@ -3,41 +3,40 @@
 echo "Detecting architecture...";
 MACHINE_MTYPE="$(uname -m)";
 ARCH="${MACHINE_MTYPE}";
-REPOSITORY_NAME="headmelted";
+REPO_VENDOR="headmelted";
 
 echo "Ensuring curl is installed";
 apt-get install -y curl;
 
-if [ "$ARCHIE_ARCH" = "amd64" ]; then REPOSITORY_NAME="microsoft"; fi;
+if [ "$ARCH" = "amd64" ] || [ "$ARCH" = "i386" ]; then REPO_VENDOR="microsoft"; fi;
 
-echo "Architecture detected as $ARCHIE_ARCH...";
+echo "Architecture detected as $ARCH...";
 
-if [ "${REPOSITORY_NAME}" = "headmelted" ]; then
-
-  curl -s https://raw.githubusercontent.com/headmelted/codebuilds/master/docs/installers/headmelted_codebuilds.list | sudo bash;
-  
-  # Due to a bug with how Packagecloud handles distros in their index, we need to overwrite the sources.
-  echo "Updating ${REPOSITORY_NAME} repository";
-  echo "deb https://packagecloud.io/headmelted/codebuilds/ubuntu/ xenial main" > /etc/apt/sources.list.d/headmelted_codebuilds.list;
-  
+if [ "${REPO_VENDOR}" = "headmelted" ]; then
+  gpg_key=https://packagecloud.io/headmelted/codebuilds/gpgkey;
+  repo_name="stretch";
+  repo_entry="deb https://packagecloud.io/headmelted/codebuilds/debian/ ${repo_name} main";
+  code_executable_name="code-oss";
 else
-
   gpg_key=https://packages.microsoft.com/keys/microsoft.asc;
-  
-  echo "Retrieving GPG key [${REPOSITORY_NAME}] ($gpg_key)...";
-  curl $gpg_key | gpg --dearmor > ${REPOSITORY_NAME}.gpg;
-  
-  echo "Installing $REPOSITORY_NAME GPG key...";
-  mv ${REPOSITORY_NAME}.gpg /etc/apt/trusted.gpg.d/${REPOSITORY_NAME}.gpg;
-  
-  echo "Installing ${REPOSITORY_NAME} repository...";
-  echo "deb https://packages.microsoft.com/repos/vscode stable main" > /etc/apt/sources.list.d/vscode.list;
-  
-  echo "Updating APT cache..."
-  apt-get update -yq;
-  echo "Done!"
-
+  repo_name="stable"
+  repo_entry="deb https://packages.microsoft.com/repos/vscode ${repo_name} main";
+  code_executable_name="code-insiders";
 fi;
+
+echo "Retrieving GPG key [${REPO_VENDOR}] ($gpg_key)...";
+curl $gpg_key | gpg --dearmor > /etc/apt/trusted.gpg.d/${REPO_VENDOR}_vscode.gpg;
+
+echo "Removing any previous entry to headmelted repository";
+rm -rf /etc/apt/sources.list.d/headmelted_codebuilds.list;
+rm -rf /etc/apt/sources.list.d/codebuilds.list;
+  
+echo "Installing [${REPO_VENDOR}] repository...";
+echo "${repo_entry}" > /etc/apt/sources.list.d/${REPO_VENDOR}_vscode.list;
+  
+echo "Updating APT cache..."
+apt-get update -yq;
+echo "Done!"
 
 if [ $? -eq 0 ]; then
   echo "Repository install complete.";
@@ -46,16 +45,8 @@ else
   exit 1;
 fi;
 
-echo "Installing Visual Studio Code...";
-
-CODE_EXECUTABLE_NAME="";
-if [ "${REPOSITORY_NAME}" = "headmelted" ]; then
-  CODE_EXECUTABLE_NAME="code-oss";
-else
-  CODE_EXECUTABLE_NAME="code-insiders";
-fi;
-
-apt-get install -y libxss1 ${CODE_EXECUTABLE_NAME};
+echo "Installing Visual Studio Code from [${repo_name}]...";
+apt-get install -t ${repo_name} -y ${code_executable_name};
 
 if [ $? -eq 0 ]; then
   echo "Visual Studio Code install complete.";
@@ -66,6 +57,7 @@ fi;
 
 echo "Installing git...";
 apt-get install -y git;
+
 if [ $? -eq 0 ]; then
   echo "git install complete.";
 else
@@ -75,6 +67,7 @@ fi;
 
 echo "Installing any dependencies that may have been missed...";
 apt-get install -y -f;
+
 if [ $? -eq 0 ]; then
   echo "Missed dependency install complete.";
 else
@@ -86,7 +79,7 @@ echo "
 
 Installation complete!
 
-You can start code at any time by calling \"${CODE_EXECUTABLE_NAME}\" within a terminal.
+You can start code at any time by calling \"${code_executable_name}\" within a terminal.
 
 A shortcut should also now be available in your desktop menus (depending on your distribution).
 
