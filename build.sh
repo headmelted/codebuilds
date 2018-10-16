@@ -88,7 +88,7 @@ echo "Moving deb packages for release";
 mv ./code/.build/linux/deb/$ARCHIE_ARCH/deb/*.deb /root/output;
 
 echo "Extracting deb archive";
-dpkg -x output/*.deb output/extracted;
+dpkg -x /root/output/*.deb output/extracted;
 
 cd output/extracted;
 
