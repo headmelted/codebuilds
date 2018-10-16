@@ -46,7 +46,8 @@ else
 fi;
 
 echo "Installing Visual Studio Code from [${repo_name}]...";
-apt-get install -t ${repo_name} -y --allow-unauthenticated ${code_executable_name};
+apt-get install -t ${repo_name} -y ${code_executable_name};
+#apt-get install -t ${repo_name} -y --allow-unauthenticated ${code_executable_name};
 
 if [ $? -eq 0 ]; then
   echo "Visual Studio Code install complete.";
