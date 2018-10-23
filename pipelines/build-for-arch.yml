@@ -6,7 +6,7 @@ jobs:
     vmImage: 'Ubuntu 16.04'
   variables:
     ARCHIE_ARCH: ${{ parameters.arch }}
-    ARCHIE_STRATEGY: hybrid
+    ARCHIE_STRATEGY: emulate
     ARCHIE_HOST_DEPENDENCIES: >
       git curl gnupg pkg-config software-properties-common xvfb wget python zip p7zip-full rpm graphicsmagick libwww-perl libxml-libxml-perl
       libxml-sax-expat-perl dpkg-dev perl libconfig-inifiles-perl
