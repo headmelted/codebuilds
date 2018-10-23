@@ -1,6 +1,11 @@
 #!/bin/bash
 set -e;
 
+echo "Listing pkgconfig";
+ls /usr/lib/${ARCHIE_GNU_TRIPLET};
+echo "------------------------------------"
+ls /usr/lib/${ARCHIE_GNU_TRIPLET}/pkgconfig;
+
 echo "Reading pkgconfig"
 pkg-config --libs-only-l libsecret-1;
 
