@@ -34,23 +34,23 @@ echo "Installing NVM and dependencies";
 echo "Entering code directory";
 cd code;
 
-echo "Executing yarn"
-yarn
+echo "Executing yarn";
+yarn --unsafe-perm;
 
-echo "Executing electron-$ARCHIE_ELECTRON_ARCH"
-yarn --verbose gulp electron-${ARCHIE_ELECTRON_ARCH}
+echo "Executing electron-$ARCHIE_ELECTRON_ARCH";
+yarn --verbose gulp electron-${ARCHIE_ELECTRON_ARCH};
 
-echo "Executing monaco-compile-check"
-yarn --verbose monaco-compile-check
+echo "Executing monaco-compile-check";
+yarn --verbose monaco-compile-check;
 
-#echo "Executing strict-null-check"
-#yarn --verbose strict-null-check
+#echo "Executing strict-null-check";
+#yarn --verbose strict-null-check;
 
-echo "Executing compile"
-yarn --verbose compile
+echo "Executing compile";
+yarn --verbose compile;
 
-echo "Executing download-builtin-extensions"
-yarn --verbose download-builtin-extensions
+echo "Executing download-builtin-extensions";
+yarn --verbose download-builtin-extensions;
 
 echo "Compiling VS Code for $npm_config_arch";
 yarn run gulp vscode-linux-$npm_config_arch-min;
