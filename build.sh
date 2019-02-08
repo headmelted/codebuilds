@@ -40,8 +40,8 @@ yarn --unsafe-perm;
 echo "Executing electron-$ARCHIE_ELECTRON_ARCH";
 yarn --verbose gulp electron-${ARCHIE_ELECTRON_ARCH};
 
-echo "Executing monaco-compile-check";
-yarn --verbose monaco-compile-check;
+#echo "Executing monaco-compile-check";
+#yarn --verbose monaco-compile-check;
 
 #echo "Executing strict-null-check";
 #yarn --verbose strict-null-check;
