@@ -1,10 +1,10 @@
 #!/bin/bash
 set -e;
 
-echo "/usr/lib/${ARCHIE_GNU_TRIPLET} ------------------";
-ls /usr/lib/${ARCHIE_GNU_TRIPLET};
-echo "/usr/lib/${ARCHIE_GNU_TRIPLET}/pkgconfig --------";
-ls /usr/lib/${ARCHIE_GNU_TRIPLET}/pkgconfig;
+#echo "/usr/lib/${ARCHIE_GNU_TRIPLET} ------------------";
+#ls /usr/lib/${ARCHIE_GNU_TRIPLET};
+#echo "/usr/lib/${ARCHIE_GNU_TRIPLET}/pkgconfig --------";
+#ls /usr/lib/${ARCHIE_GNU_TRIPLET}/pkgconfig;
 echo "pkg-config search path --------------------------";
 pkg-config --variable pc_path pkg-config;
 
