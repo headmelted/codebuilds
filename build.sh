@@ -11,6 +11,14 @@ pkg-config --variable pc_path pkg-config;
 echo "Reading pkgconfig"
 pkg-config --libs-only-l libsecret-1;
 
+echo "Current directory is:";
+pwd;
+
+echo "Directory contents:";
+echo "-------------------";
+ls;
+echo "-------------------";
+
 echo "Retrieving latest Visual Studio Code sources into [code]";
 git clone "https://github.com/Microsoft/vscode.git" code;
   
