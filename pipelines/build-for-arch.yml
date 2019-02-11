@@ -19,8 +19,7 @@ jobs:
       libxtst6 libxss-dev libxss1 libgconf-2-4 libasound2 libnss3
   steps:
   - bash: |
-      #docker_image="headmelted/archie:$ARCHIE_STRATEGY-$ARCHIE_ARCH"
-      docker_image="headmelted/archie:base"
+      docker_image="headmelted/codebuilder:$ARCHIE_ARCH"
     
       # Run the container unconfined and with CAP_SYS_ADMIN, for bind mounts
       echo "Binding workspace and executing script for [${ARCHIE_STRATEGY}/${ARCHIE_ARCH}]";
@@ -34,7 +33,7 @@ jobs:
         -e ARCHIE_TARGET_DEPENDENCIES \
         -v $(pwd):/root/build \
         -v $(Build.ArtifactStagingDirectory):/root/output \
-        $docker_image /bin/bash -c "cd /root/build && . /root/kitchen/tools/archie_initialize.sh && . /root/kitchen/tools/archie_start_build.sh";
+        $docker_image /bin/bash -c "cd /root/build && . /root/kitchen/tools/archie_start_build.sh";
   - task: PublishBuildArtifacts@1
       
 # Restore this when repo:self bindings are figured out, and prevent pulling ARCHIE_GIT_ENDPOINT.
