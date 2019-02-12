@@ -1,6 +1,9 @@
 #!/bin/bash
 set -e;
 
+# Reinitialize compilers, as the environment variables needs to be set for the session.
+. /root/kitchen/tools/archie_initialize_compilers.sh;
+
 #echo "/usr/lib/${ARCHIE_GNU_TRIPLET} ------------------";
 #ls /usr/lib/${ARCHIE_GNU_TRIPLET};
 #echo "/usr/lib/${ARCHIE_GNU_TRIPLET}/pkgconfig --------";
