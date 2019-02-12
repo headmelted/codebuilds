@@ -8,8 +8,8 @@ set -e;
 echo "pkg-config search path --------------------------";
 pkg-config --variable pc_path pkg-config;
 
-echo "Reading pkgconfig"
-pkg-config --libs-only-l libsecret-1;
+#echo "Reading pkgconfig"
+#pkg-config --libs-only-l libsecret-1;
 
 echo "Current directory is:";
 pwd;
