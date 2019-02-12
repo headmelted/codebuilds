@@ -8,6 +8,9 @@ set -e;
 echo "pkg-config search path --------------------------";
 pkg-config --variable pc_path pkg-config;
 
+echo "Emulators available:";
+update-binfmts --display;
+
 . /root/kitchen/tools/archie_jail.sh ". /root/kitchen/tools/setup_nvm.sh";
 
 echo "Current directory is:";
