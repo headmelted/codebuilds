@@ -8,8 +8,8 @@ set -e;
 echo "pkg-config search path --------------------------";
 pkg-config --variable pc_path pkg-config;
 
-echo "Emulators available:";
-update-binfmts --display;
+echo "Ensuring qemu binfmt interception is enabled";
+update-binfmts --enable;
 
 . /root/kitchen/tools/archie_jail.sh ". /root/kitchen/tools/setup_nvm.sh";
 
