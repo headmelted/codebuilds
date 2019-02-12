@@ -19,7 +19,7 @@ echo "-------------------";
 ls;
 echo "-------------------";
 
-node -v;
+. /root/kitchen/tools/setup_nvm.sh;
 
 echo "Retrieving latest Visual Studio Code sources into [code]";
 git clone "https://github.com/Microsoft/vscode.git" code;
