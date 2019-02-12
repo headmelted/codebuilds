@@ -1,9 +1,6 @@
 #!/bin/bash
 set -e;
 
-# Reinitialize compilers, as the environment variables needs to be set for the session.
-. /root/kitchen/tools/archie_initialize_compilers.sh;
-
 #echo "/usr/lib/${ARCHIE_GNU_TRIPLET} ------------------";
 #ls /usr/lib/${ARCHIE_GNU_TRIPLET};
 #echo "/usr/lib/${ARCHIE_GNU_TRIPLET}/pkgconfig --------";
@@ -11,8 +8,7 @@ set -e;
 echo "pkg-config search path --------------------------";
 pkg-config --variable pc_path pkg-config;
 
-#echo "Reading pkgconfig"
-#pkg-config --libs-only-l libsecret-1;
+. /root/kitchen/tools/archie_jailify.sh "/root/kitchen/tools/setup_nvm.sh";
 
 echo "Current directory is:";
 pwd;
@@ -21,8 +17,6 @@ echo "Directory contents:";
 echo "-------------------";
 ls;
 echo "-------------------";
-
-. /root/kitchen/tools/setup_nvm.sh;
 
 echo "Retrieving latest Visual Studio Code sources into [code]";
 git clone "https://github.com/Microsoft/vscode.git" code;
