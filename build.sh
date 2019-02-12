@@ -19,6 +19,8 @@ echo "-------------------";
 ls;
 echo "-------------------";
 
+node -v;
+
 echo "Retrieving latest Visual Studio Code sources into [code]";
 git clone "https://github.com/Microsoft/vscode.git" code;
   
