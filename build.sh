@@ -67,7 +67,7 @@ echo "Executing download-builtin-extensions";
 yarn --verbose download-builtin-extensions;
 
 echo "Compiling VS Code for $VSCODE_ELECTRON_PLATFORM";
-yarn run gulp vscode-linux-$VSCODE_ELECTRON_PLATFORM-min;
+yarn run gulp vscode-linux-$VSCODE_ELECTRON_PLATFORM;
 
 echo "Starting vscode-linux-$ARCHIE_PACKAGE_ARCH-build-deb";
 yarn run gulp vscode-linux-$ARCHIE_PACKAGE_ARCH-build-deb;
