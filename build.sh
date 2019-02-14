@@ -34,15 +34,16 @@ rsync -avh ./overlays/ ./code/;
 echo "Entering code directory";
 cd code;
 
-echo "Executing yarn";
-yarn --unsafe-perm;
-
-if [ "${ARCHIE_ELECTRON_ARCH}" == "arm" ]; then
+if [ "${ARCHIE_ELECTRON_ARCH}" == "arm" ]; then 
+  echo "Patching electron install for arm";
   sed -i -e 's/process.env.npm_config_arch/"armv7l"/g' ./code/test/smoke/node_modules/electron/install.js
   echo "---------------------------------------------------"
   cat ./code/test/smoke/node_modules/electron/install.js
   echo "---------------------------------------------------"
 fi;
+
+echo "Executing yarn";
+yarn --unsafe-perm;
 
 echo "Executing electron-$ARCHIE_ELECTRON_ARCH";
 yarn --verbose gulp electron-${ARCHIE_ELECTRON_ARCH};
