@@ -37,6 +37,13 @@ cd code;
 echo "Executing yarn";
 yarn --unsafe-perm;
 
+if [ "${ARCHIE_ELECTRON_ARCH}" == "arm" ]; then
+  sed -i -e 's/process.env.npm_config_arch/"armv7l"/g' ./code/test/smoke/node_modules/electron/install.js
+  echo "---------------------------------------------------"
+  cat ./code/test/smoke/node_modules/electron/install.js
+  echo "---------------------------------------------------"
+fi;
+
 echo "Executing electron-$ARCHIE_ELECTRON_ARCH";
 yarn --verbose gulp electron-${ARCHIE_ELECTRON_ARCH};
 
@@ -51,13 +58,6 @@ yarn --verbose compile;
 
 echo "Executing download-builtin-extensions";
 yarn --verbose download-builtin-extensions;
-
-if [ "${ARCHIE_ELECTRON_ARCH}" == "arm" ]; then
-  sed -i -e 's/process.env.npm_config_arch/"armv7l"/g' ./code/test/smoke/node_modules/electron/install.js
-  echo "---------------------------------------------------"
-  cat ./code/test/smoke/node_modules/electron/install.js
-  echo "---------------------------------------------------"
-fi;
 
 echo "Compiling VS Code for $npm_config_arch";
 yarn run gulp vscode-linux-$npm_config_arch-min;
