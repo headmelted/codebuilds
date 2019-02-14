@@ -42,11 +42,17 @@ cd code;
 #  echo "---------------------------------------------------"
 #fi;
 
-echo "Executing yarn";
-yarn --verbose install;
+echo "Executing yarn (ignoring scripts)";
+yarn --verbose install --unsafe-perm --ignore-scripts;
 
-echo "Executing electron-$ARCHIE_ELECTRON_ARCH";
-yarn --verbose gulp electron-${ARCHIE_ELECTRON_ARCH};
+echo "Copying vscode-sqlite.gyp";
+mv vscode-sqlite.gyp ./node_modules/vscode-sqlite/binding.gyp;
+
+echo "Executing yarn";
+yarn --verbose install --unsafe-perm;
+
+#echo "Executing electron-$ARCHIE_ELECTRON_ARCH";
+#yarn --verbose gulp electron-${ARCHIE_ELECTRON_ARCH};
 
 #echo "Executing monaco-compile-check";
 #yarn --verbose monaco-compile-check;
