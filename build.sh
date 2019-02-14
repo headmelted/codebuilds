@@ -53,8 +53,8 @@ npm run monaco-compile-check;
 #echo "Running strict-null-check";
 #npm run strict-null-check;
 
-echo "Installing distro";
-node build/azure-pipelines/common/installDistro.js;
+#echo "Installing distro";
+#node build/azure-pipelines/common/installDistro.js;
 
 echo "Installing built-in extensions";
 node build/lib/builtInExtensions.js;
