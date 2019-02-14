@@ -42,14 +42,34 @@ cd code;
 #  echo "---------------------------------------------------"
 #fi;
 
-echo "Executing yarn (ignoring scripts)";
-yarn install --unsafe-perm --ignore-scripts;
+CHILD_CONCURRENCY=1 yarn;
+
+echo "Running hygiene";
+npm run gulp -- hygiene;
+
+echo "Running monaco-compile-check";
+npm run monaco-compile-check;
+
+echo "Running strict-null-check";
+npm run strict-null-check;
+
+echo "Installing distro";
+node build/azure-pipelines/common/installDistro.js;
+
+echo "Installing built-in extensions";
+node build/lib/builtInExtensions.js;
+
+echo "Compiling VS Code for $VSCODE_ELECTRON_PLATFORM";
+npm run gulp -- vscode-linux-$VSCODE_ELECTRON_PLATFORM-min;
+
+#echo "Executing yarn (ignoring scripts)";
+#yarn install --unsafe-perm --ignore-scripts;
 
 #echo "Copying vscode-sqlite.gyp";
 #mv vscode-sqlite.gyp ./node_modules/vscode-sqlite/binding.gyp;
 
-echo "Executing yarn";
-yarn install --unsafe-perm;
+#echo "Executing yarn";
+#yarn install --unsafe-perm;
 
 #echo "Executing electron-$ARCHIE_ELECTRON_ARCH";
 #yarn --verbose gulp electron-${ARCHIE_ELECTRON_ARCH};
@@ -60,14 +80,14 @@ yarn install --unsafe-perm;
 #echo "Executing strict-null-check";
 #yarn --verbose strict-null-check;
 
-echo "Executing compile";
-yarn --verbose compile;
+#echo "Executing compile";
+#yarn --verbose compile;
 
-echo "Executing download-builtin-extensions";
-yarn --verbose download-builtin-extensions;
+#echo "Executing download-builtin-extensions";
+#yarn --verbose download-builtin-extensions;
 
-echo "Compiling VS Code for $VSCODE_ELECTRON_PLATFORM";
-yarn run gulp vscode-linux-$VSCODE_ELECTRON_PLATFORM;
+#echo "Compiling VS Code for $VSCODE_ELECTRON_PLATFORM";
+#yarn run gulp vscode-linux-$VSCODE_ELECTRON_PLATFORM;
 
 echo "Starting vscode-linux-$ARCHIE_PACKAGE_ARCH-build-deb";
 yarn run gulp vscode-linux-$ARCHIE_PACKAGE_ARCH-build-deb;
