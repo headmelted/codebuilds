@@ -18,6 +18,10 @@ echo "-------------------";
 ls;
 echo "-------------------";
 
+extra_links="-I$compiler_root_directory/usr/include/libsecret-1 -I$compiler_root_directory/usr/include/glib-2.0 -I$compiler_root_directory/usr/lib/${ARCHIE_GNU_TRIPLET}/glib-2.0/include";
+export CC="$CC $extra_links"
+export CC="$CC $extra_links"
+
 echo "Retrieving latest Visual Studio Code sources into [code]";
 git clone "https://github.com/Microsoft/vscode.git" code;
   
