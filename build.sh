@@ -43,7 +43,7 @@ cd code;
 #fi;
 
 echo "Executing yarn";
-yarn install --unsafe-perm --ignore-scripts;
+yarn --verbose install;
 
 echo "Executing electron-$ARCHIE_ELECTRON_ARCH";
 yarn --verbose gulp electron-${ARCHIE_ELECTRON_ARCH};
