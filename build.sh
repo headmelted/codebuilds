@@ -5,6 +5,9 @@ set -e;
 #ls /usr/lib/${ARCHIE_GNU_TRIPLET};
 #echo "/usr/lib/${ARCHIE_GNU_TRIPLET}/pkgconfig --------";
 #ls /usr/lib/${ARCHIE_GNU_TRIPLET}/pkgconfig;
+
+echo "PKG_CONFIG --------------------------------------";
+echo $PKG_CONFIG_PATH;
 echo "pkg-config search path --------------------------";
 pkg-config --variable pc_path pkg-config;
 
