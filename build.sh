@@ -59,8 +59,8 @@ npm run monaco-compile-check;
 echo "Installing built-in extensions";
 node build/lib/builtInExtensions.js;
 
-echo "Compiling VS Code for $VSCODE_ELECTRON_PLATFORM";
-npm run gulp -- vscode-linux-$VSCODE_ELECTRON_PLATFORM-min --unsafe-perm;
+echo "Compiling VS Code for $ARCHIE_ELECTRON_ARCH";
+npm run gulp -- vscode-linux-$ARCHIE_ELECTRON_ARCH-min --unsafe-perm;
 
 #echo "Executing yarn (ignoring scripts)";
 #yarn install --unsafe-perm --ignore-scripts;
