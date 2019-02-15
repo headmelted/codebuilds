@@ -62,7 +62,7 @@ npm run monaco-compile-check;
 echo "Installing built-in extensions";
 node build/lib/builtInExtensions.js;
 
-if [ $ARCHIE_ARCH == "armhf" ]; do
+if [ "$ARCHIE_ARCH" == "armhf" ]; do
   apt-get install -y tree;
   tree /root/build/code/;
 fi;
