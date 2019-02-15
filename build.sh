@@ -79,11 +79,13 @@ fi;
 
 CHILD_CONCURRENCY=1 yarn;
 
+if [ "$ARCHIE_ARCH" !== "armhf" ]; then
 echo "Running hygiene";
 npm run gulp -- hygiene;
 
 echo "Running monaco-compile-check";
 npm run monaco-compile-check;
+fi;
 
 #echo "Running strict-null-check";
 #npm run strict-null-check;
