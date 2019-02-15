@@ -10,6 +10,7 @@ wget "https://github.com/mitmproxy/mitmproxy/releases/download/v4.0.1/mitmproxy-
 curl "https://github.com/mitmproxy/mitmproxy/releases/download/v4.0.1/mitmproxy-4.0.1-linux.tar.gz" --output mitmproxy-4.0.1-linux.tar.gz
 ls;
 echo "------------";
+file mitmproxy-4.0.1-linux.tar.gz;
 tar -xvzf mitmproxy-4.0.1-linux.tar.gz;
 ls;
 echo "------";
