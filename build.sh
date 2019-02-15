@@ -60,32 +60,32 @@ if [ "$ARCHIE_ARCH" == "armhf" ]; then
   #echo "Overriding filename for Electron";
   #export ELECTRON_CUSTOM_FILENAME="electron-v3.1.3-linux-armv7l.zip";
   #export ELECTRON_CUSTOM_DIR="3.1.3";
-  export ELECTRON_CACHE=$(pwd)/electron_cache;
-  echo "Electron cache is: $ELECTRON_CACHE";
-  mkdir $ELECTRON_CACHE;
-  echo "Manually downloading electron to cache"
-  wget "https://github.com/electron/electron/releases/download/v3.1.3/electron-v3.1.3-linux-armv7l.zip" -O $ELECTRON_CACHE/electron-v3.1.3-linux-arm.zip;
-  echo "Copying electron arm.zip to armv7l.zip"
-  cp $ELECTRON_CACHE/electron-v3.1.3-linux-arm.zip $ELECTRON_CACHE/electron-v3.1.3-linux-armv7l.zip;
-  echo "Manually downloading mksnapshot to cache"
-  wget "https://github.com/electron/electron/releases/download/v3.1.3/mksnapshot-v3.1.3-linux-armv7l.zip" -O $ELECTRON_CACHE/mksnapshot-v3.1.3-linux-arm.zip;
-  echo "Copying mksnapshot arm.zip to armv7l.zip"
-  cp $ELECTRON_CACHE/mksnapshot-v3.1.3-linux-arm.zip $ELECTRON_CACHE/mksnapshot-v3.1.3-linux-armv7l.zip;
-  echo "Downloading SHASUMS256.txt to cache";
-  wget "https://github.com/electron/electron/releases/download/v3.1.3/SHASUMS256.txt" -O $ELECTRON_CACHE/SHASUMS256.txt;
-  echo "Editing filenames in SHASUMS256.txt";
-  sed -i 's/armv7l/arm/g' $ELECTRON_CACHE/SHASUMS256.txt;
+  #export ELECTRON_CACHE=$(pwd)/electron_cache;
+  #echo "Electron cache is: $ELECTRON_CACHE";
+  #mkdir $ELECTRON_CACHE;
+  #echo "Manually downloading electron to cache"
+  #wget "https://github.com/electron/electron/releases/download/v3.1.3/electron-v3.1.3-linux-armv7l.zip" -O $ELECTRON_CACHE/electron-v3.1.3-linux-arm.zip;
+  #echo "Copying electron arm.zip to armv7l.zip"
+  #cp $ELECTRON_CACHE/electron-v3.1.3-linux-arm.zip $ELECTRON_CACHE/electron-v3.1.3-linux-armv7l.zip;
+  #echo "Manually downloading mksnapshot to cache"
+  #wget "https://github.com/electron/electron/releases/download/v3.1.3/mksnapshot-v3.1.3-linux-armv7l.zip" -O $ELECTRON_CACHE/mksnapshot-v3.1.3-linux-arm.zip;
+  #echo "Copying mksnapshot arm.zip to armv7l.zip"
+  #cp $ELECTRON_CACHE/mksnapshot-v3.1.3-linux-arm.zip $ELECTRON_CACHE/mksnapshot-v3.1.3-linux-armv7l.zip;
+  #echo "Downloading SHASUMS256.txt to cache";
+  #wget "https://github.com/electron/electron/releases/download/v3.1.3/SHASUMS256.txt" -O $ELECTRON_CACHE/SHASUMS256.txt;
+  #echo "Editing filenames in SHASUMS256.txt";
+  #sed -i 's/armv7l/arm/g' $ELECTRON_CACHE/SHASUMS256.txt;
+  echo "Deleting test directory";
+  rm -rf ./code/test;
 fi;
 
 CHILD_CONCURRENCY=1 yarn;
 
-if [ "$ARCHIE_ARCH" !== "armhf" ]; then
 echo "Running hygiene";
 npm run gulp -- hygiene;
 
 echo "Running monaco-compile-check";
 npm run monaco-compile-check;
-fi;
 
 #echo "Running strict-null-check";
 #npm run strict-null-check;
