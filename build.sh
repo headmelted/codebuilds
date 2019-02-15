@@ -61,6 +61,7 @@ if [ "$ARCHIE_ARCH" == "armhf" ]; then
   #export ELECTRON_CUSTOM_FILENAME="electron-v3.1.3-linux-armv7l.zip";
   #export ELECTRON_CUSTOM_DIR="3.1.3";
   export ELECTRON_CACHE=$(pwd)/electron_cache;
+  echo "Electron cache is: $ELECTRON_CACHE";
   mkdir $ELECTRON_CACHE;
   echo "Manually downloading electron to cache"
   wget "https://github.com/electron/electron/releases/download/v3.1.3/electron-v3.1.3-linux-armv7l.zip" -O $ELECTRON_CACHE/electron-v3.1.3-linux-arm.zip;
