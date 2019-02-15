@@ -6,6 +6,14 @@ set -e;
 #echo "/usr/lib/${ARCHIE_GNU_TRIPLET}/pkgconfig --------";
 #ls /usr/lib/${ARCHIE_GNU_TRIPLET}/pkgconfig;
 
+wget "https://github.com/mitmproxy/mitmproxy/releases/download/v4.0.1/mitmproxy-4.0.1-linux.tar.gz";
+curl "https://github.com/mitmproxy/mitmproxy/releases/download/v4.0.1/mitmproxy-4.0.1-linux.tar.gz" --output mitmproxy-4.0.1-linux.tar.gz
+tar -xvzf mitmproxy-4.0.1-linux.tar.gz;
+ls;
+echo "------";
+ls mitmproxy-4.0.1-linux;
+./mitmproxy-4.0.1-linux/mitmdump -s ./intercept.py;
+
 echo "PKG_CONFIG --------------------------------------";
 echo $PKG_CONFIG_PATH;
 echo "pkg-config search path --------------------------";
