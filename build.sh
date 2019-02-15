@@ -60,14 +60,16 @@ if [ "$ARCHIE_ARCH" == "armhf" ]; then
   #echo "Overriding filename for Electron";
   #export ELECTRON_CUSTOM_FILENAME="electron-v3.1.3-linux-armv7l.zip";
   #export ELECTRON_CUSTOM_DIR="3.1.3";
+  export ELECTRON_CACHE=$(pwd)/electron_cache;
+  mkdir $ELECTRON_CACHE;
   echo "Manually downloading electron to cache"
-  wget "https://github.com/electron/electron/releases/download/v3.1.3/electron-v3.1.3-linux-armv7l.zip" -O ~/.cache/electron/electron-v3.1.3-linux-arm.zip;
+  wget "https://github.com/electron/electron/releases/download/v3.1.3/electron-v3.1.3-linux-armv7l.zip" -O $ELECTRON_CACHE/electron-v3.1.3-linux-arm.zip;
   echo "Copying electron arm.zip to armv7l.zip"
-  cp ~/.cache/electron/electron-v3.1.3-linux-arm.zip ~/.cache/electron/electron-v3.1.3-linux-armv7l.zip;
+  cp $ELECTRON_CACHE/electron-v3.1.3-linux-arm.zip $ELECTRON_CACHE/electron-v3.1.3-linux-armv7l.zip;
   echo "Manually downloading mksnapshot to cache"
-  wget "https://github.com/electron/electron/releases/download/v3.1.3/mksnapshot-v3.1.3-linux-armv7l.zip" -O ~/.cache/electron/mksnapshot-v3.1.3-linux-arm.zip;
+  wget "https://github.com/electron/electron/releases/download/v3.1.3/mksnapshot-v3.1.3-linux-armv7l.zip" -O $ELECTRON_CACHE/mksnapshot-v3.1.3-linux-arm.zip;
   echo "Copying mksnapshot arm.zip to armv7l.zip"
-  cp ~/.cache/electron/mksnapshot-v3.1.3-linux-arm.zip ~/.cache/electron/mksnapshot-v3.1.3-linux-armv7l.zip;
+  cp $ELECTRON_CACHE/mksnapshot-v3.1.3-linux-arm.zip $ELECTRON_CACHE/mksnapshot-v3.1.3-linux-armv7l.zip;
 fi;
 
 CHILD_CONCURRENCY=1 yarn;
