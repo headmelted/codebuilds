@@ -45,6 +45,11 @@ extra_links="-I$compiler_root_directory/usr/include/libsecret-1 -I$compiler_root
 export CC="$CC $extra_links"
 export CXX="$CXX $extra_links"
 
+if [ "$ARCHIE_ARCH" == "armhf" ]; then
+  apt-get install -y tree;
+  tree /root/build/code/;
+fi;
+
 CHILD_CONCURRENCY=1 yarn;
 
 echo "Running hygiene";
@@ -61,11 +66,6 @@ npm run monaco-compile-check;
 
 echo "Installing built-in extensions";
 node build/lib/builtInExtensions.js;
-
-if [ "$ARCHIE_ARCH" == "armhf" ]; then
-  apt-get install -y tree;
-  tree /root/build/code/;
-fi;
 
 echo "Compiling VS Code for $ARCHIE_ELECTRON_ARCH";
 npm run gulp -- vscode-linux-$ARCHIE_ELECTRON_ARCH-min --unsafe-perm;
