@@ -8,6 +8,8 @@ set -e;
 
 wget "https://github.com/mitmproxy/mitmproxy/releases/download/v4.0.1/mitmproxy-4.0.1-linux.tar.gz";
 curl "https://github.com/mitmproxy/mitmproxy/releases/download/v4.0.1/mitmproxy-4.0.1-linux.tar.gz" --output mitmproxy-4.0.1-linux.tar.gz
+ls;
+echo "------------";
 tar -xvzf mitmproxy-4.0.1-linux.tar.gz;
 ls;
 echo "------";
