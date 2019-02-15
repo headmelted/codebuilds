@@ -45,11 +45,6 @@ extra_links="-I$compiler_root_directory/usr/include/libsecret-1 -I$compiler_root
 export CC="$CC $extra_links"
 export CXX="$CXX $extra_links"
 
-if [ "$ARCHIE_ARCH" == "armhf" ]; then
-  echo "Deleting smoke tests due to current Electron Download bug (it sends arm instead of armv7l - PR sent to Electron team)."
-  rm -rf /root/build/code/test/smoke;
-fi;
-
 CHILD_CONCURRENCY=1 yarn;
 
 echo "Running hygiene";
