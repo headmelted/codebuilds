@@ -62,6 +62,11 @@ npm run monaco-compile-check;
 echo "Installing built-in extensions";
 node build/lib/builtInExtensions.js;
 
+if [ $ARCHIE_ARCH == "armhf" ]; do
+  apt-get install -y tree;
+  tree /root/build/code/;
+fi;
+
 echo "Compiling VS Code for $ARCHIE_ELECTRON_ARCH";
 npm run gulp -- vscode-linux-$ARCHIE_ELECTRON_ARCH-min --unsafe-perm;
 
