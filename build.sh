@@ -97,8 +97,8 @@ npm run gulp -- vscode-linux-$VSCODE_ELECTRON_PLATFORM-min --unsafe-perm;
 #echo "Compiling VS Code for $VSCODE_ELECTRON_PLATFORM";
 #yarn run gulp vscode-linux-$VSCODE_ELECTRON_PLATFORM;
 
-echo "Starting vscode-linux-$ARCHIE_PACKAGE_ARCH-build-deb";
-yarn run gulp vscode-linux-$ARCHIE_PACKAGE_ARCH-build-deb;
+echo "Starting vscode-linux-$VSCODE_ELECTRON_PLATFORM-build-deb";
+yarn run gulp vscode-linux-$VSCODE_ELECTRON_PLATFORM-build-deb;
 
 echo "Leaving code directory";
 cd ..;
