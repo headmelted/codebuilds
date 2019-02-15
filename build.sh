@@ -71,6 +71,10 @@ if [ "$ARCHIE_ARCH" == "armhf" ]; then
   wget "https://github.com/electron/electron/releases/download/v3.1.3/mksnapshot-v3.1.3-linux-armv7l.zip" -O $ELECTRON_CACHE/mksnapshot-v3.1.3-linux-arm.zip;
   echo "Copying mksnapshot arm.zip to armv7l.zip"
   cp $ELECTRON_CACHE/mksnapshot-v3.1.3-linux-arm.zip $ELECTRON_CACHE/mksnapshot-v3.1.3-linux-armv7l.zip;
+  echo "Downloading SHASUMS256.txt to cache";
+  wget "https://github.com/electron/electron/releases/download/v3.1.3/SHASUMS256.txt" -O $ELECTRON_CACHE/SHASUMS256.txt;
+  echo "Editing filenames in SHASUMS256.txt";
+  sed -i 's/armv7l/arm/g' $ELECTRON_CACHE/SHASUMS256.txt;
 fi;
 
 CHILD_CONCURRENCY=1 yarn;
