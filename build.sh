@@ -46,8 +46,8 @@ export CC="$CC $extra_links"
 export CXX="$CXX $extra_links"
 
 if [ "$ARCHIE_ARCH" == "armhf" ]; then
-  apt-get install -y tree;
-  tree /root/build/code/;
+  echo "Deleting smoke tests due to current Electron Download bug (it sends arm instead of armv7l - PR sent to Electron team)."
+  rm -rf /root/build/code/test/smoke;
 fi;
 
 CHILD_CONCURRENCY=1 yarn;
@@ -79,8 +79,8 @@ npm run gulp -- vscode-linux-$VSCODE_ELECTRON_PLATFORM-min --unsafe-perm;
 #echo "Executing yarn";
 #yarn install --unsafe-perm;
 
-#echo "Executing electron-$ARCHIE_ELECTRON_ARCH";
-#yarn --verbose gulp electron-${ARCHIE_ELECTRON_ARCH};
+echo "Executing electron-$ARCHIE_ELECTRON_ARCH";
+yarn --verbose gulp electron-${ARCHIE_ELECTRON_ARCH};
 
 #echo "Executing monaco-compile-check";
 #yarn --verbose monaco-compile-check;
