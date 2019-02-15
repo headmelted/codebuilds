@@ -76,7 +76,7 @@ if [ "$ARCHIE_ARCH" == "armhf" ]; then
   #echo "Editing filenames in SHASUMS256.txt";
   #sed -i 's/armv7l/arm/g' $ELECTRON_CACHE/SHASUMS256.txt;
   echo "Deleting test directory";
-  rm -rf ./code/test;
+  rm -rf ./test;
 fi;
 
 CHILD_CONCURRENCY=1 yarn;
