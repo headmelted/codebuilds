@@ -6,16 +6,16 @@ set -e;
 #echo "/usr/lib/${ARCHIE_GNU_TRIPLET}/pkgconfig --------";
 #ls /usr/lib/${ARCHIE_GNU_TRIPLET}/pkgconfig;
 
-wget "https://github.com/mitmproxy/mitmproxy/releases/download/v4.0.1/mitmproxy-4.0.1-linux.tar.gz";
+#wget "https://github.com/mitmproxy/mitmproxy/releases/download/v4.0.1/mitmproxy-4.0.1-linux.tar.gz";
 #curl "https://github.com/mitmproxy/mitmproxy/releases/download/v4.0.1/mitmproxy-4.0.1-linux.tar.gz" --output mitmproxy-4.0.1-linux.tar.gz
 #ls;
 #echo "------------";
 #file mitmproxy-4.0.1-linux.tar.gz;
-tar -xvzf mitmproxy-4.0.1-linux.tar.gz;
+#tar -xvzf mitmproxy-4.0.1-linux.tar.gz;
 #ls;
 #echo "------";
 #ls mitmproxy-4.0.1-linux;
-./mitmdump -s ./intercept.py;
+#./mitmdump -s ./intercept.py;
 
 echo "PKG_CONFIG --------------------------------------";
 echo $PKG_CONFIG_PATH;
@@ -56,11 +56,11 @@ extra_links="-I$compiler_root_directory/usr/include/libsecret-1 -I$compiler_root
 export CC="$CC $extra_links"
 export CXX="$CXX $extra_links"
 
-#if [ "$ARCHIE_ARCH" == "armhf" ]; then
-#  echo "Overriding filename for Electron";
-#  export ELECTRON_CUSTOM_FILENAME="electron-v3.1.3-linux-armv7l.zip";
-#  export ELECTRON_CUSTOM_DIR="3.1.3";
-#fi;
+if [ "$ARCHIE_ARCH" == "armhf" ]; then
+  echo "Overriding filename for Electron";
+  export ELECTRON_CUSTOM_FILENAME="electron-v3.1.3-linux-armv7l.zip";
+  export ELECTRON_CUSTOM_DIR="3.1.3";
+fi;
 
 CHILD_CONCURRENCY=1 yarn;
 
