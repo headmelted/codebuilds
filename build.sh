@@ -41,6 +41,10 @@ cd code;
 #  echo "---------------------------------------------------"
 #fi;
 
+extra_links="-I$compiler_root_directory/usr/include/libsecret-1 -I$compiler_root_directory/usr/include/glib-2.0 -I$compiler_root_directory/usr/lib/${ARCHIE_HEADERS_GNU_TRIPLET}/glib-2.0/include";
+export CC="$CC $extra_links"
+export CXX="$CXX $extra_links"
+
 CHILD_CONCURRENCY=1 yarn;
 
 echo "Running hygiene";
