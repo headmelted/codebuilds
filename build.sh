@@ -45,11 +45,11 @@ extra_links="-I$compiler_root_directory/usr/include/libsecret-1 -I$compiler_root
 export CC="$CC $extra_links"
 export CXX="$CXX $extra_links"
 
-if [ "$ARCHIE_ARCH" == "armhf" ]; then
-  echo "Overriding filename for Electron";
-  export ELECTRON_CUSTOM_FILENAME="electron-v3.1.3-linux-armv7l.zip";
-  export ELECTRON_CUSTOM_DIR="3.1.3";
-fi;
+#if [ "$ARCHIE_ARCH" == "armhf" ]; then
+#  echo "Overriding filename for Electron";
+#  export ELECTRON_CUSTOM_FILENAME="electron-v3.1.3-linux-armv7l.zip";
+#  export ELECTRON_CUSTOM_DIR="3.1.3";
+#fi;
 
 CHILD_CONCURRENCY=1 yarn;
 
