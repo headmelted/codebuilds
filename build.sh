@@ -45,6 +45,11 @@ extra_links="-I$compiler_root_directory/usr/include/libsecret-1 -I$compiler_root
 export CC="$CC $extra_links"
 export CXX="$CXX $extra_links"
 
+if [ "$ARCHIE_ARCH" == "armhf" ]; then
+  echo "Overriding download url for Electron";
+  export ELECTRON_DOWNLOAD_OVERRIDE_URL="https://github.com/electron/electron/releases/download/v3.1.3/electron-v3.1.3-linux-armv7l.zip";
+fi;
+
 CHILD_CONCURRENCY=1 yarn;
 
 echo "Running hygiene";
