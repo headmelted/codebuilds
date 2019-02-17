@@ -1,9 +1,6 @@
 #!/bin/bash
 set -e;
 
-node ./tmpdir.js;
-exit;
-
 #echo "/usr/lib/${ARCHIE_GNU_TRIPLET} ------------------";
 #ls /usr/lib/${ARCHIE_GNU_TRIPLET};
 #echo "/usr/lib/${ARCHIE_GNU_TRIPLET}/pkgconfig --------";
@@ -26,6 +23,10 @@ echo "pkg-config search path --------------------------";
 pkg-config --variable pc_path pkg-config;
 
 . ./setup_nvm.sh;
+
+
+node ./tmpdir.js;
+exit;
 
 echo "Current directory is:";
 pwd;
