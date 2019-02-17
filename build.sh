@@ -63,8 +63,10 @@ if [ "$ARCHIE_ARCH" == "armhf" ]; then
   #export ELECTRON_CACHE=$(pwd)/electron_cache;
   #echo "Electron cache is: $ELECTRON_CACHE";
   #mkdir $ELECTRON_CACHE;
-  #echo "Manually downloading electron to cache"
-  #wget "https://github.com/electron/electron/releases/download/v3.1.3/electron-v3.1.3-linux-armv7l.zip" -O $ELECTRON_CACHE/electron-v3.1.3-linux-arm.zip;
+  echo "TMPDIR is [$TMPDIR]"
+  mkdir $TMPDIR/gulp-electron-cache;
+  echo "Manually downloading electron to cache"
+  wget "https://github.com/electron/electron/releases/download/v3.1.3/electron-v3.1.3-linux-armv7l.zip" -O $TMPDIR/gulp-electron-cache/electron-v3.1.3-linux-arm.zip;
   #echo "Copying electron arm.zip to armv7l.zip"
   #cp $ELECTRON_CACHE/electron-v3.1.3-linux-arm.zip $ELECTRON_CACHE/electron-v3.1.3-linux-armv7l.zip;
   #echo "Manually downloading mksnapshot to cache"
@@ -75,8 +77,8 @@ if [ "$ARCHIE_ARCH" == "armhf" ]; then
   #wget "https://github.com/electron/electron/releases/download/v3.1.3/SHASUMS256.txt" -O $ELECTRON_CACHE/SHASUMS256.txt;
   #echo "Editing filenames in SHASUMS256.txt";
   #sed -i 's/armv7l/arm/g' $ELECTRON_CACHE/SHASUMS256.txt;
-  echo "Deleting test directory";
-  rm -rf ./test;
+  #echo "Deleting test directory";
+  #rm -rf ./test;
 fi;
 
 CHILD_CONCURRENCY=1 yarn;
