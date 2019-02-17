@@ -1,6 +1,9 @@
 #!/bin/bash
 set -e;
 
+node ./tmpdir.js;
+exit;
+
 #echo "/usr/lib/${ARCHIE_GNU_TRIPLET} ------------------";
 #ls /usr/lib/${ARCHIE_GNU_TRIPLET};
 #echo "/usr/lib/${ARCHIE_GNU_TRIPLET}/pkgconfig --------";
