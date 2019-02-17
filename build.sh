@@ -82,11 +82,11 @@ fi;
 
 CHILD_CONCURRENCY=1 yarn;
 
-echo "Running hygiene";
-npm run gulp -- hygiene;
+#echo "Running hygiene";
+#npm run gulp -- hygiene;
 
-echo "Running monaco-compile-check";
-npm run monaco-compile-check;
+#echo "Running monaco-compile-check";
+#npm run monaco-compile-check;
 
 #echo "Running strict-null-check";
 #npm run strict-null-check;
@@ -109,8 +109,8 @@ npm run gulp -- vscode-linux-$ARCHIE_ELECTRON_ARCH-min --unsafe-perm;
 #echo "Executing yarn";
 #yarn install --unsafe-perm;
 
-echo "Executing electron-$ARCHIE_ELECTRON_ARCH";
-yarn --verbose gulp electron-${ARCHIE_ELECTRON_ARCH};
+#echo "Executing electron-$ARCHIE_ELECTRON_ARCH";
+#yarn --verbose gulp electron-${ARCHIE_ELECTRON_ARCH};
 
 #echo "Executing monaco-compile-check";
 #yarn --verbose monaco-compile-check;
