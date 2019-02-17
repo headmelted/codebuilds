@@ -24,10 +24,6 @@ pkg-config --variable pc_path pkg-config;
 
 . ./setup_nvm.sh;
 
-
-node ./tmpdir.js;
-exit;
-
 echo "Current directory is:";
 pwd;
 
@@ -70,7 +66,7 @@ if [ "$ARCHIE_ARCH" == "armhf" ]; then
   echo "TMPDIR is [$TMPDIR]"
   mkdir $TMPDIR/gulp-electron-cache;
   echo "Manually downloading electron to cache"
-  wget "https://github.com/electron/electron/releases/download/v3.1.3/electron-v3.1.3-linux-armv7l.zip" -O $TMPDIR/gulp-electron-cache/electron-v3.1.3-linux-arm.zip;
+  wget "https://github.com/electron/electron/releases/download/v3.1.3/electron-v3.1.3-linux-armv7l.zip" -O /tmp/gulp-electron-cache/electron-v3.1.3-linux-arm.zip;
   #echo "Copying electron arm.zip to armv7l.zip"
   #cp $ELECTRON_CACHE/electron-v3.1.3-linux-arm.zip $ELECTRON_CACHE/electron-v3.1.3-linux-armv7l.zip;
   #echo "Manually downloading mksnapshot to cache"
