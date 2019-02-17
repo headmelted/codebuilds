@@ -63,8 +63,7 @@ if [ "$ARCHIE_ARCH" == "armhf" ]; then
   #export ELECTRON_CACHE=$(pwd)/electron_cache;
   #echo "Electron cache is: $ELECTRON_CACHE";
   #mkdir $ELECTRON_CACHE;
-  echo "TMPDIR is [$TMPDIR]"
-  mkdir $TMPDIR/gulp-electron-cache;
+  mkdir /tmp/gulp-electron-cache;
   echo "Manually downloading electron to cache"
   wget "https://github.com/electron/electron/releases/download/v3.1.3/electron-v3.1.3-linux-armv7l.zip" -O /tmp/gulp-electron-cache/electron-v3.1.3-linux-arm.zip;
   #echo "Copying electron arm.zip to armv7l.zip"
