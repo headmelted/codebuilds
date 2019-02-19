@@ -58,10 +58,6 @@ mkdir output;
 echo "Moving deb packages for release";
 mv ./code/.build/linux/deb/$ARCHIE_ARCH/deb/*.deb /root/output;
 
-echo "-------------------"
-tree ./code/.build/linux;
-echo "-------------------"
-
 echo "Moving rpm packages for release";
 mv ./code/.build/linux/rpm/$ARCHIE_RPM_ARCH/rpmbuild/RPMS/$ARCHIE_RPM_ARCH/*.rpm /root/output;
 
@@ -73,6 +69,10 @@ mkdir -p ./code/.build/linux/snap-tarball
 SNAP_TARBALL_PATH="./code/.build/linux/snap-tarball/snap-$ARCHIE_ARCH.tar.gz"
 rm -rf $SNAP_TARBALL_PATH
 (cd .build/linux && tar -czf $SNAP_TARBALL_PATH snap)
+
+echo "-------------------"
+tree ./code/.build/linux;
+echo "-------------------"
 
 echo "Moving deb packages for release";
 mv ./code/.build/linux/snap.tar.gz /root/output;
