@@ -1,36 +1,8 @@
 #!/bin/bash
 set -e;
 
-#echo "/usr/lib/${ARCHIE_GNU_TRIPLET} ------------------";
-#ls /usr/lib/${ARCHIE_GNU_TRIPLET};
-#echo "/usr/lib/${ARCHIE_GNU_TRIPLET}/pkgconfig --------";
-#ls /usr/lib/${ARCHIE_GNU_TRIPLET}/pkgconfig;
-
-#wget "https://github.com/mitmproxy/mitmproxy/releases/download/v4.0.1/mitmproxy-4.0.1-linux.tar.gz";
-#curl "https://github.com/mitmproxy/mitmproxy/releases/download/v4.0.1/mitmproxy-4.0.1-linux.tar.gz" --output mitmproxy-4.0.1-linux.tar.gz
-#ls;
-#echo "------------";
-#file mitmproxy-4.0.1-linux.tar.gz;
-#tar -xvzf mitmproxy-4.0.1-linux.tar.gz;
-#ls;
-#echo "------";
-#ls mitmproxy-4.0.1-linux;
-#./mitmdump -s ./intercept.py;
-
-echo "PKG_CONFIG --------------------------------------";
-echo $PKG_CONFIG_PATH;
-echo "pkg-config search path --------------------------";
-pkg-config --variable pc_path pkg-config;
-
+echo "Installing NVM and NodeJS";
 . ./setup_nvm.sh;
-
-echo "Current directory is:";
-pwd;
-
-echo "Directory contents:";
-echo "-------------------";
-ls;
-echo "-------------------";
 
 echo "Retrieving latest Visual Studio Code sources into [code]";
 git clone "https://github.com/Microsoft/vscode.git" code;
@@ -44,41 +16,9 @@ rsync -avh ./overlays/ ./code/;
 echo "Entering code directory";
 cd code;
 
-#if [ "${ARCHIE_ELECTRON_ARCH}" == "arm" ]; then 
-#  echo "Patching electron install for arm";
-#  sed -i -e 's/process.env.npm_config_arch/"armv7l"/g' ./test/smoke/node_modules/electron/install.js
-#  echo "---------------------------------------------------"
-#  cat ./test/smoke/node_modules/electron/install.js
-#  echo "---------------------------------------------------"
-#fi;
-
 extra_links="-I$compiler_root_directory/usr/include/libsecret-1 -I$compiler_root_directory/usr/include/glib-2.0 -I$compiler_root_directory/usr/lib/${ARCHIE_HEADERS_GNU_TRIPLET}/glib-2.0/include";
 export CC="$CC $extra_links"
 export CXX="$CXX $extra_links"
-
-if [ "$ARCHIE_ARCH" == "armhf" ]; then
-  #echo "Overriding filename for Electron";
-  #export ELECTRON_CUSTOM_FILENAME="electron-v3.1.3-linux-armv7l.zip";
-  #export ELECTRON_CUSTOM_DIR="3.1.3";
-  #export ELECTRON_CACHE=$(pwd)/electron_cache;
-  #echo "Electron cache is: $ELECTRON_CACHE";
-  #mkdir $ELECTRON_CACHE;
-  mkdir /tmp/gulp-electron-cache;
-  echo "Manually downloading electron to cache"
-  wget "https://github.com/electron/electron/releases/download/v3.1.3/electron-v3.1.3-linux-armv7l.zip" -O /tmp/gulp-electron-cache/electron-v3.1.3-linux-arm.zip;
-  #echo "Copying electron arm.zip to armv7l.zip"
-  #cp $ELECTRON_CACHE/electron-v3.1.3-linux-arm.zip $ELECTRON_CACHE/electron-v3.1.3-linux-armv7l.zip;
-  #echo "Manually downloading mksnapshot to cache"
-  #wget "https://github.com/electron/electron/releases/download/v3.1.3/mksnapshot-v3.1.3-linux-armv7l.zip" -O $ELECTRON_CACHE/mksnapshot-v3.1.3-linux-arm.zip;
-  #echo "Copying mksnapshot arm.zip to armv7l.zip"
-  #cp $ELECTRON_CACHE/mksnapshot-v3.1.3-linux-arm.zip $ELECTRON_CACHE/mksnapshot-v3.1.3-linux-armv7l.zip;
-  #echo "Downloading SHASUMS256.txt to cache";
-  #wget "https://github.com/electron/electron/releases/download/v3.1.3/SHASUMS256.txt" -O $ELECTRON_CACHE/SHASUMS256.txt;
-  #echo "Editing filenames in SHASUMS256.txt";
-  #sed -i 's/armv7l/arm/g' $ELECTRON_CACHE/SHASUMS256.txt;
-  #echo "Deleting test directory";
-  #rm -rf ./test;
-fi;
 
 CHILD_CONCURRENCY=1 yarn;
 
@@ -123,7 +63,7 @@ tree ./code/.build/linux;
 echo "-------------------"
 
 echo "Moving rpm packages for release";
-mv ./code/.build/linux/rpm/$ARCHIE_ARCH/rpm/*.rpm /root/output;
+mv ./code/.build/linux/rpm/$ARCHIE_RPM_ARCH/rpmbuild/RPMS/$ARCHIE_RPM_ARCH/*.rpm /root/output;
 
 # Publish Snap
 npm run gulp -- "vscode-linux-$ARCHIE_ARCH-prepare-snap"
