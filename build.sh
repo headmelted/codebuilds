@@ -49,15 +49,6 @@ yarn run gulp vscode-linux-$ARCHIE_ELECTRON_ARCH-build-deb;
 echo "Starting vscode-linux-$ARCHIE_ELECTRON_ARCH-build-rpm";
 yarn run gulp vscode-linux-$ARCHIE_ELECTRON_ARCH-build-rpm;
 
-## Publish Snap
-#npm run gulp -- "vscode-linux-$ARCHIE_ARCH-prepare-snap"
-
-## Pack snap tarball artifact, in order to preserve file perms
-#mkdir -p ./code/.build/linux/snap-tarball
-#SNAP_TARBALL_PATH="./code/.build/linux/snap-tarball/snap-$ARCHIE_ARCH.tar.gz"
-#rm -rf $SNAP_TARBALL_PATH
-#(cd .build/linux && tar -czf $SNAP_TARBALL_PATH snap)
-
 echo "Leaving code directory";
 cd ..;
 
@@ -69,13 +60,6 @@ mv ./code/.build/linux/deb/$ARCHIE_ARCH/deb/*.deb /root/output;
 
 echo "Moving rpm packages for release";
 mv ./code/.build/linux/rpm/$ARCHIE_RPM_ARCH/rpmbuild/RPMS/$ARCHIE_RPM_ARCH/*.rpm /root/output;
-
-echo "-------------------"
-tree ./code/.build/linux;
-echo "-------------------"
-
-echo "Moving deb packages for release";
-mv ./code/.build/linux/snap.tar.gz /root/output;
 
 echo "Extracting deb archive";
 dpkg -x /root/output/*.deb output/extracted;
