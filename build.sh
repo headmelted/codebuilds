@@ -49,14 +49,14 @@ yarn run gulp vscode-linux-$ARCHIE_ELECTRON_ARCH-build-deb;
 echo "Starting vscode-linux-$ARCHIE_ELECTRON_ARCH-build-rpm";
 yarn run gulp vscode-linux-$ARCHIE_ELECTRON_ARCH-build-rpm;
 
-# Publish Snap
-npm run gulp -- "vscode-linux-$ARCHIE_ARCH-prepare-snap"
+## Publish Snap
+#npm run gulp -- "vscode-linux-$ARCHIE_ARCH-prepare-snap"
 
-# Pack snap tarball artifact, in order to preserve file perms
-mkdir -p ./code/.build/linux/snap-tarball
-SNAP_TARBALL_PATH="./code/.build/linux/snap-tarball/snap-$ARCHIE_ARCH.tar.gz"
-rm -rf $SNAP_TARBALL_PATH
-(cd .build/linux && tar -czf $SNAP_TARBALL_PATH snap)
+## Pack snap tarball artifact, in order to preserve file perms
+#mkdir -p ./code/.build/linux/snap-tarball
+#SNAP_TARBALL_PATH="./code/.build/linux/snap-tarball/snap-$ARCHIE_ARCH.tar.gz"
+#rm -rf $SNAP_TARBALL_PATH
+#(cd .build/linux && tar -czf $SNAP_TARBALL_PATH snap)
 
 echo "Leaving code directory";
 cd ..;
