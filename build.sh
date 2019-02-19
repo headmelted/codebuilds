@@ -82,17 +82,14 @@ fi;
 
 CHILD_CONCURRENCY=1 yarn;
 
-#echo "Running hygiene";
-#npm run gulp -- hygiene;
+echo "Running hygiene";
+npm run gulp -- hygiene;
 
-#echo "Running monaco-compile-check";
-#npm run monaco-compile-check;
+echo "Running monaco-compile-check";
+npm run monaco-compile-check;
 
-#echo "Running strict-null-check";
-#npm run strict-null-check;
-
-#echo "Installing distro";
-#node build/azure-pipelines/common/installDistro.js;
+echo "Executing strict-null-check";
+npm run strict-null-check;
 
 echo "Installing built-in extensions";
 node build/lib/builtInExtensions.js;
@@ -100,35 +97,17 @@ node build/lib/builtInExtensions.js;
 echo "Compiling VS Code for $ARCHIE_ELECTRON_ARCH";
 npm run gulp -- vscode-linux-$ARCHIE_ELECTRON_ARCH-min --unsafe-perm;
 
-#echo "Executing yarn (ignoring scripts)";
-#yarn install --unsafe-perm --ignore-scripts;
+echo "Executing compile";
+yarn --verbose compile;
 
-#echo "Copying vscode-sqlite.gyp";
-#mv vscode-sqlite.gyp ./node_modules/vscode-sqlite/binding.gyp;
-
-#echo "Executing yarn";
-#yarn install --unsafe-perm;
-
-#echo "Executing electron-$ARCHIE_ELECTRON_ARCH";
-#yarn --verbose gulp electron-${ARCHIE_ELECTRON_ARCH};
-
-#echo "Executing monaco-compile-check";
-#yarn --verbose monaco-compile-check;
-
-#echo "Executing strict-null-check";
-#yarn --verbose strict-null-check;
-
-#echo "Executing compile";
-#yarn --verbose compile;
-
-#echo "Executing download-builtin-extensions";
-#yarn --verbose download-builtin-extensions;
-
-#echo "Compiling VS Code for $VSCODE_ELECTRON_PLATFORM";
-#yarn run gulp vscode-linux-$VSCODE_ELECTRON_PLATFORM;
+echo "Executing download-builtin-extensions";
+yarn --verbose download-builtin-extensions;
 
 echo "Starting vscode-linux-$ARCHIE_ELECTRON_ARCH-build-deb";
 yarn run gulp vscode-linux-$ARCHIE_ELECTRON_ARCH-build-deb;
+
+echo "Starting vscode-linux-$ARCHIE_ELECTRON_ARCH-build-rpm";
+yarn run gulp vscode-linux-$ARCHIE_ELECTRON_ARCH-build-rpm;
 
 echo "Leaving code directory";
 cd ..;
@@ -138,6 +117,25 @@ mkdir output;
 
 echo "Moving deb packages for release";
 mv ./code/.build/linux/deb/$ARCHIE_ARCH/deb/*.deb /root/output;
+
+echo "-------------------"
+tree ./code/.build/linux;
+echo "-------------------"
+
+echo "Moving rpm packages for release";
+mv ./code/.build/linux/rpm/$ARCHIE_ARCH/rpm/*.rpm /root/output;
+
+# Publish Snap
+npm run gulp -- "vscode-linux-$ARCHIE_ARCH-prepare-snap"
+
+# Pack snap tarball artifact, in order to preserve file perms
+mkdir -p ./code/.build/linux/snap-tarball
+SNAP_TARBALL_PATH="./code/.build/linux/snap-tarball/snap-$ARCHIE_ARCH.tar.gz"
+rm -rf $SNAP_TARBALL_PATH
+(cd .build/linux && tar -czf $SNAP_TARBALL_PATH snap)
+
+echo "Moving deb packages for release";
+mv ./code/.build/linux/snap.tar.gz /root/output;
 
 echo "Extracting deb archive";
 dpkg -x /root/output/*.deb output/extracted;
