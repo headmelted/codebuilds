@@ -22,8 +22,8 @@ export CXX="$CXX $extra_links"
 
 CHILD_CONCURRENCY=1 yarn;
 
-echo "Running hygiene";
-npm run gulp -- hygiene;
+#echo "Running hygiene";
+#npm run gulp -- hygiene;
 
 echo "Running monaco-compile-check";
 npm run monaco-compile-check;
