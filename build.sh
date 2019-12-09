@@ -46,8 +46,9 @@ yarn run gulp -- vscode-linux-$ARCHIE_ELECTRON_ARCH --unsafe-perm;
 echo "Starting vscode-linux-$ARCHIE_ELECTRON_ARCH-build-deb";
 yarn run gulp vscode-linux-$ARCHIE_ELECTRON_ARCH-build-deb;
 
-echo "Starting vscode-linux-$ARCHIE_ELECTRON_ARCH-build-rpm";
-yarn run gulp vscode-linux-$ARCHIE_ELECTRON_ARCH-build-rpm;
+# 09/12/2019 rpm currently not working, will fix asap
+#echo "Starting vscode-linux-$ARCHIE_ELECTRON_ARCH-build-rpm";
+#yarn run gulp vscode-linux-$ARCHIE_ELECTRON_ARCH-build-rpm;
 
 echo "Leaving code directory";
 cd ..;
