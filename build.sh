@@ -34,14 +34,14 @@ npm run monaco-compile-check;
 echo "Installing built-in extensions";
 node build/lib/builtInExtensions.js;
 
-echo "Compiling VS Code for $ARCHIE_ELECTRON_ARCH";
-npm run gulp -- vscode-linux-$ARCHIE_ELECTRON_ARCH --unsafe-perm;
-
 echo "Executing compile";
 yarn --verbose compile;
 
 echo "Executing download-builtin-extensions";
 yarn --verbose download-builtin-extensions;
+
+echo "Compiling VS Code for $ARCHIE_ELECTRON_ARCH";
+yarn run gulp -- vscode-linux-$ARCHIE_ELECTRON_ARCH --unsafe-perm;
 
 echo "Starting vscode-linux-$ARCHIE_ELECTRON_ARCH-build-deb";
 yarn run gulp vscode-linux-$ARCHIE_ELECTRON_ARCH-build-deb;
