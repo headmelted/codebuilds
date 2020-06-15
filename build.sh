@@ -22,6 +22,13 @@ export CXX="$CXX $extra_links"
 
 CHILD_CONCURRENCY=1 yarn;
 
+if [[ "$ARCHIE_ELECTRON_ARCH" == *"arm"* ]]; then
+    sed -i -z 's/,\n[^\n]*arm[^\n]*//' node_modules/vscode-sqlite3/binding.gyp
+    sed -i "s/Release\/sqlite'/Release\/sqlite.node'/" node_modules/vscode-sqlite3/lib/sqlite3.js
+    yarn add -D electron-rebuild
+    npx electron-rebuild -f -w vscode-sqlite3
+fi
+
 #echo "Running hygiene";
 #npm run gulp -- hygiene;
 
