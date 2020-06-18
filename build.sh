@@ -25,8 +25,8 @@ CHILD_CONCURRENCY=1 yarn;
 #echo "Running hygiene";
 #npm run gulp -- hygiene;
 
-echo "Running monaco-compile-check";
-npm run monaco-compile-check;
+#echo "Running monaco-compile-check";
+#npm run monaco-compile-check;
 
 #echo "Executing strict-null-check";
 #npm run strict-null-check;
