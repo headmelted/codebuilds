@@ -31,8 +31,8 @@ CHILD_CONCURRENCY=1 yarn;
 #echo "Executing strict-null-check";
 #npm run strict-null-check;
 
-echo "Installing built-in extensions";
-node build/lib/builtInExtensions.js;
+#echo "Installing built-in extensions";
+#node build/lib/builtInExtensions.js;
 
 echo "Executing compile";
 yarn --verbose compile;
