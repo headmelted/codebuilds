@@ -1,5 +1,4 @@
-# codebuilds
-Community builds of Visual Studio Code for Chromebooks and Raspberry Pi
+# codebuilds should now be considered obsolete
 
 Unfortunately due to a few reasons (some good!  Official support! :-)), I am no longer able to actively maintain this repository.
 
