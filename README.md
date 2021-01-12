@@ -2,7 +2,7 @@
 
 Unfortunately due to a few reasons (some good!  Official support! :-)), I am no longer able to actively maintain this repository.
 
-1). Modern life has left with very little time to maintain these builds.
+1). Life events have left me with very little time to maintain these builds.
 
 2). As Microsoft now produces native ARM builds of Visual Studio Code, they should be a much better idea for most users for an installation that is fully vendor supported.  A popular Libre option is VSCodium, which has support for many more configurations than this repository supports.
 
